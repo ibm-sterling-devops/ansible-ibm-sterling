@@ -1,0 +1,16 @@
+# How to run setup-cd playbook
+# 
+#
+# ansible-playbook -i environments/examples/cd-servers.dev.sample -u root playbooks/setup-cd.yml
+#
+# 
+# 
+[cd_servers]
+cdserver01 ansible_host=10.x.x.2
+cdserver02 ansible_host=10.x.x.3
+
+
+# We use an Nginx HTTP server to download files
+# ansible-playbook -i environments/examples/cd-servers.dev.sample -u root playbooks/setup-nginx.yml
+[nginx_servers]
+10.x.x.1

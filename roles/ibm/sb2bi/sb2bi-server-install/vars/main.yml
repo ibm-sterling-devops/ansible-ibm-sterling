@@ -1,0 +1,66 @@
+---
+__repository_url:       "{{ repository_url }}"
+
+__packages_name:        
+  - "{{ sb2bi_package }}"
+  - "{{ sdk_package }}"
+  - "{{ urplc_file }}"
+  - "{{ jdbc_file }}"
+
+__unrestrictedpolicy:   "{{ urplc_file }}"
+__sdkfile:              "{{ sdk_file }}"
+
+# Sterling Integrator Folders
+__extraction_folder:    "{{ extraction_folder | default('/opt/IBM/Binaries') }}"
+__workdir_folder:       "{{ workdir | default('/opt/IBM/workdir') }}"  
+__iim_install_path:     "{{ iim_install_path | default('/opt/IBM/InstallationManager') }}"
+__si_install_path:      "{{ si_install_path | default('/opt/IBM/SterlingIntegrator') }}"
+__sdk_install_path:     "{{ sdk_install_path | default('/opt/IBM/ibm-java-80') }}"
+__si_sharedLocation:    "{{ si_si_sharedLocation | default('/opt/IBM/IMShared') }}"
+__si_jcediskfile:       "{{ __extraction_folder }}/{{ urplc_file }}"
+
+__iim_repository:       "{{ __extraction_folder }}/IM_Linux"
+__sdk_repository:       "{{ __extraction_folder }}/sdk"
+__si_repository:        "{{ __extraction_folder }}/si"
+
+__sdk_installer:        "{{ sdk_installer | default('ibm-java-sdk-8.0-6.20-x86_64-archive.bin') }}"
+__si_b2bapi_package:    "{{ si_b2bapi_package | default('b2biAPIs_60010000.jar') }}"
+
+
+# Sterling Integrator Variables
+# main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature
+__si_features:          "{{ si_features | default('main.feature,filegateway.feature') }}"
+__si_hostname:          "{{ si_hostname }}"
+__si_initialPort:       "{{ si_initialPort | default('5000') }}"
+
+__si_asiServicePort:    "{{ si_asiServicePort| default(__si_initialPort|int) }}"
+__si_apiGatewayPort:    "{{ si_apiGatewayPort| default(__si_initialPort|int) + 78 }}"
+__si_restHttpGatewayPort: "{{ si_restHttpGatewayPort| default(__si_initialPort|int) + 60 }}"
+
+__si_passphrase:        "{{ si_passphrase | default('password') }}"
+
+
+# defaults for non-clustered B2Bi instances. 
+# For clustered B2Bi instances, leave defaults for the initial node. For node 2 and higher, define node number (starting sequentially from 2)
+__si_cluster:           "{{ si_cluster | default('false') }}"
+__si_nodenum:           "{{ si_nodenum | default('') }}"
+
+__si_dbvendor:          "{{ db_vendor | default('DB2') }}"
+__si_dbuser:            "{{ db_user | default('db2inst1') }}"
+__si_dbpassword:        "{{ db_password | default('password') }}"
+__si_dbhost:            "{{ db_host | default('localhost') }}"
+__si_dbport:            "{{ db_port | default('50000') }}"
+__si_dbdatabase:        "{{ db_database | default('B2BI') }}"
+__si_dbdriver:          "{{ __extraction_folder }}/{{ jdbc_file }}"
+
+# Create schema automatically, unless you are installing successive nodes in a clustered B2Bi. 
+# If installing second or successive nodes in a B2Bi cluster, this MUST be set to false.
+__si_dbcreateSchema:    "{{ dbcreateSchema | default('true') }}"
+
+__si_adminMailAddr:     "{{ si_adminMailAddr | default('admin@company.com') }}"
+__si_adminSmtpHost:     "{{ si_adminSmtpHost | default('smtp.company.com') }}"
+
+__si_debug:             "{{ si_debug | default('true') }}"
+__si_upgrade:           "{{ si_upgrade | default('false') }}"
+__si_processors:        "{{ si_processors | default('2') }}"
+__si_memory:            "{{ si_memory | default('3072') }}"

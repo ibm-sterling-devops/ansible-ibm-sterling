@@ -1,0 +1,21 @@
+---
+- name:                  "Generate create_db_b2bi.sql to create  "
+  become_user:           "{{ __db2_instance_name }}"
+  template:
+    src:                 create_db_b2bi.sql.j2
+    dest:                "{{ __db2_instance_homedir }}/create_db_b2bi.sql"
+
+- name:                  Create SB2B database
+  shell:                 "{{ item }}"
+  become_user:           "{{ __db2_instance_name }}"
+  environment:
+    DB2INSTANCE:         "{{ __db2_instance_name }}"
+    DB2_HOME:            "{{ __db2_instance_homedir }}/sqllib"
+    IBM_DB_DIR:          "{{ __db2_instance_homedir }}/sqllib"
+    DB2LIB:              "{{ __db2_instance_homedir }}/sqllib/lib"
+    IBM_DB_LIB:          "{{ __db2_instance_homedir }}/sqllib/lib"
+    LD_LIBRARY_PATH:     "{{ __db2_instance_homedir }}/sqllib/lib64:{{ __db2_instance_homedir }}/sqllib/lib64/gskit:{{ __db2_instance_homedir }}/sqllib/lib32"
+    IBM_DB_INCLUDE:      "{{ __db2_instance_homedir }}/sqllib/include"
+    PATH:                "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:{{ __db2_instance_homedir }}/sqllib/bin:{{ __db2_instance_homedir }}/sqllib/adm:{{ __db2_instance_homedir }}/sqllib/misc:{{ __db2_instance_homedir }}/sqllib/gskit/bin:{{ __db2_instance_homedir }}/.local/bin:{{ __db2_instance_homedir }}/bin"
+  with_items:
+   - "db2 -td@ -vf {{ __db2_instance_homedir }}/create_db_b2bi.sql -z {{ __db2_instance_homedir }}/create_db_b2bi.sql.log"

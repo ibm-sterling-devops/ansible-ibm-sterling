@@ -1,0 +1,15 @@
+---
+- name:          Check if Connect:Direct is already up and running
+  shell:         "ps -ef | grep cdpmgr | grep -v grep"
+  changed_when:  true
+  register:      __cd_running
+  ignore_errors: true
+
+- name:          Check if Product already Installed?
+  stat:
+    path:        "{{ __db2_install_path }}/initparm.cfg"
+  register:      __cd_installed
+
+
+# when: not __cd_installed.stat.exists
+

@@ -1,0 +1,14 @@
+---
+__conf_d_location:              "/etc/nginx/conf.d"
+
+__nginx_conf_template:          "nginx.conf.j2"
+__nginx_conf_location:          "/etc/nginx/nginx.conf"
+
+__worker_connections:           "{{ nginx_worker_connections | default('1024') }}"
+
+__param_nofile_soft:            "64000"
+__param_nofile_hard:            "64000"
+
+__nginx_repo_template:          "nginx.repo.j2"
+__nginx_repo_location:          "/etc/yum.repos.d/nginx.repo"
+

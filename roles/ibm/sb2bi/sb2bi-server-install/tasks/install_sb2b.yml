@@ -1,0 +1,40 @@
+---
+- name:              Encode SI Passphrase
+  command:           "{{ __iim_install_path }}/eclipse/tools/imutilsc encryptString {{ __si_passphrase }}"
+  register:          __si_encoded_passphrase
+  changed_when:      ( __si_encoded_passphrase.rc == 0)
+
+- name:              Encode DB Password
+  command:           "{{ __iim_install_path }}/eclipse/tools/imutilsc encryptString {{ __si_dbpassword }}"
+  register:          __si_dbpassword_encoded
+  changed_when:      ( __si_dbpassword_encoded.rc == 0)
+
+- name:          Generate SB2B Response file
+  template:
+    src:         "sb2b_lnx_install.rsp.j2"
+    dest:        "{{ __workdir_folder }}/sb2b_install.rsp"
+
+
+# set LANG=en_US to avoid "CRRSE1111E : Incompatible LANG setting on linux"
+- name:          Install IBM Sterling Software
+  command:
+    chdir={{ __workdir_folder }}
+    {{ __iim_install_path }}/eclipse/tools/imcl -acceptLicense -sVP -log {{ __workdir_folder }}/sb2b_install.{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log input {{ __workdir_folder }}/sb2b_install.rsp
+  environment:
+    IATEMPDIR:   "{{ __extraction_folder }}"
+    LANG:        "en_US"
+  register:      cout
+  changed_when:  ( cout.stdout.find('Installed com.ibm.sterling.integrator.install') != -1)
+
+# Do not cleanup __si_repository/packages/b2biAPIs_6010200.jar
+- name:                  Clean up installation folder(s)
+  file:
+    path:                "{{ item }}"
+    state:               absent
+  with_items: 
+    - "{{ __si_repository }}/Common_Repo.zip"
+    - "{{ __si_repository }}/InstallationManager"
+    - "{{ __si_repository }}/b2birepo"
+    - "{{ __si_repository }}/gmrepo"
+    - "{{ __si_repository }}/UpdateScript"
+    - "{{ __si_repository }}/ResponseFiles"

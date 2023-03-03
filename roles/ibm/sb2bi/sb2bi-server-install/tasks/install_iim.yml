@@ -1,0 +1,14 @@
+- name:          Install/Update IBM Installation Manager
+  command:
+    chdir={{ __iim_repository }}
+    {{ __iim_repository }}/tools/imcl install com.ibm.cic.agent -acceptLicense -installationDirectory {{ __iim_install_path }} -repositories {{ __iim_repository }} -log {{ __workdir_folder }}/iim_install.{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log
+  environment:
+    IATEMPDIR:   "{{ __extraction_folder }}"
+    LANG:        "en_US.UTF-8"
+  register:      __iim_out
+  changed_when:  (__iim_out.stdout.find('Installed com.ibm.cic.agent') != -1) or (__iim_out.stdout.find('Updated to com.ibm.cic.agent') != -1)
+
+- name:     Clean up {{ __sdk_repository }} folder(s)
+  file:
+    path:   "{{ __iim_repository }}"
+    state:  absent

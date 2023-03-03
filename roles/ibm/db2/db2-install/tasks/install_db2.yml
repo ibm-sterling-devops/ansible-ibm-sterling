@@ -1,0 +1,8 @@
+- name:                    "Generate DB2 Setup response file "
+  template:
+    src:                   db2server.rsp.j2
+    dest:                  "{{ __workdir_folder }}/db2server.rsp"
+
+- name:                    "Install DB2"
+  command:                 "{{ __extraction_folder }}/{{ __extraction_subfolder }}/db2setup -r {{ __workdir_folder }}/db2server.rsp"
+

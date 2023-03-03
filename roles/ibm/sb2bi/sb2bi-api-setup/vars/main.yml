@@ -1,0 +1,13 @@
+---
+__repository_url:       "{{ repository_url }}"
+
+# Sterling Integrator Folders
+__extraction_folder:    "{{ extraction_folder | default('/opt/IBM/Binaries') }}"
+__workdir_folder:       "{{ workdir | default('/opt/IBM/workdir') }}"  
+__si_install_path:      "{{ si_install_path | default('/opt/IBM/SterlingIntegrator') }}"
+__sdk_install_path:     "{{ sdk_install_path | default('/opt/IBM/ibm-java-80') }}"
+
+__si_repository:        "{{ __extraction_folder }}/si"
+__si_b2bapi_package:    "{{ si_b2bapi_package | default('b2biAPIs_60010000.jar') }}"
+
+

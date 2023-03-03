@@ -1,0 +1,17 @@
+- name:                     Install Nginx HTTP Server
+  package:
+    name:                   nginx
+    state:                  latest
+    allow_downgrade:        yes
+
+#- name:                     Apply nginx.conf
+#  template:
+#    src:                    "{{ __nginx_conf_template }}"
+#    dest:                   "{{ __nginx_conf_location }}"
+
+- name:                     Start Nginx service
+  service:
+    name:                   nginx
+    state:                  started
+    enabled:                yes
+    daemon_reload:          yes

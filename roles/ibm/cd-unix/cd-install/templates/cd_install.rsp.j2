@@ -1,0 +1,21 @@
+cdai_installCmd="install"
+cdai_cpioFile="{{ __extraction_folder }}/cdunix"
+cdai_installDir="{{ __cd_install_path }}"
+cdai_localNodeName="{{ __cd_nodename }}"
+cdai_acquireHostnameOrIP="{{ __cd_acquireHostnameOrIP }}"
+cdai_trace=y
+cdai_agentPort={{ __cd_agentport }}
+cdai_serverPort={{ __cd_serverport }}
+cdai_clientPort={{ __cd_clientport }}
+cdai_localCertFile="{{ __combined_file }}"
+cdai_localCertPassphrase={{ __cd_localCertPassphrase }}
+cdai_adminUserid={{ __cd_user }}
+cdai_keystorePassword={{ __cd_keystorePassword }}
+cdai_ignoreExistingInstallDir="y"
+{% if __cd_secure_proxy == "enable" %}
+cdai_spConfig={{__workdir_folder}}/spcmds.rsp
+{% endif %}
+{% if __cd_integratedFA == "enable" %}
+cdai_installFA=y
+cdai_fileAgentEnable=y
+{% endif %}

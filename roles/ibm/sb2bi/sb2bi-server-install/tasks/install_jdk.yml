@@ -1,0 +1,31 @@
+---
+- name:          "Create {{ __sdk_repository }} directory"
+  file:
+    path:        "{{ item }}"
+    state:       directory
+  with_items:
+    - "{{ __sdk_repository }}"
+
+- name:      "Unarchive {{ sdk_package }} installation Packages to the {{ __sdk_repository }}"
+  unarchive:
+    src:     "{{ __extraction_folder }}/{{ sdk_package }}"
+    dest:    "{{ __sdk_repository }}"
+    copy:    no
+  register:  __sdk_unpack_pkgs
+  until:     __sdk_unpack_pkgs is succeeded
+
+
+- name:     "Install IBM JDK"
+  command:
+    chdir={{ __sdk_repository }}  
+    ./{{__sdk_installer}} -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR={{ __sdk_install_path }} -i silent
+  environment:
+    IATEMPDIR:   "{{ __extraction_folder }}"
+    LANG:        "en_US.UTF-8"
+  register: __sdk_install
+  until:    __sdk_install.rc == 0
+
+- name:     Clean up {{ __sdk_repository }} folder(s)
+  file:
+    path:   "{{ __sdk_repository }}"
+    state:  absent

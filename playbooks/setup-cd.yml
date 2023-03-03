@@ -1,0 +1,23 @@
+---
+# Setup Connect:Direct Server
+# 
+# ansible-playbook -i environments/hosts.dev -u root playbooks/setup-cd.yml 
+#
+- hosts:                    cd_servers
+  become:                   true
+  any_errors_fatal:         true
+  vars:
+    # Application Dependencies
+    cd_repository_url: http://127.0.0.1/
+    cd_package_name: IBM_CD_V6.2_UNIX_RedHat.Z.tar.Z
+    cd_nodename: "CDSRV01"
+    #cd_user: cduser1
+    #cd_group: cduser1
+    #extraction_folder: /opt/IBM/Binaries
+    #cd_install_path: /opt/IBM/cdunix
+    #cd_workdir: /opt/IBM/workdir
+  roles:
+    - roles/ibm/cd-unix/cd-install
+#    - roles/ibm/cd-unix/cd-start
+
+

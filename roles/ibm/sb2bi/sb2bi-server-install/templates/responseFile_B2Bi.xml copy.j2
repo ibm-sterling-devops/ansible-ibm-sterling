@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+    <!--
+	IBM Sterling B2B Integrator 
+	Licensed Materials - Property of IBM
+	(C) Copyright IBM Corporation and its licensors 2013, 2014, 2015. All Rights Reserved. 
+    US Government Users Restricted Rights - Use, duplication, or disclosure restricted by GSA ADP 
+    Schedule Contract with IBM Corp.
+    IBM and the IBM logo are trademarks of IBM Corporation in the United States, other countries, or 
+    both.  Java and all Java-based trademarks and logos are trademarks or registered trademarks of 
+    Oracle and/or its affiliates. Other company, product or service names may be trademarks or 
+    service marks of others.
+    -->
+    <!--
+    Use this file to install IBM Sterling B2B Integrator.
+		
+	How to use this file
+        1. Replace values that must be updated to match your environment and your selected installation 
+        option. Variables 
+        enclosed in $$ must be changed. Input to certain password fields must be encrypted using the 
+        method described in the "Protecting Passwords" section below.
+        2. Using the descriptions for values in this file, confirm provided default values are 
+        acceptable for your environment.  
+        3. Obtain the information specific to your database for B2Bi. 
+        6. After modifying this sample response file according to your installation environment 
+        details, start installation and provide this file as input, i.e., 
+        <iim_install_dir>/InstallationManager/eclipse/tools/imcl -input Responsefile_B2Bi_GM.xml -acceptLicense 
+		
+	Protecting Passwords 
+		Passwords must be provided with script to decrypt. For example:
+		-bash-3.2$ ./imutilsc encryptString Password
+		NnO7aEXCW36ozr3feBXWTQ==
+		-bash-3.2$ pwd
+		/fullpath/IBM/InstallationManager/eclipse/tools
+		more details in the "Installation Manager command-line arguments for silent mode" topic, at
+        https://www-01.ibm.com/support/knowledgecenter/api/content/nl/en-us/SSDV2W_1.8.2/com.ibm.silentinstall12.doc/topics/r_silent_inst_cmd_arg.html
+
+    -->
+  
+<agent-input>
+    <install modify='false'>
+        <!-- IBM B2B Sterling Integrator -->
+        <!-- To select other optional B2Bi features, add the feature to the list of features to 
+            install. For example, 
+            features='main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature' -->
+        <offering profile='Sterling Integrator' id='com.ibm.sterling.integrator.install.offering' features='main.feature' installFixes='none'/> 
+    </install>
+
+    <variables>
+        <!--
+        Define the variable for the location for the Installation Manager package group.  
+        -->
+        <variable name='sharedLocation' value='$$/fullpath/sharedLocation/IBM/IBMIMShared$$'/>
+
+        <!--
+        Define the variable (siLocation) to use for your B2Bi installation. If you are installing 
+        only B2Bi, ensure this directory does not exist. Ensure that the parent directory/path does 
+        exist prior to installing. 
+        If you are installing GM at the same time, GM must be installed in this same directory. 
+        When installing a node with GM only, this directory must be the same as its associated B2Bi 
+        instance.
+        -->
+        <variable name='siLocation' value='$$/fullpath/sharedLocation/IBM/siLocation$$'/>
+    </variables>
+    <server>
+        <!-- 
+        These are the repositories where Installation Manager can find offerings. 
+        Provide the full path to the location of the B2Bi/GM repository, which is within your 
+        installation package. This should be in the same installation package that contained this 
+        sample file.  
+
+        -->
+        <!-- If you are installing GM only, comment out or delete this element indicating the B2Bi repository location.-->
+        <repository location='$$/fullpath/to/b2birepo$$'/>
+    </server>
+  
+    <!--
+    The location of the install is set in the <variables> section, earlier in this file. Once 
+    defined, you may reuse it throughout this file. 
+    -->
+    <profile id='Sterling Integrator' installLocation='${siLocation}'> 
+        <data key='eclipseLocation' value='${siLocation}'/> 
+        <!-- 
+        These values are needed for Installation Manager. Leave defaults.	--> 
+        <data key='user.import.profile' value='false'/>
+        <data key='cic.selector.os' value='linux'/>
+        <data key='cic.selector.arch' value='x86_64'/>
+        <data key='cic.selector.ws' value='gtk'/>
+        <data key='cic.selector.nl' value='en'/>
+
+        <!--The install parameters below are specific to SI installation -->
+        <!-- 
+        Provide the full path to the location where you downloaded the jdk provided in the 
+        installation package. 	
+        Value=Full path/jdk downloaded location-->
+        <data key='user.sb.JVM_LOC,com.ibm.sterling.integrator.install.offering' value='$$/fullpath/java_directory_name$$'/>
+        <data key='user.sb.JDK64BIT,com.ibm.sterling.integrator.install.offering' value='true'/> 
+        <!-- 
+        FIPS mode should be set to value=true if you are enabling FIPS. Otherwise, leave default. -->
+        <data key='user.sb.FIPS_MODE,com.ibm.sterling.integrator.install.offering' value='false'/>
+        <!-- 
+        If you are enabling NIST mode set to value=transition or value=strict, depending on the 
+        level you require. Otherwise, leave default value=off. -->	
+        <data key='user.sb.NIST_MODE,com.ibm.sterling.integrator.install.offering' value='off'/>
+        <!-- 
+        Set to value=true to enable SPE integration, otherwise set to false. -->	
+        <data key='user.sb.INSTALL_SPE_INTEGRATION,com.ibm.sterling.integrator.install.offering' value='false'/>
+
+        <!-- If you intend to use SPE integration, uncomment the below SPE/WTX lines and set the 
+        below values. -->
+        <!--
+        <data key='user.sb.SPE_INSTALL_DIR,com.ibm.sterling.integrator.install.offering' value='$$/spepath/spedirname$$'/>
+        <data key='user.sb.SPE_UI_PORT,com.ibm.sterling.integrator.install.offering' value='9080'/>
+        -->
+        <!--The WTX install directory is optional for SPE integration. After uncommenting, clear 
+        the value if you do not wish to integrate B2Bi with WTX. -->
+        <!--
+        <data key='user.sb.WTX_INSTALL_DIR,com.ibm.sterling.integrator.install.offering' value='$$/wtxpath/wtxdirname$$'/>
+        -->
+
+        <!-- 
+        Due to regulatory restrictions, JCE files must be obtained separately. JCE files for IBM 
+        SDKs are available for download at 
+        https://www-01.ibm.com/marketing/iwm/iwm/web/preLogin.do?source=jcesdk  
+        If you are using an non-IBM SDK, obtain the JCE files from your SDK vendor.  
+        -->
+        <data key='user.sb.JCE_DIST_FILE,com.ibm.sterling.integrator.install.offering' value='$$/fullpath/to/unrestricted.zip$$'/>
+
+        <!-- 
+        Value=IP address or host name of the system on which you are now installing. -->
+        <data key='user.sb.INSTALL_IP,com.ibm.sterling.integrator.install.offering' value='$$host name$$'/>
+        <!-- 
+        Value=Number of Sterling B2B Integrator initial port; requires a series of 200 available 
+        ports, starting with the port selected for this value 
+        Example: value='33700' --> 
+        <data key='user.sb.PORT1,com.ibm.sterling.integrator.install.offering' value='$$portnumber$$'/>
+
+        <!-- 
+        System passphrase information needed for Sterling B2B Integrator. See section in this file 
+        for handling encrypted passphrase.  
+        -->
+        <data key='user.sb.APSERVER_PASS,com.ibm.sterling.integrator.install.offering' value='$$system_passphrase$$'/>
+        <data key='user.confirmPassphrase,com.ibm.sterling.integrator.install.offering' value='$$system_passphrase$$'/>
+
+        <!-- 
+        Value=Email address to which Sterling B2B Integrator system level notifications should be 
+        sent.   --> 
+        <data key='user.sb.SI_ADMIN_MAIL_ADDR,com.ibm.sterling.integrator.install.offering' value='$$adminEmail@your.email$$'/>
+        <!-- 
+        Value=Port of the SMTP host for the notification email address.   --> 
+        <data key='user.sb.SI_ADMIN_SMTP_HOST,com.ibm.sterling.integrator.install.offering' value='$$smtpServerHostname$$'/>
+
+        <!-- 
+        Database vendor information. Example file shows non-clustered DB2. See 
+        "Getting Started > System Requirements > Databases" topic in IBM Knowledge Center for 
+        Sterling B2B Integrator - 
+        http://www-01.ibm.com/support/knowledgecenter/SS3JSW_5.2.0/welcome/product_landing.html - 
+        for the values specific to clustered DBs and other vendors. Have these values pre-determined
+        and entered on your install check list for reference here. 
+
+        Note: Encrypted passwords require a script to decrypt protected values. See instruction in 
+        the Protecting PASSWORDS section. 
+        --> 
+        <data key='user.sb.DB_VENDOR,com.ibm.sterling.integrator.install.offering' value='DB2'/>
+        <!-- 
+        Leave defaults for non-clustered B2Bi instances. 
+        For clustered B2Bi instances, leave defaults for the initial node. For node 2 and higher, 
+        set user.sb.CLUSTER to true and give the cluster node number (starting sequentially from 2) 
+        in the user.CLUSTER_NODE_NUM field.
+        --> 
+        <data key='user.sb.CLUSTER,com.ibm.sterling.integrator.install.offering' value='false'/>
+        <data key='user.CLUSTER_NODE_NUM,com.ibm.sterling.integrator.install.offering' value=''/>
+        <!-- 
+        Create schema automatically, unless you are installing successive nodes in a clustered 
+        B2Bi. If installing second or successive nodes in a B2Bi cluster, this MUST be set to false.
+        --> 
+        <data key='user.sb.DB_CREATE_SCHEMA,com.ibm.sterling.integrator.install.offering' value='true'/>     
+        <data key='user.sb.DB_USER,com.ibm.sterling.integrator.install.offering' value='$$DB_username$$'/>
+        <!--The values of the DB_PASS and dbconfirmPassword fields must be encrypted. See
+        the "Protecting Passwords" section earlier in this file for details. -->
+        <data key='user.sb.DB_PASS,com.ibm.sterling.integrator.install.offering' value='$$DB_password$$'/>
+        <data key='user.dbconfirmPassword,com.ibm.sterling.integrator.install.offering' value='$$DB_password$$'/>
+        <data key='user.sb.DB_DATA,com.ibm.sterling.integrator.install.offering' value='$$DB_Data$$'/>
+        <data key='user.sb.DB_HOST,com.ibm.sterling.integrator.install.offering' value='$$DB_Hostname$$'/>
+        <data key='user.sb.DB_PORT,com.ibm.sterling.integrator.install.offering' value='$$DB_Port$$'/>
+        <data key='user.sb.DB_DRIVERS,com.ibm.sterling.integrator.install.offering' value='$$path/to/jdbc/driver.jar$$'/>
+
+        <!--License file required for installation. Leave default. -->
+        <data key='user.sb.LICENSE_FILE,com.ibm.sterling.integrator.install.offering' value='Core_License.xml'/>
+
+        <!-- 
+        B2Bi Optional Settings. 
+        Set debug value=true for verbose logging.
+        Set upgrade value=true to use an existing database. 
+        Accept defaults for number of processors and memory to allocate; these values can be 
+        adjusted after installation using tuning.properties. 
+        --> 	
+        <data key='user.sb.DEBUG,com.ibm.sterling.integrator.install.offering' value='true'/>
+        <data key='user.sb.UPGRADE,com.ibm.sterling.integrator.install.offering' value='false'/>
+        <data key='user.sb.PROCESSORS,com.ibm.sterling.integrator.install.offering' value='2'/>
+        <data key='user.sb.MEMORY,com.ibm.sterling.integrator.install.offering' value='3072'/>
+    </profile>
+
+    <!-- 
+    Installation Manager specific values. 
+    Leave all defaults.   --> 	 
+
+    <preference name='com.ibm.cic.common.core.preferences.eclipseCache' value='${sharedLocation}'/>
+    <preference name='com.ibm.cic.common.core.preferences.connectTimeout' value='30'/>
+    <preference name='com.ibm.cic.common.core.preferences.readTimeout' value='45'/>
+    <preference name='com.ibm.cic.common.core.preferences.downloadAutoRetryCount' value='0'/>
+    <preference name='offering.service.repositories.areUsed' value='true'/>
+    <preference name='com.ibm.cic.common.core.preferences.ssl.nonsecureMode' value='false'/>
+    <preference name='com.ibm.cic.common.core.preferences.http.disablePreemptiveAuthentication' value='false'/>
+    <preference name='http.ntlm.auth.kind' value='NTLM'/>
+    <preference name='http.ntlm.auth.enableIntegrated.win32' value='true'/>
+    <preference name='com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts' value='true'/>
+    <preference name='com.ibm.cic.common.core.preferences.keepFetchedFiles' value='false'/>
+    <preference name='PassportAdvantageIsEnabled' value='false'/>
+    <preference name='com.ibm.cic.common.core.preferences.searchForUpdates' value='false'/>
+    <preference name='com.ibm.cic.agent.ui.displayInternalVersion' value='false'/>
+    <preference name='com.ibm.cic.common.sharedUI.showErrorLog' value='true'/>
+    <preference name='com.ibm.cic.common.sharedUI.showWarningLog' value='true'/>
+    <preference name='com.ibm.cic.common.sharedUI.showNoteLog' value='true'/>
+</agent-input>

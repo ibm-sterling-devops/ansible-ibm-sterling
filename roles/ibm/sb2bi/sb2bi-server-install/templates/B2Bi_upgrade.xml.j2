@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+    <!--
+	IBM Sterling B2B Integrator Version 5.2.6. 5725-D06 / IBM Sterling File Gateway Version 2.2.6 5725-D07 / Global High Availability Mailbox
+	Licensed Materials - Property of IBM
+	(C) Copyright IBM Corporation and its licensors 2013, 2014, 2015. All Rights Reserved. 
+    US Government Users Restricted Rights - Use, duplication, or disclosure restricted by GSA ADP 
+    Schedule Contract with IBM Corp.
+    IBM and the IBM logo are trademarks of IBM Corporation in the United States, other countries, or 
+    both.  Java and all Java-based trademarks and logos are trademarks or registered trademarks of 
+    Oracle and/or its affiliates. Other company, product or service names may be trademarks or 
+    service marks of others.
+    -->
+    <!--
+	Sterling B2B Integrator: Sample update file
+        This file is used for updating B2Bi to version 5.2.6 or later via applying a fixpack to an 
+        existing B2Bi instance.
+		
+	How to use this file
+        1. For any values enclosed in $$, edit the values to be acceptable for your environment. 
+        Input to certain password fields must be encrypted using the method described in the 
+        "Protecting Passwords" section below.
+        2. After modifying this sample response file according to your installation environment 
+        details, start the update and provide this file as input, i.e., 
+        <iim_install_dir>/InstallationManager/eclipse/tools/imcl -input responseFile_update_B2Bi.xml -acceptLicense 
+		
+	Protecting Passwords 
+		Passwords must be provided with script to decrypt. For example:
+		-bash-3.2$ ./imutilsc encryptString Password
+		NnO7aEXCW36ozr3feBXWTQ==
+		-bash-3.2$ pwd
+		/fullpath/IBM/InstallationManager/eclipse/tools
+		more details in the "Installation Manager command-line arguments for silent mode" topic, at
+		https://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.8.2/com.ibm.silentinstall12.doc/topics/r_silent_inst_cmd_arg.html
+
+    -->
+<agent-input>
+  <variables>
+    <!--
+    Give the path to the B2Bi instance that will be updated.
+    -->
+    <variable name='siLocation' value='$$/fullpath/sharedLocation/IBM/siLocation$$'/>
+
+    <!-- If you previously installed or updated B2Bi using IBM Installation Manager (IIM), the 
+    offering profile was assigned the first time the product was installed or updated with IIM, and
+    the value provided here must match the assigned offering profile. This offering profile, if it
+    exists, can be found by running "./imcl listInstalledPackages -verbose" from the tools/ 
+    directory of the installed IIM instance, and is listed as the name of the package group
+    associated with the B2Bi package.
+    
+     If no such profile is found, you are free to set the offering profile
+    yourself.
+    -->
+	<variable name='offeringProfile' value='$$My Sterling Integrator$$'/>
+  </variables>
+  <server>
+    <!-- 
+    These are the repositories where Installation Manager can find offerings. 
+    Provide the full path to the location of the B2Bi repository containing the B2Bi version that you
+    will update to.
+    -->
+    <repository location='$$/fullpath/to/b2birepo$$'/>
+  </server>
+  <profile id='${offeringProfile}' installLocation='${siLocation}'>
+    <!-- 
+    Provide the full path to the location where you downloaded the jdk provided in the 
+    installation package. 	
+    Value=Full path/jdk downloaded location-->
+    <data key='user.sb.JVM_LOC,com.ibm.sterling.integrator.install.offering' value='$$/fullpath/java_directory_name$$'/>
+
+    <!-- 
+    Due to regulatory restrictions, JCE files must be obtained separately. JCE files for IBM 
+    SDKs are available for download at 
+    https://www-01.ibm.com/marketing/iwm/iwm/web/preLogin.do?source=jcesdk  
+    If you are using an non-IBM SDK, obtain the JCE files from your SDK vendor.  
+    -->
+    <data key='user.sb.JCE_DIST_FILE,com.ibm.sterling.integrator.install.offering' value='$$/fullpath/to/unrestricted.zip$$'/>
+
+    <!-- 
+    System passphrase information needed for Sterling B2B Integrator. See "Protecting Passwords" 
+    section in this file for handling encrypted passphrases.  
+    -->
+    <data key='user.sb.APSERVER_PASS,com.ibm.sterling.integrator.install.offering' value='$$system_passphrase$$'/>
+    <data key='user.confirmPassphrase,com.ibm.sterling.integrator.install.offering' value='$$system_passphrase$$'/>
+  </profile>
+  <install modify='false'>
+    <!-- IBM Sterling B2B Integrator -->
+    <offering profile='${offeringProfile}' id='com.ibm.sterling.integrator.install.offering' features='main.feature' installFixes='none'/>
+  </install>
+  <preference name='com.ibm.cic.common.core.preferences.connectTimeout' value='30'/>
+  <preference name='com.ibm.cic.common.core.preferences.readTimeout' value='45'/>
+  <preference name='com.ibm.cic.common.core.preferences.downloadAutoRetryCount' value='0'/>
+  <preference name='offering.service.repositories.areUsed' value='true'/>
+  <preference name='com.ibm.cic.common.core.preferences.ssl.nonsecureMode' value='false'/>
+  <preference name='com.ibm.cic.common.core.preferences.http.disablePreemptiveAuthentication' value='false'/>
+  <preference name='http.ntlm.auth.kind' value='NTLM'/>
+  <preference name='http.ntlm.auth.enableIntegrated.win32' value='true'/>
+  <preference name='com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts' value='true'/>
+  <preference name='com.ibm.cic.common.core.preferences.keepFetchedFiles' value='false'/>
+  <preference name='PassportAdvantageIsEnabled' value='false'/>
+  <preference name='com.ibm.cic.common.core.preferences.searchForUpdates' value='false'/>
+  <preference name='com.ibm.cic.agent.ui.displayInternalVersion' value='false'/>
+  <preference name='com.ibm.cic.common.sharedUI.showErrorLog' value='true'/>
+  <preference name='com.ibm.cic.common.sharedUI.showWarningLog' value='true'/>
+  <preference name='com.ibm.cic.common.sharedUI.showNoteLog' value='true'/>
+</agent-input>

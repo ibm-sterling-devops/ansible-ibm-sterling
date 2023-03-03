@@ -1,0 +1,15 @@
+---
+- name:          Is IBM Java SDK already Installed?
+  stat:
+    path:        "{{ __sdk_install_path }}/bin/java"
+  register:      __sdk_installed
+
+- name:          Is IBM Installation Manager already Installed?
+  stat:
+    path:        "{{ __iim_install_path }}/eclipse/tools/imcl"
+  register:      __iim_installed
+
+- name:          Is IBM Sterling B2Bi already Installed?
+  stat:
+    path:        "{{ __si_install_path }}/bin/run.sh"
+  register:      __sb2b_installed

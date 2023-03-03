@@ -1,0 +1,4 @@
+---
+__si_install_path:      "{{ si_install_path | default('/opt/IBM/SterlingIntegrator') }}"
+
+

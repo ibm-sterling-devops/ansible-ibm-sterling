@@ -1,0 +1,17 @@
+# How to run setup-b2b playbook
+# 
+#
+# ansible-playbook -i environments/examples/sb2b-servers.dev.sample -u root playbooks/setup-sb2b.yml
+#
+# 
+# 
+[db2_servers]
+10.x.x.2
+
+[sb2bi_servers]
+siserver1 ansible_host=10.x.x.3
+
+# We use an Nginx HTTP server to download files
+# ansible-playbook -i environments/examples/cd-servers.dev.sample -u root playbooks/setup-nginx.yml
+[nginx_servers]
+10.x.x.1

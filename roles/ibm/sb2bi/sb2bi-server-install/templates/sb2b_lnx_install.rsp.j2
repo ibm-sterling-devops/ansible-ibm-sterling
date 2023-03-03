@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<agent-input>
+    <install modify='false'>
+        <offering profile='Sterling Integrator' id='com.ibm.sterling.integrator.install.offering' features='main.feature' installFixes='none'/> 
+    </install>
+
+    <variables>
+        <variable name='sharedLocation' value='{{ __si_sharedLocation }}'/>
+        <variable name='siLocation' value='{{ __si_install_path }}'/>
+    </variables>
+    <server>
+        <repository location='{{ __si_repository }}/b2birepo'/>
+        <repository location='{{ __si_repository }}/gmrepo'/>
+    </server>
+
+    <profile id='Sterling Integrator' installLocation='${siLocation}'> 
+        <data key='eclipseLocation' value='${siLocation}'/> 
+        <data key='user.import.profile' value='false'/>
+        <data key='cic.selector.os' value='linux'/>
+        <data key='cic.selector.arch' value='x86_64'/>
+        <data key='cic.selector.ws' value='gtk'/>
+        <data key='cic.selector.nl' value='en'/>
+
+        <data key='user.sb.JVM_LOC,com.ibm.sterling.integrator.install.offering' value='{{ __sdk_install_path }}'/>
+        <data key='user.sb.JDK64BIT,com.ibm.sterling.integrator.install.offering' value='true'/> 
+        <data key='user.sb.FIPS_MODE,com.ibm.sterling.integrator.install.offering' value='false'/>
+        <data key='user.sb.NIST_MODE,com.ibm.sterling.integrator.install.offering' value='off'/>	
+        <data key='user.sb.INSTALL_SPE_INTEGRATION,com.ibm.sterling.integrator.install.offering' value='false'/>
+        <data key='user.sb.JCE_DIST_FILE,com.ibm.sterling.integrator.install.offering' value='{{ __si_jcediskfile }}'/>
+        <data key='user.sb.INSTALL_IP,com.ibm.sterling.integrator.install.offering' value='{{ __si_hostname }}'/>
+        <data key='user.sb.PORT1,com.ibm.sterling.integrator.install.offering' value='{{ __si_initialPort }}'/>
+        <data key='user.sb.APSERVER_PASS,com.ibm.sterling.integrator.install.offering' value='{{ __si_encoded_passphrase.stdout }}'/>
+        <data key='user.confirmPassphrase,com.ibm.sterling.integrator.install.offering' value='{{ __si_encoded_passphrase.stdout }}'/>
+        <data key='user.sb.SI_ADMIN_MAIL_ADDR,com.ibm.sterling.integrator.install.offering' value='{{ __si_adminMailAddr }}'/>
+        <data key='user.sb.SI_ADMIN_SMTP_HOST,com.ibm.sterling.integrator.install.offering' value='{{ __si_adminSmtpHost }}'/>
+
+        <!-- MyFilegateway 2.0 only v6.1.0 or higher -->
+        <data key='user.sb.API_GATEWAY_IP,com.ibm.sterling.integrator.install.offering' value='{{ __si_hostname }}'/>
+        <data key='user.sb.API_GATEWAY_PORT,com.ibm.sterling.integrator.install.offering' value='{{ __si_apiGatewayPort }}'/>
+        <data key='user.sb.ASI_SERVICE_HOST,com.ibm.sterling.integrator.install.offering' value='{{ __si_hostname }}'/>
+        <data key='user.sb.ASI_SERVICE_PORT,com.ibm.sterling.integrator.install.offering' value='{{ __si_asiServicePort }}'/>
+        <data key='user.sb.REST_HTTP_SERVER_ADAPTER_SERVICE_HOST,com.ibm.sterling.integrator.install.offering' value='{{ __si_hostname }}'/>
+        <data key='user.sb.REST_HTTP_SERVER_ADAPTER_SERVICE_PORT,com.ibm.sterling.integrator.install.offering' value='{{ __si_restHttpGatewayPort }}'/>  
+
+        <!-- 
+        Leave defaults for non-clustered B2Bi instances. 
+        For clustered B2Bi instances, leave defaults for the initial node. For node 2 and higher, 
+        set user.sb.CLUSTER to true and give the cluster node number (starting sequentially from 2) 
+        in the user.CLUSTER_NODE_NUM field.
+        --> 
+        <data key='user.sb.CLUSTER,com.ibm.sterling.integrator.install.offering' value='{{ __si_cluster }}'/>
+        <data key='user.CLUSTER_NODE_NUM,com.ibm.sterling.integrator.install.offering' value='{{ __si_nodenum }}'/>
+
+        <!-- 
+        Create schema automatically, unless you are installing successive nodes in a clustered 
+        B2Bi. If installing second or successive nodes in a B2Bi cluster, this MUST be set to false.
+        --> 
+        <data key='user.sb.DB_VENDOR,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbvendor }}'/>
+        <data key='user.sb.DB_CREATE_SCHEMA,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbcreateSchema }}'/>     
+        <data key='user.sb.DB_USER,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbuser }}'/>
+        <!--The values of the DB_PASS and dbconfirmPassword fields must be encrypted. See
+        the "Protecting Passwords" section earlier in this file for details. -->
+        <data key='user.sb.DB_PASS,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbpassword_encoded.stdout }}'/>
+        <data key='user.dbconfirmPassword,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbpassword_encoded.stdout }}'/>
+        <data key='user.sb.DB_DATA,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbdatabase }}'/>
+        <data key='user.sb.DB_HOST,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbhost }}'/>
+        <data key='user.sb.DB_PORT,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbport }}'/>
+        <data key='user.sb.DB_DRIVERS,com.ibm.sterling.integrator.install.offering' value='{{ __si_dbdriver }}'/>
+
+        <!--License file required for installation. Leave default. -->
+        <data key='user.sb.LICENSE_FILE,com.ibm.sterling.integrator.install.offering' value='Core_License.xml'/>
+        <data key='user.sb.DEBUG,com.ibm.sterling.integrator.install.offering' value='{{ __si_debug }}'/>
+        <data key='user.sb.UPGRADE,com.ibm.sterling.integrator.install.offering' value='{{ __si_upgrade }}'/>
+        <data key='user.sb.PROCESSORS,com.ibm.sterling.integrator.install.offering' value='{{ __si_processors }}'/>
+        <data key='user.sb.MEMORY,com.ibm.sterling.integrator.install.offering' value='{{ __si_memory }}'/>
+    </profile>
+
+    <preference name='com.ibm.cic.common.core.preferences.eclipseCache' value='${sharedLocation}'/>
+    <preference name='com.ibm.cic.common.core.preferences.connectTimeout' value='30'/>
+    <preference name='com.ibm.cic.common.core.preferences.readTimeout' value='45'/>
+    <preference name='com.ibm.cic.common.core.preferences.downloadAutoRetryCount' value='0'/>
+    <preference name='offering.service.repositories.areUsed' value='true'/>
+    <preference name='com.ibm.cic.common.core.preferences.ssl.nonsecureMode' value='false'/>
+    <preference name='com.ibm.cic.common.core.preferences.http.disablePreemptiveAuthentication' value='false'/>
+    <preference name='http.ntlm.auth.kind' value='NTLM'/>
+    <preference name='http.ntlm.auth.enableIntegrated.win32' value='true'/>
+    <preference name='com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts' value='true'/>
+    <preference name='com.ibm.cic.common.core.preferences.keepFetchedFiles' value='false'/>
+    <preference name='PassportAdvantageIsEnabled' value='false'/>
+    <preference name='com.ibm.cic.common.core.preferences.searchForUpdates' value='false'/>
+    <preference name='com.ibm.cic.agent.ui.displayInternalVersion' value='false'/>
+    <preference name='com.ibm.cic.common.sharedUI.showErrorLog' value='true'/>
+    <preference name='com.ibm.cic.common.sharedUI.showWarningLog' value='true'/>
+    <preference name='com.ibm.cic.common.sharedUI.showNoteLog' value='true'/>
+</agent-input>

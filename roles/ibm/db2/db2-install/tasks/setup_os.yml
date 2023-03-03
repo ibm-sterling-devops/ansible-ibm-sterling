@@ -1,0 +1,67 @@
+- name:           Install OS Packages
+  ansible.builtin.package:
+    name:         ['unzip', 'lsof', 'tar', 'wget','openssl','libaio','pam','make','perl','python2','patch']
+    state:        present
+
+- name:           Install OS Packages - Yum
+  ansible.builtin.yum:
+    name:         ['glibc.x86_64', 'libgcc.x86_64','libstdc++.x86_64', 'gcc-c++','kernel-devel','kernel-headers', 'm4', 'ksh','libstdc++.i686']
+    state:        present
+  when:
+    - ansible_os_family == "RedHat"
+    - (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Amazon")
+
+- name:           Disable SELinux
+  selinux:
+    state:        disabled
+  ignore_errors:  true
+  notify:         reboot
+
+- name:           Define limits.conf
+  pam_limits:
+    domain:       "{{ item.domain }}"
+    limit_type:   "{{ item.limit_type }}"
+    limit_item:   "{{ item.limit_item }}"
+    value:        "{{ item.value }}"
+  with_items:
+    - { domain: "*", limit_type: "soft", limit_item: "nproc", value: "2047"}
+    - { domain: "*", limit_type: "hard", limit_item: "nproc", value: "16384"}
+    - { domain: "*", limit_type: "soft", limit_item: "nofile", value: "1024"}
+    - { domain: "*", limit_type: "hard", limit_item: "nofile", value: "65536"}
+    - { domain: "*", limit_type: "soft", limit_item: "stack", value: "10240"}
+
+- name:          "Create directories"
+  file:
+    path:        "{{ item.directory  }}"
+    state:       directory
+#    owner:       "{{ __cd_user }}"
+#    group:       "{{ __cd_group }}"
+  with_items:
+    - { directory: "{{ __extraction_folder }}" }
+    - { directory: "{{ __workdir_folder }}" }
+
+- name:           Create db2group group
+  group:
+    name:         "{{ item }}"
+    state:        present
+  with_items:
+    - dasadm1
+    - db2fgrp1
+    - "{{ __db2_instance_group }}"
+
+- name:                    Generate password for users
+  command:                 "openssl passwd -salt sha512 -1 {{ __db2_users_password }}"
+  register:                db2_generated_password
+
+- name:                    Create users with passwords
+  user:
+    name:                  "{{ item.name }}"
+    group:                 "{{ item.groupname }}"
+    home:                  "{{ item.homedir }}"
+    password:              "{{ db2_generated_password.stdout }}"
+  with_items:
+    - { name: "dasusr1",  groupname: "dasadm1",  homedir: "/home/dasusr1"}
+    - { name: "db2fenc1", groupname: "db2fgrp1", homedir: "/home/db2fenc1"}
+    - { name: "{{ __db2_instance_name }}", groupname: "{{ __db2_instance_group }}", homedir: "{{ __db2_instance_homedir }}"}
+
+

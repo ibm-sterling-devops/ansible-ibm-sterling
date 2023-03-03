@@ -1,0 +1,16 @@
+---
+- name:          Check if DB2 Server is already up and running
+  shell:         "ps -ef | grep db2 | grep -v grep"
+  changed_when:  true
+  register:      __db2_running
+  ignore_errors: true
+
+- name:          Check if Product already Installed?
+  shell:         "{{ __db2_install_path }}/adm/db2licm -l"
+  changed_when:  true  
+  register:      __db2_installed
+  ignore_errors: true
+
+
+# when: not __db2_installed.stat.exists
+

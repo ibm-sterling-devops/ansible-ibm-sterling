@@ -1,0 +1,16 @@
+- name:          "Create directories"
+  file:
+    path:        "{{ item }}"
+    state:       directory
+  with_items:
+    - "{{ __extraction_folder }}"
+    - "{{ __workdir_folder }}"
+
+- name:          "Download Others Files to the {{ __extraction_folder }}"
+  ansible.builtin.get_url:
+    url:         "{{ __repository_url }}/{{ item }}"
+    dest:        "{{ __extraction_folder }}"
+  with_items:    "{{ __packages_name }}"
+  register: download_packages_name
+  until: download_packages_name is succeeded
+  retries: 3

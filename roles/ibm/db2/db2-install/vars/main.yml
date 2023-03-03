@@ -1,0 +1,41 @@
+---
+#__setup_db2_jdbc:              "{{ setup_db2_jdbc | default(false) }}"
+#
+#__install_latest_db2:          "{{ install_latest_db2 | default(true) }}"
+#__default_package_name:        "{{ 'v11.5.6_linuxx64_universal_fixpack.tar.gz' if __install_latest_db2 else 'v11.1.4fp5_linuxx64_universal_fixpack.tar.gz' }}"
+#__default_license_file:        "{{ 'DB2_ESE_AUSI_Activation_11.5.zip' if __install_latest_db2 else 'CNB23ML.zip' }}"
+#__db2_default_install_path:    "{{ '/opt/IBM/db2/V11.5' if __install_latest_db2 else '/opt/IBM/db2/V11.1' }}"
+#__install_version_db2:         "{{ 'V11.5' if __install_latest_db2 else 'V11.1' }}"
+#__default_jdbc_install_folder: "{{ '/opt/IBM/db2/V11.5/java' if __install_latest_db2 else '/opt/IBM/db2/V11.1/java' }}"
+#__default_jdbc_package_name:   "{{ 'v11.5.6_jdbc_sqlj.tar.gz' if __install_latest_db2 else 'v11.1.4fp5_jdbc_sqlj.tar.gz' }}"
+#__force_check_db2_version_mismatch: "{{ force_check_db2_version_mismatch | default(false) }}"
+
+__repository_url:              "{{ db2_repository_url | default('http://localhost/') }}"
+__package_name:                "{{ db2_package_name | default('DB2S_11.5.4_MPML.tar.gz') }}"
+__license_file:                "{{ db2_license_file | default('__default_license_file') }}"
+__db2_version:                 "{{ db2_version | default('V11.5') }}"
+
+__extraction_folder:           "{{ db2_extraction_folder | default('/opt/IBM/Binaries') }}"
+__extraction_subfolder:        "{{ db2_extraction_subfolder | default('server_dec') }}"
+
+__workdir_folder:              "{{ db2_workdir | default('/opt/IBM/workdir') }}"  
+__db2_install_path:            "{{ db2_install_path | default('/opt/ibm/db2/V11.5') }}"  
+__license_location:            "{{ __extraction_folder }}/ese_u/db2/license/db2ese_u.lic"
+
+__db2_instance:                "{{ db2_instance | default('db2inst1') }}"
+__db2_instance_type:           "{{ db2_instance_type | default('ese') }}"
+__db2_user:                    "{{ db2_user | default('db2inst1') }}"
+__db2_instance_name:           "{{ __db2_user }}"
+__db2_instance_group:          "{{ db2_instance_group | default('db2grp1') }}"
+__db2_instance_homedir:        "{{ db2_instance_homedir | default('/home/db2inst1') }}"
+__db2_instance_autostat:       "{{ db2_instance_autostat | default('YES') }}"
+__db2_instance_svcname:        "{{ db2_instance_svcname | default('db2c_db2inst1') }}"
+__db2_instance_port:           "{{ db2_instance_port | default('50000') }}"
+__db2_instance_fcm_port:       "{{ db2_instance_fcm_port | default('60000') }}"
+__db2_instance_heap_size:      "{{ db2_instance_heap_size | default('4096') }}"
+
+
+
+__db2_users_password:          "{{ db_password | default('password') }}"
+
+
