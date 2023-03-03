@@ -13,14 +13,6 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 
 # Roles
 
-| Role name                       |            Description of Role                                          |
-|---------------------------------|-------------------------------------------------------------------------|
-| ibm/cd-unix/cd-install          | Install IBM Connect:Direct |
-| ibm/cd-unix/cd-start            | Start Connect:Direct |
-| ibm/db2/db2-install             | Install IBM DB2 |
-| ibm/sb2b/sb2b-server-install    | Install IBM Sterling B2B |
-| others/nginx-install            | Install Nginx |
-
 See complete list [roles/README.md](roles/README.md)
 
 
@@ -32,7 +24,7 @@ See complete list [roles/README.md](roles/README.md)
 
 | Product Name                  | PartNum | Filename                        |           Description                                        |
 |-------------------------------|---------|---------------------------------|--------------------------------------------------------------|
-| IBM Connect:Direct            |         | IBM_CD_V6.2_UNIX_RedHat.Z.tar.Z |  IBM Connect:Direct 6.2.x|
+| IBM Connect:Direct            |         | IBM_CD_V6.2_UNIX_RedHat.Z.tar.Z | IBM Connect:Direct 6.2.x|
 | IBM DB2 V11.5.x               |         | DB2S_11.5.4_MPML.tar.gz         | IBM DB2 V11.5.4 Multi-platform Multi-language|
 | IBM Java SDK/JRE              | M06M9ML | SB2BI_6.1.2_MP_ML_JDK.zip       | IBM Sterling B2B Integrator V6.1.2 or IBM Sterling File Gateway V6.1.2 Java SDK/JRE Multiplatform|
 | IBM Sterling B2B Integrator   | M06MCML | SB2BI_6.1.2_MP_ML.zip           | IBM Sterling B2B Integrator V6.1.2 for Multiplatform Multilingual|
