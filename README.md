@@ -73,12 +73,9 @@ cd ansible-ibm-sterling
 ansible-playbook -i environments/hosts.dev -u root playbooks/setup-sb2b.yml
 ```
 
-# Authors
+# Contributors
 
-* **Enio Basso** - *Initial work* - [My Repository](https://github.com/ebasso)
-
-
-See also the list of [contributors](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/contributors) who participated in this project.
+See the list of [contributors](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/contributors) who participated in this project.
 
 # License
 
