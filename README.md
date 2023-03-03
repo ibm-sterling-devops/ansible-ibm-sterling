@@ -1,2 +1,2 @@
-# ansible-devops
+# ansible-ibm-sterling
 Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...
