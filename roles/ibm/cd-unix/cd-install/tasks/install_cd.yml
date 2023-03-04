@@ -33,6 +33,9 @@
   args:
     chdir:       "{{ __extraction_folder }}"
     creates:     "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
+  register: cout
+
+- debug: var=cout
 
 - name: Copy files from foo to bar
   copy: 
@@ -44,7 +47,7 @@
     - exitStatusFile.txt
   ignore_errors: true
 
-- name:                  Clean up installation folder(s)
-  file:
-    path:                "{{ __extraction_folder }}"
-    state:               absent
+#- name:                  Clean up installation folder(s)
+#  file:
+#    path:                "{{ __extraction_folder }}"
+#    state:               absent

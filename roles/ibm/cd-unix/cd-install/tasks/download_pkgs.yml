@@ -6,11 +6,3 @@
   register: download_and_unpack_pkgs
   until: download_and_unpack_pkgs is succeeded
   retries: 3
-
-- name:          "Download Packages {{ __unrestrictedpolicy }}"
-  get_url:
-    url:         "{{ __repository_url }}/{{ __unrestrictedpolicy }}"
-    dest:        "{{ __extraction_folder }}/{{ __unrestrictedpolicy }}"
-  register: download_pkgs
-  until: download_pkgs is succeeded
-  retries: 3

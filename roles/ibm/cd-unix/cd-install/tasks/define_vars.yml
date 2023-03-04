@@ -7,7 +7,7 @@
 
 - name:          Check if Product already Installed?
   stat:
-    path:        "{{ __db2_install_path }}/initparm.cfg"
+    path:        "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
   register:      __cd_installed
 
 
