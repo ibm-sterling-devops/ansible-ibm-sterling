@@ -3,7 +3,8 @@ __repository_url:       "{{ cd_repository_url }}"
 __package_name:         "{{ cd_package_name }}"
 __extraction_folder:    "{{ extraction_folder | default('/opt/IBM/Binaries') }}"
 __workdir_folder:       "{{ cd_workdir | default('/opt/IBM/workdir') }}"  
-__cd_install_path:      "{{ cd_install_path | default('/opt/IBM/cdunix') }}"  
+__cd_install_path:      "{{ cd_install_path | default('/opt/IBM/ConnectDirect') }}"  
+__cdunix_install_path:  "{{ cd_install_path | default('/opt/IBM/ConnectDirect/cdunix') }}"  
 #  /home/cduser1/cdunix
 
 __cd_user:              "{{ cd_user | default('cduser1') }}"

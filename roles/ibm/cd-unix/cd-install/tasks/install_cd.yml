@@ -29,10 +29,13 @@
 #
 #
 - name:          "Install IBM Connect:Direct -- This takes a while ..."
-  shell: "./cdinstall_a --installCmd \"install\" --cpioFile \"{{ __extraction_folder }}/cdunix\" --installDir \"{{ __cd_install_path }}\" --localNodeName \"{{ __cd_nodename }}\" --acquireHostnameOrIP \"{{ __cd_acquireHostnameOrIP }}\" --trace y --agentPort {{ __cd_agentport }} --serverPort {{ __cd_serverport }} --clientPort {{ __cd_clientport }} --localCertFile \"{{ __combined_file }}\" --localCertPassphrase {{ __cd_localCertPassphrase }} --adminUserid {{ __cd_user }} --keystorePassword {{ __cd_keystorePassword }} --ignoreExistingInstallDir \"y\" "
+  shell: "./cdinstall_a --installCmd \"install\" --cpioFile \"{{ __extraction_folder }}/cdunix\" --installDir \"{{ __cdunix_install_path }}\" --localNodeName \"{{ __cd_nodename }}\" --acquireHostnameOrIP \"{{ __cd_acquireHostnameOrIP }}\" --trace y --agentPort {{ __cd_agentport }} --serverPort {{ __cd_serverport }} --clientPort {{ __cd_clientport }} --localCertFile \"{{ __combined_file }}\" --localCertPassphrase {{ __cd_localCertPassphrase }} --adminUserid {{ __cd_user }} --keystorePassword {{ __cd_keystorePassword }} --ignoreExistingInstallDir \"y\" "
   args:
     chdir:       "{{ __extraction_folder }}"
     creates:     "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
+  environment:
+    IATEMPDIR:   "{{ __extraction_folder }}"
+    LANG:        "en_US"
   register: cout
 
 - debug: var=cout

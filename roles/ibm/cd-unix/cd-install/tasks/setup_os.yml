@@ -32,6 +32,7 @@
   with_items:
     - { directory: "{{ __extraction_folder }}" }
     - { directory: "{{ __workdir_folder }}" }
+    - { directory: "{{ __cd_install_path }}" }
 
 - name:           Define limits.conf
   pam_limits:
