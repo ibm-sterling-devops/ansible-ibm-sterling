@@ -10,7 +10,7 @@
   become:                   true
   any_errors_fatal:         true
   vars:
-    repository_url: http://127.0.0.1/
+    repository_url: http://127.0.0.1
     sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
     sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
     urplc_file:     unrestrictedpolicyfiles.zip
