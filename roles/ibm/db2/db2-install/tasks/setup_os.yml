@@ -1,6 +1,6 @@
 - name:           Install OS Packages
   ansible.builtin.package:
-    name:         ['unzip', 'lsof', 'tar', 'wget','openssl','libaio','pam','make','perl','python2','patch']
+    name:         ['unzip', 'lsof', 'tar', 'wget','openssl','libaio','pam','make','perl','patch']
     state:        present
 
 - name:           Install OS Packages - Yum
