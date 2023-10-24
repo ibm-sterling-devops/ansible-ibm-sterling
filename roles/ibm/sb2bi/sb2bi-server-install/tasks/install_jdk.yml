@@ -17,7 +17,7 @@
 
 - name:     "Install IBM JDK"
   command:
-    chdir={{ __sdk_repository }}  
+    chdir={{ __sdk_repository }}/SB2BI_6
     ./{{__sdk_installer}} -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR={{ __sdk_install_path }} -i silent
   environment:
     IATEMPDIR:   "{{ __extraction_folder }}"

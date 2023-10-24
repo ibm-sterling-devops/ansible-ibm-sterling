@@ -10,7 +10,7 @@
   become:                   true
   any_errors_fatal:         true
   vars:
-    repository_url: http://127.0.0.1
+    repository_url: http://9.30.87.162 
     sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
     sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
     urplc_file:     unrestrictedpolicyfiles.zip
@@ -21,7 +21,7 @@
     ###### Sterling Integrator Variables
     # main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature
     #si_features:      'main.feature,filegateway.feature'
-    si_hostname:       192.168.10.10
+    si_hostname:       9.30.108.230
     #si_initialPort:   5000
     #si_passphrase:    'password'
     #si_cluster:       'false'

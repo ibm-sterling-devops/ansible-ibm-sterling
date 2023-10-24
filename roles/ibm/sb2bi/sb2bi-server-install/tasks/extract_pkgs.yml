@@ -12,7 +12,7 @@
 
 - name:         "Extract IBM Sterling - Common_Repo.zip"
   unarchive:
-    src:        "{{ __si_repository }}/Common_Repo.zip"
+    src:        "{{ __si_repository }}/SB2BI_6/Common_Repo.zip"
     dest:       "{{ __si_repository }}"
     copy:        no
   register: __sb2b_extract_subpkgs
@@ -28,7 +28,7 @@
 
 - name:         "Extract IIM Repository - IM_Linux.zip"
   unarchive:
-    src:        "{{ __si_repository }}/InstallationManager/IM_Linux.zip"
+    src:        "{{ __si_repository }}//SB2BI_6/InstallationManager/IM_Linux.zip"
     dest:       "{{ __extraction_folder }}"
     copy:        no
   register:     __cout

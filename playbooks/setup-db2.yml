@@ -9,9 +9,10 @@
   any_errors_fatal:         true
   vars:
     # Application Dependencies
-    db2_repository_url: http://127.0.0.1
-    db2_package_name: DB2S_11.5.4_MPML.tar.gz
+    db2_repository_url: http://9.30.87.162
+    db2_package_name: DB2_Svr_10.5.0.3_Linux_x86-64.tar
     db2_version: V11.5
+    db2_extraction_subfolder: server
   roles:
     - roles/ibm/db2/db2-install
     - roles/ibm/db2/create-sb2b-db

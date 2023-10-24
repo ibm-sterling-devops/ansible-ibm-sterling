@@ -1,0 +1,7 @@
+    repository_url: http://9.30.87.162
+    sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
+    sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
+    urplc_file:     unrestrictedpolicyfiles.zip
+    jdbc_file:      db2jcc4.jar
+    sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin
+    #si_b2bapi_package: b2biAPIs_60010000.jar
