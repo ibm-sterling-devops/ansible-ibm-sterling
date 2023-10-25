@@ -10,9 +10,11 @@
 
 - name:          Download and Extract Packages
   include_tasks: download_pkgs.yml
+  when: __db2_installed.rc != 0
 
 - name:          Install DB2
   include_tasks: install_db2.yml
+  when: __db2_installed.rc != 0
 
 - name:          Clean up installation folder(s)
   file:

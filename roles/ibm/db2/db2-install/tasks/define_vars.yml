@@ -11,6 +11,10 @@
   register:      __db2_installed
   ignore_errors: true
 
+- debug:
+    msg: "{{__db2_installed}}"
 
+- debug:
+    msg: "{{__db2_running}}"   
 # when: not __db2_installed.stat.exists
 
