@@ -19,7 +19,7 @@
 - name:          Install IBM Sterling Software
   command:
     chdir={{ __workdir_folder }}
-    echo 'yes' | {{ __iim_install_path }}/eclipse/tools/imcl -acceptLicense -sVP -log {{ __workdir_folder }}/sb2b_install.{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log input {{ __workdir_folder }}/sb2b_install.rsp 
+    {{ __iim_install_path }}/eclipse/tools/imcl -acceptLicense -sVP -log {{ __workdir_folder }}/sb2b_install.{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log input {{ __workdir_folder }}/sb2b_install.rsp 
   environment:
     IATEMPDIR:   "{{ __extraction_folder }}"
     LANG:        "en_US"
@@ -38,3 +38,5 @@
     - "{{ __si_repository }}/gmrepo"
     - "{{ __si_repository }}/UpdateScript"
     - "{{ __si_repository }}/ResponseFiles"
+  tags:
+    - clean

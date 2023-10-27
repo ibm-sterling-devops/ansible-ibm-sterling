@@ -11,9 +11,8 @@
   register:      __cmd_installed
 
 - name:          Start IBM Sterling B2B
-  command:
-    chdir={{ __si_install_path }}/bin
-    {{ __si_install_path }}/bin/run.sh
+  shell: echo {{ __si_passphrase }} | {{ __si_install_path }}/bin/run.sh
+  args: chdir={{ __si_install_path }}/bin
   environment:
     LANG:        "en_US"
   register:      cout

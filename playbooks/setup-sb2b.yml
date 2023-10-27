@@ -21,8 +21,8 @@
     ###### Sterling Integrator Variables
     # main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature
     #si_features:      'main.feature,filegateway.feature'
-    si_hostname:       9.30.108.230
-    #si_initialPort:   5000
+    si_hostname:       9.30.141.240
+    si_initialPort:    10000
     #si_passphrase:    'password'
     #si_cluster:       'false'
     #si_nodenum:       ''
@@ -44,3 +44,4 @@
 
   roles:
     - roles/ibm/sb2bi/sb2bi-server-install
+    - roles/ibm/sb2bi/start-server

@@ -3,3 +3,5 @@
   tags:
   - db2
 - import_playbook: setup-sb2b.yml
+  tags:
+  - sb2b

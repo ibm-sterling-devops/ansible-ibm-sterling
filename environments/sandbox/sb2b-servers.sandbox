@@ -6,10 +6,10 @@
 # 
 # 
 [db2_servers]
-db2_server ansible_host=9.30.108.230
+db2_server ansible_host=9.30.141.240
 
 [sb2bi_servers]
-siserver1 ansible_host=9.30.108.230
+siserver1 ansible_host=9.30.141.240
 
 # We use an Nginx HTTP server to download files
 # ansible-playbook -i environments/examples/cd-servers.dev.sample -u root playbooks/setup-nginx.yml
