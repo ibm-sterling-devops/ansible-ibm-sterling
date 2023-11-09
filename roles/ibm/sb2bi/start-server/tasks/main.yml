@@ -10,14 +10,28 @@
     path:        "{{ __si_install_path }}/bin/run.sh"
   register:      __cmd_installed
 
+- name: Copy password in files to avoid interactive imput
+  ansible.builtin.lineinfile:
+    line: "passphrase={{ __si_passphrase }}"
+    path: "{{ item }}"
+    state: present
+  loop: 
+    - "{{ __si_install_path }}/properties/security.properties"
+    - "{{ __si_install_path }}/properties/security.properties.in"
+
 - name:          Start IBM Sterling B2B
-  shell: echo {{ __si_passphrase }} | {{ __si_install_path }}/bin/run.sh
-  args: chdir={{ __si_install_path }}/bin
+  shell: "{{ __si_install_path }}/bin/run.sh"
+  args:
+    chdir: "{{ __si_install_path }}/bin"
   environment:
     LANG:        "en_US"
   register:      cout
   when:          __cmd_installed.stat.exists
 
+- name: Status
+  debug:
+    msg: "{{ cout.stdout}}"
+    
 #- name:          "Start IBM Connect:Direct"
 #  become_user:   "{{ __cd_user }}"
 #  #environment:
