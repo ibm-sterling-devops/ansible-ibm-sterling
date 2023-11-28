@@ -7,21 +7,23 @@
 # M06MCML - IBM Sterling B2B Integrator V6.1.2 for Multiplatform Multilingual
 - name:                     Install IBM Sterling B2B Integrator
   hosts:                    sb2bi_servers
+  order:                    sorted
+  serial:                   1
   become:                   true
   any_errors_fatal:         true
   vars:
-    repository_url: http://9.30.87.162 
-    sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
-    sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
-    urplc_file:     unrestrictedpolicyfiles.zip
-    jdbc_file:      db2jcc4.jar
-    sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin
+    # repository_url: http://bastionRH81 
+    # sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
+    # sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
+    # urplc_file:     unrestrictedpolicyfiles.zip
+    # jdbc_file:      db2jcc4.jar
+    # sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin
     #si_b2bapi_package: b2biAPIs_60010000.jar
 
     ###### Sterling Integrator Variables
     # main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature
     #si_features:      'main.feature,filegateway.feature'
-    si_hostname:       9.30.141.240
+    si_hostname:         "{{ ansible_facts['eth1'] ['ipv4'].address}}"
     si_initialPort:    10000
     #si_passphrase:    'password'
     #si_cluster:       'false'
@@ -38,10 +40,10 @@
     #db_vendor:      DB2
     #db_user:        db2inst1
     #db_password:    password
-    #db_host:        localhost
+    db_host:         "{{ hostvars['db2_server']['ansible_facts']['fqdn'] }}"
     #db_port:        '50000'
     #db_database:    B2BI
 
   roles:
     - roles/ibm/sb2bi/sb2bi-server-install
-    - roles/ibm/sb2bi/start-server
+#    - roles/ibm/sb2bi/start-server

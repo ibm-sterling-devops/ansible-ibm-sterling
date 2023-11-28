@@ -19,3 +19,5 @@
     PATH:                "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:{{ __db2_instance_homedir }}/sqllib/bin:{{ __db2_instance_homedir }}/sqllib/adm:{{ __db2_instance_homedir }}/sqllib/misc:{{ __db2_instance_homedir }}/sqllib/gskit/bin:{{ __db2_instance_homedir }}/.local/bin:{{ __db2_instance_homedir }}/bin"
   with_items:
    - "db2 -td@ -vf {{ __db2_instance_homedir }}/create_db_b2bi.sql -z {{ __db2_instance_homedir }}/create_db_b2bi.sql.log"
+  tags:
+    - create-db

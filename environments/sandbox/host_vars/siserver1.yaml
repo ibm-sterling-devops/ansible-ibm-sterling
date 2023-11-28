@@ -1,0 +1,3 @@
+si_cluster: 'false'
+#si_nodenum: 1
+dbcreateSchema:    'true'

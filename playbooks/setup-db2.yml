@@ -9,7 +9,7 @@
   any_errors_fatal:         true
   vars:
     # Application Dependencies
-    db2_repository_url: http://9.30.87.162
+    db2_repository_url: http://bastionRH81
     db2_package_name: DB2_Svr_10.5.0.3_Linux_x86-64.tar
     db2_version: V11.5
     db2_extraction_subfolder: server

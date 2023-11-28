@@ -26,7 +26,7 @@
   when:          __iim_installed.stat.exists == false
 
 
-- name:         "Extract IIM Repository - IM_Linux.zip"
+- name:         "Extract IIM Repository - IM_Linux.zip into {{ __extraction_folder }}"
   unarchive:
     src:        "{{ __si_repository }}//SB2BI_6/InstallationManager/IM_Linux.zip"
     dest:       "{{ __extraction_folder }}"
