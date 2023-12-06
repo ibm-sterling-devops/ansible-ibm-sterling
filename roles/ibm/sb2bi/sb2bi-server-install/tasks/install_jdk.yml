@@ -11,13 +11,14 @@
     src:     "{{ __extraction_folder }}/{{ sdk_package }}"
     dest:    "{{ __sdk_repository }}"
     copy:    no
+    mode:    u+x
   register:  __sdk_unpack_pkgs
   until:     __sdk_unpack_pkgs is succeeded
 
 
 - name:     "Install IBM JDK"
   command:
-    chdir={{ __sdk_repository }}/SB2BI_6
+    chdir={{ __sdk_repository }}/{{ __packages_subfolder }}
     ./{{__sdk_installer}} -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR={{ __sdk_install_path }} -i silent
   environment:
     IATEMPDIR:   "{{ __extraction_folder }}"
