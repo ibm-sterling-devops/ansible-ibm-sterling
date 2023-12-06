@@ -38,7 +38,7 @@
     <!--
     Give the path to the B2Bi instance that will be updated.
     -->
-    <variable name='siLocation' value='$$/fullpath/sharedLocation/IBM/siLocation$$'/>
+    <variable name='siLocation' value='{{ __si_install_path }}'/>
 
     <!-- If you previously installed or updated B2Bi using IBM Installation Manager (IIM), the 
     offering profile was assigned the first time the product was installed or updated with IIM, and
@@ -50,7 +50,7 @@
      If no such profile is found, you are free to set the offering profile
     yourself.
     -->
-	<variable name='offeringProfile' value='$$My Sterling Integrator$$'/>
+	<variable name='offeringProfile' value='com.ibm.sterling.integrator.install.offering'/>
   </variables>
   <server>
     <!-- 
@@ -58,14 +58,14 @@
     Provide the full path to the location of the B2Bi repository containing the B2Bi version that you
     will update to.
     -->
-    <repository location='$$/fullpath/to/b2birepo$$'/>
+    <repository location='{{ __si_repository }}/b2birepo'/>
   </server>
-  <profile id='${offeringProfile}' installLocation='${siLocation}'>
+  <profile id='Sterling Integrator' installLocation='${siLocation}'>
     <!-- 
     Provide the full path to the location where you downloaded the jdk provided in the 
     installation package. 	
     Value=Full path/jdk downloaded location-->
-    <data key='user.sb.JVM_LOC,com.ibm.sterling.integrator.install.offering' value='$$/fullpath/java_directory_name$$'/>
+    <data key='user.sb.JVM_LOC,com.ibm.sterling.integrator.install.offering' value='{{ __sdk_install_path }}'/>
 
     <!-- 
     Due to regulatory restrictions, JCE files must be obtained separately. JCE files for IBM 
@@ -73,14 +73,14 @@
     https://www-01.ibm.com/marketing/iwm/iwm/web/preLogin.do?source=jcesdk  
     If you are using an non-IBM SDK, obtain the JCE files from your SDK vendor.  
     -->
-    <data key='user.sb.JCE_DIST_FILE,com.ibm.sterling.integrator.install.offering' value='$$/fullpath/to/unrestricted.zip$$'/>
+    <data key='user.sb.JCE_DIST_FILE,com.ibm.sterling.integrator.install.offering' value='{{ __si_jcediskfile }}'/>
 
     <!-- 
     System passphrase information needed for Sterling B2B Integrator. See "Protecting Passwords" 
     section in this file for handling encrypted passphrases.  
     -->
-    <data key='user.sb.APSERVER_PASS,com.ibm.sterling.integrator.install.offering' value='$$system_passphrase$$'/>
-    <data key='user.confirmPassphrase,com.ibm.sterling.integrator.install.offering' value='$$system_passphrase$$'/>
+    <data key='user.sb.APSERVER_PASS,com.ibm.sterling.integrator.install.offering' value='{{ __si_encoded_passphrase.stdout }}'/>
+    <data key='user.confirmPassphrase,com.ibm.sterling.integrator.install.offering' value='{{ __si_encoded_passphrase.stdout }}'/>
   </profile>
   <install modify='false'>
     <!-- IBM Sterling B2B Integrator -->
