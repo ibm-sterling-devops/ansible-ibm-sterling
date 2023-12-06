@@ -14,7 +14,7 @@
 # Need to install JDK to avoid ZIP Bomb problem.
 - name:          Extract and Install IBM Java SDK
   include_tasks: install_jdk.yml
-  when:          __sdk_installed.stat.exists == false
+  # when:          __sdk_installed.stat.exists == false
 
 - name:          Extract Packages
   include_tasks: extract_pkgs.yml
