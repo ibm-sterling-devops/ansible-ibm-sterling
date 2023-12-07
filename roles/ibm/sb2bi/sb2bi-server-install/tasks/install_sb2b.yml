@@ -31,6 +31,8 @@
   environment:
     IATEMPDIR:   "{{ __extraction_folder }}"
     LANG:        "en_US"
+  args:
+    stdin: "{{ lookup('pipe','echo y') }}"
   register:      cout
   changed_when:  ( cout.stdout.find('Installed com.ibm.sterling.integrator.install') != -1)
   tags:
