@@ -7,7 +7,7 @@ __packages_name:
   - "{{ urplc_file }}"
   - "{{ jdbc_file }}"
 
-__packages_subfolder:   "{{ packages_subfolder | default ('SB2I_6') }}"
+__packages_subfolder:   "{{ packages_subfolder | default ('SB2BI_6') }}"
 
 __unrestrictedpolicy:   "{{ urplc_file }}"
 __sdkfile:              "{{ sdk_file }}"
