@@ -13,15 +13,13 @@
   template:
     src:         "sb2b_lnx_install.rsp.j2"
     dest:        "{{ __workdir_folder }}/sb2b_install.rsp"
-  tags:
-    - install-response-file
+  when:          ( si_action == "install" )
 
 - name:          Generate SB2B Response file for update
   template:
     src:         "sb2b_lnx_install.rsp.j2"
     dest:        "{{ __workdir_folder }}/sb2b_install.rsp"
-  tags:
-    - update-response-file
+  when:          ( si_action == "update" )
 
 # set LANG=en_US to avoid "CRRSE1111E : Incompatible LANG setting on linux"
 - name:          Install IBM Sterling Software
@@ -35,8 +33,6 @@
     stdin: "{{ lookup('pipe','echo y') }}"
   register:      cout
   changed_when:  ( cout.stdout.find('Installed com.ibm.sterling.integrator.install') != -1)
-  tags:
-    - install
 
 # Do not cleanup __si_repository/packages/b2biAPIs_6010200.jar
 - name:                  Clean up installation folder(s)

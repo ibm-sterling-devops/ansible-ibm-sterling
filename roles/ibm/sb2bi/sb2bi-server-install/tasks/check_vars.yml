@@ -9,6 +9,7 @@
     - urplc_file is defined and urplc_file != ''
     - jdbc_file is defined and jdbc_file != ''
     - sdk_installer is defined and sdk_installer != ''
+    - si_action != ''
     fail_msg: "One or more required variables are not defined"
 
 
