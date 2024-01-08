@@ -1,10 +1,43 @@
-    repository_url: http://9.30.87.162
-    # sb2bi_package:  Media_IM_6010203.zip
-    # sdk_package:    SDK_6010203.zip
-    sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
-    sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
+    repository_url: http://bastionRH81 
+
+    # 6.1.2
+    #=========================================================
+    # sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
+    # sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
+    # sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin
+    # packages_subfolder: '.'
+
+    
+    # 6.1.2.3
+    #=========================================================
+    sb2bi_package:  Media_IM_6010203.zip
+    sdk_package:    SDK_6010203.zip
+    sdk_installer:  ibm-java-sdk-8.0-7.15-x86_64-archive.bin
+    packages_subfolder: '.'
+
     urplc_file:     unrestrictedpolicyfiles.zip
     jdbc_file:      db2jcc4.jar
-    # sdk_installer:  ibm-java-sdk-8.0-7.15-x86_64-archive.bin
-    sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin    
-    #si_b2bapi_package: b2biAPIs_60010000.jar
+
+    ###### Sterling Integrator Variables
+    # main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature
+    #si_features:      'main.feature,filegateway.feature'
+    si_hostname:         "{{ ansible_facts['eth1'] ['ipv4'].address}}"
+    si_initialPort:    10000
+    #si_passphrase:    'password'
+    #si_cluster:       'false'
+    #si_nodenum:       ''
+    #si_adminMailAddr: 'admin@company.com'
+    #si_adminSmtpHost: 'smtp.company.com'
+    
+    ##### Database Vars
+    #
+    # Create schema automatically, unless you are installing successive nodes in a clustered B2Bi. 
+    # If installing second or successive nodes in a B2Bi cluster, this MUST be set to false.
+    #dbcreateSchema:    'true'
+    #
+    #db_vendor:      DB2
+    #db_user:        db2inst1
+    #db_password:    password
+    db_host:         "{{ hostvars['db2_server']['ansible_facts']['fqdn'] }}"
+    #db_port:        '50000'
+    #db_database:    B2BI
