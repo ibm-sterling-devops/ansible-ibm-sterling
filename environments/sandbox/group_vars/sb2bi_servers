@@ -2,18 +2,18 @@
 
     # 6.1.2
     #=========================================================
-    # sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
-    # sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
-    # sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin
-    # packages_subfolder: '.'
+    sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
+    sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
+    sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin
+
 
     
     # 6.1.2.3
     #=========================================================
-    sb2bi_package:  Media_IM_6010203.zip
-    sdk_package:    SDK_6010203.zip
-    sdk_installer:  ibm-java-sdk-8.0-7.15-x86_64-archive.bin
-    packages_subfolder: '.'
+    # sb2bi_package:  Media_IM_6010203.zip
+    # sdk_package:    SDK_6010203.zip
+    # sdk_installer:  ibm-java-sdk-8.0-7.15-x86_64-archive.bin
+    # packages_subfolder: '.'
 
     urplc_file:     unrestrictedpolicyfiles.zip
     jdbc_file:      db2jcc4.jar
