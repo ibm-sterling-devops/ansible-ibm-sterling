@@ -5,42 +5,42 @@
 #
 # M06M9ML - IBM Sterling B2B Integrator V6.1.2 or IBM Sterling File Gateway V6.1.2 Java SDK/JRE Multiplatform
 # M06MCML - IBM Sterling B2B Integrator V6.1.2 for Multiplatform Multilingual
-- name:                     Install IBM Sterling B2B Integrator
-  hosts:                    sb2bi_servers
-  become:                   true
-  any_errors_fatal:         true
+- name: Install IBM Sterling B2B Integrator
+  hosts: sb2bi_servers
+  become: true
+  any_errors_fatal: true
   vars:
     repository_url: http://127.0.0.1
-    sb2bi_package:  SB2BI_6.1.2_MP_ML.zip
-    sdk_package:    SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
-    urplc_file:     unrestrictedpolicyfiles.zip
-    jdbc_file:      db2jcc4.jar
-    sdk_installer:  ibm-java-sdk-8.0-6.20-x86_64-archive.bin
-    #si_b2bapi_package: b2biAPIs_60010000.jar
+    sb2bi_package: SB2BI_6.1.2_MP_ML.zip
+    sdk_package: SB2BI_6.1.2_MP_ML_JDK_M06M9ML.zip
+    urplc_file: unrestrictedpolicyfiles.zip
+    jdbc_file: db2jcc4.jar
+    sdk_installer: ibm-java-sdk-8.0-6.20-x86_64-archive.bin
+    # si_b2bapi_package: b2biAPIs_60010000.jar
 
     ###### Sterling Integrator Variables
     # main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature
-    #si_features:      'main.feature,filegateway.feature'
-    si_hostname:       192.168.10.10
-    #si_initialPort:   5000
-    #si_passphrase:    'password'
-    #si_cluster:       'false'
-    #si_nodenum:       ''
-    #si_adminMailAddr: 'admin@company.com'
-    #si_adminSmtpHost: 'smtp.company.com'
-    
+    # si_features:      'main.feature,filegateway.feature'
+    si_hostname: 192.168.10.10
+    # si_initialPort: 5000
+    # si_passphrase: 'password'
+    # si_cluster: 'false'
+    # si_nodenum: ''
+    # si_adminMailAddr: 'admin@company.com'
+    # si_adminSmtpHost: 'smtp.company.com'
+    #
     ##### Database Vars
     #
-    # Create schema automatically, unless you are installing successive nodes in a clustered B2Bi. 
+    # Create schema automatically, unless you are installing successive nodes in a clustered B2Bi.
     # If installing second or successive nodes in a B2Bi cluster, this MUST be set to false.
-    #dbcreateSchema:    'true'
+    #dbcreateSchema: 'true'
     #
-    #db_vendor:      DB2
-    #db_user:        db2inst1
-    #db_password:    password
-    #db_host:        localhost
-    #db_port:        '50000'
-    #db_database:    B2BI
+    #db_vendor: DB2
+    #db_user: db2inst1
+    #db_password: password
+    #db_host: localhost
+    #db_port: '50000'
+    #db_database: B2BI
 
   roles:
     - roles/ibm/sb2bi/sb2bi-server-install

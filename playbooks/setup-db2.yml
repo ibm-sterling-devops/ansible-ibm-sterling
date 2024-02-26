@@ -4,9 +4,10 @@
 # ansible-playbook -i environments/hosts.dev -u root playbooks/setup-db2.yml 
 #
 # CC1U0ML - IBM Db2 Server 11.5 for Linux on AMD64 and Intel EM64T systems (x64) Multilingual
-- hosts:                    db2_servers
-  become:                   true
-  any_errors_fatal:         true
+- name: Install DB2 server and create Sterling B2B database
+  hosts: db2_servers
+  become: true
+  any_errors_fatal: true
   vars:
     # Application Dependencies
     db2_repository_url: http://127.0.0.1
