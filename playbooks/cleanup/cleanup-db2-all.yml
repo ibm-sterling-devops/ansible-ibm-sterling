@@ -2,53 +2,53 @@
 #
 # ansible-playbook -i environments/hosts.development -u <username> -k playbooks/ibm-was-nd/was-delete-all.yml
 ---
-- hosts:                    db2_servers
-  become:                   true
+- name: Cleanup IBM Sterling B2B
+  hosts: db2_servers
+  become: true
   tasks:
-    - name:          Stop db2fmcd
-      command:       /opt/ibm/db2/V11.5/bin/db2fmcd -d
+    - name: Stop db2fmcd
+      ansible.builtin.command: /opt/ibm/db2/V11.5/bin/db2fmcd -d
       ignore_errors: true
 
-
-    - name:                  Stop DB2Inst1
-      shell:                 "db2stop force"
-      become_user:           "db2inst1"
+    - name: Stop DB2Inst1
+      ansible.builtin.shell: "db2stop force"
+      become_user: "db2inst1"
       environment:
-        DB2INSTANCE:         "db2inst1"
-        DB2_HOME:            "/home/db2inst1/sqllib"
-        IBM_DB_DIR:          "/home/db2inst1/sqllib"
-        DB2LIB:              "/home/db2inst1/sqllib/lib"
-        IBM_DB_LIB:          "/home/db2inst1/sqllib/lib"
-        LD_LIBRARY_PATH:     "/home/db2inst1/sqllib/lib64:/home/db2inst1/sqllib/lib64/gskit:/home/db2inst1/sqllib/lib32"
-        IBM_DB_INCLUDE:      "/home/db2inst1/sqllib/include"
-        PATH:                "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/db2inst1/sqllib/bin:/home/db2inst1/sqllib/adm:/home/db2inst1/sqllib/misc:/home/db2inst1/sqllib/gskit/bin:/home/db2inst1/.local/bin:/home/db2inst1/bin"
+        DB2INSTANCE: "db2inst1"
+        DB2_HOME: "/home/db2inst1/sqllib"
+        IBM_DB_DIR: "/home/db2inst1/sqllib"
+        DB2LIB: "/home/db2inst1/sqllib/lib"
+        IBM_DB_LIB: "/home/db2inst1/sqllib/lib"
+        LD_LIBRARY_PATH: "/home/db2inst1/sqllib/lib64:/home/db2inst1/sqllib/lib64/gskit:/home/db2inst1/sqllib/lib32"
+        IBM_DB_INCLUDE: "/home/db2inst1/sqllib/include"
+        PATH: "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/db2inst1/sqllib/bin:/home/db2inst1/sqllib/adm:/home/db2inst1/sqllib/misc:/home/db2inst1/sqllib/gskit/bin:/home/db2inst1/.local/bin:/home/db2inst1/bin"
       ignore_errors: true
 
-    - name:           Delete cd user
-      user:
-        name:         "{{ item }}"
-        state:        absent
-        remove:       true
+    - name: Delete cd user
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: absent
+        remove: true
       with_items:
         - dasusr1
         - db2fenc1
         - db2inst1
       ignore_errors: true
 
-    - name:           Delete cd group
-      group:
-        name:         "{{ item }}"
-        state:        absent
+    - name: Delete cd group
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: absent
       with_items:
         - dasadm1
         - db2fgrp1
         - db2grp1
       ignore_errors: true
 
-    - name:                  "Cleanup All directories"
-      file:
-        path:                "{{ item }}"
-        state:               absent
+    - name: "Cleanup All directories"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
       with_items:
         - /opt/IBM/Binaries
         - /opt/IBM/workdir

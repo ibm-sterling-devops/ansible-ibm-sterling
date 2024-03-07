@@ -4,7 +4,11 @@
 site
 
 environments/hosts.*
-playbooks/dev
+playbooks/dev*
+playbooks/cleanup/dev*
+roles/dev*
+docs/dev*
+resultado.txt
 
 roles/ibm/cd-unix/dev
 roles/ibm/sb2bi/dev
@@ -18,11 +22,7 @@ roles/ibm-sb2b-*.tar.gz
 roles/ibm/sb2b/runAnsibl*.sh
 build/bin/downloads/*.tgz
 
-
+samples
 downloads
 my-notes
 .env
-
-
-
-

@@ -2,17 +2,18 @@
 #
 # ansible-playbook -i environments/hosts.development -u <username> -k playbooks/cleanup/cleanup-sb2bi-all.yml
 ---
-- hosts:                    sb2bi_servers
-  become:                   true
+- name: Cleanup Connect:Direct
+  hosts: sb2bi_servers
+  become: true
   tasks:
-    - name:          KillAll Java
-      command:       killall -9 java
+    - name: KillAll Java
+      ansible.builtin.command: killall -9 java
       ignore_errors: true
 
-    - name:                  "Cleanup All directories"
-      file:
-        path:                "{{ item }}"
-        state:               absent
+    - name: "Cleanup All directories"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
       with_items:
         - /opt/IBM/Binaries/si
         - /opt/IBM/Binaries/sdk
@@ -23,17 +24,3 @@
         - /opt/IBM/IMShared
         - /etc/.ibm
         - /opt/IBM/ibm-java-80
-
-#    - name:        Delete Connections directory
-#      file:
-#        path:                "{{ item }}"
-#        state:               absent
-#      with_items:
-#        - "/opt/IBM/Connections"
-#        - "/opt/IBM/CTemp"
-#        - "/var/.com.zerog.registry.xml"
-#        - "/root/.InstallAnywhere"
-#        - "/root/.java"
-#        - /etc/.ibm
-#        - /root/.ibm
-#      ignore_errors: true
