@@ -1,0 +1,8 @@
+---
+- name: Deploy IBM Sterling Connect:Direct on RedHat OpenShift
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - ocp_cd_deploy

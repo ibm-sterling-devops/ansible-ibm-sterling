@@ -1,0 +1,60 @@
+---
+- name: "Cleanup directories and files"
+  ansible.builtin.file:
+    path: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}"
+    state: absent
+  with_items:
+    - "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
+    - "{{ my_workdir }}/ibm-connect-direct"
+    - "{{ my_workdir }}/my_values.yml"
+
+- name: "Download Helm chart"
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
+    dest: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
+  register: download_cout
+  until: download_cout is succeeded
+  retries: 3
+
+- name: "Extract Helm chart"
+  ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz -C {{ my_workdir }}"
+  register: untar_cout
+  changed_when: ( untar_cout.rc == 0)
+
+- name: Change Pre-Install Scripts Permissions
+  ansible.builtin.file:
+    path: "{{ item.file_path }}/{{ item.file_name }}"
+    mode: ugo+x
+  with_items:
+    - {
+        file_name: "createSecurityClusterPrereqs.sh",
+        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/clusterAdministration",
+      }
+    - {
+        file_name: "createSecurityNamespacePrereqs.sh",
+        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/namespaceAdministration",
+      }
+
+- name: Run Pre-Install Scripts createSecurityClusterPrereqs.sh
+  ansible.builtin.command:
+    cmd: "{{ item.file_path }}/{{ item.file_name }} {{ cd_helm_sumEnabled }}"
+    chdir: "{{ item.file_path }}/"
+  register: script_cout
+  changed_when: ( script_cout.rc == 0 )
+  with_items:
+    - {
+        file_name: "createSecurityClusterPrereqs.sh",
+        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/clusterAdministration",
+      }
+
+- name: Run Pre-Install Scripts createSecurityNamespacePrereqs.sh
+  ansible.builtin.command:
+    cmd: "{{ item.file_path }}/{{ item.file_name }} {{ cd_namespace }}"
+    chdir: "{{ item.file_path }}/"
+  register: script_cout
+  changed_when: ( script_cout.rc == 0 )
+  with_items:
+    - {
+        file_name: "createSecurityNamespacePrereqs.sh",
+        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/namespaceAdministration",
+      }

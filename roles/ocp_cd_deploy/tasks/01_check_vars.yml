@@ -1,0 +1,40 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      # CONNECT:DIRECT
+      - lookup('env', 'CD_NAMESPACE') != ""
+      - lookup('env', 'CD_NODENAME') != ""
+      # IBM
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+# Check for undefined properties that do not have a default
+# -----------------------------------------------------------------------------
+- name: "Fail if cd_namespace is not provided"
+  ansible.builtin.assert:
+    that: cd_namespace is defined and cd_namespace != ""
+    fail_msg: "cd_namespace property is required"
+
+- name: "Fail if cd_nodename is not provided"
+  ansible.builtin.assert:
+    that: cd_nodename is defined and cd_nodename != ""
+    fail_msg: "cd_nodename property is required"
+
+- name: "Fail if cd_nodename has invalid chars"
+  ansible.builtin.assert:
+    that: cd_nodename | regex_search('^[A-Za-z0-9@._]*$')
+    fail_msg: "cd_nodename property has invalid chars"
+
+- name: "Fail if entitled_registry_key is not provided"
+  ansible.builtin.assert:
+    that: entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "entitled_registry_key property is required"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  debug:
+    msg:
+      - "Kubernets Namespace ................. {{ cd_namespace }}"
+      - "C:D Nodename        ................. {{ cd_nodename }}"

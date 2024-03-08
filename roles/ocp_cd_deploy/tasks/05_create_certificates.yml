@@ -1,0 +1,34 @@
+---
+# Create Certificate for Connect:Direct on Kubernetes
+# -----------------------------------------------------------------------------
+- name: Running OpenSSL command
+  command: openssl req -x509 -sha512 -days 3650 -newkey rsa:2048 -new -nodes -keyout {{ cd_certificate_key }} -out {{ cd_certificate_crt }} -subj '/CN={{ cd_nodename }}'
+
+#- name: Generate OpenSSL certificate
+#  ansible.builtin.openssl_certificate:
+#    path: "{{ my_cert_certificatecrt }}"
+#    privatekey_path: "{{ my_cert_privatekey }}"
+#    privatekey_passphrase: "{{ cd_localCertPassphrase }}"
+#    #subject:
+#    #  commonName: "{{ cd_nodename }}"
+#    provider: selfsigned
+#    #    signature_algorithms:
+#    #      - sha512WithRSAEncryption
+#    #   days:  3650
+#    force: yes
+
+# Create Certificate for Connect:Direct on Kubernetes
+# -----------------------------------------------------------------------------
+# kubectl create secret generic cd-cert-secret --from-file=certificate_file1=/path/to/certificate_file1 --from-file=certificate_file2=/path/to/certificate_file2
+- name: Create or update Kubernetes secret with certificates files
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "{{ cd_cert_secret }}"
+        namespace: "{{ cd_namespace }}"
+      data:
+        certificate_file1: "{{ lookup('file', cd_certificate_crt) | b64encode }}"
+        certificate_file2: "{{ lookup('file', cd_certificate_key ) | b64encode }}"

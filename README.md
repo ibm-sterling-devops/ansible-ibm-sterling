@@ -9,7 +9,9 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 | setup-cd.yml                  | Complete       | Install IBM Connect:Direct 6.2.x |
 | setup-sb2b.yml                | Complete       | Install IBM Sterling B2B Integrator 6.1.2  - one node only |
 | setup-db2.yml                 | Complete       | Install IBM DB2 11.5.x and setup Sterling B2Bi Database |
-| setup-nginx.yml               | Complete       | Install Nginx as HTTP server for Repository|            
+| setup-nginx.yml               | Complete       | Install Nginx as HTTP server for Repository|    
+| deploy_ocp_cd.yml             | Draft          | Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift |
+
 
 # Roles
 
@@ -37,7 +39,7 @@ Example of my repository: /usr/share/nginx/html
 
 ## Cloning ansible-ibm-websphere from git
 
-```
+```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 ```
 
@@ -45,7 +47,7 @@ git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 
 Install Connect:Direct
 
-```
+```bash 
 cd ansible-ibm-sterling
 
 ansible-playbook -i environments/hosts.dev -u root playbooks/setup-cd.yml
@@ -53,11 +55,41 @@ ansible-playbook -i environments/hosts.dev -u root playbooks/setup-cd.yml
 
 Install Sterling B2B
 
-```
+```bash 
 cd ansible-ibm-sterling
 
 ansible-playbook -i environments/hosts.dev -u root playbooks/setup-sb2b.yml
 ```
+
+## Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift
+
+You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
+
+Log in the [IBM Container software library](https://myibm.ibm.com/products-services/containerlibrary) with the IBMid and password that are associated with the entitled software. Click **Get entitlement key**. With key export variable
+
+```bash 
+export ENTITLED_REGISTRY_KEY=eyJ0...
+```
+
+Do a login in Openshift console and run the command:
+
+```bash 
+oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
+```
+
+
+To run playbook the playbook
+
+```bash 
+cd ansible-ibm-sterling
+
+
+export CD_NAMESPACE=ibm-cd-cdnode01-dev
+export CD_NODENAME=CDNODE01
+
+ansible-playbook playbooks/deploy_ocd_cd.yml
+```
+
 
 # Contributors
 

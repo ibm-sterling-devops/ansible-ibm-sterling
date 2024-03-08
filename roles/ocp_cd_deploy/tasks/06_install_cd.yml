@@ -1,0 +1,60 @@
+---
+- name: Generate my_values.yml
+  ansible.builtin.set_fact:
+    cd_helm_values:
+      license: "true" # true or false
+      licenseType: "prod" # prod or no-prod
+      env:
+        timezone: "UTC"
+      image:
+        repository: "{{ compatibility_matrix[cd_version].image_repository }}"
+        tag: "{{ compatibility_matrix[cd_version].image_tag }}"
+        digest:
+          enabled: "true"
+          value: "{{ compatibility_matrix[cd_version].images_digest_value }}"
+        pullPolicy: "IfNotPresent" # Always
+      upgradeCompCheck: "false"
+      cdArgs:
+        nodeName: "{{ cd_nodename }}"
+        crtName: "cdcert.pem"
+        configDir: "CDFILES"
+      sum:
+        enabled: "{{ 'y' if (cd_helm_sumEnabled == 1) else 'n' }}"
+      persistence:
+        useDynamicProvisioning: "{{ 'true' if (cd_use_dynamic_provisioning) else 'false' }}"
+      pvClaim:
+        existingClaimName: "{{ 'true' if (cd_use_dynamic_provisioning) else 'false' }}"
+        storageClassName: "{{ cd_storage_class }}"
+        selector:
+          label: ""
+          value: ""
+        size: "100Mi"
+      networkPolicyEgress:
+        enabled: "true"
+        acceptNetPolChange: "true"
+      secret:
+        secretName: "{{ cd_secret }}"
+        certSecretName: "{{ cd_cert_secret }}"
+
+- name: Generate my_values.yml
+  ansible.builtin.template:
+    src: "values.yml.j2"
+    dest: "{{ my_workdir }}/my_values.yml"
+
+- name: Debug
+  debug:
+    msg:
+      - "Image Repository ................. {{ compatibility_matrix[cd_version].image_repository }}"
+      - "Image Tag        ................. {{ compatibility_matrix[cd_version].image_tag }}"
+      - "cd_helm_values   ................. {{ cd_helm_values }}"
+
+# https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
+- name: Deploy Connect:Direct chart from local path
+  kubernetes.core.helm:
+    name: "{{ cd_helm_release }}"
+    chart_ref: "{{ my_workdir }}/ibm-connect-direct/"
+    release_namespace: "{{ cd_namespace }}"
+    wait: True
+    timeout: "{{ cd_helm_timeout }}"
+    values_files:
+      - "{{ my_workdir }}/my_values.yml"
