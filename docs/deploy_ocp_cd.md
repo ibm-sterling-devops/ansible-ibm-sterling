@@ -1,4 +1,4 @@
-* Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts
+# Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts
 
 ## Login on OpenShift
 
