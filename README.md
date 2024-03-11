@@ -10,8 +10,8 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 | setup-sb2b.yml                | Complete       | Install IBM Sterling B2B Integrator 6.1.2  - one node only |
 | setup-db2.yml                 | Complete       | Install IBM DB2 11.5.x and setup Sterling B2Bi Database |
 | setup-nginx.yml               | Complete       | Install Nginx as HTTP server for Repository|    
-| deploy_ocp_cd.yml             | Draft          | Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift |
-
+| deploy_ocp_cd.yml             | Development    | Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift |
+| deploy_ocp_sb2bi.yml          | Development    | Deploy IBM Sterling B2B Integrator on Redhat OpenShift |
 
 # Roles
 
