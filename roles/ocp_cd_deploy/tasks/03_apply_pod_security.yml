@@ -6,7 +6,7 @@
   with_items:
     - "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
     - "{{ my_workdir }}/ibm-connect-direct"
-    - "{{ my_workdir }}/my_values.yml"
+    - "{{ my_workdir }}/mycd_values.yml"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:

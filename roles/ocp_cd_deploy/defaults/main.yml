@@ -30,7 +30,7 @@ cd_use_dynamic_provisioning: false
 # Helm Variables
 # -----------------------------------------------------------------------------
 cd_helm_sumEnabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
-cd_helm_timeout: "10m0s"
+cd_helm_timeout: "20m0s"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
@@ -52,18 +52,26 @@ compatibility_matrix:
 
 storage_class_matrix:
   ibmcloud:
-    rwx: "ibmc-file-gold-gid"
-    rwx_nogid: "ibmc-file-gold"
-    rwo: "ibmc-block-gold"
+    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
+    rwo: "ibmc-block-gold"      # ReadWriteOnce
+    rom: ""                     # ReadOnlyMany
+    rwop: ""                    # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"
     rwx_nogid: "ocs-storagecluster-cephfs"
     rwo: " ocs-storagecluster-ceph-rbd"
+    rom: ""
+    rwop: ""
   aws:
     rwx: "efs"
     rwx_nogid: "efs"
     rwo: " gp2"
+    rom: ""
+    rwop: ""
   azure:
     rwx: "azurefiles-premium"
     rwx_nogid: "azurefiles-premium"
     rwo: " managed-premium"
+    rom: ""
+    rwop: ""

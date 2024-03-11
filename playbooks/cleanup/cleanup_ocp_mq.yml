@@ -1,0 +1,15 @@
+---
+- name: Cleanup Namespace sterling-b2bi-dev
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  tasks:
+    - name: Delete Namespace sterling-b2bi-dev
+      kubernetes.core.k8s:
+        state: absent
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: sterling-b2bi-mq-dev

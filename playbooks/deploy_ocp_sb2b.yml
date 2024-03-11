@@ -1,0 +1,16 @@
+---
+- name: Deploy IBM Sterling B2B Integrator on RedHat OpenShift
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  vars:
+    # db_vendor: DB2
+    # db_user: db2inst1
+    # db_password: password
+    # db_host: localhost
+    # db_port: '50000'
+    # db_database: B2BI
+  roles:
+    - ocp_mq_for_sb2bi
+#    - dev_ocp_sb2bi_deploy

@@ -17,33 +17,33 @@
 # -----------------------------------------------------------------------------
 - name: Check for IBM Cloud StorageClass
   set_fact:
-    cd_use_dynamic_provisioning: true
-    cd_storage_class: "ibmcloud"
+    mq_use_dynamic_provisioning: true
+    mq_storage_class: "ibmcloud"
   when:
     - "'ibmc-file-gold' in my_storage_list"
 
 - name: Check for Redhat StorageClass
   set_fact:
-    cd_use_dynamic_provisioning: true
-    cd_storage_class: "redhat"
+    mq_use_dynamic_provisioning: true
+    mq_storage_class: "redhat"
   when:
-    - cd_storage_class is not defined
+    - mq_storage_class is not defined
     - "'ocs-storagecluster-cephfs' in my_storage_list"
 
 - name: Check for AWS StorageClass
   set_fact:
-    cd_use_dynamic_provisioning: true
-    cd_storage_class: "aws"
+    mq_use_dynamic_provisioning: true
+    mq_storage_class: "aws"
   when:
-    - cd_storage_class is not defined
+    - mq_storage_class is not defined
     - "'gp2' in my_storage_list"
 
 - name: Check for Azure StorageClass
   set_fact:
-    cd_use_dynamic_provisioning: true
-    cd_storage_class: "azure"
+    mq_use_dynamic_provisioning: true
+    mq_storage_class: "azure"
   when:
-    - cd_storage_class is not defined
+    - mq_storage_class is not defined
     - "'azurefiles-premium' in my_storage_list"
 
 # 2. Non-Dynamic Provisioning
@@ -55,5 +55,5 @@
 
 - name: Assert that storage class has been defined
   assert:
-    that: cd_storage_class is defined and cd_storage_class != ""
-    fail_msg: "cd_storage_class must be defined"
+    that: mq_storage_class is defined and mq_storage_class != ""
+    fail_msg: "mq_storage_class must be defined"
