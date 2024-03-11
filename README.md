@@ -90,6 +90,8 @@ export CD_NODENAME=CDNODE01
 ansible-playbook playbooks/deploy_ocd_cd.yml
 ```
 
+More options [docs/deploy_ocp_cd.md](docs/deploy_ocp_cd.md)
+
 
 # Contributors
 
