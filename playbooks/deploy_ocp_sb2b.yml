@@ -12,5 +12,6 @@
     # db_port: '50000'
     # db_database: B2BI
   roles:
-    - ocp_mq_for_sb2bi
+    - sb2bi_deploy_mq
+    - db2_for_sb2bi
 #    - dev_ocp_sb2bi_deploy
