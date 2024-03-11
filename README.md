@@ -94,7 +94,7 @@ More options [Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scri
 
 ## Deploy IBM Sterling B2B Integrator on Redhat OpenShift
 
-See documentation [Deploy IBM Sterling B2B on OpenShift using Ansible Scripts](docs/deploy_ocp_sb2bi.md)
+See documentation [Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts](docs/deploy_ocp_sb2bi.md)
 
 # Contributors
 
