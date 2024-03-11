@@ -35,4 +35,4 @@ ansible-playbook playbooks/deploy_ocd_cd.yml
 ```
 
 
-MainPage [README.md](../README).md)
+MainPage [README.md](../README.md)
