@@ -1,5 +1,15 @@
 # Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts
 
+## IBM Entitled Registry
+
+You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
+
+Log in the [IBM Container software library](https://myibm.ibm.com/products-services/containerlibrary) with the IBMid and password that are associated with the entitled software. Click **Get entitlement key**. With key export variable
+
+```bash 
+export ENTITLED_REGISTRY_KEY=<entitlement_key>
+```
+
 ## Login on OpenShift
 
 Do a login in Openshift console and run the command:
