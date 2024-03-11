@@ -1,4 +1,14 @@
-* Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts
+# Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts
+
+## IBM Entitled Registry
+
+You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
+
+Log in the [IBM Container software library](https://myibm.ibm.com/products-services/containerlibrary) with the IBMid and password that are associated with the entitled software. Click **Get entitlement key**. With key export variable
+
+```bash 
+export ENTITLED_REGISTRY_KEY=<entitlement_key>
+```
 
 ## Login on OpenShift
 
@@ -21,7 +31,6 @@ To run playbook the playbook
 ```bash 
 cd ansible-ibm-sterling
 
-export ENTITLED_REGISTRY_KEY=<entitlement_key>
 export SI_NAMESPACE=sterling-b2bi-dev
 export MQ_NAMESPACE=sterling-b2bi-mq-dev
 export DB_NAMESPACE=sterling-b2bi-mq-dev
@@ -34,6 +43,8 @@ To run playbook the playbook
 ```bash 
 ansible-playbook playbooks/deploy_ocp_sb2bi.yml
 ```
+
+MainPage [README.md](../README.md)
 
 
 # Advanced options
