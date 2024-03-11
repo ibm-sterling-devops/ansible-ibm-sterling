@@ -92,6 +92,9 @@ ansible-playbook playbooks/deploy_ocd_cd.yml
 
 More options [Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts](docs/deploy_ocp_cd.md)
 
+## Deploy IBM Sterling B2B Integrator on Redhat OpenShift
+
+See documentation [Deploy IBM Sterling B2B on OpenShift using Ansible Scripts](docs/deploy_ocp_sb2bi.md)
 
 # Contributors
 
