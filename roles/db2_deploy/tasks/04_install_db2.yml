@@ -13,11 +13,11 @@
         selector:
           app: "{{ db2_id }}"
         ports:
-          - name: "{{ db2_id }}-ci-server"
+          - name: "{{ db2_id }}-ci-srv"
             protocol: TCP
             port: 50000
             targetPort: 50000
-          - name: "{{ db2_id }}-ci-ssl-server"
+          - name: "{{ db2_id }}-ci-srvs"
             protocol: TCP
             port: 50001
             targetPort: 50001
@@ -36,11 +36,11 @@
           app: "{{ db2_id }}"
         type: LoadBalancer
         ports:
-          - name: "{{ db2_id }}-lb-server"
+          - name: "{{ db2_id }}-lb-srv"
             protocol: TCP
             port: 50000
             targetPort: 50000
-          - name: "{{ db2_id }}-lb-ssl-server"
+          - name: "{{ db2_id }}-lb-srvs"
             protocol: TCP
             port: 50001
             targetPort: 50001
@@ -63,12 +63,8 @@
           name: "{{ db2_id }}-lb"
         wildcardPolicy: None
 
-- name: Debug
-  ansible.builtin.debug:
-    msg: "image: icr.io/db2_community/db2:{{ db2_version }}"
-
 # Deploy DB2 on Kubernetes
-# -----------------------------------------------------------------------------     
+# -----------------------------------------------------------------------------
 - name: Deploy DB2 on Kubernetes
   kubernetes.core.k8s:
     state: present
@@ -93,38 +89,38 @@
           spec:
             serviceAccount: "{{ db2_service_account }}"
             containers:
-            - name: "{{ db2_id }}"
-              securityContext:
-                privileged: true
-              image: "icr.io/db2_community/db2:{{ db2_version }}"
-              env:
-              - name: DB2INST1_PASSWORD
-                valueFrom:
-                  secretKeyRef: 
-                    name: "{{ db2_secret }}"
-                    key: DB2INST1_PASSWORD
-              - name: LICENSE 
-                value: accept 
-              - name: DB2INSTANCE 
-                value: "{{ db2_instance_name }}"
-              ports:
-              - containerPort: 50000
-                name: "{{ db2_id }}-srv"
-              - containerPort: 50001
-                name: "{{ db2_id }}-srvs"
-              imagePullPolicy: IfNotPresent
-              volumeMounts:
-              - mountPath: /database
-                name: db2vol
-              imagePullSecrets:
-              - name: "{{ db2_registry_secret }}"
+              - name: "{{ db2_id }}"
+                securityContext:
+                  privileged: true
+                image: "icr.io/db2_community/db2:{{ db2_version }}"
+                env:
+                  - name: DB2INST1_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: "{{ db2_secret }}"
+                        key: DB2INST1_PASSWORD
+                  - name: LICENSE
+                    value: accept
+                  - name: DB2INSTANCE
+                    value: "{{ db2_instance_name }}"
+                ports:
+                  - containerPort: 50000
+                    name: "{{ db2_id }}-srv"
+                  - containerPort: 50001
+                    name: "{{ db2_id }}-srvs"
+                imagePullPolicy: IfNotPresent
+                volumeMounts:
+                  - mountPath: /database
+                    name: db2vol
+                imagePullSecrets:
+                  - name: "{{ db2_registry_secret }}"
         volumeClaimTemplates:
-        - metadata:
-            name: db2vol
-          spec:
-            accessModes:
-            - ReadWriteOnce
-            resources:
-              requests:
-                storage: 40Gi
-            storageClassName: "{{ storage_class_matrix[ db2_storage_class ].rwo | default('') }}"
+          - metadata:
+              name: db2vol
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: "{{ db2_storage_size | default('40Gi') }}"
+              storageClassName: "{{ storage_class_matrix[ db2_storage_class ].rwo | default('') }}"

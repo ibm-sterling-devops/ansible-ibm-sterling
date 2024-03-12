@@ -22,6 +22,8 @@ db2_service_account: mydb2-sa
 db2_secret: mydb2-secret
 db2_id: mydb2
 
+db2_storage_size: "10Gi" # 40Gi
+
 storage_class_matrix:
   ibmcloud:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany

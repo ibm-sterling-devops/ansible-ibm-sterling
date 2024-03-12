@@ -1,0 +1,58 @@
+---
+- name: Create setupdb script in local /tmp
+  ansible.builtin.template:
+    src: setupdb.sh.j2
+    dest: "{{ my_workdir }}/setupdb.sh"
+    mode: "777"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: "Debug information - part 2"
+  ansible.builtin.debug:
+    msg:
+      - "Db2 namespace .......................... {{ db2_namespace }}"
+      - "Db2 instance name ...................... {{ db2_instance_name }}"
+      - "Db2 database name ...................... {{ db2_dbname }}"
+      - "Db2 Pod name ........................... {{ db2_pod_name }}"
+
+# definition: "{{ lookup('template', 'templates/setupdb.sh.j2') }}"
+- name: Copy the setupdb script into the mydb2-0 pod
+  kubernetes.core.k8s_cp:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    remote_path: "/tmp/setupdb.sh"
+    local_path: "{{ my_workdir }}/setupdb.sh"
+    no_preserve: true
+    state: to_pod
+  register: copy_result
+  retries: 10
+  delay: 30 # seconds
+
+- name: "Copy the setupdb script failed"
+  ansible.builtin.fail:
+    msg:
+      - "Result (copy_result) ........................ {{ copy_result }} "
+  when: copy_result.result.find('successfully copied') == -1
+
+# need to add db2profile to run db2 commands
+# oc exec -n {{ db2_namespace }} {{ db2_pod_name }} -- su -lc '/tmp/setupdb.sh | tee /tmp/setupdb.log' {{ db2_user }}
+- name: Run setupdb to prepare Db2 for use with IBM Sterling
+  kubernetes.core.k8s_exec:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    command: "su -lc '. /database/config/{{ db2_user }}/sqllib/db2profile && sh /tmp/setupdb.sh | tee /tmp/setupdb.log' {{ db2_user }}"
+  register: cout
+
+- name: "Database setup debug information"
+  ansible.builtin.debug:
+    msg:
+      - "Result (stdout) ........................ {{ cout.stdout }}"
+      - "result (stderr) ........................ {{ cout.stderr }}"
+
+- name: "Failed to execute the script"
+  ansible.builtin.fail:
+    msg: "Failed to execute the script /tmp/setupdb.sh h on DB2 instance"
+  when:
+    - cout.rc != 0
