@@ -106,18 +106,18 @@
               - name: LICENSE 
                 value: accept 
               - name: DB2INSTANCE 
-                value: db2inst1
+                value: "{{ db2_instance_name }}"
               ports:
               - containerPort: 50000
-                name: "{{ db2_id }}-http"
+                name: "{{ db2_id }}-srv"
               - containerPort: 50001
-                name: "{{ db2_id }}-https"
+                name: "{{ db2_id }}-srvs"
               imagePullPolicy: IfNotPresent
               volumeMounts:
               - mountPath: /database
                 name: db2vol
               imagePullSecrets:
-              - name: db2_registry_secret
+              - name: "{{ db2_registry_secret }}"
         volumeClaimTemplates:
         - metadata:
             name: db2vol
