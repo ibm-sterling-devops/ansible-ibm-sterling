@@ -12,7 +12,7 @@ licenseType: "{{ cd_helm_values.licenseType }}"
 
 # Specify respective timezone
 env:
-  timezone: "{{ cd_helm_values.env.timezone }}"
+  timezone: "{{ cd_helm_values.env.timezone | default('UTC') }}"
   # array for extra environment variable if needed. Eg envs for AWS S3 credentials
   extraEnvs: []
   #-name: AWS_ACCESS_ID
@@ -27,18 +27,18 @@ replicaCount: 1
 # Specify the respective Docker Image details for IBMCCS
 image:
   # Specify the repository name alongwith image name
-  repository: "{{ cd_helm_values.image.repository }}"
+  repository: "{{ compatibility_matrix[ cd_version ].image_repository }}"
   # Specify the tag name for the image in double quotes
-  tag: "{{ cd_helm_values.image.tag }}"
+  tag: "{{ compatibility_matrix[ cd_version ].image_tag }}"
   # Specify the image pull secret for the service, if the image is in private registry
   # protected with password
   imageSecrets: "{{ cd_registry_secret }}"
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
-    enabled: {{ cd_helm_values.image.digest.enabled }}
-    value: "{{ cd_helm_values.image.digest.value }}"
+    enabled: {{ cd_helm_values.digest.enabled | default('false') }}
+    value: "{{ compatibility_matrix[ cd_version ].images_digest_value }}"
   # Specify respective pull policy to used to override default `IfNotPresent` policy
-  pullPolicy: {{ cd_helm_values.image.pullPolicy }}
+  pullPolicy: {{ cd_helm_values.image.pullPolicy | default('IfNotPresent') }}
 
 nameOverride: ""
 # This parameter will check if upgrade is from container with cduser
@@ -48,7 +48,7 @@ nameOverride: ""
 # its impact. Thus you have taken the desired action to update the user
 # from cduser to cdadmin if used outside the container in some kind of
 # script.
-upgradeCompCheck: {{ cd_helm_values.upgradeCompCheck }}
+upgradeCompCheck: {{ cd_helm_values.upgradeCompCheck | default('false') }}
 
 # Specify this fields to mount extra volume as volumeMounts in container spec
 extraVolumeMounts: []
@@ -78,7 +78,7 @@ cdArgs:
   sport: 1364
   # Specify the name of directory created on persistent volume path having certificate
   #files need for Secure+ plus configuration
-  configDir: "{{ cd_helm_values.cdArgs.configDir }}"
+  configDir: "{{ cd_helm_values.cdArgs.configDir | default('CDFILES') }}"
   # Specify the configuration for SACL options. Refer - https://www.ibm.com/support/knowledgecenter/SS4PJT_6.3.0/cd_unix/cdunix_admin/CDU_Strong_Access_Ctrl_File.html
   saclConfig: "n"
   # Specify the trusted IP list in array as given in example below for Port Check configuration
@@ -110,16 +110,16 @@ persistence:
 # Specify these fields for Persistence Volume Claim details
 pvClaim:
   # Specify the existing PV claim name to be used for deployment
-  existingClaimName: "{{ cd_helm_values.pvClaim.existingClaimName }}"
+  existingClaimName: "{{ cd_helm_values.pvClaim.existingClaimName | default('') }}"
   # Specify this to use any Storage Class for PVC
-  storageClassName: "{{ cd_helm_values.pvClaim.storageClassName }}"
+  storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwo | default('') }}"
   accessMode: "ReadWriteOnce"
   selector:
     # Specify this to use selector label name for PV-PVC bind
-    label: "{{ cd_helm_values.pvClaim.selector.label }}"
+    label: "{{ cd_helm_values.pvClaim.selector.label | default('') }}"
     # Specify this to use selector label value for PV-PVC bind
-    value: "{{ cd_helm_values.pvClaim.selector.value }}"
-  size: {{ cd_helm_values.pvClaim.size }}
+    value: "{{ cd_helm_values.pvClaim.selector.value | default('') }}"
+  size: {{ cd_helm_values.pvClaim.size | default('100Mi') }}
 
 # Specify these fields for Services
 service:
