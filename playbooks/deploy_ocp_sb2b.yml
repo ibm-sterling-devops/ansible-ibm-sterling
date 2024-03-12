@@ -12,5 +12,5 @@
     # db_database: B2BI
   roles:
     - db2_deploy
-    # - sb2bi_config_db2
+    # - sb2bi_setup_db2
     - sb2bi_deploy_mq

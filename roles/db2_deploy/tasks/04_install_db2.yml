@@ -1,58 +1,58 @@
 ---
-- name: "Create Kubernetes Service {{ db2_prefix }}-ci"
+- name: "Create Kubernetes Service {{ db2_id }}-ci"
   kubernetes.core.k8s:
     state: present
     definition:
       apiVersion: v1
       kind: Service
       metadata:
-        name: "{{ db2_prefix }}-ci"
+        name: "{{ db2_id }}-ci"
         namespace: "{{ db2_namespace }}"
       spec:
         type: ClusterIP
         selector:
-          app: "{{ db2_prefix }}"
+          app: "{{ db2_id }}"
         ports:
-          - name: "{{ db2_prefix }}-ci-server"
+          - name: "{{ db2_id }}-ci-server"
             protocol: TCP
             port: 50000
             targetPort: 50000
-          - name: "{{ db2_prefix }}-ci-ssl-server"
+          - name: "{{ db2_id }}-ci-ssl-server"
             protocol: TCP
             port: 50001
             targetPort: 50001
 
-- name: "Create Kubernetes Service {{ db2_prefix }}-lb"
+- name: "Create Kubernetes Service {{ db2_id }}-lb"
   kubernetes.core.k8s:
     state: present
     definition:
       apiVersion: v1
       kind: Service
       metadata:
-        name: "{{ db2_prefix }}-lb"
+        name: "{{ db2_id }}-lb"
         namespace: "{{ db2_namespace }}"
       spec:
         selector:
-          app: "{{ db2_prefix }}"
+          app: "{{ db2_id }}"
         type: LoadBalancer
         ports:
-          - name: "{{ db2_prefix }}-lb-server"
+          - name: "{{ db2_id }}-lb-server"
             protocol: TCP
             port: 50000
             targetPort: 50000
-          - name: "{{ db2_prefix }}-lb-ssl-server"
+          - name: "{{ db2_id }}-lb-ssl-server"
             protocol: TCP
             port: 50001
             targetPort: 50001
 
-- name: "Create Kubernetes Route {{ db2_prefix }}-route"
+- name: "Create Kubernetes Route {{ db2_id }}-route"
   kubernetes.core.k8s:
     state: present
     definition:
       apiVersion: route.openshift.io/v1
       kind: Route
       metadata:
-        name: "{{ db2_prefix }}-route"
+        name: "{{ db2_id }}-route"
         namespace: "{{ db2_namespace }}"
       spec:
         tls:
@@ -60,7 +60,7 @@
           termination: passthrough
         to:
           kind: Service
-          name: "{{ db2_prefix }}-lb"
+          name: "{{ db2_id }}-lb"
         wildcardPolicy: None
 
 - name: Debug
@@ -76,22 +76,24 @@
       apiVersion: apps/v1
       kind: StatefulSet
       metadata:
-        name: "{{ db2_prefix }}"
+        name: "{{ db2_id }}"
         namespace: "{{ db2_namespace }}"
       spec:
         selector:
           matchLabels:
-            app: "{{ db2_prefix }}"
-        serviceName: "{{ db2_prefix }}"
+            app: "{{ db2_id }}"
+        serviceName: "{{ db2_id }}"
         replicas: 1
         template:
           metadata:
             labels:
-              app: "{{ db2_prefix }}"
+              app: "{{ db2_id }}"
+              app-instance: "{{ db2_instance_name | lower }}"
+              app-dbname: "{{ db2_dbname | lower }}"
           spec:
             serviceAccount: "{{ db2_service_account }}"
             containers:
-            - name: "{{ db2_prefix }}"
+            - name: "{{ db2_id }}"
               securityContext:
                 privileged: true
               image: "icr.io/db2_community/db2:{{ db2_version }}"
@@ -105,13 +107,11 @@
                 value: accept 
               - name: DB2INSTANCE 
                 value: db2inst1
-              #- name: DBNAME
-              #  value: {{ db2_dbname }}
               ports:
               - containerPort: 50000
-                name: "{{ db2_prefix }}-http"
+                name: "{{ db2_id }}-http"
               - containerPort: 50001
-                name: "{{ db2_prefix }}-https"
+                name: "{{ db2_id }}-https"
               imagePullPolicy: IfNotPresent
               volumeMounts:
               - mountPath: /database
