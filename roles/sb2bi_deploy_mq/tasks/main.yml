@@ -5,8 +5,8 @@
 - name: Create namespace and secrets for MQ
   ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
 
-- name: Configure StorageClass
-  ansible.builtin.include_tasks: 03_configure_storage.yml
+- name: Define Storage for Data Persistence
+  ansible.builtin.include_tasks: 03_define_storage.yml
 
 - name: Install MQ for Sterling B2Bi
   ansible.builtin.include_tasks: 04_install_mq.yml

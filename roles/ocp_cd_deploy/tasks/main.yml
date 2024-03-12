@@ -8,8 +8,8 @@
 - name: Applying Pod Security
   ansible.builtin.include_tasks: 03_apply_pod_security.yml
 
-- name: Creating Storage for Data Persistence
-  ansible.builtin.include_tasks: 04_configure_storage.yml
+- name: Define Storage for Data Persistence
+  ansible.builtin.include_tasks: 04_define_storage.yml
 
 - name: "Create Certificate for Secure+"
   ansible.builtin.include_tasks: 05_create_certificates.yml
