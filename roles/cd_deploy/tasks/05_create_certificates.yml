@@ -1,16 +1,21 @@
 ---
 # Create Certificate for Connect:Direct on Kubernetes
-# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------       
 - name: Running OpenSSL command
-  command: openssl req -x509 -sha512 -days 3650 -newkey rsa:2048 -new -nodes -keyout {{ cd_certificate_key }} -out {{ cd_certificate_crt }} -subj '/CN={{ cd_nodename }}'
-
+  ansible.builtin.shell: "openssl req -x509 -sha512 -days 3650 -newkey rsa:2048 -new -nodes -keyout {{ cd_cert_key }} -out {{ cd_cert_crt }} -subj '/CN={{ cd_nodename }}'"
+  register: cout
+           
+- name: Concat C:D certificates
+  ansible.builtin.shell: "cat {{ cd_cert_key }} {{ cd_cert_crt }} > {{ cd_cert_pem }}"
+  when: cout.rc == 0
+           
 #- name: Generate OpenSSL certificate
 #  ansible.builtin.openssl_certificate:
 #    path: "{{ my_cert_certificatecrt }}"
 #    privatekey_path: "{{ my_cert_privatekey }}"
 #    privatekey_passphrase: "{{ cd_localCertPassphrase }}"
-#    #subject:
-#    #  commonName: "{{ cd_nodename }}"
+#    #subject: "/CN={{ cd_nodename }}""
+#    #  commonName: "/{{ cd_nodename }}"
 #    provider: selfsigned
 #    #    signature_algorithms:
 #    #      - sha512WithRSAEncryption
@@ -18,6 +23,7 @@
 #    force: yes
 
 # Create Certificate for Connect:Direct on Kubernetes
+# CD install script only support extensions .crt, .pem and .cer
 # -----------------------------------------------------------------------------
 # kubectl create secret generic cd-cert-secret --from-file=certificate_file1=/path/to/certificate_file1 --from-file=certificate_file2=/path/to/certificate_file2
 - name: Create or update Kubernetes secret with certificates files
@@ -30,5 +36,7 @@
         name: "{{ cd_cert_secret }}"
         namespace: "{{ cd_namespace }}"
       data:
-        certificate_file1: "{{ lookup('file', cd_certificate_crt) | b64encode }}"
-        certificate_file2: "{{ lookup('file', cd_certificate_key ) | b64encode }}"
+        cdcert.pem: "{{ lookup('file', cd_cert_pem ) | b64encode }}"
+#        certificate_file1: "{{ lookup('file', cd_cert_crt) | b64encode }}"
+#        certificate_file2: "{{ lookup('file', cd_cert_key ) | b64encode }}"
+

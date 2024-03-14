@@ -7,6 +7,9 @@
     - "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
     - "{{ my_workdir }}/ibm-connect-direct"
     - "{{ my_workdir }}/mycd_values.yml"
+    - "{{ my_workdir }}/cdcert.pem"
+    - "{{ my_workdir }}/cdcert.crt"
+    - "{{ my_workdir }}/cdcert.cer"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:

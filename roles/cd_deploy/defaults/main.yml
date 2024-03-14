@@ -21,11 +21,11 @@ my_workdir: /tmp
 cd_nodename_lower: "{{ cd_nodename | lower  }}"
 cd_registry_secret: mycd-ibm-registry-secret
 cd_secret: mycd-secret
-cd_cert_secret: mycd-certificates-secret
+cd_cert_secret: mycd-cert-secret
 cd_helm_release: mycd
-cd_certificate_crt: "{{ my_workdir }}/cdcert.crt"
-cd_certificate_key: "{{ my_workdir }}/cdcert.key"
-cd_certificate_pem: "{{ my_workdir }}/cdcert.pem"
+cd_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support extensions .crt, .pem and .cer
+cd_cert_key: "{{ my_workdir }}/cdkey.pem"
+cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
 cd_use_dynamic_provisioning: false
 
 # Helm Variables
