@@ -1,8 +1,8 @@
 ---
-cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('ibm-cd-cdnode01-dev', true) }}"
+cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev', true) }}"
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true)}}" # Specify the node of C:D application
 
-cd_version: "6.3.0.2_ifix009"
+cd_version: "6.3.0.0_ifix000"
 cd_adminPassword: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
 cd_localCertPassphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default('changeit', true) }}"

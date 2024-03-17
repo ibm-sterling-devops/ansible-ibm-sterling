@@ -1,15 +1,15 @@
 ---
-- name: Cleanup Namespace ibm-cdunix-cdnode01-dev
+- name: Cleanup Namespace sterling-cdnode01-dev
   hosts: localhost
   connection: local
   gather_facts: false
   any_errors_fatal: true
   vars:
-    cd_namespace: ibm-cdunix-cdnode01-dev
+    cd_namespace: sterling-cdnode01-dev
     my_workdir: /tmp
     cd_helm_version: 1.3.5
   tasks:
-    - name: Delete Namespace ibm-cdunix-cdnode01-dev
+    - name: Delete Namespace sterling-cdnode01-dev
       kubernetes.core.k8s:
         state: absent
         definition:

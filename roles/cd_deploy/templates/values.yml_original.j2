@@ -5,14 +5,14 @@
 
 # Change license to true to indicate that you have read and agree to license agreements
 # Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N:  L-MTAE-C5RR2U)
-license: true
-# Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and
+license: false
+# Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: "{{ cd_helm_values.licenseType }}"
+licenseType: "prod"
 
-# Specify respective timezone
+# Specify respective timezone 
 env:
-  timezone: "{{ cd_helm_values.env.timezone | default('UTC') }}"
+  timezone: "UTC"
   # array for extra environment variable if needed. Eg envs for AWS S3 credentials
   extraEnvs: []
   #-name: AWS_ACCESS_ID
@@ -27,18 +27,18 @@ replicaCount: 1
 # Specify the respective Docker Image details for IBMCCS
 image:
   # Specify the repository name alongwith image name
-  repository: "{{ {{ compatibility_matrix[ cd_version ].image_repository }} }}"
-  # Specify the tag name for the image in double quotes
-  tag: "{{ compatibility_matrix[ cd_version ].image_tag }}"
-  # Specify the image pull secret for the service, if the image is in private registry
+  repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.2"
+  # Specify the tag name for the image in double quotes 
+  tag: "6.3.0.2_ifix009"
+  # Specify the image pull secret for the service, if the image is in private registry 
   # protected with password
-  imageSecrets: "{{ cd_registry_secret }}"
+  imageSecrets: ""
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
-    enabled: {{ cd_helm_values.digest.enabled | default('false') }}
-    value: "{{ compatibility_matrix[ cd_version ].images_digest_value }}"
-  # Specify respective pull policy to used to override default `IfNotPresent` policy
-  pullPolicy: {{ cd_helm_values.image.pullPolicy | default('IfNotPresent') }}
+    enabled: false
+    value: "sha256:4eb05a380464dc720ddd920012850020d2a4bdccb9d334db878526f9b8eabd93"
+  # Specify respective pull policy to used to override default `IfNotPresent` policy 
+  pullPolicy: Always
 
 nameOverride: ""
 # This parameter will check if upgrade is from container with cduser
@@ -46,9 +46,9 @@ nameOverride: ""
 # link to understand the change and set this value to true. Setting to
 # true signifies that you have gone through the change and understand
 # its impact. Thus you have taken the desired action to update the user
-# from cduser to cdadmin if used outside the container in some kind of
-# script.
-upgradeCompCheck: {{ cd_helm_values.upgradeCompCheck | default('false') }}
+# from cduser to cdadmin if used outside the container in some kind of 
+# script.  
+upgradeCompCheck: false
 
 # Specify this fields to mount extra volume as volumeMounts in container spec
 extraVolumeMounts: []
@@ -64,21 +64,21 @@ extraVolume: []
 # Currently, the only supported architecture for IBMCCS is `amd64`
 arch: "amd64"
 
-# Specify these fields to provide config values for C:D application
+# Specify these fields to provide config values for C:D application  
 cdArgs:
   # Specify the node of C:D application
-  nodeName: "{{ cd_helm_values.cdArgs.nodeName }}"
+  nodeName: "cdnode"
   # Specify the certificate name to be used for Secure+ configuration
-  crtName: "{{ cd_helm_values.cdArgs.crtName }}"
+  crtName: ""
   # Specify the certificate label to be used in keystore DB
   localCertLabel: "Client-API"
-  # Specify the client port to be used by C:D application
+  # Specify the client port to be used by C:D application 
   cport: 1363
   # Specify the server port to be used by C:D application
   sport: 1364
-  # Specify the name of directory created on persistent volume path having certificate
+  # Specify the name of directory created on persistent volume path having certificate 
   #files need for Secure+ plus configuration
-  configDir: "{{ cd_helm_values.cdArgs.configDir | default('CDFILES') }}"
+  configDir: "CDFILES"
   # Specify the configuration for SACL options. Refer - https://www.ibm.com/support/knowledgecenter/SS4PJT_6.3.0/cd_unix/cdunix_admin/CDU_Strong_Access_Ctrl_File.html
   saclConfig: "n"
   # Specify the trusted IP list in array as given in example below for Port Check configuration
@@ -91,8 +91,8 @@ cdArgs:
 # Standard User Mode Configuration
 sum:
   # Set its value to "n" to disable standard user mode in container
-  # The CDExec ID for SUM will be the appuser username in container. Refer - https://www.ibm.com/docs/en/connect-direct/6.3.0?topic=planning-ordinary-user-mode-in-connectdirect-unix-containers
-  enabled: "{{ cd_helm_values.sum.enabled }}"
+  # The CDExec ID for SUM will be the appuser username in container. Refer - https://www.ibm.com/docs/en/connect-direct/6.3.0?topic=planning-ordinary-user-mode-in-connectdirect-unix-containers 
+  enabled: "y"
 
 storageSecurity:
   fsGroup: 45678
@@ -104,34 +104,34 @@ storageSecurity:
 persistence:
   # enabled is whether to use Persistent Volumes or not
   enabled: true
-  # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes
-  useDynamicProvisioning: {{ cd_helm_values.persistence.useDynamicProvisioning }}
+  # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes 
+  useDynamicProvisioning: false
 
 # Specify these fields for Persistence Volume Claim details
 pvClaim:
   # Specify the existing PV claim name to be used for deployment
   existingClaimName: ""
   # Specify this to use any Storage Class for PVC
-  storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwo | default('') }}"
+  storageClassName: ""
   accessMode: "ReadWriteOnce"
   selector:
     # Specify this to use selector label name for PV-PVC bind
-    label: "{{ cd_helm_values.pvClaim.selector.label | default('') }}"
+    label: ""
     # Specify this to use selector label value for PV-PVC bind
-    value: "{{ cd_helm_values.pvClaim.selector.value | default('') }}"
-  size: {{ cd_helm_values.pvClaim.size | default('100Mi') }}
+    value: ""
+  size: 100Mi
 
 # Specify these fields for Services
 service:
   # ClusterPort to be exposed
   type: "LoadBalancer"
-  apiport:
+  apiport: 
     name: "api"
-    port:
+    port:  
     protocol: "TCP"
-  ftport:
+  ftport: 
     name: "ft"
-    port:
+    port: 
     protocol: "TCP"
   # List of IP addresses at which the service is available
   # Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
@@ -140,7 +140,7 @@ service:
   # - 1.2.3.4
   # - 5.6.7.8
   externalIP: []
-
+  
   # Specify Load Balancer IP, if available
   loadBalancerIP: ""
 
@@ -150,7 +150,7 @@ service:
   # loadBalancerSourceRanges:
   # - 10.10.10.0/24
   loadBalancerSourceRanges: []
-
+  
   # Specify Service Annotations, if required
   annotations: {}
   # Specify external traffic policy, if required
@@ -178,7 +178,7 @@ networkPolicyIngress:
 # Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
 networkPolicyEgress:
   enabled: true
-  acceptNetPolChange: {{ cd_helm_values.networkPolicyEgress.acceptNetPolChange }}
+  acceptNetPolChange: false
   # write your custom egress policy here for to spec
   to: []
   #- namespaceSelector:
@@ -202,15 +202,15 @@ networkPolicyEgress:
 # Specify the Secret configuration for C:D
 secret:
   # Secret name for configuring passwords for C:D
-  secretName: "{{ cd_helm_values.secret.secretName }}"
+  secretName: ""
   # Secret name of secure plus certificates and LDAP certificates, only needed if Dyanamic Provisioining is Enabled
-  certSecretName: "{{ cd_helm_values.secret.certSecretName }}"
+  certSecretName: ""
 
 # Specify the service account details
 serviceAccount:
   # Set this field to `true` to create service account or `false` to use existing service account
   create: true
-  # Specify the name of service account to be used
+  # Specify the name of service account to be used 
   name: ""
 
 ## Configure resource requests and limits
@@ -281,24 +281,24 @@ ldap:
   enabled: false
   # Specify LDAP server
   host: ""
-  # Specify LDAP server port
+  # Specify LDAP server port 
   port:
-  # Specify the Domain for the LDAP server
+  # Specify the Domain for the LDAP server 
   domain: ""
   # Specify true or false to Enable or Disable TLS authentication
   # true = ldaps
   # false = ldap
   tls: false
-  # Specify true or false to Enable or Disable ldap_id_use_start_tls
+  # Specify true or false to Enable or Disable ldap_id_use_start_tls 
   startTls: false
   # Specify CA certificate file name to be used for TLS authentication
   caCert: ""
   # Specify the supported value for ldap_tls_reqcert as per ldap config
   # Possible values - never, allow, try, demand, hard
   tlsReqcert: "never"
-  # ldap_default_bind_dn
+  # ldap_default_bind_dn 
   defaultBindDn: ""
-  #ldap_default_authtok_type
+  #ldap_default_authtok_type 
   defaultAuthtokType: ""
   #ldap_default_authtok
   defaultAuthtok: ""
