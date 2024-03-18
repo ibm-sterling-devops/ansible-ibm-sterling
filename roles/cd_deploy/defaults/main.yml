@@ -2,7 +2,8 @@
 cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev', true) }}"
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true)}}" # Specify the node of C:D application
 
-cd_version: "6.3.0.0_ifix000"
+cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.0_ifix000', true) }}"
+cd_helm_release: "{{ lookup('env', 'CD_HELM_RELEASE') | default('mycd', true) }}"
 cd_adminPassword: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
 cd_localCertPassphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default('changeit', true) }}"
@@ -22,7 +23,6 @@ cd_nodename_lower: "{{ cd_nodename | lower  }}"
 cd_registry_secret: mycd-ibm-registry-secret
 cd_secret: mycd-secret
 cd_cert_secret: mycd-cert-secret
-cd_helm_release: mycd
 cd_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support extensions .crt, .pem and .cer
 cd_cert_key: "{{ my_workdir }}/cdkey.pem"
 cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
@@ -30,8 +30,9 @@ cd_use_dynamic_provisioning: false
 
 # Helm Variables
 # -----------------------------------------------------------------------------
-cd_helm_sumEnabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
-cd_helm_timeout: "20m0s"
+cd_helm:
+  sumEnabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
+  timeout: "20m0s"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
@@ -40,22 +41,25 @@ compatibility_matrix:
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.2"
     image_tag: "6.3.0.2_ifix009"
     images_digest_value: "sha256:4eb05a380464dc720ddd920012850020d2a4bdccb9d334db878526f9b8eabd93"
-  6.3.0.2_ifix002:
-    helm_version: "1.3.4"
-    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.2"
-    image_tag: "6.3.0.2_ifix002"
-    images_digest_value: "sha256:dcccc3364a20f5270681180ca7ae58ef1a8faab3cba111aa0b09a507a0a54949"
+  6.3.0.0_ifix016:
+    helm_version: "1.3.1"
+    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.0"
+    image_tag: "6.3.0.0_ifix016"
+    images_digest_value: "sha256:607462a341f1fadb72e4eb850dba469c4bde5a25ddc5ed2501f7fa37d0bd1b18"
   6.3.0.0_ifix000:
     helm_version: "1.3.0"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.0"
     image_tag: "6.3.0.0_ifix000"
     images_digest_value: "sha256:d4c7816eed16ac5b3b372dc7d7bf563785674fd64c64715e6612cb1215a8ed16"
 
+# Storage Class Matrix
+# in ibmcloud.rwo: In IBM Cloud, the ReadWriteOnce storage class is 'ibmc-block-gold' but Connect:Direct not worked with it.
+# -----------------------------------------------------------------------------
 storage_class_matrix:
   ibmcloud:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-block-gold"      # ReadWriteOnce
+    rwo: "ibmc-file-gold"      # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with 
     rom: ""                     # ReadOnlyMany
     rwop: ""                    # ReadWriteOncePod
   redhat:

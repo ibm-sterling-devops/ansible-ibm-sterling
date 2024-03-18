@@ -48,7 +48,7 @@
 
 - name: Run Pre-Install Scripts createSecurityClusterPrereqs.sh
   ansible.builtin.command:
-    cmd: "{{ item.file_path }}/{{ item.file_name }} {{ cd_helm_sumEnabled }}"
+    cmd: "{{ item.file_path }}/{{ item.file_name }} {{ cd_helm.sumEnabled }}"
     chdir: "{{ item.file_path }}/"
   register: script_cout
   changed_when: ( script_cout.rc == 0 )

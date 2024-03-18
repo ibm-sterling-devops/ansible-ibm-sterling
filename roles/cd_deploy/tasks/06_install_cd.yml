@@ -7,7 +7,7 @@
         nodeName: "{{ cd_nodename }}"
         crtName: "cdcert.pem"
       sum:
-        enabled: "{{ 'y' if (cd_helm_sumEnabled == 1) else 'n' }}"
+        enabled: "{{ 'y' if (cd_helm.sumEnabled == 1) else 'n' }}"
       persistence:
         useDynamicProvisioning: "{{ 'true' if (cd_use_dynamic_provisioning) else 'false' }}"
       secret:
@@ -25,14 +25,15 @@
       - "Image Repository ................. {{ compatibility_matrix[cd_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[cd_version].image_tag }}"
       - "cd_helm_values   ................. {{ cd_helm_values }}"
-      - "command: helm install --wait --timeout {{ cd_helm_timeout }} --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
+      - "command: helm install --wait --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
 
 # - name: Run Helm delete command
 #   shell: "helm delete --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
 
 
 - name: Run Helm install command
-  shell: "helm install --wait --timeout {{ cd_helm_timeout }} --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
+  shell: "helm install --wait --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
+# --timeout {{ cd_helm.timeout }}
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Deploy Connect:Direct chart from local path
@@ -41,6 +42,6 @@
 #     chart_ref: "{{ my_workdir }}/ibm-connect-direct/"
 #     release_namespace: "{{ cd_namespace }}"
 #     wait: True
-#     timeout: "{{ cd_helm_timeout }}"
+#     timeout: "{{ cd_helm.timeout }}"
 #     values_files:
 #       - "{{ my_workdir }}/mycd_values.yml"

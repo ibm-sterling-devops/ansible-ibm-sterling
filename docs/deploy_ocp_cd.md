@@ -31,6 +31,8 @@ To run playbook the playbook
 ```bash 
 cd ansible-ibm-sterling
 
+export ANSIBLE_CONFIG=< FULL_PATH >/ansible.cfg 
+
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 export CD_NAMESPACE=sterling-cdnode01-dev
 export CD_NODENAME=CDNODE01

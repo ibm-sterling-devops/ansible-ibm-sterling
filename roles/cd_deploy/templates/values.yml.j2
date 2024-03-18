@@ -52,7 +52,7 @@ persistence:
 
 pvClaim:
   existingClaimName: "{{ cd_helm_values.pvClaim.existingClaimName | default('') }}"
-  storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwo}}"  
+  storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwo }}"  
   accessMode: "ReadWriteOnce"
   selector:
     label: "{{ cd_helm_values.pvClaim.selector.label | default('') }}"
@@ -77,8 +77,11 @@ service:
   sessionAffinity: "ClientIP"
 
 networkPolicyIngress:
-  enabled: true
-  from: []
+  enabled: false
+  from: 
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: "connectdirect"
 
 networkPolicyEgress:
   enabled: true
