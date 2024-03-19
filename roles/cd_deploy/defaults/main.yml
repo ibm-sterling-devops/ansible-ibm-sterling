@@ -4,6 +4,7 @@ cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true)}}" # S
 
 cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.0_ifix000', true) }}"
 cd_helm_release: "{{ lookup('env', 'CD_HELM_RELEASE') | default('mycd', true) }}"
+
 cd_adminPassword: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
 cd_localCertPassphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default('changeit', true) }}"
@@ -32,7 +33,7 @@ cd_use_dynamic_provisioning: false
 # -----------------------------------------------------------------------------
 cd_helm:
   sumEnabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
-  timeout: "20m0s"
+  timeout: "10m0s"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
@@ -59,7 +60,7 @@ storage_class_matrix:
   ibmcloud:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-file-gold"      # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with 
+    rwo: "ibmc-file-gold"       # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with C:D
     rom: ""                     # ReadOnlyMany
     rwop: ""                    # ReadWriteOncePod
   redhat:

@@ -21,9 +21,14 @@
     that: cd_nodename is defined and cd_nodename != ""
     fail_msg: "cd_nodename property is required"
 
+- name: "Fail if cd_nodename is over 15 characters"
+  ansible.builtin.assert:
+    that: cd_nodename | length <= 15
+    fail_msg: "Ensure cd_nodename is not more than 15 chars."
+
 - name: "Fail if cd_nodename has invalid chars"
   ansible.builtin.assert:
-    that: cd_nodename | regex_search('^[A-Za-z0-9@._]*$')
+    that: cd_nodename | regex_search('^[a-zA-Z0-9\._\-]*$')
     fail_msg: "cd_nodename property has invalid chars"
 
 - name: "Fail if entitled.registry_key is not provided"
