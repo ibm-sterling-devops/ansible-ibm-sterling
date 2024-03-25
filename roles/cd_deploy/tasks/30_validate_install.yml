@@ -12,6 +12,19 @@
 # The screen output displays the external IP and exposed ports under EXTERNAL-IP and PORT(S) column respectively.
 # If external LoadBalancer is not present, refer Master node IP as external IP.
 
+# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
+# - name: Deploy Connect:Direct chart from local path
+#   kubernetes.core.helm:
+#     name: "{{ cd_helm_release }}"
+#     chart_ref: "{{ my_workdir }}/ibm-connect-direct/"
+#     release_namespace: "{{ cd_namespace }}"
+#     wait: True
+#     timeout: "{{ cd_helm.timeout }}"
+#     values_files:
+#       - "{{ my_workdir }}/mycd_values.yml"
+
+
+
 # Exposed Services
 
 # If required, this chart can create a service of ClusterIP for communication within the cluster. This type can

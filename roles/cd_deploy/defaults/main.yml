@@ -2,13 +2,15 @@
 cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev', true) }}"
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true)}}" # Specify the node of C:D application
 
-cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.0_ifix000', true) }}"
-cd_helm_release: "{{ lookup('env', 'CD_HELM_RELEASE') | default('mycd', true) }}"
+cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.2_ifix009', true) }}"
+cd_helm_release: "{{ lookup('env', 'CD_HELM_RELEASE') | default('mycd0', true) }}"
 
 cd_adminPassword: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
 cd_localCertPassphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default('changeit', true) }}"
 cd_keystorePassword: "{{ lookup('env', 'CD_KEYSTOREPASSWORD') | default('changeit', true) }}"
+
+cd_licenseType: "{{ lookup('env', 'CD_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
 # Entitlement
 # -----------------------------------------------------------------------------

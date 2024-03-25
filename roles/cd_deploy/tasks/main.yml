@@ -20,19 +20,10 @@
 - name: Validating the Installation
   ansible.builtin.include_tasks: 30_validate_install.yml
 
-  #cdai_localNodeName=CDNODE01
-  #cdai_serverPort=1364
-  #cdai_clientPort=1363
-  #cdai_localCertFile=
-  #cdai_fileAgentEnable=n
-  #cdai_localCertLabel=Client-API
-  #cdai_trustedAddr=
-  ## Standard User Mode parameter
-  #cdai_enableOum=y
 #
 # # 1. Wait until the specified CRD is available
 # # -----------------------------------------------------------------------------
-# - name: "wait_for_crd : Wait until the {{ crd_name }} CRD is available"
+# - name: "wait_for_crd : Wait until the {{ cd_nodename }} CRD is available"
 #   kubernetes.core.k8s_info:
 #     api_version: apiextensions.k8s.io/v1
 #     kind: CustomResourceDefinition
