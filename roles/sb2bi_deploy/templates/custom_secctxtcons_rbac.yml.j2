@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+ name: "ibm-b2bi-scc"
+ labels:
+  app: "ibm-b2bi-scc" 
+  rules:
+  - apiGroups:
+  - security.openshift.io
+  resourceNames:
+  - "ibm-b2bi-scc"
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "ibm-b2bi-scc"
+  labels:
+    app: "ibm-b2bi-scc"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "ibm-b2bi-scc"
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts
+  namespace: {{ si_namespace }}

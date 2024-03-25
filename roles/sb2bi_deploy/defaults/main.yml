@@ -1,0 +1,162 @@
+---
+si_namespace: "{{ lookup('env', 'SI_NAMESPACE') | default('sterling-b2bi-app-dev') }}"
+
+
+si_version: "6.2.0.0"
+# Entitlement
+# -----------------------------------------------------------------------------
+entitled_registry: "cp.icr.io/cp"
+entitled_registry_user: cp
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# Defaults for B2Bi instances.
+# For clustered B2Bi instances, leave defaults for the initial node. For node 2 and higher, define node number (starting sequentially from 2)
+# -----------------------------------------------------------------------------
+si_cluster: "{{ si_cluster | default('false') }}"
+si_nodenum: "{{ si_nodenum | default('') }}"
+
+si_licenseType: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
+
+si_dbvendor: "{{ lookup('env', 'SI_DBVENDOR') }}"
+si_dbuser: "{{ lookup('env', 'SI_DBUSER')| default('db2inst1', true) }}"
+si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD')| default('passwOrd', true) }}"
+si_dbhost: "{{ lookup('env', 'SI_DBHOST')"
+si_dbport: "{{ lookup('env', 'SI_DBPORT')"
+si_dbname: "{{ lookup('env', 'SI_DBNAME')"
+
+si_adminMailAddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
+si_adminSmtpHost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
+
+si_jmsuser: "{{ lookup('env', 'SI_JMS_USERNAME') | default('app', true) }}"
+si_jmspassword: "{{ lookup('env', 'SI_JMS_PASSWORD') | default('passwOrd', true) }}"
+si_jmskeystorepassword: "{{ lookup('env', 'SI_JMS_KEYSTORE_PASSWORD') | default('changeit', true) }}"
+si_jmstruststorepassword: "{{ lookup('env', 'SI_JMS_TRUSTSTORE_PASSWORD') | default('changeit', true) }}"
+
+si_libertykeystorepassword: "{{ lookup('env', 'SI_LIBERTY_KEYSTORE_PASSWORD') | default('changeit', true) }}"
+
+# Others
+# -----------------------------------------------------------------------------
+my_workdir: /tmp
+si_nodename_lower: "{{ si_nodename | lower  }}"
+si_registry_secret: b2bi-ibm-registry
+si_system_passphrase_secret: b2bi-system-passphrase-secret
+si_db_secret: b2bi-db-secret
+si_jms_secret: b2bi-jms-secret
+si_liberty_secret: b2bi-liberty-secret
+si_helm_release: myb2bi
+
+# Helm Variables
+# -----------------------------------------------------------------------------
+si_helm:
+  sumEnabled: 0 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
+  timeout: "60m0s"
+
+#my_helm_version: "v{{ si_helm_chart_version }}"
+
+compatibility_matrix:
+  6.2.0.0:
+    helm_version: "3.0.0"
+    global:
+      image:
+        tag: "6.2.0.0"
+    resourcesInit:
+      image:
+        tag: "6.2.0.0"
+    dataSetup:
+      image:
+        tag: "6.2.0.0"
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:
+        image:
+          tag: "10.1.1.1.20221116"
+      itxaIntegration:
+        image:
+          tag: "10.0.1.8"
+        resourcesInit:
+          tag: "10.0.1.8"
+    test:
+      image:
+        tag: '1.1.62'
+    purge:
+      image:
+        tag: "6.2.0.0"
+    documentService:
+      image:
+        tag: 1.0.0.0
+        digest:
+  6.1.2.5:
+    helm_version: "2.1.6"
+    global:
+      image:
+        tag: "6.1.2.5"
+        digest: 
+    resourcesInit:
+      image:
+        tag: "6.1.2.5"
+        digest: 
+    dataSetup:
+      image:
+        tag: "6.1.2.5"
+        digest: 
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:
+        image:
+          tag: ""
+          digest: ""
+      itxaIntegration:
+        image:
+          tag: ""
+        resourcesInit:
+          tag: ""
+    test:
+      image:
+        tag: ""
+        digest: 
+    purge:
+      enabled: true
+      image:
+        tag: "6.1.2.5"
+        digest: 
+
+database_matrix:
+  db2:
+    vendor: "DB2"
+    dbdriver: "db2jcc4.jar"
+  oracle:
+    vendor: "Oracle"
+    dbdriver: "ojdbc8.jar"
+  sql:
+    vendor: "SQLServer"
+    dbdriver: "FIXME.jar"
+
+
+storage_class_matrix:
+  ibmcloud:
+    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
+    rwo: "ibmc-block-gold"      # ReadWriteOnce
+    rom: "ibmc-file-gold"       # ReadOnlyMany  #FIXME need to define this value
+    rwop: ""                    # ReadWriteOncePod
+  redhat:
+    rwx: "ocs-storagecluster-cephfs"
+    rwx_nogid: "ocs-storagecluster-cephfs"
+    rwo: "ocs-storagecluster-ceph-rbd"
+    rom: "ocs-storagecluster-cephfs"
+    rwop: ""
+  aws:
+    rwx: "efs"
+    rwx_nogid: "efs"
+    rwo: " gp2"
+    rom: ""
+    rwop: ""
+  azure:
+    rwx: "azurefiles-premium"
+    rwx_nogid: "azurefiles-premium"
+    rwo: " managed-premium"
+    rom: ""
+    rwop: ""

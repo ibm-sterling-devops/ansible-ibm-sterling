@@ -1,0 +1,40 @@
+---
+- name: Set Facts for JdbcCfg
+#  no_log: true
+  set_fact:
+    si_dbvendor: "db2"
+    si_dbhost: "c-mydb2.svc.local"
+    si_dbport: "50000"
+    si_dbname: "B2BI"
+    si_dbuser: "db2inst1"
+    si_dbpassword: "passwOrd"
+    db2_instance_name: "db2inst1"
+  when:
+    - (si_dbvendor is not defined) or (si_dbvendor == '')
+
+
+# - name: Lookup db2u instance password
+# #  no_log: true
+#   kubernetes.core.k8s_info:
+#     api_version: v1
+#     kind: Secret
+#     name: "mydb2-secret"
+#     namespace: "{{db2_namespace}}"
+#   register: db_encoded_password
+
+# - name: Set Facts for JdbcCfg
+# #  no_log: true
+#   set_fact:
+#     si_dbpassword: "{{ db_encoded_password.resources[0].data.password | b64decode }}"
+#     jdbc_url: "jdbc:db2://c-{{db2_instance_name | lower}}-db2u-engn-svc.{{ db2_namespace }}.svc:{{db2_tls_serviceport}}/{{db2_dbname}}:sslConnection=true;sslVersion={{ tls_version }};"
+
+# - name: Set facts for si_dbuser and si_dbpassword
+# #  no_log: true
+#   set_fact:
+#     si_dbuser: "{{ db2_ldap_username }}"
+#     jdbc_instance_password: "{{ db2_ldap_password }}"
+#   when:
+#     - db2_ldap_username is defined and db2_ldap_username != ""
+#     - db2_ldap_password is defined and db2_ldap_password != ""
+
+  
