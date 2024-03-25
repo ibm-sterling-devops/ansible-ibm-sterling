@@ -58,8 +58,8 @@ pvClaim:
   storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwo }}"  
   accessMode: "ReadWriteOnce"
   selector:
-    label: "{{ cd_helm_values.pvClaim.selector.label | default('') }}"
-    value: "{{ cd_helm_values.pvClaim.selector.value | default('') }}"
+    label: "intent"
+    value: "cd-vol"
   size: {{ cd_helm_values.pvClaim.size | default('100Mi') }}
 
 service:
