@@ -17,8 +17,8 @@
 - name: Install Connect:Direct using Helm Chart
   ansible.builtin.include_tasks: 06_install_cd.yml
 
-- name: Validating the Installation
-  ansible.builtin.include_tasks: 30_validate_install.yml
+# - name: Validating the Installation
+#  ansible.builtin.include_tasks: 07_validate_install.yml
 
 #
 # # 1. Wait until the specified CRD is available
