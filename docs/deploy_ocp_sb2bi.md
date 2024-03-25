@@ -33,7 +33,7 @@ cd ansible-ibm-sterling
 
 export SI_NAMESPACE=sterling-b2bi-dev
 export MQ_NAMESPACE=sterling-b2bi-mq-dev
-export DB_NAMESPACE=sterling-b2bi-mq-dev
+export DB_NAMESPACE=sterling-b2bi-db2-dev
 ```
 
 ## Run the Plabook
@@ -50,8 +50,6 @@ MainPage [README.md](../README.md)
 # Advanced options
 
 ```
-export ENTITLED_REGISTRY=cp.icr.io
-export ENTITLED_REGISTRY_USER=cp
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 
 export SB2BI_INSTANCE_ID=sterling-b2bi-dev
