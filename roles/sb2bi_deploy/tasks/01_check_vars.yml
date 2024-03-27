@@ -6,7 +6,7 @@
       - lookup('env', 'SI_NAMESPACE') != ""
       # IBM
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""   
-      # # SLS
+      # Database Infor
       # - (lookup('env', 'SLS_LICENSE_ID') != "" and lookup('env', 'SLS_LICENSE_FILE') != "") or
       #   (lookup('env', 'SLS_ENTITLEMENT_FILE') != "")
     fail_msg: "One or more required environment variables are not defined"
@@ -18,14 +18,22 @@
     that: si_namespace is defined and si_namespace != ""
     fail_msg: "si_namespace property is required"
 
-- name: "Fail if entitled_registry_key is not provided"
+- name: "Fail if entitled.registry_key is not provided"
   ansible.builtin.assert:
-    that: entitled_registry_key is defined and entitled_registry_key != ""
-    fail_msg: "entitled_registry_key property is required"
+    that: entitled.registry_key is defined and entitled.registry_key != ""
+    fail_msg: "entitled.registry_key property is required"
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that: 
+      - (db2_namespace != "") or (si_dbvendor != "")
+    fail_msg: "Database Information property is required"
 
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
   debug:
     msg:
-      - "Kubernets Namespace ................. {{ si_namespace }}"
+      - "Sterling Integrator namespace ................. {{ si_namespace }}"
+      # - "Database Namespace ................. {{ db2_namespace }}"
+      # - "Kubernets Namespace ................. {{ si_namespace }}"

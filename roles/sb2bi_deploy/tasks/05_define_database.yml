@@ -1,0 +1,99 @@
+---
+# Get Information from db2_namespace
+# -----------------------------------------------------------------------------
+- name: "Lookup Secrets from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: "{{ db2_secret }}"
+    namespace: "{{ db2_namespace }}"
+  register: db_secret_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: "Lookup Service from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: "{{ db2_id }}-ci"
+    namespace: "{{ db2_namespace }}"
+  register: db_svc_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: Set Facts for Database Configuration from db2_namespace
+#  no_log: true
+  set_fact:
+    si_dbvendor: "DB2"
+    si_dbhost: "{{ db2_id }}-ci.{{ db2_namespace }}.svc.cluster.local"
+    si_dbport: "{{ db_svc_cout.resources[0].spec.ports[0].port }}"
+    si_dbname: "B2BI"
+    si_dbuser: "db2inst1"
+    si_dbpassword: "{{ db_secret_cout.resources[0].data.DB2INST1_PASSWORD | b64decode }}"
+#     jdbc_url: "jdbc:db2://c-{{db2_instance_name | lower}}-db2u-engn-svc.{{ db2_namespace }}.svc:{{db2_tls_serviceport}}/{{db2_dbname}}:sslConnection=true;sslVersion={{ tls_version }};"
+  when: 
+    - db2_namespace is defined and db2_namespace != ""
+    - db_secret_cout is defined and db_secret_cout != ""
+    - db_svc_cout is defined and db_svc_cout != ""
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  set_fact:
+    si_dbdrivers: "db2jcc4.jar"
+  when: 
+    - si_dbvendor is defined and si_dbvendor == "DB2"
+
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  set_fact:
+    si_dbdrivers: "ojdbc8.jar"
+    si_oracleUseServiceName:  "true"
+  when: 
+    - si_dbvendor is defined and si_dbvendor == "Oracle"
+
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  set_fact:
+    si_dbdrivers: "mssql_FIXME.jar"
+  when: 
+    - si_dbvendor is defined and si_dbvendor == "SQLServer"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  debug:
+    msg:
+      - "DB Vendor ................. {{ si_dbvendor }}"
+      - "DB Host   ................. {{ si_dbhost }}"
+      - "DB Port   ................. {{ si_dbport }}"
+      - "DB Name   ................. {{ si_dbname }}"
+      - "DB User   ................. {{ si_dbuser }}"
+      - "DB Password ............... {{ si_dbpassword }}"
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that: 
+      - si_dbvendor is defined and si_dbvendor != ""
+      - si_dbhost is defined and si_dbhost != ""
+      - si_dbport is defined and si_dbport != ""
+      - si_dbname is defined and si_dbname != ""
+      - si_dbuser is defined and si_dbuser != ""
+      - si_dbpassword is defined and si_dbpassword != ""
+    fail_msg: "Database Properties are required"
+
+- name: "Generate '{{ si_db_secret }}' secret"
+  no_log: false
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque
+      metadata:
+        name: "{{ si_db_secret }}"
+        namespace: "{{ si_namespace }}"
+      data:
+        DB_USER: "{{ si_dbuser | b64encode }}"
+        DB_PASSWORD: "{{ si_dbpassword | b64encode }}"
+  register: si_db_secret_cout

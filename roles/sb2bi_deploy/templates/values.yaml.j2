@@ -4,7 +4,7 @@ global:
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi"
     tag: "{{ compatibility_matrix[ si_version ].global.image.tag | default('') }}"
-    digest: "{{ compatibility_matrix[ si_version ].global.image.digest | default('') }}"
+    digest:
     pullPolicy: IfNotPresent
     pullSecret: "{{ si_registry_secret }}"
   networkPolicies:
@@ -67,7 +67,7 @@ resourcesInit:
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-resources"
     tag: "{{ compatibility_matrix[ si_version ].resourcesInit.image.tag | default('') }}"
-    digest: "{{ compatibility_matrix[ si_version ].resourcesInit.image.digest | default('') }}"
+    digest:
     pullPolicy: "IfNotPresent"
   command:
 
@@ -127,7 +127,7 @@ dataSetup:
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-dbsetup"
     tag: "{{ compatibility_matrix[ si_version ].dataSetup.image.tag | default('') }}"
-    digest: "{{ compatibility_matrix[ si_version ].dataSetup.image.digest | default('') }}"
+    digest:
     pullPolicy: IfNotPresent
     pullSecret: "{{ si_registry_secret }}"
     extraLabels: {}
@@ -158,7 +158,7 @@ integrations:
     image:
       repository: "cp.icr.io/cp/ibm-itx-rs"
       tag: "{{ compatibility_matrix[ si_version ].integrations.itxIntegration.image.tag | default('') }}"
-      digest: "{{ compatibility_matrix[ si_version ].integrations.itxIntegration.image.digest | default('') }}"
+      digest:
       pullPolicy: IfNotPresent
       pullSecret: "{{ si_registry_secret }}"
     dataPVC:
@@ -198,7 +198,7 @@ integrations:
     image:
       repository: "cp.icr.io/cp/ibm-itxa-runtime"
       tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.image.tag | default('') }}"
-      digest: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.image.digest | default('') }}"
+      digest:
       pullPolicy: IfNotPresent
       pullSecret: "{{ si_registry_secret }}"
     appSecret: "{{ si_itxa_secret | default('itxa-oracle-secrets') }}"
@@ -218,7 +218,7 @@ integrations:
       image:
         repository: "cp.icr.io/cp/ibm-itxa-resources"
         tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.tag | default('') }}"
-        digest: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.digest | default('') }}"
+        digest:
         pullPolicy: "IfNotPresent"
 {% endif %}
 
@@ -234,13 +234,13 @@ setupCfg:
   enableFipsMode: {{ si_helm_values.setupCfg.enableFipsMode | default('false') }}
   nistComplianceMode: "{{ si_helm_values.setupCfg.nistComplianceMode | default('off') }}"
 
-  dbVendor: {{ database_matrix[ si_dbvendor ].vendor | default('') }}
-  dbHost: {{ si_helm_values.setupCfg.dbHost | default('') }}
-  dbPort: {{ si_helm_values.setupCfg.dbPort | default('') }}
-  dbData: {{ si_helm_values.setupCfg.dbData | default('') }}
-  dbDrivers: {{ database_matrix[ si_dbvendor ].dbdriver | default('') }}
+  dbVendor: {{ si_dbvendor }}
+  dbHost: {{ si_dbhost }}
+  dbPort: {{ si_dbport }}
+  dbData: {{ si_dbname }}
+  dbDrivers: {{ si_dbdrivers }}
   dbCreateSchema:  {{ si_helm_values.setupCfg.dbCreateSchema | default('true') }}
-  oracleUseServiceName: {{ si_helm_values.setupCfg.oracleUseServiceName | default('false') }}
+  oracleUseServiceName: {{ si_oracleUseServiceName | default('false') }}
   usessl:  {{ si_helm_values.setupCfg.usessl | default('false') }}
   
   dbSecret: {{ si_db_secret }}
@@ -1005,7 +1005,7 @@ test:
   image:
     repository: 'cp.icr.io/cp/opencontent-common-utils'
     tag: "{{ compatibility_matrix[ si_version ].test.image.tag | default('') }}"
-    digest: "{{ compatibility_matrix[ si_version ].test.image.digest | default('') }}"
+    digest:
     pullPolicy: 'IfNotPresent'
 
 purge:
@@ -1013,7 +1013,7 @@ purge:
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-purge"
     tag: "{{ compatibility_matrix[ si_version ].purge.image.tag | default('') }}"
-    digest: "{{ compatibility_matrix[ si_version ].purge.image.digest | default('') }}"
+    digest:
     pullPolicy: IfNotPresent
     pullSecret: "{{ si_registry_secret }}"
     extraLabels: {}
@@ -1062,7 +1062,7 @@ documentService:
     repository: cp.icr.io/cp/ibm-b2bi/b2bi-documentservice
     pullPolicy: IfNotPresent
     tag: "{{ compatibility_matrix[ si_version ].documentService.image.tag | default('') }}"
-    digest: "{{ compatibility_matrix[ si_version ].documentService.image.digest | default('') }}"
+    digest:
     pullSecret: "{{ si_registry_secret }}"
   serviceAccount:
     name: default

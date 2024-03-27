@@ -2,11 +2,12 @@
 # Configure Db2 instance
 # -----------------------------------------------------------------------------------------------------------------
 db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') | default('sterling-b2bi-db2-dev', true) }}"
-db2_instance_name: "{{ lookup('env', 'DB2_INSTANCE_NAME') | default('db2inst1', true) }}"
-db2_user: "{{ lookup('env', 'DB2_USER') | default('db2inst1', true) }}"
 db2_password: "{{ lookup('env', 'DB2_PASSWORD') | default('passw0rd', true) }}"
-db2_dbname: "{{ lookup('env', 'DB2_DBNAME')   | default('B2BI', true) }}"
 db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true)}}"
+
+db2_instance_name: db2inst1
+db2_user: db2inst1
+db2_dbname: B2BI
 
 # Entitlement
 # -----------------------------------------------------------------------------

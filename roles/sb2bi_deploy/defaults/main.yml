@@ -1,13 +1,13 @@
 ---
 si_namespace: "{{ lookup('env', 'SI_NAMESPACE') | default('sterling-b2bi-app-dev') }}"
 
-
 si_version: "6.2.0.0"
 # Entitlement
 # -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io/cp"
-entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+entitled:
+  registry: "cp.icr.io/cp"
+  registry_user: cp
+  registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Defaults for B2Bi instances.
 # For clustered B2Bi instances, leave defaults for the initial node. For node 2 and higher, define node number (starting sequentially from 2)
@@ -18,16 +18,20 @@ si_nodenum: "{{ si_nodenum | default('') }}"
 si_licenseType: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
 
+db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 si_dbvendor: "{{ lookup('env', 'SI_DBVENDOR') }}"
-si_dbuser: "{{ lookup('env', 'SI_DBUSER')| default('db2inst1', true) }}"
-si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD')| default('passwOrd', true) }}"
-si_dbhost: "{{ lookup('env', 'SI_DBHOST')"
-si_dbport: "{{ lookup('env', 'SI_DBPORT')"
-si_dbname: "{{ lookup('env', 'SI_DBNAME')"
+si_dbhost: "{{ lookup('env', 'SI_DBHOST') }}"
+si_dbport: "{{ lookup('env', 'SI_DBPORT') }}"
+si_dbname: "{{ lookup('env', 'SI_DBNAME') }}"
+si_dbuser: "{{ lookup('env', 'SI_DBUSER') }}"
+si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD') }}"
+si_oracleUseServiceName: "{{ lookup('env', 'SI_ORACLESERVICENAME') }}"
+
 
 si_adminMailAddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
 si_adminSmtpHost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
 
+mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') }}"
 si_jmsuser: "{{ lookup('env', 'SI_JMS_USERNAME') | default('app', true) }}"
 si_jmspassword: "{{ lookup('env', 'SI_JMS_PASSWORD') | default('passwOrd', true) }}"
 si_jmskeystorepassword: "{{ lookup('env', 'SI_JMS_KEYSTORE_PASSWORD') | default('changeit', true) }}"
@@ -39,12 +43,16 @@ si_libertykeystorepassword: "{{ lookup('env', 'SI_LIBERTY_KEYSTORE_PASSWORD') | 
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 si_nodename_lower: "{{ si_nodename | lower  }}"
-si_registry_secret: b2bi-ibm-registry
-si_system_passphrase_secret: b2bi-system-passphrase-secret
-si_db_secret: b2bi-db-secret
-si_jms_secret: b2bi-jms-secret
-si_liberty_secret: b2bi-liberty-secret
-si_helm_release: myb2bi
+si_registry_secret: si-ibm-registry
+si_system_passphrase_secret: si-system-passphrase-secret
+si_db_secret: si-db-secret
+si_jms_secret: si-jms-secret
+si_liberty_secret: si-liberty-secret
+si_helm_release: mysi
+
+db2_secret: mydb2-secret
+db2_id: mydb2
+mq_secret: mymq-secret
 
 # Helm Variables
 # -----------------------------------------------------------------------------
@@ -86,53 +94,34 @@ compatibility_matrix:
     documentService:
       image:
         tag: 1.0.0.0
-        digest:
   6.1.2.5:
     helm_version: "2.1.6"
     global:
       image:
         tag: "6.1.2.5"
-        digest: 
     resourcesInit:
       image:
         tag: "6.1.2.5"
-        digest: 
     dataSetup:
       image:
         tag: "6.1.2.5"
-        digest: 
     integrations:
       seasIntegration:
         seasVersion: "1.0"
       itxIntegration:
         image:
           tag: ""
-          digest: ""
       itxaIntegration:
         image:
           tag: ""
         resourcesInit:
-          tag: ""
     test:
       image:
         tag: ""
-        digest: 
     purge:
       enabled: true
       image:
         tag: "6.1.2.5"
-        digest: 
-
-database_matrix:
-  db2:
-    vendor: "DB2"
-    dbdriver: "db2jcc4.jar"
-  oracle:
-    vendor: "Oracle"
-    dbdriver: "ojdbc8.jar"
-  sql:
-    vendor: "SQLServer"
-    dbdriver: "FIXME.jar"
 
 
 storage_class_matrix:
