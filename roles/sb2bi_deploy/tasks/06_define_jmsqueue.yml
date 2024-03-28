@@ -26,15 +26,22 @@
 - name: Set Facts for JMS Configuration from mq_namespace
 #  no_log: true
   set_fact:
-    si_jmsuser: "{{ jms_secret_cout.resources[0].data.JMS_USERNAME | b64decode }}"
-    si_jmspassword: "{{ jms_secret_cout.resources[0].data.JMS_PASSWORD | b64decode }}"
-    si_jmskeystorepassword: "{{ jms_secret_cout.resources[0].data.JMS_KEYSTORE_PASSWORD | b64decode }}"
-    si_jmstruststorepassword: "{{ jms_secret_cout.resources[0].data.JMS_TRUSTSTORE_PASSWORD | b64decode }}"
+    si_jmsuser: "app"
+    si_jmsvendor: "IBMMQ"
+    si_jmsconnectionfactory: "com.ibm.mq.jms.MQQueueConnectionFactory"
+    si_jmsqueuename: "DEV.QUEUE.1"
+    si_jmschannel: "DEV.APP.SVRCONN"
+    si_jmsenablessl: "false"
+    si_jmspassword: "{{ jms_secret_cout.resources[0].data.appPassword | b64decode }}"
+    # si_jmskeystorepassword: "{{ jms_secret_cout.resources[0].data.JMS_KEYSTORE_PASSWORD | b64decode }}"
+    # si_jmstruststorepassword: "{{ jms_secret_cout.resources[0].data.JMS_TRUSTSTORE_PASSWORD | b64decode }}"
     si_jmshost: "mq-data.{{ mq_namespace }}.svc.cluster.local"
     si_jmsport: "{{ jms_svc_cout.resources[0].spec.ports[0].port }}"
+    si_jmsconnectionnamelist:  "mq-data.{{ mq_namespace }}.svc.cluster.local({{ jms_svc_cout.resources[0].spec.ports[0].port }})"
   when: 
     - mq_namespace is defined and mq_namespace != ""
     - jms_secret_cout is defined and jms_secret_cout != ""
+    - jms_svc_cout is defined and jms_svc_cout != ""
 
 
 - name: Debug
@@ -51,8 +58,6 @@
     that: 
       - si_jmsuser is defined and si_jmsuser != ""
       - si_jmspassword is defined and si_jmspassword != ""
-      - si_jmskeystorepassword is defined and si_jmskeystorepassword != ""
-      - si_jmstruststorepassword is defined and si_jmstruststorepassword != ""
     fail_msg: "JMS Queue Properties are required"
 
 
@@ -70,6 +75,6 @@
       data:
         JMS_USERNAME: "{{ si_jmsuser | b64encode }}"
         JMS_PASSWORD: "{{ si_jmspassword | b64encode }}"
-        JMS_KEYSTORE_PASSWORD: "{{ si_jmskeystorepassword | b64encode }}"
-        JMS_TRUSTSTORE_PASSWORD: "{{ si_jmstruststorepassword | b64encode }}"
+        # JMS_KEYSTORE_PASSWORD: "{{ si_jmskeystorepassword | b64encode }}"
+        # JMS_TRUSTSTORE_PASSWORD: "{{ si_jmstruststorepassword | b64encode }}"
   register: si_jms_secret_cout

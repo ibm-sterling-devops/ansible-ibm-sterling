@@ -254,16 +254,16 @@ setupCfg:
   smtpHost: {{ si_helm_values.setupCfg.smtpHost | default('') }}
   terminationGracePeriod: 30
 
-  jmsVendor:
-  jmsConnectionFactory:
+  jmsVendor: {{ si_jmsvendor }}
+  jmsConnectionFactory: {{ si_jmsconnectionfactory }}
   jmsConnectionFactoryInstantiator:
-  jmsQueueName:
-  jmsHost:
-  jmsPort:
-  jmsConnectionNameList:
-  jmsChannel:
-  jmsEnableSsl:
-  jmsSecret: {{ si_jms_secret | default('') }}
+  jmsQueueName: {{ si_jmsqueuename }}
+  jmsHost: {{ si_jmshost }}
+  jmsPort: {{ si_jmsport }}
+  jmsConnectionNameList: {{ si_jmsconnectionnamelist }}
+  jmsChannel: {{ si_jmschannel }}
+  jmsEnableSsl: {{ si_jmsenablessl }}
+  jmsSecret: {{ si_jms_secret }}
   jmsKeystorePath:
   jmsKeystoreSecret: {{ si_jms_keystore_secret | default('') }}
   jmsTruststorePath:

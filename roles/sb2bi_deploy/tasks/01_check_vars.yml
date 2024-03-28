@@ -3,20 +3,21 @@
   ansible.builtin.assert:
     that:
       # Sterling B2B
-      - lookup('env', 'SI_NAMESPACE') != ""
-      # IBM
+      - lookup('env', 'SI_INSTANCEID') != ""
+      # IBM Registry
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""   
-      # Database Infor
-      # - (lookup('env', 'SLS_LICENSE_ID') != "" and lookup('env', 'SLS_LICENSE_FILE') != "") or
-      #   (lookup('env', 'SLS_ENTITLEMENT_FILE') != "")
     fail_msg: "One or more required environment variables are not defined"
 
 # 1. Check for undefined properties that do not have a default
 # -----------------------------------------------------------------------------
-- name: "Fail if si_namespace is not provided"
+
+- name: "Fail si_instanceid is 'not provided' or 'over 8 characters' or 'has uppercase characters'"
   ansible.builtin.assert:
-    that: si_namespace is defined and si_namespace != ""
-    fail_msg: "si_namespace property is required"
+    that:
+      - si_instanceid is defined and si_instanceid != ""
+      - si_instanceid | length <= 8
+      - si_instanceid is match('[a-z0-9]+')
+    fail_msg: "Property 'si_instanceid' is greater than 8 character long or has uppercase characters"
 
 - name: "Fail if entitled.registry_key is not provided"
   ansible.builtin.assert:
@@ -29,11 +30,17 @@
       - (db2_namespace != "") or (si_dbvendor != "")
     fail_msg: "Database Information property is required"
 
+- name: "Fail if JMS Queue Information is not provided"
+  ansible.builtin.assert:
+    that: 
+      - (mq_namespace != "") or (si_jmsuser != "")
+    fail_msg: "JMS Queue Information property is required"
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
   debug:
     msg:
-      - "Sterling Integrator namespace ................. {{ si_namespace }}"
-      # - "Database Namespace ................. {{ db2_namespace }}"
-      # - "Kubernets Namespace ................. {{ si_namespace }}"
+      - "SI Instance ID  .............. {{ si_instanceid }}"
+      - "SI namespace ................. {{ si_namespace }}"
+      - "Database Namespace ........... {{ db2_namespace }}"
+      - "JMS Queue Namespace .......... {{ mq_namespace }}"
