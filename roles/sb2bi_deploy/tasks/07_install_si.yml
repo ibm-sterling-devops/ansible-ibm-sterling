@@ -21,15 +21,15 @@
       asi:
         ingress:
           internal:
-            host: "asi.blablablabla.containers.appdomain.cloud"
+            host: "asi.b2bi-dev.company.com"
       ac:
         ingress:
           internal:
-            host: "ac.blablablabla.containers.appdomain.cloud"
+            host: "ac.b2bi-dev.company.com"
       api:
         ingress:
           internal:
-            host: "api.blablablabla.containers.appdomain.cloud"
+            host: "api.b2bi-dev.company.com"
       purge:
         schedule: "0 0 * * *"
 
@@ -51,10 +51,10 @@
 #   shell: "helm delete --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
 
 
-# - name: Run Helm install command
-#   shell: "helm install --timeout {{ si_helm.timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
-# # --timeout {{ si_helm.timeout }}
-# # --wait
+- name: Run Helm install command
+  shell: "helm install --timeout {{ si_helm.timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
+# --timeout {{ si_helm.timeout }}
+# --wait
 
 
 

@@ -239,7 +239,7 @@ setupCfg:
   dbPort: {{ si_dbport }}
   dbData: {{ si_dbname }}
   dbDrivers: {{ si_dbdrivers }}
-  dbCreateSchema:  {{ si_helm_values.setupCfg.dbCreateSchema | default('true') }}
+  dbCreateSchema: {{ si_helm_values.setupCfg.dbCreateSchema | default('true') }}
   oracleUseServiceName: {{ si_oracleUseServiceName | default('false') }}
   usessl:  {{ si_helm_values.setupCfg.usessl | default('false') }}
   
@@ -359,11 +359,16 @@ asi:
       #  targetPort: 30201
       #  nodePort: 30201
       #  protocol: TCP
-    portRanges: []
+    portRanges:
+      - name: adapters
+        portRange: 30351-30353
+        targetPortRange: 30351-30353
+        nodePortRange: 30351-30353
+        protocol: TCP
       #- name: adapters
-      #  portRange: 30301-30400
-      #  targetPortRange: 30301-30400
-      #  nodePortRange: 30301-30400
+      #  portRange: 30501-30600
+      #  targetPortRange: 30501-30600
+      #  nodePortRange: 30501-30600
       #  protocol: TCP
     loadBalancerIP:  
     loadBalancerSourceRanges: []
@@ -614,12 +619,12 @@ ac:
       #  targetPort: 30401
       #  nodePort: 30401
       #  protocol: TCP
-    portRanges: []
-      #- name: adapters
-      #  portRange: 30501-30600
-      #  targetPortRange: 30501-30600
-      #  nodePortRange: 30501-30600
-      #  protocol: TCP
+    portRanges:
+      - name: adapters
+        portRange: 30501-30600
+        targetPortRange: 30501-30600
+        nodePortRange: 30501-30600
+        protocol: TCP
     loadBalancerIP:  
     loadBalancerSourceRanges: []
       #- "143.231.0.0/16"

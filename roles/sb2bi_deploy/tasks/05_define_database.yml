@@ -48,7 +48,7 @@
 #  no_log: true
   set_fact:
     si_dbdrivers: "ojdbc8.jar"
-    si_oracleUseServiceName:  "true"
+    si_oracleUseServiceName: "true"
   when: 
     - si_dbvendor is defined and si_dbvendor == "Oracle"
 
