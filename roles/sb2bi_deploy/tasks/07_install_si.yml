@@ -1,38 +1,26 @@
 ---
-# - name: Debug
-#   debug:
-#     msg:
-#       - "DB Vendor ................. {{ si_dbvendor }}"
-
 - name: Define Sterling B2Bi helm chart values
   ansible.builtin.set_fact:
     si_helm_values:
-      global:
-        licenseType: "{{ si_licenseType }}" # prod or non-prod
-      persistence:
-        useDynamicProvisioning: "{{ si_use_dynamic_provisioning }}"
       setupCfg:
         licenseAcceptEnableSfg: "true"
         licenseAcceptEnableFileOperation: "true"
         dbCreateSchema: "true"
-        adminEmailAddress: "{{ si_adminMailAddr }}"
-        smtpHost: "{{ si_adminSmtpHost }}"
         defaultDocumentStorageType: "DB"
       asi:
         ingress:
           internal:
-            host: "asi.b2bi-dev.company.com"
+            host: "asi.{{ si_instanceid }}.company.com"
       ac:
         ingress:
           internal:
-            host: "ac.b2bi-dev.company.com"
+            host: "ac.{{ si_instanceid }}.company.com"
       api:
         ingress:
           internal:
-            host: "api.b2bi-dev.company.com"
+            host: "api.{{ si_instanceid }}.company.com"
       purge:
         schedule: "0 0 * * *"
-
 
 - name: Generate my_values.yml
   ansible.builtin.template:
@@ -42,17 +30,13 @@
 - name: Debug
   debug:
     msg:
-      # - "Image Repository ................. {{ compatibility_matrix[si_version].image_repository }}"
-      # - "Image Tag        ................. {{ compatibility_matrix[si_version].image_tag }}"
-      # - "si_helm_values   ................. {{ si_helm_values }}"
-      - "command: helm install --timeout {{ si_helm.timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
+      - "command: helm install --timeout {{ si_helm_timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
 
 # - name: Run Helm delete command
 #   shell: "helm delete --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
 
-
 - name: Run Helm install command
-  shell: "helm install --timeout {{ si_helm.timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
+  shell: "helm install --timeout {{ si_helm_timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
 # --timeout {{ si_helm.timeout }}
 # --wait
 

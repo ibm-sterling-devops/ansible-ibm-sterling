@@ -10,7 +10,6 @@
 
 # 1. Check for undefined properties that do not have a default
 # -----------------------------------------------------------------------------
-
 - name: "Fail si_instanceid is 'not provided' or 'over 8 characters' or 'has uppercase characters'"
   ansible.builtin.assert:
     that:
@@ -24,21 +23,65 @@
     that: entitled.registry_key is defined and entitled.registry_key != ""
     fail_msg: "entitled.registry_key property is required"
 
+# 2. Lookup Namespace availabiity
+# -----------------------------------------------------------------------------
+- name: Lookup Namespaces
+  kubernetes.core.k8s_info:
+    kind: Namespace
+  register: lookup_namespaces
+
+- name: Create List of Namespaces
+  ansible.builtin.set_fact:
+    namespace_list: "{{lookup_namespaces.resources | map(attribute='metadata.name') | list}}"
+
+# 3. Check for DB Information
+# -----------------------------------------------------------------------------
+- name: Check for DB2 provided namespace
+  ansible.builtin.set_fact:
+    db2_namespace: "{{ env_db2_namespace }}"
+  when:
+    - env_db2_namespace is defined and env_db2_namespace != ""
+    - env_db2_namespace in namespace_list
+
+- name: Check for DB2 default namespace
+  ansible.builtin.set_fact:
+    db2_namespace: "{{ si_db2_namespace }}"
+  when:
+    - db2_namespace == ""
+    - si_db2_namespace in namespace_list
+
 - name: "Fail if Database Information is not provided"
   ansible.builtin.assert:
     that: 
       - (db2_namespace != "") or (si_dbvendor != "")
     fail_msg: "Database Information property is required"
 
+# 4. Check for MQ Information
+# -----------------------------------------------------------------------------
+- name: Check for MQ provided namespace
+  ansible.builtin.set_fact:
+    mq_namespace: "{{ env_mq_namespace }}"
+  when:
+    - env_mq_namespace is defined and env_mq_namespace != ""
+    - env_mq_namespace in namespace_list
+
+- name: Check for MQ default namespace
+  ansible.builtin.set_fact:
+    mq_namespace: "{{ si_mq_namespace }}"
+  when:
+    - mq_namespace == ""
+    - si_mq_namespace in namespace_list
+
 - name: "Fail if JMS Queue Information is not provided"
   ansible.builtin.assert:
     that: 
       - (mq_namespace != "") or (si_jmsuser != "")
     fail_msg: "JMS Queue Information property is required"
+
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
-  debug:
+  ansible.builtin.debug:
     msg:
       - "SI Instance ID  .............. {{ si_instanceid }}"
       - "SI namespace ................. {{ si_namespace }}"

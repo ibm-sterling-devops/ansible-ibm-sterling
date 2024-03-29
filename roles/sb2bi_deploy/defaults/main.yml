@@ -2,8 +2,8 @@
 # Get values from Environment Variables
 # -----------------------------------------------------------------------------
 si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
-db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
-mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') }}"
+env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
+env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"
 
 si_licenseType: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
@@ -16,8 +16,8 @@ si_dbuser: "{{ lookup('env', 'SI_DBUSER') }}"
 si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD') }}"
 si_oracleUseServiceName: "{{ lookup('env', 'SI_ORACLESERVICENAME', default('false')) }}"
 
-si_adminMailAddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
-si_adminSmtpHost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
+si_adminmailaddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
+si_adminsmtphost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
 
 si_jmsuser: "{{ lookup('env', 'SI_JMS_USERNAME') }}"
 si_jmspassword: "{{ lookup('env', 'SI_JMS_PASSWORD') }}"
@@ -37,25 +37,24 @@ entitled:
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
-si_namespace: "sterling-b2bi-app-{{ si_instanceid }}"
+si_namespace: "sterling-b2bi-{{ si_instanceid }}-app"
+si_db2_namespace: "sterling-b2bi-{{ si_instanceid }}-db2"
+si_mq_namespace: "sterling-b2bi-{{ si_instanceid }}-mq"
 si_version: "6.2.0.0"
-
 si_registry_secret: si-ibm-registry
 si_system_passphrase_secret: si-system-passphrase-secret
 si_db_secret: si-db-secret
 si_jms_secret: si-jms-secret
 si_liberty_secret: si-liberty-secret
-si_helm_release: si00
+si_helm_release: s0
+si_helm_timeout: "60m0s"
 
+db2_namespace: ""
 db2_secret: mydb2-secret
 db2_id: mydb2
+
+mq_namespace: ""
 mq_secret: mymq-secret
-
-# Helm Variables
-# -----------------------------------------------------------------------------
-si_helm:
-  timeout: "60m0s"
-
 
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
@@ -128,7 +127,7 @@ storage_class_matrix:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
     rwo: "ibmc-block-gold"      # ReadWriteOnce
-    rom: "ibmc-file-gold"       # ReadOnlyMany  #FIXME need to define this value
+    rom: "ibmc-file-gold-gid"       # ReadOnlyMany  #FIXME need to define this value
     rwop: ""                    # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"

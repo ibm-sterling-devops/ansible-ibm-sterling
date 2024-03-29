@@ -3,7 +3,7 @@
   ansible.builtin.assert:
     that:
       # Sterling B2B
-      - lookup('env', 'SI_INSTANCEID') != ""
+      - lookup('env', 'MQ_NAMESPACE') != ""
       # IBM
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""   
     fail_msg: "One or more required environment variables are not defined"

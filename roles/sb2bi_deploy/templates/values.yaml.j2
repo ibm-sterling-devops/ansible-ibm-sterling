@@ -1,6 +1,6 @@
 global:
   license: true
-  licenseType: "{{ si_helm_values.global.licenseType }}"
+  licenseType: "{{ si_licenseType }}"
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi"
     tag: "{{ compatibility_matrix[ si_version ].global.image.tag | default('') }}"
@@ -63,7 +63,7 @@ serviceAccount:
   name: default
 
 resourcesInit:
-  enabled: false
+  enabled: true 
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-resources"
     tag: "{{ compatibility_matrix[ si_version ].resourcesInit.image.tag | default('') }}"
@@ -73,10 +73,10 @@ resourcesInit:
 
 persistence:
   enabled: true
-  useDynamicProvisioning: {{ si_helm_values.global.persistence.useDynamicProvisioning | default('false') }}
+  useDynamicProvisioning: {{ si_use_dynamic_provisioning }}
 
 appResourcesPVC:
-  enabled: true
+  enabled: false     # must be false if resourcesInit is true
   storageClassName: "{{ storage_class_matrix[ si_storage_class ].rom | default('') }}"
   selector:
     label: "intent"
@@ -250,8 +250,8 @@ setupCfg:
   dbKeystoreSecret: {{ si_helm_values.setupCfg.dbKeystoreSecret | default('') }}
     
   connectionpoolFailoverEnable: false
-  adminEmailAddress: {{ si_helm_values.setupCfg.adminEmailAddress | default('') }} 
-  smtpHost: {{ si_helm_values.setupCfg.smtpHost | default('') }}
+  adminEmailAddress: {{ si_adminmailaddr }} 
+  smtpHost: {{ si_adminsmtphost }}
   terminationGracePeriod: 30
 
   jmsVendor: {{ si_jmsvendor }}
