@@ -19,9 +19,9 @@ db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
 
 }
 
-function create_scc_db {
+function create_b2bi_db {
 
-cat << EOF > /tmp/create_scc_db2.sql
+cat << EOF > /tmp/create_b2bi_db2.sql
 CREATE DATABASE {{ db2_dbname }} AUTOMATIC STORAGE YES USING CODESET UTF-8 TERRITORY US COLLATE USING IDENTITY PAGESIZE 4096 DFT_EXTENT_SZ 32;
 CONNECT TO {{ db2_dbname }};
 UPDATE DATABASE CONFIG USING STMT_CONC LITERALS;
@@ -65,15 +65,15 @@ CREATE USER TEMPORARY TABLESPACE UTEMP4KTS IN DATABASE PARTITION GROUP IBMDEFAUL
 CONNECT RESET;
 EOF
 
-    if [[ ! -f "/tmp/create_scc_db2.sql" ]]; then
-        echo "ERROR: Cannot generate create_scc_db2.sql"
+    if [[ ! -f "/tmp/create_b2bi_db2.sql" ]]; then
+        echo "ERROR: Cannot generate create_b2bi_db2.sql"
         exit 1
     fi
 
-    db2 -tvf /tmp/create_scc_db2.sql
+    db2 -tvf /tmp/create_b2bi_db2.sql -z /tmp/create_b2bi_db2.sql.log 
 
     if [ $? -eq 0 ]; then
-        echo "ERROR: Failed to run 'db2 -tvf create_scc_db2.sql'"
+        echo "ERROR: Failed to run 'db2 -tvf create_b2bi_db2.sql'"
         exit 2
     fi
 
@@ -114,7 +114,7 @@ echo "Starting db2"
 db2start
 
 echo "Creating Sterling B2Bi Database"
-create_scc_db
+create_b2bi_db
 
 echo "Define Config settings to DB2"
 config_settings
