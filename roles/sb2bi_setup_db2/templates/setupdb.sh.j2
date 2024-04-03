@@ -8,42 +8,44 @@ db2set DB2_SKIPINSERTED=ON;
 db2set DB2_USE_ALTERNATE_PAGE_CLEANING=ON;
 db2set DB2_EVALUNCOMMITTED=ON;
 db2set DB2LOCK_TO_RB=STATEMENT;
-db2 update dbm cfg using DFT_MON_BUFPOOL ON;
-db2 update dbm cfg using DFT_MON_LOCK ON;
-db2 update dbm cfg using DFT_MON_SORT ON;
-db2 update dbm cfg using DFT_MON_STMT ON;
-db2 update dbm cfg using DFT_MON_TABLE ON;
-db2 update dbm cfg using DFT_MON_TIMESTAMP ON;
-db2 update dbm cfg using DFT_MON_UOW ON;
-db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
+# db2 update dbm cfg using DFT_MON_BUFPOOL ON;
+# db2 update dbm cfg using DFT_MON_LOCK ON;
+# db2 update dbm cfg using DFT_MON_SORT ON;
+# db2 update dbm cfg using DFT_MON_STMT ON;
+# db2 update dbm cfg using DFT_MON_TABLE ON;
+# db2 update dbm cfg using DFT_MON_TIMESTAMP ON;
+# db2 update dbm cfg using DFT_MON_UOW ON;
+# db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
 
 }
 
 function create_b2bi_db {
 
+
+# UPDATE DATABASE CONFIG USING STMT_CONC LITERALS;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING SELF_TUNING_MEM ON;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOCKLIST AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING MAXLOCKS AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING PCKCACHESZ AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING SHEAPTHRES_SHR AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING SORTHEAP AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING NUM_IOCLEANERS AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING NUM_IOSERVERS AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING DFT_PREFETCH_SZ AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING MAXAPPLS AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING APPLHEAPSZ AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING APPL_MEMORY AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING DBHEAP AUTOMATIC;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGFILSIZ 65536;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGPRIMARY 40;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGSECOND 12;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING NUM_LOG_SPAN 40;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING DFT_DEGREE 1;
+# UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGBUFSZ 2152;
+
 cat << EOF > /tmp/create_b2bi_db2.sql
 CREATE DATABASE {{ db2_dbname }} AUTOMATIC STORAGE YES USING CODESET UTF-8 TERRITORY US COLLATE USING IDENTITY PAGESIZE 4096 DFT_EXTENT_SZ 32;
 CONNECT TO {{ db2_dbname }};
-UPDATE DATABASE CONFIG USING STMT_CONC LITERALS;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING SELF_TUNING_MEM ON;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOCKLIST AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING MAXLOCKS AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING PCKCACHESZ AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING SHEAPTHRES_SHR AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING SORTHEAP AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING NUM_IOCLEANERS AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING NUM_IOSERVERS AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING DFT_PREFETCH_SZ AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING MAXAPPLS AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING APPLHEAPSZ AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING APPL_MEMORY AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING DBHEAP AUTOMATIC;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGFILSIZ 65536;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGPRIMARY 40;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGSECOND 12;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING NUM_LOG_SPAN 40;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING DFT_DEGREE 1;
-UPDATE DATABASE CONFIG FOR {{ db2_dbname }} USING LOGBUFSZ 2152;
 CREATE BUFFERPOOL REG4KBP IMMEDIATE ALL DBPARTITIONNUMS SIZE AUTOMATIC NUMBLOCKPAGES 0 PAGESIZE 4K;
 CREATE BUFFERPOOL REG8KBP IMMEDIATE ALL DBPARTITIONNUMS SIZE AUTOMATIC NUMBLOCKPAGES 0 PAGESIZE 8K;
 CREATE BUFFERPOOL REG16KBP IMMEDIATE ALL DBPARTITIONNUMS SIZE AUTOMATIC NUMBLOCKPAGES 0 PAGESIZE 16K;
@@ -69,24 +71,31 @@ EOF
         echo "ERROR: Cannot generate create_b2bi_db2.sql"
         exit 1
     fi
+    
+    echo "create_b2bi_db: File /tmp/create_b2bi_db2.sql created sucessfully"
 
     db2 -tvf /tmp/create_b2bi_db2.sql -z /tmp/create_b2bi_db2.sql.log 
 
-    if [ $? -eq 0 ]; then
+    rc=$?
+    if [ $rc -ne 0 ]; then
         echo "ERROR: Failed to run 'db2 -tvf create_b2bi_db2.sql'"
         exit 2
     fi
 
+    echo "create_b2bi_db: run 'db2 -tvf create_b2bi_db2.sql' sucessfully"
 }
 
 function apply_settings {
 
     db2 connect to {{ db2_dbname }}
 
-    if [ $? -eq 0 ]; then
+    rc=$?
+    if [ $rc -ne 0 ]; then
         echo "ERROR: Failed to connect to db2"
         exit 1
     fi
+
+    echo "apply_settings: connected to {{ db2_dbname }} sucessfully"
 
     # db2 update db cfg for {{ db2_dbname }} using CATALOGCACHE_SZ 300;
     # db2 update db cfg for {{ db2_dbname }} using UTIL_HEAP_SZ AUTOMATIC;
@@ -101,11 +110,12 @@ function apply_settings {
     echo "Run db2start"
     db2start
 
-    if [ $? -eq 0 ]; then
-    echo "ERROR: Failed to start to db2"
-    exit 2
+    rc=$?
+    if [ $rc -ne 0 ]; then
+        echo "ERROR: Failed to start to db2"
+        exit 2
     fi
-
+    echo "apply_settings: finished sucessfully"
 }
 
 ########################## Main Part of Shell Script ##########################

@@ -14,6 +14,7 @@
       - "Db2 instance name ...................... {{ db2_instance_name }}"
       - "Db2 database name ...................... {{ db2_dbname }}"
       - "Db2 Pod name ........................... {{ db2_pod_name }}"
+      - "Db2 Container name ..................... {{ db2_container }}"
 
 # definition: "{{ lookup('template', 'templates/setupdb.sh.j2') }}"
 - name: Copy the setupdb script into the mydb2-0 pod

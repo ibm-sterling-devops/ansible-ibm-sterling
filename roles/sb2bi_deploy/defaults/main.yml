@@ -47,7 +47,7 @@ si_db_secret: si-db-secret
 si_jms_secret: si-jms-secret
 si_liberty_secret: si-liberty-secret
 si_helm_release: s0
-si_helm_timeout: "60m0s"
+si_helm_timeout: "120m0s"
 
 db2_namespace: ""
 db2_secret: mydb2-secret
