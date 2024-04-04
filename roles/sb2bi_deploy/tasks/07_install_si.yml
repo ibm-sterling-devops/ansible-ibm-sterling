@@ -10,15 +10,15 @@
       asi:
         ingress:
           internal:
-            host: "asi.{{ si_instanceid }}.company.com"
+            host: "{{ si_asi_host }}"
       ac:
         ingress:
           internal:
-            host: "ac.{{ si_instanceid }}.company.com"
+            host: "{{ si_ac_host }}"
       api:
         ingress:
           internal:
-            host: "api.{{ si_instanceid }}.company.com"
+            host: "{{ si_api_host }}"
       purge:
         schedule: "0 0 * * *"
 

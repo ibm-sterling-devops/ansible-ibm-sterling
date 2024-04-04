@@ -2,6 +2,7 @@
 # Get values from Environment Variables
 # -----------------------------------------------------------------------------
 si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
+si_domain: "{{ lookup('env', 'SI_DOMAIN') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"
 
@@ -48,6 +49,9 @@ si_jms_secret: si-jms-secret
 si_liberty_secret: si-liberty-secret
 si_helm_release: s0
 si_helm_timeout: "120m0s"
+si_asi_host: "asi.{{ si_instanceid }}.{{ si_domain }}"
+si_ac_host: "ac.{{ si_instanceid }}.{{ si_domain }}"
+si_api_host: "api.{{ si_instanceid }}.{{ si_domain }}"
 
 db2_namespace: ""
 db2_secret: mydb2-secret
