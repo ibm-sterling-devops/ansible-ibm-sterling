@@ -1,7 +1,6 @@
 ---
-# - name: "Fail if required properties have not been provided"
-#   that:
-#     - db2_namespace is defined and db2_namespace != ""
-#     - db2_instance_name is defined and db2_instance_name != ""
-#   fail_msg: "db2_namespace and db2_instance_name are both required properties"
+- name: "Fail if db2_namespace is not provided"
+  that:
+    - db2_namespace is defined and db2_namespace != ""
+  fail_msg: "db2_namespace property is required"
 

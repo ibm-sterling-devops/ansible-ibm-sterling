@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Enio Basso (@ebasso)
+  description: Modify IBM DB2 configuration for compatability with IBM Sterling B2B
+  company: IBM
+
+  license: EPL-2.0
+
+  min_ansible_version: "2.10"
+
+  platforms:
+    - name: GenericLinux
+      versions:
+        - all
+
+  galaxy_tags:
+    - ibm
+    - sterling
+    - devops
+    - db2
