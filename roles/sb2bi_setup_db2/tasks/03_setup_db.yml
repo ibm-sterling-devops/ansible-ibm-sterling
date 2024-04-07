@@ -22,8 +22,8 @@
     namespace: "{{ db2_namespace }}"
     pod: "{{ db2_pod_name }}"
     container: "{{ db2_container }}"
-    remote_path: "/tmp/setupdb.sh"
     local_path: "{{ my_workdir }}/setupdb.sh"
+    remote_path: "/database/config/{{ db2_user }}/setupdb.sh"
     no_preserve: true
     state: to_pod
   register: copy_result
@@ -43,7 +43,7 @@
     namespace: "{{ db2_namespace }}"
     pod: "{{ db2_pod_name }}"
     container: "{{ db2_container }}"
-    command: "su -lc '. /database/config/{{ db2_user }}/sqllib/db2profile && sh /tmp/setupdb.sh | tee /tmp/setupdb.log' {{ db2_user }}"
+    command: "su - {{ db2_user }} -c 'pwd && ./setupdb.sh | tee setupdb.log' "
   register: cout
 
 - name: "Database setup debug information"

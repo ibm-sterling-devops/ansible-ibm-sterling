@@ -1,9 +1,10 @@
 #!/bin/sh
 
+source sqllib/db2profile
+
 function db2_verify_and_start {
 
-    if ! db2gcf -s | grep Available >/dev/null
-    then
+    if ! db2gcf -s | grep Available >/dev/null; then
 
         db2_kill
         db2_k=$?
@@ -13,30 +14,32 @@ function db2_verify_and_start {
         db2start
         db2_start=$?
         
-        if [[ "$db2_k" -ne  "0" && "$db2_start" -ne  "0" ]]
-        then
-            echo "db2_verify_and_start: ERROR - error detected"
+        echo ""
+        echo "db2_verify_and_start: db2_kill=$db2_k |db2start=$db2_start "
+        if [ "$db2_start" -ne  "0" ]; then
+            echo "db2_verify_and_start: ERROR - error detected "
             exit 1
         fi
 
-        echo "db2_verify_and_start: sleep "
+        echo ""
+        echo "db2_verify_and_start: Check if DB2 is Available "
         counter=0
         max_checks=5
         interval=30
 
         while [ $counter -lt $max_checks ]; do
             if db2gcf -s | grep Available >/dev/null; then
-                echo "db2_verify_and_start: DB2 is Avaliable"
+                echo "db2_verify_and_start: DB2 is Avaliable "
                 break  # Exit loop if condition is met
             else
-                echo "db2_verify_and_start: DB2 is starting. Waiting $interval seconds before next check..."
+                echo "db2_verify_and_start: DB2 is starting. Waiting $interval seconds before next check... "
                 sleep $interval
                 counter=$((counter + 1))
             fi
         done
 
         if [ $counter -eq $max_checks ]; then
-            echo "db2_verify_and_start: ERROR: DB2 is NOT Avaliable. Please check."
+            echo "db2_verify_and_start: ERROR: DB2 is NOT Avaliable. Please check. "
             exit 2
         fi
 
@@ -78,9 +81,10 @@ function config_settings {
     # db2 update dbm cfg using DFT_MON_UOW ON;
     # db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
 
-    if [[ "$db2_pi" -ne  "0" && "$db2_sd" -ne  "0" && "$db2_si" -ne "0"  && "$db2_uapc" -ne "0" && "$db2_eu" -ne "0" && "$db2_lock" -ne "0" &&  "$db2_comm" -ne "0" ]]
+    echo "config_settings: $db2_pi | $db2_sd | $db2_si | $db2_uapc | $db2_eu | $db2_lock | $db2_comm " 
+    if [ "$db2_pi" -ne 0 ] || [ "$db2_sd" -ne 0 ] || [ "$db2_si" -ne 0 ] || [ "$db2_uapc" -ne 0 ] || [ "$db2_eu" -ne 0 ] || [ "$db2_lock" -ne 0 ] || [ "$db2_comm" -ne 0 ]
     then
-        echo "config_settings: ERROR - error detected"
+        echo "config_settings: ERROR - error detected "
         exit 1
     fi
 }
@@ -133,18 +137,21 @@ CREATE USER TEMPORARY TABLESPACE UTEMP4KTS IN DATABASE PARTITION GROUP IBMDEFAUL
 CONNECT RESET;
 EOF
 
-    if [[ ! -f "/tmp/create_b2bi_db2.sql" ]]; then
-        echo "create_b2bi_db: ERROR - Cannot generate create_b2bi_db2.sql"
+    echo ""
+    if [ ! -f "/tmp/create_b2bi_db2.sql" ]; then
+        echo "create_b2bi_db: ERROR - Cannot generate create_b2bi_db2.sql "
         exit 1
     fi
     
-    echo "create_b2bi_db: File /tmp/create_b2bi_db2.sql created sucessfully"
+    echo "create_b2bi_db: File /tmp/create_b2bi_db2.sql created sucessfully "
 
     db2 -tvf /tmp/create_b2bi_db2.sql -z /tmp/create_b2bi_db2.sql.log 
     db2_crdb=$?
 
+    echo ""
+    echo "create_b2bi_db: $db2_crdb"
     if [ $db2_crdb -ne 0 ]; then
-        echo "create_b2bi_db: ERROR - Failed to run 'db2 -tvf create_b2bi_db2.sql'"
+        echo "create_b2bi_db: ERROR - Failed to run 'db2 -tvf create_b2bi_db2.sql' "
         exit 2
     fi
 
@@ -153,15 +160,15 @@ EOF
 
 function apply_settings {
 
+    echo ""
+
     db2 connect to {{ db2_dbname }}
     db2_ct=$?
 
-    rc=$?
-    if [ $rc -ne 0 ]; then
+    if [ $db2_ct -ne 0 ]; then
         echo "apply_settings: ERROR - Failed to connect to db2"
         exit 1
     fi
-
 
     echo "apply_settings: connected to {{ db2_dbname }} sucessfully"
 
@@ -174,10 +181,12 @@ function apply_settings {
     db2 update db cfg for {{ db2_dbname }} using CHNGPGS_THRESH 80;
     db2_updb_3=$?
 
-    if [ "$db2_updb_1" -ne  "0" && "$db2_updb_2" -ne  "0" && "$db2_updb_3" -ne  "0" ]; then
-        echo "apply_settings: ERROR - Failed to start to db2"
-        exit 3
-    fi
+    echo "apply_settings: db2 update $db2_updb_1 | $db2_updb_2 | $db2_updb_3 "
+    # if [ "$db2_updb_1" -ne 0 ] || [ "$db2_updb_2" -ne 0 ] || [ "$db2_updb_3" -ne 0 ]
+    # then
+    #     echo "apply_settings: ERROR - Failed to start to db2"
+    #     exit 3
+    # fi
 
 
     db2 connect reset
@@ -200,28 +209,34 @@ function apply_settings {
     db2start
     db2_start=$?
 
-    if [ "$db2_cr" -ne  "0" && "$db2_t" -ne  "0" && "$db2_fal" -ne  "0" && "$db2_ddb" -ne  "0" && "$db2_stop" -ne  "0" && "$db2_start" -ne  "0" ]; then
-        echo "apply_settings: ERROR - Failed to start to db2"
+    echo ""
+    echo "apply_settings: db2 restart conreset=$db2_cr | terminate=$db2_t | forceapp=$db2_fal | deactivate=$db2_ddb | db2stop=$db2_stop | db2start=$db2_start "
+    if [ "$db2_cr" -ne 0 ] || [ "$db2_t" -ne 0 ] || [ "$db2_fal" -ne 0 ] || [ "$db2_ddb" -ne 0 ] || [ "$db2_stop" -ne 0 ] || [ "$db2_start" -ne 0 ]
+    then
+        echo "apply_settings: ERROR - Failed to start to db2 "
         exit 3
     fi
-    echo "apply_settings: finished sucessfully"
+    echo "apply_settings: finished sucessfully "
 }
 
 ########################## Main Part of Shell Script ##########################
 echo "Start of script setupdb.sh"
-echo "Starting db2"
+echo ""
+
+echo "Starting db2 - db2_verify_and_start"
 db2_verify_and_start
+echo ""
 
-
-echo "Creating Sterling B2Bi Database"
+echo "Creating Sterling B2Bi Database - create_b2bi_db"
 create_b2bi_db
+echo ""
 
-
-echo "Define Config settings to DB2"
+echo "Define Config settings to DB2 - config_settings"
 config_settings
-
+echo ""
 
 echo "Applying settings to DB2"
 apply_settings
+echo ""
 
-echo "End of script setupdb.sh"
+echo "End of script setupdb.sh "

@@ -7,7 +7,7 @@
       # - type=engine
       # - app={{ db2_instance_name }}
       - app={{ db2_container }}
-    wait: yes
+    wait: true
     wait_sleep: 30
     wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
     wait_condition:
@@ -18,7 +18,7 @@
 - name: Configure facts db2_pod_name
   ansible.builtin.set_fact:
     db2_pod_name: "{{ db2_pod.resources[0].metadata.name }}"
-  when: 
+  when:
     - (db2_pod is defined) and (db2_pod.resources[0].metadata.name != "")
 
 - name: "Failed to get Pod Name"
