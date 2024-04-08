@@ -70,8 +70,8 @@ function config_settings {
     db2set DB2LOCK_TO_RB=STATEMENT;
     db2_lock=$?
 
-    db2set DB2COMM=TCPIP;
-    db2_comm=$?
+#    db2set DB2COMM=TCPIP;
+#    db2_comm=$?
     # db2 update dbm cfg using DFT_MON_BUFPOOL ON;
     # db2 update dbm cfg using DFT_MON_LOCK ON;
     # db2 update dbm cfg using DFT_MON_SORT ON;
@@ -82,11 +82,17 @@ function config_settings {
     # db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
 
     echo "config_settings: $db2_pi | $db2_sd | $db2_si | $db2_uapc | $db2_eu | $db2_lock | $db2_comm " 
-    if [ "$db2_pi" -ne 0 ] || [ "$db2_sd" -ne 0 ] || [ "$db2_si" -ne 0 ] || [ "$db2_uapc" -ne 0 ] || [ "$db2_eu" -ne 0 ] || [ "$db2_lock" -ne 0 ] || [ "$db2_comm" -ne 0 ]
+    if [ "$db2_pi" -ne 0 ] || [ "$db2_sd" -ne 0 ] || [ "$db2_si" -ne 0 ] || [ "$db2_uapc" -ne 0 ] || [ "$db2_eu" -ne 0 ] || [ "$db2_lock" -ne 0 ] 
     then
         echo "config_settings: ERROR - error detected "
         exit 1
     fi
+
+#    if [ "$db2_comm" -ne 0 ]
+#    then
+#        echo "config_settings: ERROR - error detected DB2COMM"
+#        exit 2
+#    fi
 }
 
 function create_b2bi_db {

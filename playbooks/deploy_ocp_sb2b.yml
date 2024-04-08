@@ -3,7 +3,7 @@
   connection: local
   gather_facts: false
   any_errors_fatal: true
-  vars:
+  # vars:
     # db_vendor: DB2
     # db_user: db2inst1
     # db_password: password
@@ -11,7 +11,7 @@
     # db_port: '50000'
     # db_database: B2BI
   roles:
-    - db2_deploy
+    - sb2bi_deploy_db2
     - sb2bi_setup_db2
     - sb2bi_deploy_mq
     - sb2bi_deploy

@@ -57,13 +57,13 @@
 #  no_log: true
   set_fact:
     si_dbdrivers: "mssql_FIXME.jar"
-  when: 
+  when:
     - si_dbvendor is defined and si_dbvendor == "SQLServer"
 
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
-  debug:
+  ansible.builtin.debug:
     msg:
       - "DB Vendor ................. {{ si_dbvendor }}"
       - "DB Host   ................. {{ si_dbhost }}"
@@ -74,7 +74,7 @@
 
 - name: "Fail if Database Information is not provided"
   ansible.builtin.assert:
-    that: 
+    that:
       - si_dbvendor is defined and si_dbvendor != ""
       - si_dbhost is defined and si_dbhost != ""
       - si_dbport is defined and si_dbport != ""
@@ -83,7 +83,7 @@
       - si_dbpassword is defined and si_dbpassword != ""
     fail_msg: "Database Properties are required"
 
-- name: "Generate '{{ si_db_secret }}' secret"
+- name: "Generate secret {{ si_db_secret }}"
   no_log: false
   kubernetes.core.k8s:
     definition:

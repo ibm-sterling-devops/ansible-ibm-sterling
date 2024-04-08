@@ -25,7 +25,7 @@
 
 - name: Set Facts for JMS Configuration from mq_namespace
 #  no_log: true
-  set_fact:
+  ansible.builtin.set_fact:
     si_jmsuser: "app"
     si_jmsvendor: "IBMMQ"
     si_jmsconnectionfactory: "com.ibm.mq.jms.MQQueueConnectionFactory"
@@ -37,15 +37,15 @@
     # si_jmstruststorepassword: "{{ jms_secret_cout.resources[0].data.JMS_TRUSTSTORE_PASSWORD | b64decode }}"
     si_jmshost: "mq-data.{{ mq_namespace }}.svc.cluster.local"
     si_jmsport: "{{ jms_svc_cout.resources[0].spec.ports[0].port }}"
-    si_jmsconnectionnamelist:  "mq-data.{{ mq_namespace }}.svc.cluster.local({{ jms_svc_cout.resources[0].spec.ports[0].port }})"
-  when: 
+    si_jmsconnectionnamelist: "mq-data.{{ mq_namespace }}.svc.cluster.local({{ jms_svc_cout.resources[0].spec.ports[0].port }})"
+  when:
     - mq_namespace is defined and mq_namespace != ""
     - jms_secret_cout is defined and jms_secret_cout != ""
     - jms_svc_cout is defined and jms_svc_cout != ""
 
 
 - name: Debug
-  debug:
+  ansible.builtin.debug:
     msg:
       - "JMS User     ................. {{ si_jmsuser }}"
       - "JMS Password ................. {{ si_jmspassword }}"
@@ -55,7 +55,7 @@
 
 - name: "Fail if Database Information is not provided"
   ansible.builtin.assert:
-    that: 
+    that:
       - si_jmsuser is defined and si_jmsuser != ""
       - si_jmspassword is defined and si_jmspassword != ""
     fail_msg: "JMS Queue Properties are required"

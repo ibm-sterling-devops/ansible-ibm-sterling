@@ -27,8 +27,9 @@
     src: "values.yaml.j2"
     dest: "{{ my_workdir }}/myb2bi_values.yml"
 
+
 - name: Debug
-  debug:
+  ansible.builtin.debug:
     msg:
       - "command: helm install --timeout {{ si_helm_timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
 
@@ -36,10 +37,9 @@
 #   shell: "helm delete --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
 
 - name: Run Helm install command
-  shell: "helm install --timeout {{ si_helm_timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
+  ansible.builtin.shell: "helm install --timeout {{ si_helm_timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ si_namespace }} {{ si_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
 # --timeout {{ si_helm.timeout }}
 # --wait
-
 
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html

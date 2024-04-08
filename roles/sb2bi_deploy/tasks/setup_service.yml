@@ -1,4 +1,0 @@
----
-- name: "Create Service"
-  kubernetes.core.k8s:
-    template: "templates/service-{{ registry_service_type }}.yml.j2"
