@@ -5,7 +5,7 @@
       # DB2 Database
       - lookup('env', 'SI_INSTANCEID') != ""
       # IBM
-      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""   
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
 
 
@@ -15,7 +15,7 @@
   ansible.builtin.assert:
     that:
       - db2_namespace is defined and db2_namespace != ""
-      - entitled.registry_key is defined and entitled.registry_key != ""
+      - entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "One or more required properties have not been set"
 
 - name: "Fail db2_dbname is over 8 characters"

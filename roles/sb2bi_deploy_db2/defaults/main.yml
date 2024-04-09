@@ -2,20 +2,19 @@
 # Configure Db2 instance
 # -----------------------------------------------------------------------------------------------------------------
 si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
-db2_namespace: "sterling-b2bi-{{ si_instanceid }}-db2"
+db2_namespace: "{{ db2_namespace |  default('sterling-b2bi-' + si_instanceid + '-db2', true) }}"
 db2_password: "{{ lookup('env', 'DB2_PASSWORD') | default('passw0rd', true) }}"
 db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true)}}"
 
-db2_instance_name: db2inst1
-db2_user: db2inst1
-db2_dbname: B2BI
+db2_instance_name: "{{ db2_instance_name |  default('db2inst1', true) }}"
+db2_user: "{{ db2_user |  default('db2inst1', true) }}"
+db2_dbname: "{{ db2_dbname |  default('B2BI', true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------
-entitled:
-  registry: "cp.icr.io"
-  registry_user: cp
-  registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------

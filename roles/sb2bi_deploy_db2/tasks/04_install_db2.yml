@@ -123,4 +123,33 @@
               resources:
                 requests:
                   storage: "{{ db2_storage_size | default('40Gi') }}"
-              storageClassName: "{{ storage_class_matrix[ db2_storage_class ].rwo | default('') }}"
+              storageClassName: "{{ storage_class_matrix[db2_storage_class].rwo | default('') }}"
+
+- name: "Lookup db2 Pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ db2_namespace }}"
+    label_selectors:
+      - type=engine
+      - app={{ db2_id }}
+      - app-instance={{ db2_instance_name }}
+    wait: yes
+    wait_sleep: 30
+    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: db2_pod
+
+- name: Configure facts
+  set_fact:
+    db2_pod_name: "{{ db2_pod.resources[0].metadata.name }}"
+
+- name: "Pod Name"
+  debug:
+    msg:
+      - "Pod name ............................... {{ db2_pod_name }}"
+
+- name: "wait : Wait for configmap get copied over to local persistent location"
+  pause:
+    minutes: 1

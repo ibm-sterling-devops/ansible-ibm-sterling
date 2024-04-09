@@ -11,19 +11,19 @@
 
 - name: Create List of Storages
   ansible.builtin.set_fact:
-    my_storage_list: "{{lookup_storageclasses.resources | map(attribute='metadata.name') | list}}"
+    my_storage_list: "{{ lookup_storageclasses.resources | map(attribute='metadata.name') | list }}"
 
 # 2. Dynamic Provisioning
 # -----------------------------------------------------------------------------
 - name: Check for IBM Cloud StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     db2_use_dynamic_provisioning: true
     db2_storage_class: "ibmcloud"
   when:
     - "'ibmc-file-gold' in my_storage_list"
 
 - name: Check for Redhat StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     db2_use_dynamic_provisioning: true
     db2_storage_class: "redhat"
   when:
@@ -31,7 +31,7 @@
     - "'ocs-storagecluster-cephfs' in my_storage_list"
 
 - name: Check for AWS StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     db2_use_dynamic_provisioning: true
     db2_storage_class: "aws"
   when:
@@ -39,7 +39,7 @@
     - "'gp2' in my_storage_list"
 
 - name: Check for Azure StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     db2_use_dynamic_provisioning: true
     db2_storage_class: "azure"
   when:
@@ -54,6 +54,6 @@
 # https://www.ibm.com/docs/en/connect-direct/6.3.0?topic=software-installing#concept_swd_dcn_lkb
 
 - name: Assert that storage class has been defined
-  assert:
+  ansible.builtin.assert:
     that: db2_storage_class is defined and db2_storage_class != ""
     fail_msg: "db2_storage_class must be defined"

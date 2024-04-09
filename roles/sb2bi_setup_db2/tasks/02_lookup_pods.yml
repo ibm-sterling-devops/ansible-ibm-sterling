@@ -4,9 +4,9 @@
     kind: Pod
     namespace: "{{ db2_namespace }}"
     label_selectors:
-      # - type=engine
-      # - app={{ db2_instance_name }}
-      - app={{ db2_container }}
+      - type=engine
+      - app={{ db2_id }}
+      - app-instance={{ db2_instance_name }}
     wait: true
     wait_sleep: 30
     wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
