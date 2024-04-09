@@ -84,7 +84,7 @@
           metadata:
             labels:
               app: "{{ db2_id }}"
-              app-instance: "{{ db2_instance_name | lower }}"
+              app-instance: "{{ db2_instance_name }}"
               app-dbname: "{{ db2_dbname | lower }}"
           spec:
             serviceAccount: "{{ db2_service_account }}"
@@ -130,7 +130,6 @@
     kind: Pod
     namespace: "{{ db2_namespace }}"
     label_selectors:
-      - type=engine
       - app={{ db2_id }}
       - app-instance={{ db2_instance_name }}
     wait: yes
@@ -150,6 +149,6 @@
     msg:
       - "Pod name ............................... {{ db2_pod_name }}"
 
-- name: "wait : Wait for configmap get copied over to local persistent location"
+- name: "wait : Give 1 minute to DB2 container to be ready"
   pause:
     minutes: 1

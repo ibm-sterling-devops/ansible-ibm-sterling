@@ -61,8 +61,8 @@
 - name: "Database setup debug information"
   ansible.builtin.debug:
     msg:
-      - "Result (stdout) ........................ {{ cout.stdout }}"
-      - "result (stderr) ........................ {{ cout.stderr }}"
+      - "Result (stdout) ........................ {{ cout_setupdb.stdout }}"
+      - "result (stderr) ........................ {{ cout_setupdb.stderr }}"
 
 - name: "Failed to execute the script"
   ansible.builtin.fail:

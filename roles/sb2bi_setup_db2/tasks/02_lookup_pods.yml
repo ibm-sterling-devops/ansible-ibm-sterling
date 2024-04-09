@@ -4,7 +4,6 @@
     kind: Pod
     namespace: "{{ db2_namespace }}"
     label_selectors:
-      - type=engine
       - app={{ db2_id }}
       - app-instance={{ db2_instance_name }}
     wait: true

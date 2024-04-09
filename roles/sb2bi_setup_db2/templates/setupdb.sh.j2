@@ -70,8 +70,8 @@ function config_settings {
     db2set DB2LOCK_TO_RB=STATEMENT;
     db2_lock=$?
 
-#    db2set DB2COMM=TCPIP;
-#    db2_comm=$?
+    db2set DB2COMM=TCPIP,SSL;
+    db2_comm=$?
     # db2 update dbm cfg using DFT_MON_BUFPOOL ON;
     # db2 update dbm cfg using DFT_MON_LOCK ON;
     # db2 update dbm cfg using DFT_MON_SORT ON;
@@ -88,11 +88,11 @@ function config_settings {
         exit 1
     fi
 
-#    if [ "$db2_comm" -ne 0 ]
-#    then
-#        echo "config_settings: ERROR - error detected DB2COMM"
-#        exit 2
-#    fi
+    if [ "$db2_comm" -ne 0 ]
+    then
+        echo "config_settings: ERROR - error detected DB2COMM"
+        exit 2
+    fi
 }
 
 function create_b2bi_db {
