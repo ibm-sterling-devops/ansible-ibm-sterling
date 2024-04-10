@@ -1,0 +1,112 @@
+---
+- name: Create Namespace
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: db2-console
+  register: namespace_created
+
+- name: Apply Persistent Volume Claims (if needed)
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        namespace: db2-console
+        name: db2-console-pvc
+      spec:
+        # Define your Persistent Volume Claim spec here if needed
+  when: namespace_created is changed
+
+- name: Apply ConfigMap (if needed)
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        namespace: db2-console
+        name: db2-console-configmap
+      data:
+        # Define your ConfigMap data here if needed
+  when: namespace_created is changed
+
+- name: Apply Secrets (if needed)
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        namespace: db2-console
+        name: db2-console-secrets
+      data:
+        # Define your Secrets data here if needed
+  when: namespace_created is changed
+
+- name: Apply Deployment
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        namespace: db2-console
+        name: db2-console-deployment
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: db2-console
+        template:
+          metadata:
+            labels:
+              app: db2-console
+          spec:
+            containers:
+              - name: db2-console
+                image: icr.io/cpopen/db2console/db2console:3.1.11
+                ports:
+                  - containerPort: 8443 # Assuming the port for Db2 Data Management Console
+                env:
+                  - name: LICENSE
+                    value: "accept"
+                # Add any additional configurations such as environment variables, volume mounts, etc.
+
+- name: Apply Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        namespace: db2-console
+        name: db2-console-service
+      spec:
+        selector:
+          app: db2-console
+        ports:
+          - protocol: TCP
+            port: 11081 # Assuming the port for Db2 Data Management Console
+            targetPort: 8443 # Assuming the port for Db2 Data Management Console
+
+- name: Apply Ingress
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        namespace: db2-console
+        name: db2-console-ingress
+        annotations:
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
+          nginx.ingress.kubernetes.io/rewrite-target: "/"
+      spec:
+        rules:
+          - http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: db2-console-service
+                      port:
+                        number: 11081

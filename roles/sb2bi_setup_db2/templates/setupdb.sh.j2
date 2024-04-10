@@ -70,7 +70,7 @@ function config_settings {
     db2set DB2LOCK_TO_RB=STATEMENT;
     db2_lock=$?
 
-    db2set DB2COMM=TCPIP,SSL;
+    db2set DB2COMM=TCPIP
     db2_comm=$?
     # db2 update dbm cfg using DFT_MON_BUFPOOL ON;
     # db2 update dbm cfg using DFT_MON_LOCK ON;
@@ -187,7 +187,10 @@ function apply_settings {
     db2 update db cfg for {{ db2_dbname }} using CHNGPGS_THRESH 80;
     db2_updb_3=$?
 
-    echo "apply_settings: db2 update $db2_updb_1 | $db2_updb_2 | $db2_updb_3 "
+    db2 update dbm cfg using svcename 50000;
+    db2_updb_4=$?
+
+    echo "apply_settings: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 | db2_updb_4=$db2_updb_4"
     # if [ "$db2_updb_1" -ne 0 ] || [ "$db2_updb_2" -ne 0 ] || [ "$db2_updb_3" -ne 0 ]
     # then
     #     echo "apply_settings: ERROR - Failed to start to db2"
