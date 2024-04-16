@@ -1,5 +1,5 @@
 ---
-oldp_namespace: openldap-00
+oldp_namespace: sterling-openldap
 
 oldp_storageclass: ibmc-file-gold
 
