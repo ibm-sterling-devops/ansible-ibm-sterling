@@ -42,7 +42,6 @@
           dn: {{ ldp_user_base_dn }}
           ou: {{ ldp_user_base }}
           objectClass: organizationalUnit
-          objectclass: organizationalUnit
 
           dn: {{ ldp_group_base_dn }}
           objectClass: organizationalUnit
@@ -140,6 +139,14 @@
           member: {{ ldp_uid_attr }}={{ ldp_admin_user }},{{ ldp_user_base_dn }}
           member: {{ ldp_uid_attr }}=cpadmin1,{{ ldp_user_base_dn }}
           member: {{ ldp_uid_attr }}=cpadmin2,{{ ldp_user_base_dn }}
+
+          dn: {{ ldp_gid_attribute }}=cdadmins,{{ ldp_group_base_dn }}
+          objectClass: top
+          objectClass: groupOfNames
+          objectClass: groupOfUniqueNames
+          cn: cdusers
+          member: {{ ldp_uid_attr }}=cdadmin01,{{ ldp_user_base_dn }}
+          member: {{ ldp_uid_attr }}=cdadmin02,{{ ldp_user_base_dn }}
 
           dn: {{ ldp_gid_attribute }}=cdusers,{{ ldp_group_base_dn }}
           objectClass: top
