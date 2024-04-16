@@ -18,10 +18,9 @@
 
 # Kubernetes Roles
 
-| Playbook name                 | Status         |           Description                                        |
+| Role name                     | Status         |           Description                                        |
 |-------------------------------|----------------|--------------------------------------------------------------|
 | cd_deploy                     | Complete       | Deploy IBM Sterling Connect:Direct |
-| cloudbeaver                   | Complete       | Deploy CloudBeaver Community Edition |
 | db2_console                   | Development    | Deploy DB2 Data Management Console |
 | mq_deploy                     | Complete       | Deploy IBM Message Queue Community Edition |
 | openldap                      | Development    | Deploy OpenLDAP (LDAP Server) |
@@ -29,3 +28,10 @@
 | sb2bi_deploy_db2              | Complete       | Deploy IBM DB2 database |
 | sb2bi_deploy_mq               | Complete       | Deploy IBM Message Queue Community Edition for Sterling B2B |
 | sb2bi_setup_db2               | Complete       | Setup database for IBM Sterling B2B |
+
+## Tools 
+
+| Role name                     | Status         |           Description                                        |
+|-------------------------------|----------------|--------------------------------------------------------------|
+| cloudbeaver.yml               | Complete       | Deploy CloudBeaver CE to manage databases |
+| openldap.yml                  | Complete       | Deploy OpenLDAP as LDAP Server |

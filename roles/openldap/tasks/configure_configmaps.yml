@@ -56,7 +56,17 @@
           {{ ldp_uid_attr }}: {{ ldp_admin_user }}
           # ToDo set some domain
           mail: {{ ldp_admin_user }}@{{ ldp_domain }}
-          userpassword:: {{ ldp_principal_admin_password | b64encode }}
+          userpassword:: {{ ldp_admin_user | b64encode }}
+          employeeType: admin
+
+          dn: {{ ldp_uid_attr }}={{ ldp_bind_user }},{{ ldp_user_base_dn }}
+          objectClass: {{ ldp_user_object_class }}
+          objectClass: top
+          cn: {{ ldp_bind_user }}
+          sn: {{ ldp_bind_user }}
+          {{ ldp_uid_attr }}: {{ ldp_bind_user }}
+          mail: {{ ldp_bind_user }}@{{ ldp_domain }}
+          userpassword:: {{ ldp_bind_password | b64encode }}
           employeeType: admin
 
           dn: {{ ldp_uid_attr }}=cdadmin01,{{ ldp_user_base_dn }}
@@ -107,15 +117,15 @@
           userpassword:: {{ universal_password | b64encode }}
 
           # Groups
-          dn: {{ ldp_group_id_attribute }}={{ ldp_principal_admin_group }},{{ ldp_group_base_dn }}
+          dn: {{ ldp_gid_attribute }}={{ ldp_admin_group }},{{ ldp_group_base_dn }}
           objectClass: {{ ldp_group_object_class }}
           objectClass: top
-          cn: {{ ldp_principal_admin_group }}
-          member: {{ ldp_uid_attr }}={{ ldp_principal_admin_user }},{{ ldp_user_base_dn }}
+          cn: {{ ldp_admin_group }}
+          member: {{ ldp_uid_attr }}={{ ldp_admin_user }},{{ ldp_user_base_dn }}
           member: {{ ldp_uid_attr }}=cpadmin1,{{ ldp_user_base_dn }}
           member: {{ ldp_uid_attr }}=cpadmin2,{{ ldp_user_base_dn }}
 
-          dn: {{ ldp_group_id_attribute }}=cdusers,{{ ldp_group_base_dn }}
+          dn: {{ ldp_gid_attribute }}=cdusers,{{ ldp_group_base_dn }}
           objectClass: {{ ldp_group_object_class }}
           objectClass: top
           cn: cdusers
@@ -123,7 +133,7 @@
           member: {{ ldp_uid_attr }}=cdadmin02,{{ ldp_user_base_dn }}
           member: {{ ldp_uid_attr }}=cduser01,{{ ldp_user_base_dn }}
 
-          dn: {{ ldp_group_id_attribute }}=siusers,{{ ldp_group_base_dn }}
+          dn: {{ ldp_gid_attribute }}=siusers,{{ ldp_group_base_dn }}
           objectClass: {{ ldp_group_object_class }}
           objectClass: top
           cn: siusers

@@ -31,38 +31,38 @@
         LDAP_ADMIN_PASSWORD: "{{ ldp_admin_password }}"
 
 # # Create ServiceAccount
-# # -----------------------------------------------------------------------------
-# - name: Create Service Account for OpenLDAP
-#   kubernetes.core.k8s:
-#     state: present
-#     definition:
-#       apiVersion: v1
-#       kind: ServiceAccount
-#       metadata:
-#         name: openldap-sa
-#         namespace: "{{ oldp_namespace }}"
+# -----------------------------------------------------------------------------
+- name: Create Service Account for OpenLDAP
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: openldap-sa
+        namespace: "{{ oldp_namespace }}"
 
-# # Create Role Binding
-# # -----------------------------------------------------------------------------
-# - name: Create Role Binding for OpenLDAP
-#   kubernetes.core.k8s:
-#     state: present
-#     definition:
-#       apiVersion: rbac.authorization.k8s.io/v1
-#       kind: RoleBinding
-#       metadata:
-#         name: 'openldap-anyuid'
-#         namespace: "{{ oldp_namespace }}"
-#         labels:
-#           app: openldap  
-#       subjects:
-#         - kind: ServiceAccount
-#           name: openldap-sa
-#           namespace: "{{ oldp_namespace }}"
-#       roleRef:
-#         apiGroup: rbac.authorization.k8s.io
-#         kind: ClusterRole
-#         name: 'system:openshift:scc:anyuid'
+# Create Role Binding
+# -----------------------------------------------------------------------------
+- name: Create Role Binding for OpenLDAP
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: 'openldap-anyuid'
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap  
+      subjects:
+        - kind: ServiceAccount
+          name: openldap-sa
+          namespace: "{{ oldp_namespace }}"
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: 'system:openshift:scc:anyuid'
 
 # Create PVC
 # -----------------------------------------------------------------------------
@@ -79,8 +79,8 @@
           app.kubernetes.io/name: openldap
       spec:
         accessModes:
-          - ReadWriteOnce
-        storageClassName: {{ oldp_storageclass }}
+          - ReadWriteMany
+        storageClassName: "{{ oldp_storageclass }}"
         #volumeMode: Filesystem
         resources:
           requests:
@@ -129,7 +129,7 @@
             serviceAccountName: openldap-sa
             containers:
               - name: openldap
-                image: dbeaver/openldap:latest
+                image: docker.io/bitnami/openldap:2.6.7
                 ports:
                   - name: ldap-port
                     containerPort: 1389
@@ -144,6 +144,17 @@
                     mountPath: /bitnami/openldap/
                   - name: custom-ldif-files
                     mountPath: /ldifs/
+                # securityContext:
+                #   seccompProfile:
+                #     type: RuntimeDefault
+                #   privileged: false
+                #   allowPrivilegeEscalation: false
+                #   runAsNonRoot: true
+                #   capabilities:
+                #     drop:
+                #       - ALL
+                #     add:
+                #       - NET_BIND_SERVICE
             volumes:
             - name: openldap-data
               persistentVolumeClaim:

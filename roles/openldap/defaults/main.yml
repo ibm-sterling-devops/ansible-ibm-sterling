@@ -3,13 +3,16 @@ oldp_namespace: sterling-openldap
 
 oldp_storageclass: ibmc-file-gold
 
-ldp_base_dn: dc=cp,dc=internal
-ldp_domain: cp.internal
-ldp_dc: cp
+ldp_base_dn: dc=company,dc=com
+ldp_domain: company.com
+ldp_dc: mydc
 ldp_user_base_dn: "ou=Users,{{ ldp_base_dn }}"
 ldp_group_base_dn: "ou=UseGroupsrs,{{ ldp_base_dn }}"
 ldp_admin_user: ldapadmin
 ldp_admin_password: passw0rd
+ldp_bind_user: ldapbind01
+ldp_bind_password: passw0rd
+ldp_admin_group: ldapadmins
 universal_password: passw0rd
 
 

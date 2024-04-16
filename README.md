@@ -12,11 +12,12 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 | setup-nginx.yml               | Complete       | Install Nginx as HTTP server for Repository|    
 | deploy_cd.yml                 | Complete       | Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift |
 | deploy_sb2b.yml               | Complete       | Deploy IBM Sterling B2B Integrator on Redhat OpenShift |
-| cloudbeaver.yml               | Complete       | Deploy CloudBeaver Community Edition, to manage DBs |
+| tools/cloudbeaver.yml         | Complete       | Deploy CloudBeaver CE to manage databases |
+| tools/openldap.yml            | Complete       | Deploy OpenLDAP as LDAP Server |
 
 # Roles
 
-See complete list [roles/README.md](roles/README.md)
+See complete list [README.md](roles/README.md)
 
 
 # Getting start
