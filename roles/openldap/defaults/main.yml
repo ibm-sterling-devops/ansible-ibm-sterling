@@ -6,8 +6,6 @@ oldp_storageclass: ibmc-file-gold
 ldp_base_dn: dc=company,dc=com
 ldp_domain: company.com
 ldp_dc: mydc
-ldp_user_base_dn: "ou=Users,{{ ldp_base_dn }}"
-ldp_group_base_dn: "ou=UseGroupsrs,{{ ldp_base_dn }}"
 ldp_admin_user: ldapadmin
 ldp_admin_password: passw0rd
 ldp_bind_user: ldapbind01
@@ -16,10 +14,13 @@ ldp_admin_group: ldapadmins
 universal_password: passw0rd
 
 
+ldp_user_base_dn: "ou=Users,{{ ldp_base_dn }}"
+ldp_user_base: Users
+ldp_group_base_dn: "ou=Groups,{{ ldp_base_dn }}"
+ldp_group_base: Groups
+
 ldp_uid_attr: uid
-ldp_user_object_class: inetOrgPerson
 ldp_gid_attribute: cn
-ldp_group_object_class: groupOfNames
 
 ldp_ssl_enabled: false
 ldp_ssl_secret_name: openldap-ssl-secret
