@@ -1,0 +1,195 @@
+---
+# Create Kubernetes namespace
+# -----------------------------------------------------------------------------
+- name: "Create namespace for Cloudbeaver"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: "{{ cb_namespace }}"
+        labels:
+          name: cloudbeaver
+  register: cout
+
+# Create Secrets
+# -----------------------------------------------------------------------------
+- name: Create Secrets for Cloudbeaver
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: cloudbeaver-secret
+        namespace: "{{ cb_namespace }}"
+        labels:
+          app: cloudbeaver  
+      type: Opaque
+      stringData:
+        cloudbeaver-password: "{{ cb_password }}"
+
+# Create ServiceAccount
+# -----------------------------------------------------------------------------
+- name: Create Service Account for Cloudbeaver
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: cloudbeaver-sa
+        namespace: "{{ cb_namespace }}"
+
+# Create Role Binding
+# -----------------------------------------------------------------------------
+- name: Create Role Binding for Cloudbeaver
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: 'cloudbeaver-anyuid'
+        namespace: "{{ cb_namespace }}"
+        labels:
+          app: cloudbeaver  
+      subjects:
+        - kind: ServiceAccount
+          name: cloudbeaver-sa
+          namespace: "{{ cb_namespace }}"
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: 'system:openshift:scc:anyuid'
+
+# Create PVC
+# -----------------------------------------------------------------------------
+- name: Apply PVC cloudbeaver-data-pvc
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: cloudbeaver-data-pvc
+        namespace: "{{ cb_namespace }}"
+        labels:
+          app: cloudbeaver
+          app.kubernetes.io/name: cloudbeaver
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: ibmc-file-gold
+        #volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 20Mi
+
+- name: Wait for PVC to be Bound cloudbeaver-data-pvc
+  kubernetes.core.k8s_info:
+    kind: PersistentVolumeClaim
+    name: cloudbeaver-data-pvc
+    namespace: "{{ cb_namespace }}"
+  register: pvc_info
+  until: pvc_info.resources[0].status.phase == 'Bound'
+  retries: 15  # Total retries will be 15 * 20s = 300s (5 minutes)
+  delay: 20     # Wait for 20 seconds between each retry
+
+- debug:
+    msg: "PVC is ready"
+
+# Apply Deployment
+# -----------------------------------------------------------------------------
+- name: Apply Deployment Cloudbeaver
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind:  Deployment
+      metadata:
+        name: cloudbeaver
+        namespace: "{{ cb_namespace }}"
+        labels:
+          app: cloudbeaver
+          app.kubernetes.io/name: cloudbeaver
+      spec:
+        selector:
+          matchLabels:
+            app: cloudbeaver
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: cloudbeaver
+          spec:
+            serviceAccountName: cloudbeaver-sa
+            containers:
+              - name: cloudbeaver
+                image: dbeaver/cloudbeaver:latest
+                ports:
+                  - containerPort: 8978
+                    name: http
+                env:
+                  - name: CB_SERVER_NAME
+                    value: CloudBeaver
+                  - name: CB_SERVER_URL
+                    value: "http://cloudbeaver.{{ cb_namespace }}.svc.cluster.local"
+                  - name: CB_ADMIN_NAME
+                    value: "{{ cb_admin }}"
+                  - name: CB_ADMIN_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: cloudbeaver-secret
+                        key: cloudbeaver-password
+                volumeMounts:
+                  - mountPath: /opt/cloudbeaver/workspace
+                    name: cloudbeaver-data
+            volumes:
+            - name: cloudbeaver-data
+              persistentVolumeClaim:
+                claimName: cloudbeaver-data-pvc
+            
+# Create Service and Route
+# -----------------------------------------------------------------------------
+- name: Apply Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: cloudbeaver-svc
+        namespace: "{{ cb_namespace }}"
+        labels:
+          app: cloudbeaver
+      spec:
+        selector:
+          app: cloudbeaver
+        ports:
+          - name: http
+            port: 8978
+            protocol: TCP
+            targetPort: http
+        type: ClusterIP 
+
+- name: Apply Route
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: cloudbeaver
+        namespace: "{{ cb_namespace }}"
+        labels:
+          app: cloudbeaver
+      spec:
+        selector:
+          app: cloudbeaver
+        # tls:
+        #   insecureEdgeTerminationPolicy: Redirect
+        #   termination: passthrough
+        to:
+          kind: Service
+          name: cloudbeaver-svc
+        wildcardPolicy: None

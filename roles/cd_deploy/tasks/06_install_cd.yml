@@ -36,3 +36,36 @@
 # --timeout {{ cd_helm.timeout }}
 # --wait
 
+# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
+# - name: Deploy Connect:Direct chart from local path
+#   kubernetes.core.helm:
+#     name: "{{ cd_helm_release }}"
+#     chart_ref: "{{ my_workdir }}/ibm-connect-direct/"
+#     release_namespace: "{{ cd_namespace }}"
+#     wait: True
+#     timeout: "{{ cd_helm.timeout }}"
+#     values_files:
+#       - "{{ my_workdir }}/mycd_values.yml"
+
+- name: "Lookup Connect:Direct Pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ cd_namespace }}"
+    label_selectors:
+      - release={{ cd_helm_release }}
+    wait: yes
+    wait_sleep: 30
+    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: cd_pod
+
+- name: Configure facts
+  set_fact:
+    cd_pod_name: "{{ cd_pod.resources[0].metadata.name }}"
+
+- name: "Pod Name"
+  debug:
+    msg:
+      - "Pod name ............................... {{ cd_pod_name }}"

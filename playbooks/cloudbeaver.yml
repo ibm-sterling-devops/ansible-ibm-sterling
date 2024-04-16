@@ -1,0 +1,8 @@
+- name: Deploy Cloudbeaver to manage Databases
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - cloudbeaver
+  
