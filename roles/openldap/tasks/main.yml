@@ -1,0 +1,176 @@
+---
+# Create Kubernetes namespace
+# -----------------------------------------------------------------------------
+- name: "Create namespace for OpenLDAP"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: "{{ oldp_namespace }}"
+        labels:
+          name: openldap
+  register: cout
+
+# Create Secrets
+# -----------------------------------------------------------------------------
+- name: Create Secrets for OpenLDAP
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: openldap-secret
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap  
+      type: Opaque
+      stringData:
+        LDAP_ADMIN_PASSWORD: "{{ ldp_admin_password }}"
+
+# # Create ServiceAccount
+# # -----------------------------------------------------------------------------
+# - name: Create Service Account for OpenLDAP
+#   kubernetes.core.k8s:
+#     state: present
+#     definition:
+#       apiVersion: v1
+#       kind: ServiceAccount
+#       metadata:
+#         name: openldap-sa
+#         namespace: "{{ oldp_namespace }}"
+
+# # Create Role Binding
+# # -----------------------------------------------------------------------------
+# - name: Create Role Binding for OpenLDAP
+#   kubernetes.core.k8s:
+#     state: present
+#     definition:
+#       apiVersion: rbac.authorization.k8s.io/v1
+#       kind: RoleBinding
+#       metadata:
+#         name: 'openldap-anyuid'
+#         namespace: "{{ oldp_namespace }}"
+#         labels:
+#           app: openldap  
+#       subjects:
+#         - kind: ServiceAccount
+#           name: openldap-sa
+#           namespace: "{{ oldp_namespace }}"
+#       roleRef:
+#         apiGroup: rbac.authorization.k8s.io
+#         kind: ClusterRole
+#         name: 'system:openshift:scc:anyuid'
+
+# Create PVC
+# -----------------------------------------------------------------------------
+- name: Apply PVC openldap-data-pvc
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: openldap-data-pvc
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap
+          app.kubernetes.io/name: openldap
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ oldp_storageclass }}
+        #volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 100Mi
+
+- name: Wait for PVC to be Bound openldap-data-pvc
+  kubernetes.core.k8s_info:
+    kind: PersistentVolumeClaim
+    name: openldap-data-pvc
+    namespace: "{{ oldp_namespace }}"
+  register: pvc_info
+  until: pvc_info.resources[0].status.phase == 'Bound'
+  retries: 15  # Total retries will be 15 * 20s = 300s (5 minutes)
+  delay: 20     # Wait for 20 seconds between each retry
+
+- debug:
+    msg: "PVC is ready"
+
+- name: Configure ConfigMaps
+  ansible.builtin.include_tasks: configure_configmaps.yml
+
+# Apply Deployment
+# -----------------------------------------------------------------------------
+- name: Apply Deployment OpenLDAP
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind:  Deployment
+      metadata:
+        name: openldap
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap
+          app.kubernetes.io/name: openldap
+      spec:
+        selector:
+          matchLabels:
+            app: openldap
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: openldap
+          spec:
+            serviceAccountName: openldap-sa
+            containers:
+              - name: openldap
+                image: dbeaver/openldap:latest
+                ports:
+                  - name: ldap-port
+                    containerPort: 1389
+                    protocol: TCP
+                envFrom:
+                  - configMapRef:
+                      name: openldap-env
+                  - secretRef:
+                      name: openldap-secret
+                volumeMounts:
+                  - name: openldap-data
+                    mountPath: /bitnami/openldap/
+                  - name: custom-ldif-files
+                    mountPath: /ldifs/
+            volumes:
+            - name: openldap-data
+              persistentVolumeClaim:
+                claimName: openldap-data-pvc
+            - name: custom-ldif-files
+              configMap:
+                name: openldap-customldif
+                defaultMode: 420
+            
+# Create Service and Route
+# -----------------------------------------------------------------------------
+- name: Apply Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: openldap-svc
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap
+      spec:
+        selector:
+          app: openldap
+        ports:
+          - name: ldap-port
+            protocol: TCP
+            port: 389
+            targetPort: ldap-port
+        type: NodePort

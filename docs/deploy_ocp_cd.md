@@ -43,7 +43,7 @@ export CD_NODENAME=CDNODE01
 To run playbook the playbook
 
 ```bash 
-ansible-playbook playbooks/deploy_ocd_cd.yml
+ansible-playbook playbooks/deploy_cd.yml
 ```
 
 

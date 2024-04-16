@@ -1,0 +1,131 @@
+---
+# Create ConfigMap
+# -----------------------------------------------------------------------------
+- name: "Create ConfigMap openldap-env"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+        name: openldap-env
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap
+      data:
+        LDAP_ORGANISATION: "{{ ldp_domain }}"
+        LDAP_ROOT: "{{ ldp_base_dn }}"
+        LDAP_DOMAIN: "{{ ldp_domain }}"
+
+- name: "Create ConfigMap openldap-customldif"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+        name: openldap-customldif
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap
+      data:
+        01-default-users.ldif: |-
+          # Main Data
+          dn: {{ ldp_base_dn }}
+          objectClass: top
+          objectClass: dcObject
+          objectClass: organization
+          o: {{ ldp_domain }}
+          dc: {{ ldp_dc }}
+        
+          # Units
+          dn: {{ ldp_user_base_dn }}
+          objectClass: organizationalUnit
+          ou: {{ ldp_user_base_dn | regex_replace('^([Oo][Uu]=)(.+?)(,([Oo]|[Dd][Cc])=.*)$', '\\2') }}
+
+          dn: {{ ldp_group_base_dn }}
+          objectClass: organizationalUnit
+          ou: {{ ldp_group_base_dn | regex_replace('^([Oo][Uu]=)(.+?)(,([Oo]|[Dd][Cc])=.*)$', '\\2') }}
+
+          # Users
+          dn: {{ ldp_uid_attr }}={{ ldp_admin_user }},{{ ldp_user_base_dn }}
+          objectClass: {{ ldp_user_object_class }}
+          objectClass: top
+          cn: {{ ldp_admin_user }}
+          sn: {{ ldp_admin_user }}
+          {{ ldp_uid_attr }}: {{ ldp_admin_user }}
+          # ToDo set some domain
+          mail: {{ ldp_admin_user }}@{{ ldp_domain }}
+          userpassword:: {{ ldp_principal_admin_password | b64encode }}
+          employeeType: admin
+
+          dn: {{ ldp_uid_attr }}=cdadmin01,{{ ldp_user_base_dn }}
+          objectClass: {{ ldp_user_object_class }}
+          objectClass: top
+          cn: cdadmin01
+          sn: cdadmin01
+          {{ ldp_uid_attr }}: cdadmin01
+          mail: cdadmin01@{{ ldp_domain }}
+          userpassword:: {{ universal_password | b64encode }}
+          employeeType: admin
+
+          dn: {{ ldp_uid_attr }}=cdadmin02,{{ ldp_user_base_dn }}
+          objectClass: inetOrgPerson
+          objectClass: top
+          cn: cdadmin02
+          sn: cdadmin02
+          uid: cdadmin02
+          mail: cdadmin02@{{ ldp_domain }}
+          userpassword:: {{ universal_password | b64encode }}
+          employeeType: admin
+
+          dn: {{ ldp_uid_attr }}=cduser01,{{ ldp_user_base_dn }}
+          objectClass: inetOrgPerson
+          objectClass: top
+          cn: cduser01
+          sn: cduser01
+          uid: cduser01
+          mail: cduser01@{{ ldp_domain }}
+          userpassword:: {{ universal_password | b64encode }}
+
+          dn: {{ ldp_uid_attr }}=siuser01,{{ ldp_user_base_dn }}
+          objectClass: {{ ldp_user_object_class }}
+          objectClass: top
+          cn: siuser01
+          sn: siuser01
+          {{ ldp_uid_attr }}: siuser01
+          mail: siuser01@{{ ldp_domain }}
+          userpassword:: {{ universal_password | b64encode }}
+
+          dn: {{ ldp_uid_attr }}=siuser02,{{ ldp_user_base_dn }}
+          objectClass: {{ ldp_user_object_class }}
+          objectClass: top
+          cn: siuser02
+          sn: siuser02
+          {{ ldp_uid_attr }}: siuser02
+          mail: siuser02@{{ ldp_domain }}
+          userpassword:: {{ universal_password | b64encode }}
+
+          # Groups
+          dn: {{ ldp_group_id_attribute }}={{ ldp_principal_admin_group }},{{ ldp_group_base_dn }}
+          objectClass: {{ ldp_group_object_class }}
+          objectClass: top
+          cn: {{ ldp_principal_admin_group }}
+          member: {{ ldp_uid_attr }}={{ ldp_principal_admin_user }},{{ ldp_user_base_dn }}
+          member: {{ ldp_uid_attr }}=cpadmin1,{{ ldp_user_base_dn }}
+          member: {{ ldp_uid_attr }}=cpadmin2,{{ ldp_user_base_dn }}
+
+          dn: {{ ldp_group_id_attribute }}=cdusers,{{ ldp_group_base_dn }}
+          objectClass: {{ ldp_group_object_class }}
+          objectClass: top
+          cn: cdusers
+          member: {{ ldp_uid_attr }}=cdadmin01,{{ ldp_user_base_dn }}
+          member: {{ ldp_uid_attr }}=cdadmin02,{{ ldp_user_base_dn }}
+          member: {{ ldp_uid_attr }}=cduser01,{{ ldp_user_base_dn }}
+
+          dn: {{ ldp_group_id_attribute }}=siusers,{{ ldp_group_base_dn }}
+          objectClass: {{ ldp_group_object_class }}
+          objectClass: top
+          cn: siusers
+          member: {{ ldp_uid_attr }}=siuser01,{{ ldp_user_base_dn }}
+          member: {{ ldp_uid_attr }}=siuser02,{{ ldp_user_base_dn }}

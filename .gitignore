@@ -6,6 +6,7 @@ site
 environments/hosts.*
 playbooks/dev*
 playbooks/cleanup/dev*
+playbooks/tools/openldap*
 roles/dev*
 docs/dev*
 resultado.txt

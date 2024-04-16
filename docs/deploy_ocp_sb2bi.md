@@ -31,9 +31,9 @@ To run playbook the playbook
 ```bash 
 cd ansible-ibm-sterling
 
-export SI_NAMESPACE=sterling-b2bi-dev
-export MQ_NAMESPACE=sterling-b2bi-mq-dev
-export DB_NAMESPACE=sterling-b2bi-db2-dev
+export SI_INSTANCEID=dev01
+
+export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 ```
 
 ## Run the Plabook
@@ -41,7 +41,7 @@ export DB_NAMESPACE=sterling-b2bi-db2-dev
 To run playbook the playbook
 
 ```bash 
-ansible-playbook playbooks/deploy_ocp_sb2bi.yml
+ansible-playbook playbooks/deploy_sb2bi.yml
 ```
 
 MainPage [README.md](../README.md)
@@ -52,7 +52,9 @@ MainPage [README.md](../README.md)
 ```
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 
-export SB2BI_INSTANCE_ID=sterling-b2bi-dev
+export SI_INSTANCEID=dev01
+
+export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 
 oc login --token=sha256~KpQBSI.... --server=https://api.ocp-27000....:6443
 ```

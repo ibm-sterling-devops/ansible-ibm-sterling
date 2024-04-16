@@ -46,7 +46,7 @@ git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 
 ## Running playbooks
 
-Install Connect:Direct
+Install Connect:Direct (standalone)
 
 ```bash 
 cd ansible-ibm-sterling
@@ -54,7 +54,7 @@ cd ansible-ibm-sterling
 ansible-playbook -i environments/hosts.dev -u root playbooks/setup-cd.yml
 ```
 
-Install Sterling B2B
+Install Sterling B2B (standalone)
 
 ```bash 
 cd ansible-ibm-sterling
@@ -88,7 +88,7 @@ cd ansible-ibm-sterling
 export CD_NAMESPACE=ibm-cd-cdnode01-dev
 export CD_NODENAME=CDNODE01
 
-ansible-playbook playbooks/deploy_ocd_cd.yml
+ansible-playbook playbooks/deploy_cd.yml
 ```
 
 More options [Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts](docs/deploy_ocp_cd.md)

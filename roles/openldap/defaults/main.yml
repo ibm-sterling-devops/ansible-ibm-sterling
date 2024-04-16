@@ -1,0 +1,24 @@
+---
+oldp_namespace: openldap-00
+
+oldp_storageclass: ibmc-file-gold
+
+ldp_base_dn: dc=cp,dc=internal
+ldp_domain: cp.internal
+ldp_dc: cp
+ldp_user_base_dn: "ou=Users,{{ ldp_base_dn }}"
+ldp_group_base_dn: "ou=UseGroupsrs,{{ ldp_base_dn }}"
+ldp_admin_user: ldapadmin
+ldp_admin_password: passw0rd
+universal_password: passw0rd
+
+
+ldp_uid_attr: uid
+ldp_user_object_class: inetOrgPerson
+ldp_gid_attribute: cn
+ldp_group_object_class: groupOfNames
+
+ldp_ssl_enabled: false
+ldp_ssl_secret_name: openldap-ssl-secret
+ldp_ldap_port: "389"
+ldp_ldaps_port: "636"
