@@ -1,4 +1,4 @@
-# Roles
+# Standard Roles
 
 | Role name                       |            Description of Role                                          |
 |---------------------------------|-------------------------------------------------------------------------|
@@ -16,3 +16,13 @@
 | ibm/sb2b/sb2b-stop              | Stop SB2Bi |
 | others/nginx-install            | Install Nginx |
 
+# Kubernetes Roles
+
+| cd_deploy                       | Deploy IBM Sterling Connect:Direct |
+| cloudbeaver                     | Deploy CloudBeaver Community Edition |
+| db2_console                     | DEVELOPMENT - Deploy DB2 Data Management Console |
+| mq_deploy                       | Deploy IBM Message Queue Community Edition |
+| sb2bi_deploy                    | Deploy IBM Sterling B2B Integrator  |
+| sb2bi_deploy_db2                | Deploy IBM DB2 database |
+| sb2bi_deploy_mq                 | Deploy IBM Message Queue Community Edition for Sterling B2B |
+| sb2bi_setup_db2                 | Setup database for IBM Sterling B2B |
