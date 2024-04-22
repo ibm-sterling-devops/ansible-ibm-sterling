@@ -50,3 +50,11 @@
 #     timeout: "{{ si_helm_timeout }}"
 #     values_files:
 #       - "{{ my_workdir }}/myb2bi_values.yml"
+
+- name: "IBM Sterling B2Bi Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "IBM Sterling B2Bi status .............................. Ready!"
+      - "IBM Sterling B2Bi namespace ........................... {{ si_namespace }}"
+      # - "Pod name ............................................ {{ si_pod_name }}"
+      # - "For username and password check secret .............. {{ si_secret }}'"

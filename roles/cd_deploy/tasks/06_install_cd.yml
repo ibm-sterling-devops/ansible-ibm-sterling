@@ -60,7 +60,7 @@
   ansible.builtin.set_fact:
     cd_pod_name: "{{ cd_pod.resources[0].metadata.name }}"
 
-- name: "Pod Name"
+- name: "IBM Sterling Connect:Direct Summary:"
   ansible.builtin.debug:
     msg:
       - "IBM Sterling Connect:Direct status .................. Ready!"

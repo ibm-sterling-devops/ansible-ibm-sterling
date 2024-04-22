@@ -52,3 +52,11 @@
 #     timeout: "{{ sccm_helm_timeout }}"
 #     values_files:
 #       - "{{ my_workdir }}/myb2bi_values.yml"
+
+- name: "IBM Sterling Control Center Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "IBM Sterling Control Center status .............................. Ready!"
+      - "IBM Sterling Control Center namespace ........................... {{ sccm_namespace }}"
+      # - "Pod name ............................................ {{ sccm_pod_name }}"
+      # - "For username and password check secret .............. {{ sccm_secret }}'"
