@@ -1,5 +1,5 @@
 ---
-__cd_install_path:      "{{ cd_install_path | default('/opt/IBM/cdunix') }}"  
-__cd_user:              "{{ cd_user | default('cduser1') }}"
-__cd_nodename:          "{{ cd_nodename | default('uname') }}"
+__cd_install_path: "{{ cd_install_path | default('/opt/IBM/cdunix') }}"  
+__cd_user: "{{ cd_user | default('cduser1') }}"
+__cd_nodename: "{{ cd_nodename | default('uname') }}"
 

@@ -1,25 +1,27 @@
 ---
-- name:          Check if Connect:Direct is already up and running
-  shell:         "ps -ef | grep cdpmgr | grep -v grep"
-  changed_when:  true
-  register:      __cd_running
+- name: Check if Connect:Direct is already up and running
+  ansible.builtin.shell: 
+    cmd: "ps -ef | grep cdpmgr | grep -v grep"
+  changed_when: true
+  register: __cd_running
   ignore_errors: true
 
-- name:          Check if Product already Installed?
-  stat:
-    path:        "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
-  register:      __cd_installed
+- name: Check if Product already Installed?
+  ansible.builtin.stat:
+    path: "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
+  register: __cd_installed
 
 # TODO: Need to test stop
-- name:          "Stop IBM Connect:Direct"
-  become_user:   "{{ __cd_user }}"
+- name: "Stop IBM Connect:Direct"
+  become_user: "{{ __cd_user }}"
   #environment:
   #  NDMAPICFG:   "{{ __cd_install_path }}/ndm/cfg/cliapi/ndmapi.cfg""
   #  PATH:        ""
-  shell:         "{{ __cd_install_path }}/ndm/bin/ndmcli -x << EOJ stop; EOJ"
-  register:      cout
-  changed_when:  cout.rc == 0
-  when:          __cd_running.rc == 0
+  ansible.builtin.shell: 
+    cmd: "{{ __cd_install_path }}/ndm/bin/ndmcli -x << EOJ stop; EOJ"
+  register: cout
+  changed_when: cout.rc == 0
+  when: __cd_running.rc == 0
 
   #ndmcli -x << EOJ
   #stop;
