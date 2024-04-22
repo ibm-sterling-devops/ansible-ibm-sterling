@@ -25,7 +25,7 @@
         name: cloudbeaver-secret
         namespace: "{{ cb_namespace }}"
         labels:
-          app: cloudbeaver  
+          app: cloudbeaver
       type: Opaque
       stringData:
         cloudbeaver-password: "{{ cb_password }}"
@@ -54,7 +54,7 @@
         name: 'cloudbeaver-anyuid'
         namespace: "{{ cb_namespace }}"
         labels:
-          app: cloudbeaver  
+          app: cloudbeaver
       subjects:
         - kind: ServiceAccount
           name: cloudbeaver-sa
@@ -81,7 +81,7 @@
         accessModes:
           - ReadWriteOnce
         storageClassName: ibmc-file-gold
-        #volumeMode: Filesystem
+        # volumeMode: Filesystem
         resources:
           requests:
             storage: 20Mi
@@ -103,7 +103,7 @@
     state: present
     definition:
       apiVersion: apps/v1
-      kind:  Deployment
+      kind: Deployment
       metadata:
         name: cloudbeaver
         namespace: "{{ cb_namespace }}"
@@ -143,10 +143,10 @@
                   - mountPath: /opt/cloudbeaver/workspace
                     name: cloudbeaver-data
             volumes:
-            - name: cloudbeaver-data
-              persistentVolumeClaim:
-                claimName: cloudbeaver-data-pvc
-            
+              - name: cloudbeaver-data
+                persistentVolumeClaim:
+                  claimName: cloudbeaver-data-pvc
+
 # Create Service and Route
 # -----------------------------------------------------------------------------
 - name: Apply Service
@@ -167,7 +167,7 @@
             port: 8978
             protocol: TCP
             targetPort: http
-        type: ClusterIP 
+        type: ClusterIP
 
 - name: Apply Route
   kubernetes.core.k8s:
