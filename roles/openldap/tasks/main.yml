@@ -25,7 +25,7 @@
         name: openldap-secret
         namespace: "{{ oldp_namespace }}"
         labels:
-          app: openldap  
+          app: openldap
       type: Opaque
       stringData:
         LDAP_ADMIN_PASSWORD: "{{ ldp_admin_password }}"
@@ -54,7 +54,7 @@
         name: 'openldap-anyuid'
         namespace: "{{ oldp_namespace }}"
         labels:
-          app: openldap  
+          app: openldap
       subjects:
         - kind: ServiceAccount
           name: openldap-sa
@@ -81,7 +81,7 @@
         accessModes:
           - ReadWriteMany
         storageClassName: "{{ oldp_storageclass }}"
-        #volumeMode: Filesystem
+        # volumeMode: Filesystem
         resources:
           requests:
             storage: 100Mi
@@ -96,7 +96,8 @@
   retries: 15  # Total retries will be 15 * 20s = 300s (5 minutes)
   delay: 20     # Wait for 20 seconds between each retry
 
-- debug:
+- name: Debug PVC
+  ansible.builtin.debug:
     msg: "PVC is ready"
 
 - name: Configure ConfigMaps
@@ -109,7 +110,7 @@
     state: present
     definition:
       apiVersion: apps/v1
-      kind:  Deployment
+      kind: Deployment
       metadata:
         name: openldap
         namespace: "{{ oldp_namespace }}"
@@ -156,14 +157,14 @@
                 #     add:
                 #       - NET_BIND_SERVICE
             volumes:
-            - name: openldap-data
-              persistentVolumeClaim:
-                claimName: openldap-data-pvc
-            - name: custom-ldif-files
-              configMap:
-                name: openldap-customldif
-                defaultMode: 420
-            
+              - name: openldap-data
+                persistentVolumeClaim:
+                  claimName: openldap-data-pvc
+              - name: custom-ldif-files
+                configMap:
+                  name: openldap-customldif
+                  defaultMode: 420
+
 # Create Service and Route
 # -----------------------------------------------------------------------------
 - name: Apply Service

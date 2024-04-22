@@ -25,6 +25,7 @@
 
 - name: Add privileged SCC to service account
   ansible.builtin.command: oc adm policy add-scc-to-user privileged -n {{ dmc_namespace }} -z db2-dmc-sa
+  changed_when: false
 
 # Create Service and Route
 # -----------------------------------------------------------------------------
@@ -99,7 +100,7 @@
         accessModes:
           - ReadWriteOnce
         storageClassName: ibmc-file-gold-gid
-        #volumeMode: Filesystem
+        # volumeMode: Filesystem
         resources:
           requests:
             storage: 100Mi
@@ -114,16 +115,16 @@
   retries: 15  # Total retries will be 15 * 20s = 300s (5 minutes)
   delay: 20     # Wait for 20 seconds between each retry
 
-- debug:
+- name: Debug PVC
+  ansible.builtin.debug:
     msg: "PVC is ready"
-
 
 - name: Apply Deployment db2-console-deployment
   kubernetes.core.k8s:
     state: present
     definition:
       apiVersion: apps/v1
-      kind:  StatefulSet
+      kind: StatefulSet
       metadata:
         namespace: "{{ dmc_namespace }}"
         name: mydmc
@@ -161,4 +162,3 @@
               - name: mydmcvol
                 persistentVolumeClaim:
                   claimName: mydmc-0-pvc
-            

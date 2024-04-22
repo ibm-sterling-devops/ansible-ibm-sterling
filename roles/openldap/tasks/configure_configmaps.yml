@@ -37,7 +37,7 @@
           objectClass: organization
           o: {{ ldp_domain }}
           dc: {{ ldp_dc }}
-        
+
           # Units
           dn: {{ ldp_user_base_dn }}
           ou: {{ ldp_user_base }}
