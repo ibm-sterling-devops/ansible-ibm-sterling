@@ -19,10 +19,10 @@
       - sccm_instanceid is match('[a-z0-9]+')
     fail_msg: "Property 'sccm_instanceid' is greater than 8 character long or has uppercase characters"
 
-- name: "Fail if entitled.registry_key is not provided"
+- name: "Fail if entitled_registry_key is not provided"
   ansible.builtin.assert:
-    that: entitled.registry_key is defined and entitled.registry_key != ""
-    fail_msg: "entitled.registry_key property is required"
+    that: entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "entitled_registry_key property is required"
 
 - name: "Fail si_domain is 'not provided' "
   ansible.builtin.assert:

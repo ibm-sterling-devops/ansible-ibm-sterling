@@ -20,7 +20,7 @@
     that: mq_name is defined and mq_name != ""
     fail_msg: "mq_name property is required"
 
-- name: "Fail if entitled.registry_key is not provided"
+- name: "Fail if entitled_registry_key is not provided"
   ansible.builtin.assert:
-    that: entitled.registry_key is defined and entitled.registry_key != ""
-    fail_msg: "entitled.registry_key property is required"
+    that: entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "entitled_registry_key property is required"
