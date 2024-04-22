@@ -1,47 +1,45 @@
 ---
-- name:           Install OS Packages
+- name: Install OS Packages
   ansible.builtin.package:
-    name:         ['unzip', 'lsof', 'tar', 'wget','openssl']
-    state:        present
+    name: ['unzip', 'lsof', 'tar', 'wget','openssl']
+    state: present
 
-- name:           Install OS Packages - Yum
+- name: Install OS Packages - Yum
   ansible.builtin.yum:
-    name:         ['glibc.x86_64', 'libgcc.x86_64','libstdc++.x86_64']
-    state:        present
+    name: ['glibc.x86_64', 'libgcc.x86_64','libstdc++.x86_64']
+    state: present
   when:
     - ansible_os_family == "RedHat"
     - (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Amazon")
 
-- name:           "Create CD Group - {{ __cd_group }}"
+- name: "Create CD Group - {{ __cd_group }}"
   ansible.builtin.group:
-    name:         "{{ __cd_group }}"
-    state:        present
+    name: "{{ __cd_group }}"
+    state: present
 
-- name:           "Create CD user - {{ __cd_user }}"
+- name: "Create CD user - {{ __cd_user }}"
   ansible.builtin.user:
-    name:         "{{ __cd_user }}"
-    group:        "{{ __cd_group }}"
-    state:        present
+    name: "{{ __cd_user }}"
+    group: "{{ __cd_group }}"
+    state: present
 
-- name:          "Create directories"
+- name: "Create directories"
   file:
-    path:        "{{ item.directory  }}"
-    state:       directory
-    owner:       "{{ __cd_user }}"
-    group:       "{{ __cd_group }}"
+    path: "{{ item.directory  }}"
+    state: directory
+    owner: "{{ __cd_user }}"
+    group: "{{ __cd_group }}"
   with_items:
     - { directory: "{{ __extraction_folder }}" }
     - { directory: "{{ __workdir_folder }}" }
     - { directory: "{{ __cd_install_path }}" }
 
-- name:           Define limits.conf
+- name: Define limits.conf
   pam_limits:
-    domain:       "{{ item.domain }}"
-    limit_type:   "{{ item.limit_type }}"
-    limit_item:   "{{ item.limit_item }}"
-    value:        "{{ item.value }}"
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.limit_type }}"
+    limit_item: "{{ item.limit_item }}"
+    value: "{{ item.value }}"
   with_items:
     - { domain: "{{ __cd_user }}", limit_type: "soft", limit_item: "nofile", value: "60000"}
     - { domain: "{{ __cd_user }} ", limit_type: "hard", limit_item: "nofile", value: "80000"}
-
-

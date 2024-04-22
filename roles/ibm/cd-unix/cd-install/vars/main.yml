@@ -1,35 +1,35 @@
 ---
-__repository_url:       "{{ cd_repository_url }}"
-__package_name:         "{{ cd_package_name }}"
-__extraction_folder:    "{{ extraction_folder | default('/opt/IBM/Binaries') }}"
-__workdir_folder:       "{{ cd_workdir | default('/opt/IBM/workdir') }}"  
-__cd_install_path:      "{{ cd_install_path | default('/opt/IBM/ConnectDirect') }}"  
-__cdunix_install_path:  "{{ cd_install_path | default('/opt/IBM/ConnectDirect/cdunix') }}"  
-#  /home/cduser1/cdunix
+__repository_url: "{{ cd_repository_url }}"
+__package_name: "{{ cd_package_name }}"
+__extraction_folder: "{{ extraction_folder | default('/opt/IBM/Binaries') }}"
+__workdir_folder: "{{ cd_workdir | default('/opt/IBM/workdir') }}" 
+__cd_install_path: "{{ cd_install_path | default('/opt/IBM/ConnectDirect') }}" 
+__cdunix_install_path: "{{ cd_install_path | default('/opt/IBM/ConnectDirect/cdunix') }}" 
+# /home/cduser1/cdunix
 
-__cd_user:              "{{ cd_user | default('cduser1') }}"
-__cd_password:          "{{ cd_password | default('passw0rd') }}"
-__cd_group:             "{{ cd_group | default('cduser1') }}"
+__cd_user: "{{ cd_user | default('cduser1') }}"
+__cd_password: "{{ cd_password | default('passw0rd') }}"
+__cd_group: "{{ cd_group | default('cduser1') }}"
 
-__cd_nodename:            "{{ cd_nodename | default('uname') }}"
-__cd_secure_proxy:        "disabled"
+__cd_nodename: "{{ cd_nodename | default('uname') }}"
+__cd_secure_proxy: "disabled"
 __cd_acquireHostnameOrIP: "{{ cd_acquireHostnameOrIP | default('ip4') }}"
-__cd_agentport:           "{{ cd_agentport | default('1365') }}"
-__cd_serverport:          "{{ cd_serverport | default('1364') }}"
-__cd_clientport:          "{{ cd_clientport | default('1363') }}"
+__cd_agentport: "{{ cd_agentport | default('1365') }}"
+__cd_serverport: "{{ cd_serverport | default('1364') }}"
+__cd_clientport: "{{ cd_clientport | default('1363') }}"
 __cd_localCertPassphrase: "{{ cd_localCertPassphrase | default('passw0rd') }}"
-__cd_keystorePassword:    "{{ cd_keystorePassword | default('passw0rd') }}"
+__cd_keystorePassword: "{{ cd_keystorePassword | default('passw0rd') }}"
 
 # Integrated File Agent - C:D 6.2 or higher
-__cd_integratedFA:        "disabled"
+__cd_integratedFA: "disabled"
 
 
-__crt_file:               "{{ __workdir_folder }}/{{ __cd_nodename }}.crt"
-__key_file:               "{{ __workdir_folder }}/{{ __cd_nodename }}.key"
-__combined_file:          "{{ __workdir_folder }}/{{ __cd_nodename }}.keycert"
-__cnf_location:           "{{ __workdir_folder }}/{{ __cd_nodename }}.cnf"
-__ssl_root_ca:            "{{ ssl_root_ca | default('/C=US/ST=/L=/O=IBM-Sterling-Devops/OU=ISD/CN=cdserver01') }}"
+__crt_file: "{{ __workdir_folder }}/{{ __cd_nodename }}.crt"
+__key_file: "{{ __workdir_folder }}/{{ __cd_nodename }}.key"
+__combined_file: "{{ __workdir_folder }}/{{ __cd_nodename }}.keycert"
+__cnf_location: "{{ __workdir_folder }}/{{ __cd_nodename }}.cnf"
+__ssl_root_ca: "{{ ssl_root_ca | default('/C=US/ST=/L=/O=IBM-Sterling-Devops/OU=ISD/CN=cdserver01') }}"
 
 
-__cd_version:           "{{ cd_version | default('6.2.0') }}"
+__cd_version: "{{ cd_version | default('6.2.0') }}"
 

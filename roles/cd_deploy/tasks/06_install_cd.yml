@@ -26,27 +26,21 @@
       - "Image Repository ................. {{ compatibility_matrix[cd_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[cd_version].image_tag }}"
       - "cd_helm_values   ................. {{ cd_helm_values }}"
-      - "command: helm install --timeout {{ cd_helm.timeout }} --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
-
-# - name: Run Helm delete command
-#   shell: "helm delete --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
-
+      - "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm_release }} {{ cd_helm.chart }}"
 
 - name: Run Helm install command
-  ansible.builtin.shell: "helm install --timeout {{ cd_helm.timeout }} --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
-# --timeout {{ cd_helm.timeout }}
-# --wait
+  ansible.builtin.shell:
+    cmd: "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm_release }} {{ cd_helm.chart }}"
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Deploy Connect:Direct chart from local path
 #   kubernetes.core.helm:
 #     name: "{{ cd_helm_release }}"
-#     chart_ref: "{{ my_workdir }}/ibm-connect-direct/"
+#     chart_ref: "{{ cd_helm.chart }}"
 #     release_namespace: "{{ cd_namespace }}"
 #     wait: True
 #     timeout: "{{ cd_helm.timeout }}"
-#     values_files:
-#       - "{{ my_workdir }}/mycd_values.yml"
+#     values_files: "{{ cd_helm.values_yaml }}"
 
 - name: "Lookup Connect:Direct Pod"
   kubernetes.core.k8s_info:
@@ -69,4 +63,7 @@
 - name: "Pod Name"
   ansible.builtin.debug:
     msg:
-      - "Pod name ............................... {{ cd_pod_name }}"
+      - "IBM Sterling Connect:Direct status .................. Ready!"
+      - "Connect:Direct namespace ............................ {{ cd_namespace }}"
+      - "Pod name ............................................ {{ cd_pod_name }}"
+      - "For username and password check secret .............. {{ cd_secret }}'"

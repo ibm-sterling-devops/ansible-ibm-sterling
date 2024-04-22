@@ -6,8 +6,8 @@
 #    src:         cert.cnf.j2
 #    dest:        "{{ __cnf_location }}"
 
-- name:          Create SSL certificates and combine files
-  shell:         openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -sha256  -subj "{{ __ssl_root_ca }}"  -keyout {{ __key_file }}  -out {{ __crt_file }} -batch && cat {{ __crt_file }} {{ __key_file }} > {{ __combined_file }}
+- name: Create SSL certificates and combine files
+  ansible.builtin.shell: openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -sha256  -subj "{{ __ssl_root_ca }}"  -keyout {{ __key_file }}  -out {{ __crt_file }} -batch && cat {{ __crt_file }} {{ __key_file }} > {{ __combined_file }}
 # -config {{ __cnf_location }}
 
 #
@@ -15,40 +15,40 @@
 #  TODO: Investigate error "CDAI002E Invalid argument found. argument: –f"
 #  ????? Couldn't solve this problem for use with response file instead!
 #
-#- name:          Generate Connect:Direct Install Response file
+# - name: Generate Connect:Direct Install Response file
 #  template:
-#    src:         cd_install.rsp.j2
-#    dest:        "{{ __workdir_folder }}/cd_install.rsp"
-#
-#- name:          "Install IBM Connect:Direct -- This takes a while ..."
+#    src: cd_install.rsp.j2
+#    dest: "{{ __workdir_folder }}/cd_install.rsp"
+
+# - name:          "Install IBM Connect:Direct -- This takes a while ..."
 #  shell:
 #    "./cdinstall_a –f {{ __workdir_folder }}/cd_install.rsp"
 #  args:
 #    chdir:      "{{ __extraction_folder }}"
 #    creates:     "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
-#
-#
-- name:          "Install IBM Connect:Direct -- This takes a while ..."
-  shell: "./cdinstall_a --installCmd \"install\" --cpioFile \"{{ __extraction_folder }}/cdunix\" --installDir \"{{ __cdunix_install_path }}\" --localNodeName \"{{ __cd_nodename }}\" --acquireHostnameOrIP \"{{ __cd_acquireHostnameOrIP }}\" --trace y --agentPort {{ __cd_agentport }} --serverPort {{ __cd_serverport }} --clientPort {{ __cd_clientport }} --localCertFile \"{{ __combined_file }}\" --localCertPassphrase {{ __cd_localCertPassphrase }} --adminUserid {{ __cd_user }} --keystorePassword {{ __cd_keystorePassword }} --ignoreExistingInstallDir \"y\" "
+
+
+- name: "Install IBM Connect:Direct -- This takes a while ..."
+  ansible.builtin.shell: "./cdinstall_a --installCmd \"install\" --cpioFile \"{{ __extraction_folder }}/cdunix\" --installDir \"{{ __cdunix_install_path }}\" --localNodeName \"{{ __cd_nodename }}\" --acquireHostnameOrIP \"{{ __cd_acquireHostnameOrIP }}\" --trace y --agentPort {{ __cd_agentport }} --serverPort {{ __cd_serverport }} --clientPort {{ __cd_clientport }} --localCertFile \"{{ __combined_file }}\" --localCertPassphrase {{ __cd_localCertPassphrase }} --adminUserid {{ __cd_user }} --keystorePassword {{ __cd_keystorePassword }} --ignoreExistingInstallDir \"y\" "
   args:
-    chdir:       "{{ __extraction_folder }}"
-    creates:     "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
+    chdir: "{{ __extraction_folder }}"
+    creates: "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
   environment:
-    IATEMPDIR:   "{{ __extraction_folder }}"
-    LANG:        "en_US"
+    IATEMPDIR: "{{ __extraction_folder }}"
+    LANG: "en_US"
   register: cout
 
 - debug: var=cout
 
 - name: Copy files from foo to bar
-  copy: 
+  ansible.builtin.copy: 
     remote_src: True 
     src:  "{{ __extraction_folder }}/{{ item }}"
     dest: "{{ __workdir_folder }}/{{ item }}"
   with_items: 
     - cdaiLog.txt
     - exitStatusFile.txt
-  ignore_errors: true
+  failed_when: false
 
 #- name:                  Clean up installation folder(s)
 #  file:

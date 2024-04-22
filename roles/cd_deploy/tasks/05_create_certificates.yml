@@ -2,11 +2,15 @@
 # Create Certificate for Connect:Direct on Kubernetes
 # -----------------------------------------------------------------------------
 - name: Running OpenSSL command
-  ansible.builtin.shell: "openssl req -x509 -sha512 -days 3650 -newkey rsa:2048 -new -nodes -keyout {{ cd_cert_key }} -out {{ cd_cert_crt }} -subj '/CN={{ cd_nodename }}'"
+  ansible.builtin.command:
+    cmd: "openssl req -x509 -sha512 -days 3650 -newkey rsa:2048 -new -nodes -keyout {{ cd_cert_key }} -out {{ cd_cert_crt }} -subj '/CN={{ cd_nodename }}'"
   register: cout
+  changed_when: false
 
 - name: Concat C:D certificates
-  ansible.builtin.shell: "cat {{ cd_cert_key }} {{ cd_cert_crt }} > {{ cd_cert_pem }}"
+  ansible.builtin.shell:
+    cmd: "cat {{ cd_cert_key }} {{ cd_cert_crt }} > {{ cd_cert_pem }}"
+  changed_when: false
   when: cout.rc == 0
 
 # - name: Generate OpenSSL certificate

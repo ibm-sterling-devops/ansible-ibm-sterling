@@ -36,6 +36,8 @@ cd_use_dynamic_provisioning: false
 cd_helm:
   sumEnabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
   timeout: "10m0s"
+  values_yaml: "{{ my_workdir }}/mycd_values.yml"
+  chart: "{{ my_workdir }}/ibm-connect-direct/"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
