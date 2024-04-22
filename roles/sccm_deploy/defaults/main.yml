@@ -5,26 +5,26 @@ sccm_instanceid: "{{ lookup('env', 'SCCM_INSTANCEID') }}"
 sccm_domain: "{{ lookup('env', 'SCCM_DOMAIN') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 
-sccm_licenseType: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
-sccm_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
+sccm_licenseType: "{{ lookup('env', ' SCCM_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+sccm_system_passphrase: "{{ lookup('env', ' SCCM_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
 
-sccm_dbvendor: "{{ lookup('env', 'SI_DBVENDOR') }}"
-sccm_dbhost: "{{ lookup('env', 'SI_DBHOST') }}"
-sccm_dbport: "{{ lookup('env', 'SI_DBPORT') }}"
-sccm_dbname: "{{ lookup('env', 'SI_DBNAME') }}"
-sccm_dbuser: "{{ lookup('env', 'SI_DBUSER') }}"
-sccm_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD') }}"
-sccm_oracleUseServiceName: "{{ lookup('env', 'SI_ORACLESERVICENAME', default('false')) }}"
+sccm_dbvendor: "{{ lookup('env', ' SCCM_DBVENDOR') }}"
+sccm_dbhost: "{{ lookup('env', ' SCCM_DBHOST') }}"
+sccm_dbport: "{{ lookup('env', ' SCCM_DBPORT') }}"
+sccm_dbname: "{{ lookup('env', ' SCCM_DBNAME') }}"
+sccm_dbuser: "{{ lookup('env', ' SCCM_DBUSER') }}"
+sccm_dbpassword: "{{ lookup('env', ' SCCM_DBPASSWORD') }}"
+sccm_oracleUseServiceName: "{{ lookup('env', ' SCCM_ORACLESERVICENAME', default('false')) }}"
 
-sccm_adminmailaddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
-sccm_adminsmtphost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
+sccm_adminmailaddr: "{{ lookup('env', ' SCCM_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
+sccm_adminsmtphost: "{{ lookup('env', ' SCCM_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
 
-sccm_jmsuser: "{{ lookup('env', 'SI_JMS_USERNAME') }}"
-sccm_jmspassword: "{{ lookup('env', 'SI_JMS_PASSWORD') }}"
-sccm_jmskeystorepassword: "{{ lookup('env', 'SI_JMS_KEYSTORE_PASSWORD') }}"
-sccm_jmstruststorepassword: "{{ lookup('env', 'SI_JMS_TRUSTSTORE_PASSWORD') }}"
+sccm_jmsuser: "{{ lookup('env', ' SCCM_JMS_USERNAME') }}"
+sccm_jmspassword: "{{ lookup('env', ' SCCM_JMS_PASSWORD') }}"
+sccm_jmskeystorepassword: "{{ lookup('env', ' SCCM_JMS_KEYSTORE_PASSWORD') }}"
+sccm_jmstruststorepassword: "{{ lookup('env', ' SCCM_JMS_TRUSTSTORE_PASSWORD') }}"
 
-sccm_libertykeystorepassword: "{{ lookup('env', 'SI_LIBERTY_KEYSTORE_PASSWORD') | default('changeit', true) }}"
+sccm_libertykeystorepassword: "{{ lookup('env', ' SCCM_LIBERTY_KEYSTORE_PASSWORD') | default('changeit', true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------
@@ -57,65 +57,11 @@ db2_id: mydb2
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
-  6.2.0.0:
-    helm_version: "3.0.0"
-    global:
-      image:
-        tag: "6.2.0.0"
-    resourcesInit:
-      image:
-        tag: "6.2.0.0"
-    dataSetup:
-      image:
-        tag: "6.2.0.0"
-    integrations:
-      seasIntegration:
-        seasVersion: "1.0"
-      itxIntegration:
-        image:
-          tag: "10.1.1.1.20221116"
-      itxaIntegration:
-        image:
-          tag: "10.0.1.8"
-        resourcesInit:
-          tag: "10.0.1.8"
-    test:
-      image:
-        tag: '1.1.62'
-    purge:
-      image:
-        tag: "6.2.0.0"
-    documentService:
-      image:
-        tag: 1.0.0.0
-  6.1.2.5:
-    helm_version: "2.1.6"
-    global:
-      image:
-        tag: "6.1.2.5"
-    resourcesInit:
-      image:
-        tag: "6.1.2.5"
-    dataSetup:
-      image:
-        tag: "6.1.2.5"
-    integrations:
-      seasIntegration:
-        seasVersion: "1.0"
-      itxIntegration:
-        image:
-          tag: ""
-      itxaIntegration:
-        image:
-          tag: ""
-        resourcesInit:
-    test:
-      image:
-        tag: ""
-    purge:
-      enabled: true
-      image:
-        tag: "6.1.2.5"
+  6.3.1.0_iFix01_2024-02-01:
+    helm_version: "3.1.1"
+  6.3.1.0_2023-12-15:
+    helm_version: "3.1.0"
+
 
 
 # Storage Class Matrix - definition by Cloud Provider

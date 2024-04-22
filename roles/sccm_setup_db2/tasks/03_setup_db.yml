@@ -37,7 +37,7 @@
   when: cout_k8s_cp.result.find('successfully copied') == -1
 
 - name: "Wait for setupdb.sh available"
-  ansible.builtinpause:
+  ansible.builtin.pause:
     minutes: 1
 
 - name: Run db2profile to set environmnet for DB2

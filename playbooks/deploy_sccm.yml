@@ -1,0 +1,16 @@
+- name: Deploy IBM Sterling Control Center Monitor on RedHat OpenShift
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  # vars:
+    # db_vendor: DB2
+    # db_user: db2inst1
+    # db_password: password
+    # db_host: localhost
+    # db_port: '50000'
+    # db_database: B2BI
+  roles:
+    - sccm_deploy_db2
+    - sccm_setup_db2
+    - sccm_deploy
