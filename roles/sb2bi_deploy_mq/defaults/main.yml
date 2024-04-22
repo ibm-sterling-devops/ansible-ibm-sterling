@@ -3,22 +3,24 @@ si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
 mq_namespace: "sterling-b2bi-{{ si_instanceid }}-mq"
 mq_name: "{{ lookup('env', 'MQ_NAME') | default('mq', true) }}"
 
-mq_version:  "{{ lookup('env', 'MQ_VERSION') | default('9.2.5.0-r3', true) }}"
+mq_version: "{{ lookup('env', 'MQ_VERSION') | default('9.2.5.0-r3', true) }}"
 mq_admin_password: "{{ lookup('env', 'MQ_ADMIN_PASSWORD') | default('passw0rd', true) }}"
 mq_app_password: "{{ lookup('env', 'MQ_APP_PASSWORD') | default('passw0rd', true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------
-entitled:
-  registry: "cp.icr.io"
-  registry_user: cp
-  registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------
 mq_registry_secret: mymq-ibm-registry-secret
 mq_service_account: mymq-sa
 mq_secret: mymq-secret
+mq_svc_data: "{{ mq_name }}-data"
+mq_svc_web: "{{ mq_name }}-web"
+mq_route_web: "{{ mq_name }}-web"
 
 
 storage_class_matrix:

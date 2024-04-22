@@ -29,10 +29,9 @@ si_libertykeystorepassword: "{{ lookup('env', 'SI_LIBERTY_KEYSTORE_PASSWORD') | 
 
 # Entitlement
 # -----------------------------------------------------------------------------
-entitled:
-  registry: "cp.icr.io/cp"
-  registry_user: cp
-  registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Defaults for B2Bi instances.
 # -----------------------------------------------------------------------------

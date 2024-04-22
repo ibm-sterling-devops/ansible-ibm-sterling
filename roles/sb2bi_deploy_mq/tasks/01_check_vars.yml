@@ -5,7 +5,7 @@
       # Sterling B2B
       - lookup('env', 'SI_INSTANCEID') != ""
       # IBM
-      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""   
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
 
 # 1. Check for undefined properties that do not have a default
@@ -24,4 +24,3 @@
   ansible.builtin.assert:
     that: entitled.registry_key is defined and entitled.registry_key != ""
     fail_msg: "entitled.registry_key property is required"
-

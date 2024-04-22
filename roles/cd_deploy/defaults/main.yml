@@ -14,10 +14,9 @@ cd_license_type: "{{ lookup('env', 'CD_LICENSETYPE') | default('non-prod', true)
 
 # Entitlement
 # -----------------------------------------------------------------------------
-entitled:
-  registry: "cp.icr.io/cp"
-  registry_user: "cp"
-  registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------
