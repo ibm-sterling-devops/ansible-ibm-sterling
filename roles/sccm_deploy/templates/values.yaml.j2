@@ -1,6 +1,6 @@
 global:
   license: true
-  licenseType: "{{ si_licensetype }}"
+  licenseType: "{{ si_licenseType }}"
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi"
     tag: "{{ compatibility_matrix[ si_version ].global.image.tag | default('') }}"
@@ -240,7 +240,7 @@ setupCfg:
   dbData: {{ si_dbname }}
   dbDrivers: {{ si_dbdrivers }}
   dbCreateSchema: {{ si_helm_values.setupCfg.dbCreateSchema | default('true') }}
-  oracleUseServiceName: {{ si_oracle_useservicename | default('false') }}
+  oracleUseServiceName: {{ si_oracleUseServiceName | default('false') }}
   usessl:  {{ si_helm_values.setupCfg.usessl | default('false') }}
   
   dbSecret: {{ si_db_secret }}

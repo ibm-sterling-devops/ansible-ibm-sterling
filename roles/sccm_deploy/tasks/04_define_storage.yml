@@ -11,7 +11,7 @@
 
 - name: Create List of Storages
   ansible.builtin.set_fact:
-    my_storage_list: "{{ lookup_storageclasses.resources | map(attribute='metadata.name') | list }}"
+    my_storage_list: "{{lookup_storageclasses.resources | map(attribute='metadata.name') | list}}"
 
 # 2. Dynamic Provisioning
 # -----------------------------------------------------------------------------

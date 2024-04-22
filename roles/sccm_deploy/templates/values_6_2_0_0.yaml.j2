@@ -1,12 +1,25 @@
+# (C) Copyright 2019-2023 Syncsort Incorporated. All rights reserved.
+
+# Default values for b2bi.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 global:
-  license: true
-  licenseType: "{{ si_licensetype }}"
+  ## Set the value to True in order to accept the application license 
+  ## B2BI @ https://ibm.biz/B2Bi_62
+  ## SFG  @ https://ibm.biz/SFG_620
+  license: false
+  # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
+  # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
+  licenseType: "prod"
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi"
-    tag: "{{ compatibility_matrix[ si_version ].global.image.tag | default('') }}"
-    digest:
+  # Provide the tag value in double quotes
+    tag: "6.2.0.0"
+  # If digest is specified, it takes precedence over tag
+    digest: sha256:614ca27d9bc9edf9aa100703658ad599a1b3dbe1369268de95306fcedb825cbb
     pullPolicy: IfNotPresent
-    pullSecret: "{{ si_registry_secret }}"
+    pullSecret: ""
   networkPolicies:
     ingress:
       enabled: true
@@ -54,6 +67,11 @@ global:
       #     port: 8443
       #     endPort: 8450
 
+# Specify architecture (amd64, ppc64le, s390x) and weight to be  used for scheduling as follows : 
+# #   0 - Do not use
+# #   1 - Least preferred
+# #   2 - No Preference
+# #   3 - Most preferred
 arch:
   amd64: "2 - No Preference"
   ppc64le: "2 - No Preference"
@@ -63,50 +81,60 @@ serviceAccount:
   name: default
 
 resourcesInit:
-  enabled: true 
+  enabled: false
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-resources"
-    tag: "{{ compatibility_matrix[ si_version ].resourcesInit.image.tag | default('') }}"
-    digest:
+    tag: "6.2.0.0"
+    digest: sha256:3d8c6afa6215915c99aa4a65fcb323ded326872f94a720117b89caef36ed9c88
     pullPolicy: "IfNotPresent"
   command:
 
 persistence:
   enabled: true
-  useDynamicProvisioning: {{ si_use_dynamic_provisioning }}
+  useDynamicProvisioning: false
 
 appResourcesPVC:
-  enabled: false     # must be false if resourcesInit is true
-  storageClassName: "{{ storage_class_matrix[ si_storage_class ].rom | default('') }}"
+  enabled: true
+  storageClassName: ""
   selector:
     label: "intent"
     value: "resources"
   accessMode: ReadOnlyMany
-  size: {{ si_helm_values.appResourcesPVC.size | default('100Mi') }}
+  size: 100Mi
   preDefinedResourcePVCName: 
 
 
 appLogsPVC:
-  storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
+  storageClassName: ""
   selector:
     label: "intent"
     value: "logs"
   accessMode: ReadWriteMany
-  size: {{ si_helm_values.appLogsPVC.size | default('500Mi') }}
+  size: 500Mi
   preDefinedLogsPVCName: 
   
 appDocumentsPVC:
-  enabled: {{ si_helm_values.global.appDocumentsPVC.enabled | default('false') }}
-  storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
+  enabled: false
+  storageClassName: ""
   selector:
     label: "intent"
     value: "documents"
   accessMode: ReadWriteMany
-  size: {{ si_helm_values.appDocumentsPVC.size | default('500Mi') }}
+  size: 500Mi
   enableVolumeClaimPerPod: false
   preDefinedDocumentPVCName: 
 
 extraPVCs: []
+  #- name:
+  #  storageClassName:
+  #  selector:
+  #    label:
+  #    value:
+  #  accessMode:
+  #  size:
+  #  mountPath:
+  #  enableVolumeClaimPerPod: false
+  #  predefinedPVCName:
 
 security:
   supplementalGroups: [65534]
@@ -126,45 +154,58 @@ dataSetup:
   upgrade: false
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-dbsetup"
-    tag: "{{ compatibility_matrix[ si_version ].dataSetup.image.tag | default('') }}"
-    digest:
+    # Provide the tag value in double quotes
+    tag: "6.2.0.0"
+     # If digest is specified, it takes precedence over tag
+    digest: sha256:7d042d39967968ab626c1f89e039500ce2fdc181171b5d91d36ccb6d73deb698
     pullPolicy: IfNotPresent
-    pullSecret: "{{ si_registry_secret }}"
+    pullSecret: ""
     extraLabels: {}
 
 env:
-  tz: "{{ si_helm_values.env.tz | default('UTC') }}"
+  tz: "UTC"
   upgradeCompatibilityVerified: false
   debugMode: false
   extraEnvs: []
-
+    #- name: FOO
+    #  valueFrom:
+    #    secretKeyRef:
+    #      name: secret-name
+    #      key: FOO
+    #- name: BAR
+    #  valueFrom:
+    #    configMapKeyRef:
+    #      name: configmap-name
+    #      key: BAR
+    #- name: FOOBAR
+    #  value: foobar 
+  
 logs:
-  enableAppLogOnConsole: false
+
+  # true if user wish to redirect the application logs to console else false. If provided value is true , then application logs will reside inside containers. No volume mapping will be used.
+  enableAppLogOnConsole: true
       
   # In standalone kubernetes environment, if PodSecurityPolicy is enabled and no default PSPs are present then change the value below to true.      
 applyPolicyToKubeSystem: false
 
 integrations:
   seasIntegration:
-    isEnabled: {{ si_helm_values.integrations.seasIntegration.isEnabled | default('false') }}
-    seasVersion: "{{ compatibility_matrix[ si_version ].integrations.seasIntegration.seasVersion | default('q.0') }}"
+    isEnabled: false
+    seasVersion: "1.0"
   itxIntegration:
-{% if (si_helm_values.integrations.itxIntegration is not defined) or (si_helm_values.integrations.itxIntegration.enabled is not defined) or (si_helm_values.integrations.itxIntegration.enabled == "false") %}
     enabled: false
-{% else %}
-    enabled: true
     dataSetup:
       enabled: true
     image:
       repository: "cp.icr.io/cp/ibm-itx-rs"
-      tag: "{{ compatibility_matrix[ si_version ].integrations.itxIntegration.image.tag | default('') }}"
-      digest:
+      tag: "10.1.1.1.20221116"
+      digest: "sha256:d6dea7cad255582d091f91c7ab226d819ce105a4146b9ac706d96262dd929afc"
       pullPolicy: IfNotPresent
-      pullSecret: "{{ si_registry_secret }}"
+      pullSecret:
     dataPVC:
       name: itxdata
       useDynamicProvisioning: true  
-      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
+      storageClassName: ""
       selector:
         label: "intent"
         value: "itxdata"
@@ -174,34 +215,33 @@ integrations:
     logsPVC:
       name: itxlogs
       useDynamicProvisioning: true
-      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
+      storageClassName: ""
       selector:
         label: "intent"
         value: "itxlogs"
       accessMode: ReadWriteMany
       size: 100Mi
       preDefinedLogsPVCName:
+    # Logging settings
     log:
       includeHostInLogNames: true
       jniLog:
+        # Supported levels are "none", "failures", "info" and "all". Default is "none".
         level: "none"
       cmgrLog:
+        # Supported levels are "none", "failures", "info" and "all". Default is "none".
         level: "none"
-{% endif %}
   itxaIntegration:
-{% if (si_helm_values.integrations.itxaIntegration is not defined) or (si_helm_values.integrations.itxaIntegration.enabled is not defined) or (si_helm_values.integrations.itxaIntegration.enabled == "false") %}
     enabled: false
-{% else %}
-    enabled: true
     dataSetup:
       enabled: true
     image:
       repository: "cp.icr.io/cp/ibm-itxa-runtime"
-      tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.image.tag | default('') }}"
+      tag: "10.0.1.8"
       digest:
       pullPolicy: IfNotPresent
-      pullSecret: "{{ si_registry_secret }}"
-    appSecret: "{{ si_itxa_secret | default('itxa-oracle-secrets') }}"
+      pullSecret:
+    appSecret: "itxa-oracle-secrets"
     secureDBConnection:
       enabled: false
       dbservercertsecretname: ""
@@ -217,92 +257,165 @@ integrations:
       enabled: true
       image:
         repository: "cp.icr.io/cp/ibm-itxa-resources"
-        tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.tag | default('') }}"
+        tag: "10.0.1.8"
         digest:
         pullPolicy: "IfNotPresent"
-{% endif %}
 
+#setup.cfg configuration starts here. Property names must follow camelCase format.
 setupCfg:
-  upgrade: false
+  #Upgrade
+  #upgrade: false
   basePort: 50000
-  licenseAcceptEnableSfg: {{ si_helm_values.setupCfg.licenseAcceptEnableSfg | default('false') }}
-  licenseAcceptEnableEbics: {{ si_helm_values.setupCfg.licenseAcceptEnableEbics | default('false') }}
-  licenseAcceptEnableFinancialServices: {{ si_helm_values.setupCfg.licenseAcceptEnableFinancialServices | default('false') }}
-  licenseAcceptEnableFileOperation: {{ si_helm_values.setupCfg.licenseAcceptEnableFileOperation | default('false') }}
+  #License - specify values as true/false
+  licenseAcceptEnableSfg: false
+  licenseAcceptEnableEbics: false
+  licenseAcceptEnableFinancialServices: false
+  licenseAcceptEnableFileOperation: false
 
-  systemPassphraseSecret: {{ si_system_passphrase_secret }}
-  enableFipsMode: {{ si_helm_values.setupCfg.enableFipsMode | default('false') }}
-  nistComplianceMode: "{{ si_helm_values.setupCfg.nistComplianceMode | default('off') }}"
+  # Name of system passphrase secret if available
+  systemPassphraseSecret: 
+  #FIPS compliance mode. specify values as true/false 
+  enableFipsMode: false
+  # NIST 800-131a compliance mode. Please enter one of these values - strict/transition/"off"
+  nistComplianceMode: "off"
 
-  dbVendor: {{ si_dbvendor }}
-  dbHost: {{ si_dbhost }}
-  dbPort: {{ si_dbport }}
-  dbData: {{ si_dbname }}
-  dbDrivers: {{ si_dbdrivers }}
-  dbCreateSchema: {{ si_helm_values.setupCfg.dbCreateSchema | default('true') }}
-  oracleUseServiceName: {{ si_oracle_useservicename | default('false') }}
-  usessl:  {{ si_helm_values.setupCfg.usessl | default('false') }}
+  # Provide the DB attributes
+  dbVendor:
+  dbHost:
+  dbPort:
+  dbData:
+  dbDrivers:
+  dbCreateSchema: true
+  oracleUseServiceName: false
+  # Values can be either true or false 
+  usessl: false
   
-  dbSecret: {{ si_db_secret }}
-  dbTruststore: {{ si_helm_values.setupCfg.dbTruststore | default('') }}
-  dbTruststoreSecret: {{ si_helm_values.setupCfg.dbTruststoreSecret | default('') }}
-  dbKeystore: {{ si_helm_values.setupCfg.dbKeystore | default('') }}
-  dbKeystoreSecret: {{ si_helm_values.setupCfg.dbKeystoreSecret | default('') }}
+  # Name of DB secret
+  dbSecret:
+  
+  # Specify DB truststore file name including it's path relative to the mounted resources volume location, if applicable. Required when usessl is true.
+  # When dbTruststoreSecret is mentioned, provide the name of the key holding the certificate data.
+  dbTruststore:
+  
+  # Name of the DB truststore secret containing the certificate, if applicable
+  dbTruststoreSecret:
+  
+  # Specify DB keystore file name including it's path relative to the mounted resources volume location, if applicable
+  # When dbKeystoreSecret is mentioned, provide the name of the key holding the certificate data.
+  dbKeystore:
+  
+  # Name of the DB keystore secret containing the certificate, if applicable
+  dbKeystoreSecret:
     
+  #Enable connection pool failover for HA databases
   connectionpoolFailoverEnable: false
-  adminEmailAddress: {{ si_adminmailaddr }} 
-  smtpHost: {{ si_adminsmtphost }}
+
+  #Provide the admin email address
+  adminEmailAddress:
+  # Provide the SMTP host details  
+  smtpHost:
+
+  #Provide the termination grace period in seconds for containers. Only numeric value is accepted.
   terminationGracePeriod: 30
 
-  jmsVendor: {{ si_jmsvendor }}
-  jmsConnectionFactory: {{ si_jmsconnectionfactory }}
+  #WMQ
+  #JMS properties are optional if jmsVendor is empty
+  #To use IBMMQ for communication between ASI & AC, change property to jmsVendor: IBMMQ
+  # and provide other connection details
+  jmsVendor:
+  # Provide the name of connection factory class. 
+  jmsConnectionFactory:
   jmsConnectionFactoryInstantiator:
-  jmsQueueName: {{ si_jmsqueuename }}
-  jmsHost: {{ si_jmshost }}
-  jmsPort: {{ si_jmsport }}
-  jmsConnectionNameList: {{ si_jmsconnectionnamelist }}
-  jmsChannel: {{ si_jmschannel }}
-  jmsEnableSsl: {{ si_jmsenablessl }}
-  jmsSecret: {{ si_jms_secret }}
-  jmsKeystorePath:
-  jmsKeystoreSecret: {{ si_jms_keystore_secret | default('') }}
-  jmsTruststorePath:
-  jmsTruststoreSecret: {{ si_jms_truststore_secret | default('') }}
-  jmsCiphersuite:
-  jmsProtocol: {{ si_helm_values.setupCfg.jmsProtocol | default('TLSv1.2') }}
-
-
-  libertyKeystoreLocation:
-  libertyKeystoreSecret: {{ si_liberty_keystore_secret | default('') }}
+  jmsQueueName:
+  jmsHost:
+  jmsPort:
+  jmsConnectionNameList:
+  # Applicable for IBMMQ
+  jmsChannel:
+  jmsEnableSsl:
   
-  libertyProtocol: {{ si_helm_values.setupCfg.libertyProtocol | default('TLSv1.2') }}
-  libertySecret: {{ si_liberty_secret | default('') }}
+  # Name of JMS secret if available
+  jmsSecret:
+  
+  # Specify JMS keystore file name including it's path relative to the mounted resources volume location, if applicable.
+  # When jmsKeystoreSecret is mentioned, provide the name of the key holding the certificate data.
+  jmsKeystorePath:
+  
+  # Name of the JMS keystore secret containing the certificate, if applicable
+  jmsKeystoreSecret:
+  
+  # Specify JMS truststore file name including it's path relative to the mounted resources volume location, if applicable.
+  # When jmsTruststoreSecret is mentioned, provide the name of the key holding the certificate data.
+  jmsTruststorePath:
+  
+  # Name of the JMS truststore secret containing the certificate, if applicable
+  jmsTruststoreSecret:
+
+  # Applicable for IBMMQ
+  jmsCiphersuite:
+  # Applicable for IBMMQ
+  jmsProtocol: TLSv1.2
+
+  # Liberty Profile SSL Config. Specify Liberty keystore file name including it's path relative to the mounted resources volume location, if applicable.
+  # If libertyKeystoreSecret is mentioned, provide the name of the key holding the certificate data. 
+  libertyKeystoreLocation:
+  
+  # Name of Liberty keystore secret containing the certificate, if applicable
+  libertyKeystoreSecret:
+  
+  libertyProtocol: TLSv1.2
+  
+  # Name of Liberty secret if available
+  libertySecret:
+
+  #It will be deprecated in future release. Instead use config/jvm.options file to override or add any additional jvm configuration.
+  #jvm options
   libertyJvmOptions:
  
-  defaultDocumentStorageType: {{ si_helm_values.setupCfg.defaultDocumentStorageType | default('DB') }}
+  # Default document storage option. Can be set to one of the below values
+  # DB - Database (default)
+  # FS - File System
+  # OS - Object Store 
+  defaultDocumentStorageType: DB
  
+  # restartCluster can be set to true to restart the application cluster by cleaning up all previous node entries, locks and set the schedules to node1.
   restartCluster: false
+
+  # Enable SSL over RMI calls
   useSslForRmi: true
+
+  # Name of the RMI Secret if available.
   rmiTlsSecretName:
 
+  # SAP SNC configurations
+  # Name of the secret holding SAP SNC PSE file and password along with the sapgenpse utility
   sapSncSecretName:
+  # SAP SNC library vendor name. This is same as the vendor name configured on customization UI for the SAP SNC library.
   sapSncLibVendorName:
+  # SAP SNC library version. Specify the value in quotes. This is same as the vendor version configured on customization UI for the SAP SNC library.
   sapSncLibVersion:
+  # SAP SNC library name. This is same as the native library file name uploaded on customization UI for the SAP SNC library.
   sapSncLibName:  
-
 
 asi:
   replicaCount: 1
   
   env:
     jvmOptions:
+    #Refer to global env.extraEnvs for sample values
     extraEnvs: []
     
   frontendService:
     type: ClusterIP
+    #by default sessionAffinity is configured to ClientIP
+    #override session affinity timeout configuration
     sessionAffinityConfig:
       timeoutSeconds: 10800
+     #specify any additional configuration applicable for the specified sessionAffinity option
+     # property1: value1
+     # property2: value2
 
+    # Supported values are "Cluster" & "Local". Default is "Cluster".
     externalTrafficPolicy: Cluster
     ports:
       http: 
@@ -348,10 +461,16 @@ asi:
   
   backendService:
     type: LoadBalancer
+    # Supported values are "ClientIP" & "None". Default is "None".
     sessionAffinity: None
+    #override session affinity timeout configuration (applicable when sessionAffinity is configured other than "None")
     sessionAffinityConfig:
       timeoutSeconds: 10800
+     #specify any additional configuration applicable for the specified sessionAffinity option
+     # property1: value1
+     # property2: value2
 
+    # Supported values are "Cluster" & "Local". Default is "Cluster".
     externalTrafficPolicy: Cluster
     ports: []
       #- name: adapter-1
@@ -359,16 +478,11 @@ asi:
       #  targetPort: 30201
       #  nodePort: 30201
       #  protocol: TCP
-    portRanges:
-      - name: adapters
-        portRange: 30351-30353
-        targetPortRange: 30351-30353
-        nodePortRange: 30351-30353
-        protocol: TCP
+    portRanges: []
       #- name: adapters
-      #  portRange: 30501-30600
-      #  targetPortRange: 30501-30600
-      #  nodePortRange: 30501-30600
+      #  portRange: 30301-30400
+      #  targetPortRange: 30301-30400
+      #  nodePortRange: 30301-30400
       #  protocol: TCP
     loadBalancerIP:  
     loadBalancerSourceRanges: []
@@ -380,12 +494,16 @@ asi:
     timeoutSeconds: 30
     periodSeconds: 60
 
+  # command - command to be executed 
+  # arg1, arg2.. - command arguments
   readinessProbe:
     initialDelaySeconds: 60
     timeoutSeconds: 5
     periodSeconds: 60
     command:
     arg: []
+      #- arg1
+      #- arg2
      
   startupProbe:
     initialDelaySeconds: 120
@@ -405,7 +523,7 @@ asi:
     
   ingress:
     internal:
-      host: "{{ si_helm_values.asi.ingress.internal.host }}"
+      host: ""
       tls:
         enabled: true
         secretName: ""
@@ -427,15 +545,29 @@ asi:
       #    access: "internal"
 
   extraPVCs: []
+    #- name: 
+    #  storageClassName:
+    #  selector:
+    #    label:
+    #    value:
+    #  accessMode:
+    #  size:
+    #  mountPath:
+    #  enableVolumeClaimPerPod: false
+    #  predefinedPVCName:
 
-
+  ## Additional init containers, e. g. for providing custom themes
   extraInitContainers: []
     #- name: wait-for-postgresql
-    #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
-    #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
+    #  image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
+    #  imagePullPolicy: {{ .Values.init.image.pullPolicy }}
     #  command:
 
   resources: 
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
       cpu: 4000m
       memory: 8Gi
@@ -519,6 +651,12 @@ asi:
   #  - "foo.remote"
   #  - "bar.remote"
   
+ #Configure basic tuning parameters for Performance tuning settings.
+ #allocateMemToBI  - Allocate memory for BI Listeners, default is false.
+ #allocateMemToSAP - Allocate memory for SAP adapters, default is false.
+ #allocateMemToCLA - Allocate memory for CLA adapters, default is false.
+ #threadsPerCore   - Number of threads per core which usually helps in calculating Desired Global Threads and Distribution Cache Minimum.
+ #override         - To override the suggested value by the system.
   performanceTuning:
     allocateMemToBI: false
     allocateMemToSAP: false
@@ -574,19 +712,27 @@ asi:
       #   - protocol: TCP
       #     port: 8443
       #     endPort: 8450
-
+      
 ac:
+
   replicaCount: 1
 
   env:
     jvmOptions:
+    #Refer to global env.extraEnvs for sample values
     extraEnvs: []
     
   frontendService:
     type: ClusterIP
+    #by default sessionAffinity is configured to ClientIP
+    #override session affinity timeout configuration
     sessionAffinityConfig:
       timeoutSeconds: 10800
+     #specify any additional configuration applicable for the specified sessionAffinity option
+     # property1: value1
+     # property2: value2
     
+    # Supported values are "Cluster" & "Local". Default is "Cluster".
     externalTrafficPolicy: Cluster
     ports:
       http: 
@@ -608,10 +754,16 @@ ac:
       
   backendService:
     type: LoadBalancer
+    # Supported values are "ClientIP" & "None". Default is "None".
     sessionAffinity: None
+    #override session affinity timeout configuration (applicable when sessionAffinity is configured other than "None")
     sessionAffinityConfig:
       timeoutSeconds: 10800
+     #specify any additional configuration applicable for the specified sessionAffinity option
+     # property1: value1
+     # property2: value2
 
+    # Supported values are "Cluster" & "Local". Default is "Cluster".
     externalTrafficPolicy: Cluster
     ports: []
       #- name: adapter-1
@@ -619,12 +771,12 @@ ac:
       #  targetPort: 30401
       #  nodePort: 30401
       #  protocol: TCP
-    portRanges:
-      - name: adapters
-        portRange: 30501-30600
-        targetPortRange: 30501-30600
-        nodePortRange: 30501-30600
-        protocol: TCP
+    portRanges: []
+      #- name: adapters
+      #  portRange: 30501-30600
+      #  targetPortRange: 30501-30600
+      #  nodePortRange: 30501-30600
+      #  protocol: TCP
     loadBalancerIP:  
     loadBalancerSourceRanges: []
       #- "143.231.0.0/16"
@@ -641,6 +793,8 @@ ac:
     periodSeconds: 60
     command:
     arg: []
+      #- arg1
+      #- arg2
 
   internalAccess:
     enableHttps: true
@@ -648,7 +802,7 @@ ac:
       
   ingress:
     internal:
-      host: "{{ si_helm_values.ac.ingress.internal.host }}"
+      host: ""
       tls:
         enabled: true
         secretName: ""
@@ -670,14 +824,29 @@ ac:
       #    access: "internal"
   
   extraPVCs: []
-
+    #- name: 
+    #  storageClassName:
+    #  selector:
+    #    label:
+    #    value:
+    #  accessMode:
+    #  size:
+    #  mountPath:
+    #  enableVolumeClaimPerPod: false
+    #  predefinedPVCName:
+  
+  ## Additional init containers, e. g. for providing custom themes
   extraInitContainers: []
     #- name: wait-for-postgresql
-    #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
-    #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
+    #  image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
+    #  imagePullPolicy: {{ .Values.init.image.pullPolicy }}
     #  command:
 
   resources: 
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
       cpu: 4000m
       memory: 8Gi
@@ -697,7 +866,7 @@ ac:
     enabled: false
     minAvailable: 1
   
-
+  # for pod Affinity and podAntiAffinity
   extraLabels: {}
     #acLabel: acValue
   
@@ -761,6 +930,8 @@ ac:
   #  - "foo.remote"
   #  - "bar.remote"
  
+ #Configure basic tuning parameters for Performance tuning settings.
+  #allocateMemToSAP - Allocate memory for SAP adapters, default is false.
   performanceTuning:
     allocateMemToSAP: false
     
@@ -809,17 +980,26 @@ ac:
       #     endPort: 8450
     
 api:
+
   replicaCount: 1
 
   env:
     #It will be deprecated in future release. Instead use config/jvm.options file to override or add any additional jvm configuration.
     jvmOptions:
+    #Refer to global env.extraEnvs for sample values
     extraEnvs: []
     
   frontendService:
     type: ClusterIP
+    #by default sessionAffinity is configured to ClientIP
+    #override session affinity timeout configuration
     sessionAffinityConfig:
       timeoutSeconds: 10800
+     #specify any additional configuration applicable for the specified sessionAffinity option
+     # property1: value1
+     # property2: value2
+
+    # Supported values are "Cluster" & "Local". Default is "Cluster".
     externalTrafficPolicy: Cluster
     ports:
       http:
@@ -870,21 +1050,35 @@ api:
 
   ingress:
     internal:
-      host: "{{ si_helm_values.api.ingress.internal.host }}"
+      host: ""
       tls:
         enabled: true
         secretName: ""
 
   extraPVCs: []
+    #- name: 
+    #  storageClassName:
+    #  selector:
+    #    label:
+    #    value:
+    #  accessMode:
+    #  size:
+    #  mountPath:
+    #  enableVolumeClaimPerPod: false
+    #  predefinedPVCName:
 
   ## Additional init containers, e. g. for providing custom themes
   extraInitContainers: []
     #- name: wait-for-postgresql
-    #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
-    #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
+    #  image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
+    #  imagePullPolicy: {{ .Values.init.image.pullPolicy }}
     #  command:
 
   resources: 
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
       cpu: 4000m
       memory: 4Gi
@@ -904,6 +1098,7 @@ api:
     enabled: false
     minAvailable: 1
   
+  # for pod Affinity and podAntiAffinity
   extraLabels: {}
     #apiLabel: apiValue
   
@@ -925,6 +1120,7 @@ api:
     #  topologyKey: kubernetes.io/hostname
     #  whenUnsatisfiable: ScheduleAnyway
     
+  # for Taints and Tolerations  
   tolerations: [] 
   #- key: "key1"
   #  operator: "Equal"
@@ -935,12 +1131,16 @@ api:
   #  operator: "Exists"
   #  effect: "NoSchedule"  
 
+  #To provide additional secrets inside application. If mountAsVolume is set to true, secret will be mounted as volume under /ibm/resources/<secretName> directory
+  #else it will exposed as environment variables
   extraSecrets: []
     #- mountAsVolume: true
     #  secretName: jms-truststore
     #- mountAsVolume: true
     #  secretName: db-truststore
 
+  #To provide additional configmaps inside application. If mountAsVolume is set to true, configmap will be mounted as volume under /ibm/resources/<configMapName> directory
+  #else it will exposed as environment variables
   extraConfigMaps: []
     #- mountAsVolume: true
     #  configMapName: my-configmap-1
@@ -1009,21 +1209,22 @@ fullnameOverride: ""
 test:
   image:
     repository: 'cp.icr.io/cp/opencontent-common-utils'
-    tag: "{{ compatibility_matrix[ si_version ].test.image.tag | default('') }}"
-    digest:
+    tag: '1.1.62'
+    digest: sha256:f8b5b8bbb346fe35081491581ae32148ce6791cf3a90881926822cbcd5b0d8bb
     pullPolicy: 'IfNotPresent'
 
 purge:
   enabled: true
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-purge"
-    tag: "{{ compatibility_matrix[ si_version ].purge.image.tag | default('') }}"
-    digest:
+  # Provide the tag value in double quotes
+    tag: "6.2.0.0"
+    digest: sha256:1668c8bbce36cec1003d2e3f777122a7789bd3c34970d2b62c3fdc831cc612c2
     pullPolicy: IfNotPresent
-    pullSecret: "{{ si_registry_secret }}"
+    pullSecret: ""
     extraLabels: {}
   # Provide a schedule for the purge job as a cron expression. For example "0 0 * * *" will run the purge job at 00:00 every day
-  schedule: "{{ si_helm_values.purge.schedule }}"
+  schedule:
   startingDeadlineSeconds: 60
   activeDeadlineSeconds: 3600
   concurrencyPolicy: Forbid
@@ -1032,6 +1233,7 @@ purge:
   failedJobsHistoryLimit: 1
   env:
     jvmOptions:
+    #Refer to global env.extraEnvs for sample values
     extraEnvs: []
   
   internalAccess:
@@ -1039,6 +1241,10 @@ purge:
     tlsSecretName: 
 
   resources: 
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
       cpu: 500m
       memory: 1Gi
@@ -1052,10 +1258,7 @@ purge:
     preferredDuringSchedulingIgnoredDuringExecution: []
 
 documentService:
-{% if (si_helm_values.documentService is not defined) or (si_helm_values.documentService.enabled is not defined) or (si_helm_values.documentService.enabled == "false") %}
   enabled: false
-{% else %}
-  enabled: true
   sslEnabled: true
   useGrpc: true
   readBufferSize: 32768
@@ -1066,27 +1269,27 @@ documentService:
   image:
     repository: cp.icr.io/cp/ibm-b2bi/b2bi-documentservice
     pullPolicy: IfNotPresent
-    tag: "{{ compatibility_matrix[ si_version ].documentService.image.tag | default('') }}"
+    tag: 1.0.0.0
     digest:
-    pullSecret: "{{ si_registry_secret }}"
+    pullSecret: ""
   serviceAccount:
     name: default
   application:
     server:
       ssl:
         enabled: true
-        tlsSecretName: 
+        tlsSecretName:
         trustStoreSecretName:
         clientAuth: want
     logging:
       level: ERROR
   objectstore:
-    name:  {{ si_helm_values.documentService.objectstore.name | default('') }}
-    endpoint: {{ si_helm_values.documentService.objectstore.endpoint | default('') }}
-    namespace: {{ si_helm_values.documentService.objectstore.namespace | default('') }}
-    region: {{ si_helm_values.documentService.objectstore.region | default('') }}
-    secretName: {{ si_documentservice_objectstore_secret | default('') }}
-    useKeysFromSecrets: {{ si_helm_values.documentService.objectstore.useKeysFromSecrets | default('false') }} 
+    name:
+    endpoint:
+    namespace:
+    region:
+    secretName:
+    useKeysFromSecrets: false
   connectionPoolConfig:
     maxTotalConnections: 250
     maxConnectionsPerRoute: 100
@@ -1098,4 +1301,3 @@ documentService:
     keepAlive: 300000
     retryCount: 2
     disableContentCompression: true
-{% endif %}

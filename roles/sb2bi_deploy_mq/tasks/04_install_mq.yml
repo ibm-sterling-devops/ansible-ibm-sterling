@@ -82,7 +82,7 @@
                 privileged: true
               image: icr.io/ibm-messaging/mq:{{ mq_version }}
               env:
-              - name: LICENSE 
+              - name: LICENSE
                 value: accept
               - name: MQ_QMGR_NAME
                 value: qmgr

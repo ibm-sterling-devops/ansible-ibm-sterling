@@ -1,0 +1,12 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.include_tasks: 01_check_vars.yml
+
+- name: Create namespace and secrets for DB2
+  ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
+
+- name: Define Storage for Data Persistence
+  ansible.builtin.include_tasks: 03_define_storage.yml
+
+- name: Install DB2 for Sterling B2Bi
+  ansible.builtin.include_tasks: 04_install_db2.yml

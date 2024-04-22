@@ -1,6 +1,6 @@
 ---
-- name:                       Prepare OS for Nginx
-  include_tasks:              setup_os.yml
+- name: Prepare OS for Nginx
+  ansible.builtin.include_tasks: setup_os.yml
 
-- name:                       Install Nginx
-  include_tasks:              install_nginx.yml
+- name: Install Nginx
+  ansible.builtin.include_tasks: install_nginx.yml

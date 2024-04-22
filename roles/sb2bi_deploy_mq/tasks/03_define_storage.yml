@@ -16,14 +16,14 @@
 # 2. Dynamic Provisioning
 # -----------------------------------------------------------------------------
 - name: Check for IBM Cloud StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     mq_use_dynamic_provisioning: true
     mq_storage_class: "ibmcloud"
   when:
     - "'ibmc-file-gold' in my_storage_list"
 
 - name: Check for Redhat StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     mq_use_dynamic_provisioning: true
     mq_storage_class: "redhat"
   when:
@@ -31,7 +31,7 @@
     - "'ocs-storagecluster-cephfs' in my_storage_list"
 
 - name: Check for AWS StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     mq_use_dynamic_provisioning: true
     mq_storage_class: "aws"
   when:
@@ -39,7 +39,7 @@
     - "'gp2' in my_storage_list"
 
 - name: Check for Azure StorageClass
-  set_fact:
+  ansible.builtin.set_fact:
     mq_use_dynamic_provisioning: true
     mq_storage_class: "azure"
   when:

@@ -12,7 +12,6 @@
   ansible.builtin.get_url:
     url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}.tgz"
     dest: "{{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}.tgz"
-    mode: "0666"
   register: download_cout
   until: download_cout is succeeded
   retries: 3

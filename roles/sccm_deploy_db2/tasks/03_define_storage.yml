@@ -17,33 +17,33 @@
 # -----------------------------------------------------------------------------
 - name: Check for IBM Cloud StorageClass
   ansible.builtin.set_fact:
-    si_use_dynamic_provisioning: true
-    si_storage_class: "ibmcloud"
+    db2_use_dynamic_provisioning: true
+    db2_storage_class: "ibmcloud"
   when:
     - "'ibmc-file-gold' in my_storage_list"
 
 - name: Check for Redhat StorageClass
   ansible.builtin.set_fact:
-    si_use_dynamic_provisioning: true
-    si_storage_class: "redhat"
+    db2_use_dynamic_provisioning: true
+    db2_storage_class: "redhat"
   when:
-    - si_storage_class is not defined
+    - db2_storage_class is not defined
     - "'ocs-storagecluster-cephfs' in my_storage_list"
 
 - name: Check for AWS StorageClass
   ansible.builtin.set_fact:
-    si_use_dynamic_provisioning: true
-    si_storage_class: "aws"
+    db2_use_dynamic_provisioning: true
+    db2_storage_class: "aws"
   when:
-    - si_storage_class is not defined
+    - db2_storage_class is not defined
     - "'gp2' in my_storage_list"
 
 - name: Check for Azure StorageClass
   ansible.builtin.set_fact:
-    si_use_dynamic_provisioning: true
-    si_storage_class: "azure"
+    db2_use_dynamic_provisioning: true
+    db2_storage_class: "azure"
   when:
-    - si_storage_class is not defined
+    - db2_storage_class is not defined
     - "'azurefiles-premium' in my_storage_list"
 
 # 2. Non-Dynamic Provisioning
@@ -55,5 +55,5 @@
 
 - name: Assert that storage class has been defined
   ansible.builtin.assert:
-    that: si_storage_class is defined and si_storage_class != ""
-    fail_msg: "si_storage_class must be defined"
+    that: db2_storage_class is defined and db2_storage_class != ""
+    fail_msg: "db2_storage_class must be defined"

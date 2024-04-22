@@ -43,7 +43,6 @@
     - jms_secret_cout is defined and jms_secret_cout != ""
     - jms_svc_cout is defined and jms_svc_cout != ""
 
-
 - name: Debug
   ansible.builtin.debug:
     msg:
@@ -52,7 +51,6 @@
       - "JMS keypw    ................. {{ si_jmskeystorepassword }}"
       - "JMS trustpw  ................. {{ si_jmstruststorepassword }}"
 
-
 - name: "Fail if Database Information is not provided"
   ansible.builtin.assert:
     that:
@@ -60,9 +58,7 @@
       - si_jmspassword is defined and si_jmspassword != ""
     fail_msg: "JMS Queue Properties are required"
 
-
-
-- name: "Generate '{{ si_jms_secret }}' secret"
+- name: "Generate secret '{{ si_jms_secret }}'"
   no_log: false
   kubernetes.core.k8s:
     definition:

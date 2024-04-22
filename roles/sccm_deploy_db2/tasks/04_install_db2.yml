@@ -22,29 +22,6 @@
             port: 50001
             targetPort: 50001
 
-- name: "Create Kubernetes Service {{ db2_svc_lb }}"
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: "{{ db2_svc_lb }}"
-        namespace: "{{ db2_namespace }}"
-      spec:
-        selector:
-          app: "{{ db2_id }}"
-        type: LoadBalancer
-        ports:
-          - name: "{{ db2_id }}-lb-srv"
-            protocol: TCP
-            port: 50000
-            targetPort: 50000
-          - name: "{{ db2_id }}-lb-srvs"
-            protocol: TCP
-            port: 50001
-            targetPort: 50001
-
 # Deploy DB2 on Kubernetes
 # -----------------------------------------------------------------------------
 - name: Deploy DB2 on Kubernetes
