@@ -13,21 +13,22 @@
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:
-    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-connect-direct-{{ compatibility_matrix[ cd_version ].helm_version }}.tgz"
+    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
     dest: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
+    mode: "0640"
   register: download_cout
   until: download_cout is succeeded
   retries: 3
 
 - name: "Extract Helm chart"
-  ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[ cd_version ].helm_version }}.tgz -C {{ my_workdir }}"
+  ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz -C {{ my_workdir }}"
   register: untar_cout
   changed_when: ( untar_cout.rc == 0)
 
 # - name: Download Chart using  ibm-connect-direct and repo_url
 #   kubernetes.core.helm_pull:
 #     chart_ref: ibm-connect-direct
-#     repo_url: "https://github.com/IBM/charts/blob/master/repo/ibm-helm/ibm-connect-direct-{{ compatibility_matrix[ cd_version ].helm_version }}.tgz"
+#     repo_url: "https://github.com/IBM/charts/blob/master/repo/ibm-helm/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
 #     untar_chart: yes
 #     destination: "{{ my_workdir }}/ibm-connect-direct"
 # repo_url: https://github.com/grafana/helm-charts/releases/download/grafana-5.6.0/grafana-5.6.0.tgz

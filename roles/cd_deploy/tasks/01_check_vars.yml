@@ -39,7 +39,7 @@
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Kubernets Namespace ................. {{ cd_namespace }}"
       - "C:D Nodename        ................. {{ cd_nodename }}"

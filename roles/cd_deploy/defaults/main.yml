@@ -1,16 +1,16 @@
 ---
 cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev', true) }}"
-cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true)}}" # Specify the node of C:D application
+cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true) }}" # Specify the node of C:D application
 
 cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.2_ifix018', true) }}"
 cd_helm_release: "{{ lookup('env', 'CD_HELM_RELEASE') | default('mycd0', true) }}"
 
-cd_adminPassword: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
+cd_admin_password: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
-cd_localCertPassphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default('changeit', true) }}"
-cd_keystorePassword: "{{ lookup('env', 'CD_KEYSTOREPASSWORD') | default('changeit', true) }}"
+cd_local_cert_passphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default('changeit', true) }}"
+cd_keystore_password: "{{ lookup('env', 'CD_KEYSTOREPASSWORD') | default('changeit', true) }}"
 
-cd_licenseType: "{{ lookup('env', 'CD_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+cd_license_type: "{{ lookup('env', 'CD_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
 # Entitlement
 # -----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ entitled:
 # Others
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
-cd_nodename_lower: "{{ cd_nodename | lower  }}"
+cd_nodename_lower: "{{ cd_nodename | lower }}"
 cd_registry_secret: mycd-ibm-registry-secret
 cd_secret: mycd-secret
 cd_cert_secret: mycd-cert-secret

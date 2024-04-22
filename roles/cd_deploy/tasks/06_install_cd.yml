@@ -2,7 +2,7 @@
 - name: Define C:D helm chart values
   ansible.builtin.set_fact:
     cd_helm_values:
-      licenseType: "{{ cd_licenseType }}" # prod or no-prod
+      licenseType: "{{ cd_license_type }}" # prod or no-prod
       cdArgs:
         nodeName: "{{ cd_nodename }}"
         crtName: "cdcert.pem"
@@ -18,9 +18,10 @@
   ansible.builtin.template:
     src: "values.yml.j2"
     dest: "{{ my_workdir }}/mycd_values.yml"
+    mode: "0640"
 
 - name: Debug
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Image Repository ................. {{ compatibility_matrix[cd_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[cd_version].image_tag }}"
@@ -32,7 +33,7 @@
 
 
 - name: Run Helm install command
-  shell: "helm install --timeout {{ cd_helm.timeout }} --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
+  ansible.builtin.shell: "helm install --timeout {{ cd_helm.timeout }} --values={{ my_workdir }}/mycd_values.yml --namespace {{ cd_namespace }} {{ cd_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
 # --timeout {{ cd_helm.timeout }}
 # --wait
 
@@ -53,7 +54,7 @@
     namespace: "{{ cd_namespace }}"
     label_selectors:
       - release={{ cd_helm_release }}
-    wait: yes
+    wait: true
     wait_sleep: 30
     wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
     wait_condition:
@@ -62,10 +63,10 @@
   register: cd_pod
 
 - name: Configure facts
-  set_fact:
+  ansible.builtin.set_fact:
     cd_pod_name: "{{ cd_pod.resources[0].metadata.name }}"
 
 - name: "Pod Name"
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Pod name ............................... {{ cd_pod_name }}"
