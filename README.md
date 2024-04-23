@@ -17,7 +17,7 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 
 # Roles
 
-See complete list [README.md](roles/README.md)
+See complete list of [ROLES](roles/README.md)
 
 
 # Getting start

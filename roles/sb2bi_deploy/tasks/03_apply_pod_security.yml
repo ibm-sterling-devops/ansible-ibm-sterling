@@ -22,22 +22,14 @@
   register: untar_cout
   changed_when: ( untar_cout.rc == 0)
 
-
-# - name: Download Chart using  ibm-b2bi-prod and repo_url
-#   kubernetes.core.helm_pull:
-#     chart_ref: ibm-b2bi-prod
-#     repo_url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-b2bi-prod-{{ compatibility_matrix[ si_version ].helm_version  }}.tgz"
-#     untar_chart: yes
-#     destination: "{{ my_workdir }}/ibm-b2bi-prod"
-# repo_url: https://github.com/grafana/helm-charts/releases/download/grafana-5.6.0/grafana-5.6.0.tgz
-
+# TODO: migrate from Shell to module kubernetes.core.k8s
+#
 # Creating a Role Based Access Control (RBAC)
 # -----------------------------------------------------------------------------
 - name: "Creating a Role Based Access Control (RBAC)"
   kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('template', 'templates/default_sa_rbac.yml.j2') }}"
-
 
 # # Creating a Custom PodSecurityPolicy - Removed in Kubernetes v1.25
 # # -----------------------------------------------------------------------------

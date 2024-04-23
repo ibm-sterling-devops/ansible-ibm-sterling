@@ -43,6 +43,8 @@
     - { file_name: "createSecurityNamespacePrereqs.sh",
         file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/namespaceAdministration" }
 
+# TODO: migrate from Shell to module kubernetes.core.k8s
+#
 # Create Security Cluster Prereqs
 # -----------------------------------------------------------------------------
 - name: Run Pre-Install Scripts createSecurityClusterPrereqs.sh
