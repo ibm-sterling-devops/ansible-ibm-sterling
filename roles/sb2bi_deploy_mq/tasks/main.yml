@@ -10,7 +10,3 @@
 
 - name: Install MQ for Sterling B2Bi
   ansible.builtin.include_tasks: 04_install_mq.yml
-
-#  TODO: Need to validate deploy
-# - name: Validating the Installation
-#   ansible.builtin.include_tasks: 05_validate_install.yml

@@ -3,7 +3,6 @@ cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true) }}" # Specify the node of C:D application
 
 cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.2_ifix021', true) }}"
-cd_helm_release: "{{ lookup('env', 'CD_HELM_RELEASE') | default('mycd0', true) }}"
 
 cd_admin_password: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
@@ -33,8 +32,9 @@ cd_use_dynamic_provisioning: false
 # Helm Variables
 # -----------------------------------------------------------------------------
 cd_helm:
-  sumEnabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
+  release: "mycd0"
   timeout: "10m0s"
+  sumEnabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
   values_yaml: "{{ my_workdir }}/mycd_values.yml"
   chart: "{{ my_workdir }}/ibm-connect-direct/"
 

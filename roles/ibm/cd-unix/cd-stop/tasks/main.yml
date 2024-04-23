@@ -11,10 +11,9 @@
     path: "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
   register: __cd_installed
 
-# TODO: Need to test stop
 - name: "Stop IBM Connect:Direct"
   become_user: "{{ __cd_user }}"
-  #environment:
+  # environment:
   #  NDMAPICFG:   "{{ __cd_install_path }}/ndm/cfg/cliapi/ndmapi.cfg""
   #  PATH:        ""
   ansible.builtin.shell: 

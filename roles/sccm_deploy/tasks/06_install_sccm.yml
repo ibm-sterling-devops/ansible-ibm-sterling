@@ -27,17 +27,16 @@
     src: "values.yaml.j2"
     dest: "{{ my_workdir }}/myb2bi_values.yml"
 
-
 - name: Debug
   ansible.builtin.debug:
-    msg:
-      - "command: helm install --timeout {{ sccm_helm_timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ sccm_namespace }} {{ sccm_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
+    msg: "helm install --timeout {{ sccm_helm.timeout }} -f {{ sccm_helm.values_yaml }} -n {{ sccm_namespace }} {{ sccm_helm.release }} {{ sccm_helm.chart }}"
 
 # - name: Run Helm delete command
 #   shell: "helm delete --namespace {{ sccm_namespace }} {{ sccm_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
 
 - name: Run Helm install command
-  ansible.builtin.shell: "helm install --timeout {{ sccm_helm_timeout }} --values={{ my_workdir }}/myb2bi_values.yml --namespace {{ sccm_namespace }} {{ sccm_helm_release }} {{ my_workdir }}/ibm-b2bi-prod/"
+  ansible.builtin.shell: 
+    cmd: "helm install --timeout {{ sccm_helm.timeout }} -f {{ sccm_helm.values_yaml }} -n {{ sccm_namespace }} {{ sccm_helm.release }} {{ sccm_helm.chart }}"
 # --timeout {{ sccm_helm.timeout }}
 # --wait
 

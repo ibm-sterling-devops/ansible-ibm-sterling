@@ -1,18 +1,11 @@
 ---
 - name: Define C:D helm chart values
   ansible.builtin.set_fact:
-    cd_helm_values:
-      licenseType: "{{ cd_license_type }}" # prod or no-prod
-      cdArgs:
-        nodeName: "{{ cd_nodename }}"
-        crtName: "cdcert.pem"
+    cd_other_values:
       sum:
         enabled: "{{ 'y' if (cd_helm.sumEnabled == 1) else 'n' }}"
       persistence:
         useDynamicProvisioning: "{{ 'true' if (cd_use_dynamic_provisioning) else 'false' }}"
-      secret:
-        secretName: "{{ cd_secret }}"
-        certSecretName: "{{ cd_cert_secret }}"
 
 - name: Generate my_values.yml
   ansible.builtin.template:
@@ -25,12 +18,12 @@
     msg:
       - "Image Repository ................. {{ compatibility_matrix[cd_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[cd_version].image_tag }}"
-      - "cd_helm_values   ................. {{ cd_helm_values }}"
-      - "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm_release }} {{ cd_helm.chart }}"
+      - "cd_other_values  ................. {{ cd_other_values }}"
+      - "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm.release }} {{ cd_helm.chart }}"
 
 - name: Run Helm install command
   ansible.builtin.shell:
-    cmd: "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm_release }} {{ cd_helm.chart }}"
+    cmd: "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm.release }} {{ cd_helm.chart }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
 
@@ -42,14 +35,14 @@
 #     release_namespace: "{{ cd_namespace }}"
 #     wait: True
 #     timeout: "{{ cd_helm.timeout }}"
-#     values_files: "{{ cd_helm.values_yaml }}"
+#     values_files: "{{ cd_helm.values }}"
 
 - name: "Lookup Connect:Direct Pod"
   kubernetes.core.k8s_info:
     kind: Pod
     namespace: "{{ cd_namespace }}"
     label_selectors:
-      - release={{ cd_helm_release }}
+      - release={{ cd_helm.release }}
     wait: true
     wait_sleep: 30
     wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state

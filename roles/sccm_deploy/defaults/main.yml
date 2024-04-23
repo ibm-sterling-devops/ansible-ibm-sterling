@@ -44,8 +44,7 @@ sccm_system_passphrase_secret: si-system-passphrase-secret
 sccm_db_secret: si-db-secret
 sccm_jms_secret: si-jms-secret
 sccm_liberty_secret: si-liberty-secret
-sccm_helm_release: s0
-sccm_helm_timeout: "120m0s"
+
 sccm_asccm_host: "asi.{{ sccm_instanceid }}.{{ sccm_domain }}"
 sccm_ac_host: "ac.{{ sccm_instanceid }}.{{ sccm_domain }}"
 sccm_api_host: "api.{{ sccm_instanceid }}.{{ sccm_domain }}"
@@ -53,6 +52,14 @@ sccm_api_host: "api.{{ sccm_instanceid }}.{{ sccm_domain }}"
 db2_namespace: ""
 db2_secret: mydb2-secret
 db2_id: mydb2
+
+# Helm Variables
+# -----------------------------------------------------------------------------
+sccm_helm:
+  release: s0
+  timeout: "120m0s"
+  values_yaml: "{{ my_workdir }}/mysccm_values.yml"
+  chart: "{{ my_workdir }}/ibm-b2bi-prod/"
 
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------

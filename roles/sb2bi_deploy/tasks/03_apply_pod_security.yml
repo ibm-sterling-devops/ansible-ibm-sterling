@@ -4,7 +4,7 @@
     path: "{{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}"
     state: absent
   with_items:
-    - "{{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version  }}.tgz"
+    - "{{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}.tgz"
     - "{{ my_workdir }}/ibm-b2bi-prod"
     - "{{ my_workdir }}/myb2bi_values.yml"
 

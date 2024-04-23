@@ -25,6 +25,14 @@
   register: untar_cout
   changed_when: ( untar_cout.rc == 0)
 
+# TODO: not works on MacOS
+# - name: "Extract Helm chart"
+#   ansible.builtin.unarchive:
+#     src: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
+#     dest: "{{ my_workdir }}"
+#   register: untar_cout
+#  changed_when: ( untar_cout.rc == 0)
+
 - name: Change Pre-Install Scripts Permissions
   ansible.builtin.file:
     path: "{{ item.file_path }}/{{ item.file_name }}"
@@ -46,6 +54,13 @@
   with_items:
     - { file_name: "createSecurityClusterPrereqs.sh",
         file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/clusterAdministration" }
+
+# Creating a Role Based Access Control (RBAC)
+# -----------------------------------------------------------------------------
+# - name: "Creating a Role Based Access Control (RBAC)"
+#   kubernetes.core.k8s:
+#     state: present
+#     definition: "{{ lookup('template', 'templates/namespaceAdministration/ibm-cdu-rb-scc.yaml.j2') }}"
 
 - name: Run Pre-Install Scripts createSecurityNamespacePrereqs.sh
   ansible.builtin.command:
