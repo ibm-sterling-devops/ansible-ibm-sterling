@@ -3,5 +3,5 @@
 - name: cd_repository_url should be defined
   ansible.builtin.assert:
     that:
-    - cd_repository_url is defined and cd_repository_url != ''
+      - cd_repository_url is defined and cd_repository_url != ''
     msg: "Set the value of 'cd_repository_url' in the inventory file."

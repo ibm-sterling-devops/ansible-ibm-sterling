@@ -1,40 +1,35 @@
 ---
 # set LANG=en_US to avoid "CRRSE1111E : Incompatible LANG setting on linux"
-- name:          Stop IBM Sterling Software
-  command:
-    chdir={{ __si_install_path }}/bin
+- name: Stop IBM Sterling Software
+  ansible.builtin.command: chdir={{ __si_install_path }}/bin
     {{ __si_install_path }}/bin/hardstop.sh
   environment:
-    LANG:        "en_US"
-  register:      cout
-  
+    LANG: "en_US"
+  register: cout
 
-- name:          Install IBM Sterling B2B APIs
-  command:
-    chdir={{ __si_install_path }}/bin
-    {{ __si_install_path }}/bin/InstallService.sh {{ __si_repository }}/packages/{{ __si_b2bapi_package }} 
+- name: Install IBM Sterling B2B APIs
+  ansible.builtin.command: chdir={{ __si_install_path }}/bin
+    {{ __si_install_path }}/bin/InstallService.sh {{ __si_repository }}/packages/{{ __si_b2bapi_package }}
   environment:
-    IATEMPDIR:   "{{ __extraction_folder }}"
-    LANG:        "en_US"
-  register:      cout
+    IATEMPDIR: "{{ __extraction_folder }}"
+    LANG: "en_US"
+  register: cout
 
-- name:          Run deployer.sh
-  command:
-    chdir={{ __si_install_path }}/bin
+- name: Run deployer.sh
+  ansible.builtin.command: chdir={{ __si_install_path }}/bin
     {{ __si_install_path }}/bin/deployer.sh
   environment:
-    LANG:        "en_US"
-  register:      cout
+    LANG: "en_US"
+  register: cout
 
-- name:          Start IBM Sterling Software
-  command:
-    chdir={{ __si_install_path }}/bin
+- name: Start IBM Sterling Software
+  ansible.builtin.command: chdir={{ __si_install_path }}/bin
     {{ __si_install_path }}/bin/run.sh
   environment:
-    LANG:        "en_US"
-  register:      cout
-  
-- name:                  Clean up installation folder(s)
-  file:
-    path:                "{{ __si_repository }}"
-    state:               absent
+    LANG: "en_US"
+  register: cout
+
+- name: Clean up installation folder(s)
+  ansible.builtin.file:
+    path: "{{ __si_repository }}"
+    state: absent

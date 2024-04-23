@@ -13,7 +13,7 @@
   register: jms_secret_cout
   when: mq_namespace is defined and mq_namespace != ""
 
-- name: "Lookup Service from db2_namespace if provided"
+- name: "Lookup Service from mq_namespace if provided"
 #  no_log: true
   kubernetes.core.k8s_info:
     api_version: v1

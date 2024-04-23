@@ -1,15 +1,15 @@
 ---
-- name:          Check Vars
+- name: Check Vars
   ansible.builtin.include_tasks: check_vars.yml
 
-- name:          Define Vars
+- name: Define Vars
   ansible.builtin.include_tasks: define_vars.yml
 
-- name:          Setup OS
+- name: Setup OS
   ansible.builtin.include_tasks: setup_os.yml
 
-- name:          Download and Extract Packages
+- name: Download and Extract Packages
   ansible.builtin.include_tasks: download_pkgs.yml
 
-- name:          Install Connect:Direct
+- name: Install Connect:Direct
   ansible.builtin.include_tasks: install_cd.yml

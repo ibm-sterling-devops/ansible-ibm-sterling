@@ -1,0 +1,50 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: ibm-connect-direct-psp
+  labels:
+    app: "ibm-connect-direct-psp"
+spec:
+  privileged: false
+  allowPrivilegeEscalation: true
+  hostPID: false
+  hostIPC: false
+  hostNetwork: false
+  requiredDropCapabilities:
+  allowedCapabilities:
+    - SETGID
+    - SETUID
+    - DAC_OVERRIDE
+    - AUDIT_WRITE
+  allowedHostPaths:
+  runAsUser:
+    rule: MustRunAsNonRoot
+  runAsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: 1
+        max: 4294967294
+  seLinux:
+    rule: RunAsAny
+  seccompProfiles:
+    - runtime/default
+  supplementalGroups:
+    rule: MustRunAs
+    ranges:
+      - min: 1
+        max: 4294967294
+  fsGroup:
+    rule: MustRunAs
+    ranges:
+      - min: 1
+        max: 4294967294
+  volumes:
+    - configMap
+    - downwardAPI
+    - emptyDir
+    - nfs
+    - persistentVolumeClaim
+    - projected
+    - secret
+  forbiddenSysctls:
+    - "*"

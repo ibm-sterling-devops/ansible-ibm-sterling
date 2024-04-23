@@ -1,29 +1,29 @@
 ---
-- name:          Check Vars
-  include_tasks: check_vars.yml
+- name: Check Vars
+  ansible.builtin.include_tasks: check_vars.yml
 
-#- name:          Setup Operating System
-#  include_tasks: setup_os.yml
+#- name: Setup Operating System
+#  ansible.builtin.include_tasks: setup_os.yml
 
-- name:          Define Vars
-  include_tasks: define_vars.yml
+- name: Define Vars
+  ansible.builtin.include_tasks: define_vars.yml
 
-- name:          Download Packages
-  include_tasks: download_pkgs.yml
+- name: Download Packages
+  ansible.builtin.include_tasks: download_pkgs.yml
 
 # Need to install JDK to avoid ZIP Bomb problem.
-- name:          Extract and Install IBM Java SDK
-  include_tasks: install_jdk.yml
-  when:          __sdk_installed.stat.exists == false
+- name: Extract and Install IBM Java SDK
+  ansible.builtin.include_tasks: install_jdk.yml
+  when: __sdk_installed.stat.exists == false
 
-- name:          Extract Packages
-  include_tasks: extract_pkgs.yml
+- name: Extract Packages
+  ansible.builtin.include_tasks: extract_pkgs.yml
 
-- name:          Install IBM Installation Manager
-  include_tasks: install_iim.yml
-  when:          __iim_installed.stat.exists == false
+- name: Install IBM Installation Manager
+  ansible.builtin.include_tasks: install_iim.yml
+  when: __iim_installed.stat.exists == false
 
-- name:          Install IBM Sterling B2Bi
-  include_tasks: install_sb2b.yml
+- name: Install IBM Sterling B2Bi
+  ansible.builtin.include_tasks: install_sb2b.yml
 #
- # when:  not __iim_installed.stat.exists
+# when:  not __iim_installed.stat.exists

@@ -4,7 +4,7 @@
     cmd: "ps -ef | grep cdpmgr | grep -v grep"
   changed_when: true
   register: __cd_running
-  ignore_errors: true
+  failed_when: false
 
 - name: Check if Product already Installed?
   ansible.builtin.stat:

@@ -25,14 +25,6 @@
   register: untar_cout
   changed_when: ( untar_cout.rc == 0)
 
-# - name: Download Chart using  ibm-connect-direct and repo_url
-#   kubernetes.core.helm_pull:
-#     chart_ref: ibm-connect-direct
-#     repo_url: "https://github.com/IBM/charts/blob/master/repo/ibm-helm/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
-#     untar_chart: yes
-#     destination: "{{ my_workdir }}/ibm-connect-direct"
-# repo_url: https://github.com/grafana/helm-charts/releases/download/grafana-5.6.0/grafana-5.6.0.tgz
-
 - name: Change Pre-Install Scripts Permissions
   ansible.builtin.file:
     path: "{{ item.file_path }}/{{ item.file_name }}"
@@ -43,6 +35,8 @@
     - { file_name: "createSecurityNamespacePrereqs.sh",
         file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/namespaceAdministration" }
 
+# Create Security Cluster Prereqs
+# -----------------------------------------------------------------------------
 - name: Run Pre-Install Scripts createSecurityClusterPrereqs.sh
   ansible.builtin.command:
     cmd: "{{ item.file_path }}/{{ item.file_name }} {{ cd_helm.sumEnabled }}"

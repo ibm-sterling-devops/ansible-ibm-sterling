@@ -1,36 +1,33 @@
-- name:          "Create SI Repository"
-  file:
-    path:         "{{ __si_repository }}"
-    state:       directory
+- name: "Create SI Repository"
+  ansible.builtin.file:
+    path: "{{ __si_repository }}"
+    state: directory
 
-- name:         "Extract IBM Sterling B2B Package"
-  command:
-    chdir={{ __si_repository }}
+- name: "Extract IBM Sterling B2B Package"
+  ansible.builtin.command: chdir={{ __si_repository }}
     {{__sdk_install_path }}/bin/jar xf {{ __extraction_folder }}/{{ sb2bi_package }}
   register: __sb2b_extract_pkgs
   until: __sb2b_extract_pkgs.rc == 0
 
-- name:         "Extract IBM Sterling - Common_Repo.zip"
-  unarchive:
-    src:        "{{ __si_repository }}/Common_Repo.zip"
-    dest:       "{{ __si_repository }}"
-    copy:        no
+- name: "Extract IBM Sterling - Common_Repo.zip"
+  ansible.builtin.unarchive:
+    src: "{{ __si_repository }}/Common_Repo.zip"
+    dest: "{{ __si_repository }}"
+    copy: no
   register: __sb2b_extract_subpkgs
   until: __sb2b_extract_subpkgs is succeeded
 
+- name: "Create IIM Repository"
+  ansible.builtin.file:
+    path: "{{ __iim_repository }}"
+    state: directory
+  when: __iim_installed.stat.exists == false
 
-- name:          "Create IIM Repository"
-  file:
-    path:        "{{ __iim_repository }}"
-    state:       directory
-  when:          __iim_installed.stat.exists == false
-
-
-- name:         "Extract IIM Repository - IM_Linux.zip"
-  unarchive:
-    src:        "{{ __si_repository }}/InstallationManager/IM_Linux.zip"
-    dest:       "{{ __extraction_folder }}"
-    copy:        no
-  register:     __cout
-  until:        __cout is succeeded
-  when:         __iim_installed.stat.exists == false
+- name: "Extract IIM Repository - IM_Linux.zip"
+  ansible.builtin.unarchive:
+    src: "{{ __si_repository }}/InstallationManager/IM_Linux.zip"
+    dest: "{{ __extraction_folder }}"
+    copy: no
+  register: __cout
+  until: __cout is succeeded
+  when: __iim_installed.stat.exists == false

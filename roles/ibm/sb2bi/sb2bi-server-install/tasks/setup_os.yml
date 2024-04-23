@@ -1,27 +1,27 @@
 ---
-- name:           Install OS Packages
+- name: Install OS Packages
   ansible.builtin.package:
-    name:         ['unzip', 'lsof', 'tar', 'wget','openssl' ]
-    state:        present
+    name: ["unzip", "lsof", "tar", "wget", "openssl"]
+    state: present
 
-- name:           Disable SELinux
+- name: Disable SELinux
   selinux:
-    state:        disabled
-  ignore_errors:  true
-  notify:         reboot
+    state: disabled
+  ignore_errors: true
+  notify: reboot
 
-- name:           Define limits.conf
+- name: Define limits.conf
   pam_limits:
-    domain:       "{{ item.domain }}"
-    limit_type:   "{{ item.limit_type }}"
-    limit_item:   "{{ item.limit_item }}"
-    value:        "{{ item.value }}"
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.limit_type }}"
+    limit_item: "{{ item.limit_item }}"
+    value: "{{ item.value }}"
   with_items:
-    - { domain: "*", limit_type: "soft", limit_item: "nofile",  value: "65536"}
-    - { domain: "*", limit_type: "hard", limit_item: "nofile",  value: "65536"}
-    - { domain: "*", limit_type: "soft", limit_item: "memlock", value: "3000000"}
-    - { domain: "*", limit_type: "hard", limit_item: "memlock", value: "3000000"}
-    - { domain: "*", limit_type: "soft", limit_item: "nproc",   value: "16000"}
-    - { domain: "*", limit_type: "hard", limit_item: "nproc",   value: "16000"}
-    - { domain: "*", limit_type: "soft", limit_item: "stack",   value: "512000"}
-    - { domain: "*", limit_type: "hard", limit_item: "stack",   value: "512000"}
+    - { domain: "*", limit_type: "soft", limit_item: "nofile", value: "65536" }
+    - { domain: "*", limit_type: "hard", limit_item: "nofile", value: "65536" }
+    - { domain: "*", limit_type: "soft", limit_item: "memlock", value: "3000000" }
+    - { domain: "*", limit_type: "hard", limit_item: "memlock", value: "3000000" }
+    - { domain: "*", limit_type: "soft", limit_item: "nproc", value: "16000" }
+    - { domain: "*", limit_type: "hard", limit_item: "nproc", value: "16000" }
+    - { domain: "*", limit_type: "soft", limit_item: "stack", value: "512000" }
+    - { domain: "*", limit_type: "hard", limit_item: "stack", value: "512000" }

@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "ibm-connect-direct-psp"
+  labels:
+    app: "ibm-connect-direct-psp"
+rules:
+  - apiGroups:
+      - policy
+    resourceNames:
+      - ibm-connect-direct-psp
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use

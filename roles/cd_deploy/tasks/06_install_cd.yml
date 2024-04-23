@@ -31,6 +31,8 @@
 - name: Run Helm install command
   ansible.builtin.shell:
     cmd: "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm_release }} {{ cd_helm.chart }}"
+  register: helm_cout
+  changed_when: helm_cout.rc != 0
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Deploy Connect:Direct chart from local path

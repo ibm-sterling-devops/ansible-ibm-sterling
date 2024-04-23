@@ -12,5 +12,5 @@
     # db_database: B2BI
   roles:
   #  - sccm_deploy_db2
-    - sccm_setup_db2
+  #  - sccm_setup_db2
     - sccm_deploy

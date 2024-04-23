@@ -1,10 +1,10 @@
 ---
-- name:          Is IBM Sterling B2Bi already Installed?
-  stat:
-    path:        "{{ __si_install_path }}/bin/InstallServer.sh"
-  register:      __sb2b_installed
+- name: Is IBM Sterling B2Bi already Installed?
+  ansible.builtin.stat:
+    path: "{{ __si_install_path }}/bin/InstallServer.sh"
+  register: __sb2b_installed
 
-- name:          Is b2biAPIs_XXXX.jar available?
-  stat:
-    path:        "{{ __si_repository }}/packages/{{ __si_b2bapi_package }} "
-  register:      __b2bapi_available
+- name: Is b2biAPIs_XXXX.jar available?
+  ansible.builtin.stat:
+    path: "{{ __si_repository }}/packages/{{ __si_b2bapi_package }} "
+  register: __b2bapi_available

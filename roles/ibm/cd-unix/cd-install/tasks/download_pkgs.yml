@@ -2,7 +2,7 @@
   ansible.builtin.unarchive:
     src: "{{ __repository_url }}/{{ __package_name }}"
     dest: "{{ __extraction_folder }}"
-    remote_src:  true
+    remote_src: true
   register: download_and_unpack_pkgs
   until: download_and_unpack_pkgs is succeeded
   retries: 3

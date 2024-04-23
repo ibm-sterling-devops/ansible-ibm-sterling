@@ -1,14 +1,14 @@
 ---
-- name:          Check Vars
-  include_tasks: check_vars.yml
+- name: Check Vars
+  ansible.builtin.include_tasks: check_vars.yml
 
-- name:          Define Vars
-  include_tasks: define_vars.yml
+- name: Define Vars
+  ansible.builtin.include_tasks: define_vars.yml
 
-- name:          Download and extract Packages
-  include_tasks: download_extract.yml
-  when:          __b2bapi_available.stat.exists == false
+- name: Download and extract Packages
+  ansible.builtin.include_tasks: download_extract.yml
+  when: __b2bapi_available.stat.exists == false
 
-- name:          Install B2B API
-  include_tasks: install_b2bapi.yml
-  when:          __sb2b_installed.stat.exists == false
+- name: Install B2B API
+  ansible.builtin.include_tasks: install_b2bapi.yml
+  when: __sb2b_installed.stat.exists == false

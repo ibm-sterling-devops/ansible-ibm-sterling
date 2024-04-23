@@ -24,11 +24,11 @@
     that: entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "entitled_registry_key property is required"
 
-- name: "Fail si_domain is 'not provided' "
+- name: "Fail sccm_domain is 'not provided' "
   ansible.builtin.assert:
     that:
-      - si_domain is defined and si_domain != ""
-    fail_msg: "si_domain property is required"
+      - sccm_domain is defined and sccm_domain != ""
+    fail_msg: "sccm_domain property is required"
 
 # 2. Lookup Namespace availabiity
 # -----------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 
 - name: Create List of Namespaces
   ansible.builtin.set_fact:
-    namespace_list: "{{lookup_namespaces.resources | map(attribute='metadata.name') | list}}"
+    namespace_list: "{{ lookup_namespaces.resources | map(attribute='metadata.name') | list }}"
 
 # 3. Check for DB Information
 # -----------------------------------------------------------------------------
@@ -52,15 +52,15 @@
 
 - name: Check for DB2 default namespace
   ansible.builtin.set_fact:
-    db2_namespace: "{{ si_db2_namespace }}"
+    db2_namespace: "{{ sccm_db2_namespace }}"
   when:
     - db2_namespace == ""
-    - si_db2_namespace in namespace_list
+    - sccm_db2_namespace in namespace_list
 
 - name: "Fail if Database Information is not provided"
   ansible.builtin.assert:
     that:
-      - (db2_namespace != "") or (si_dbvendor != "")
+      - (db2_namespace != "") or (sccm_dbvendor != "")
     fail_msg: "Database Information property is required"
 
 # Debug
@@ -68,6 +68,6 @@
 - name: Debug
   ansible.builtin.debug:
     msg:
-      - "SI Instance ID  .............. {{ si_instanceid }}"
-      - "SI namespace ................. {{ si_namespace }}"
+      - "SCCM Instance ID  .............. {{ sccm_instanceid }}"
+      - "SCCM namespace ................. {{ sccm_namespace }}"
       - "Database Namespace ........... {{ db2_namespace }}"

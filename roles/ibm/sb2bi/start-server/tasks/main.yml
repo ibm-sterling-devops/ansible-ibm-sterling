@@ -1,30 +1,30 @@
 ---
-#- name:          Check if IBM Sterling B2B is already up and running
+# - name:          Check if IBM Sterling B2B is already up and running
 #  shell:         "ps -ef | grep cdpmgr | grep -v grep"
 #  changed_when:  true
 #  register:      __cd_running
 #  ignore_errors: true
 
-- name:          Is run.sh available?
-  stat:
-    path:        "{{ __si_install_path }}/bin/run.sh"
-  register:      __cmd_installed
+- name: Is run.sh available?
+  ansible.builtin.stat:
+    path: "{{ __si_install_path }}/bin/run.sh"
+  register: __cmd_installed
 
-- name:          Start IBM Sterling B2B
-  command:
+- name: Start IBM Sterling B2B
+  ansible.builtin.command:
     chdir={{ __si_install_path }}/bin
     {{ __si_install_path }}/bin/run.sh
   environment:
-    LANG:        "en_US"
-  register:      cout
-  when:          __cmd_installed.stat.exists
+    LANG: "en_US"
+  register: cout
+  when: __cmd_installed.stat.exists
 
-#- name:          "Start IBM Connect:Direct"
-#  become_user:   "{{ __cd_user }}"
+# - name: "Start IBM Connect:Direct"
+#  become_user: "{{ __cd_user }}"
 #  #environment:
-#  #  NDMAPICFG:   "{{ __cd_install_path }}/ndm/cfg/cliapi/ndmapi.cfg""
-#  #  PATH:        ""
-#  shell:         "{{ __cd_install_path }}/ndm/bin/cdpmgr -i {{ __cd_install_path }}/ndm/cfg/__cd_nodename/initparm.cfg"
-#  register:      cout
-#  changed_when:  cout.rc == 0
-#  when:          __cd_running.rc == 0
+#  #  NDMAPICFG: "{{ __cd_install_path }}/ndm/cfg/cliapi/ndmapi.cfg""
+#  #  PATH: ""
+#  ansible.builtin.shell: "{{ __cd_install_path }}/ndm/bin/cdpmgr -i {{ __cd_install_path }}/ndm/cfg/__cd_nodename/initparm.cfg"
+#  register: cout
+#  changed_when: cout.rc == 0
+#  when: __cd_running.rc == 0

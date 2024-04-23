@@ -1,23 +1,22 @@
-- name:          "Create directories"
-  file:
-    path:        "{{ item }}"
-    state:       directory
+- name: "Create directories"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
   with_items:
     - "{{ __extraction_folder }}"
     - "{{ __si_repository }}"
     - "{{ __workdir_folder }}"
 
-- name:          "Download Others Files to the {{ __extraction_folder }}"
+- name: "Download Others Files to the {{ __extraction_folder }}"
   ansible.builtin.get_url:
-    url:         "{{ __repository_url }}/{{ sb2bi_package }}"
-    dest:        "{{ __extraction_folder }}"
+    url: "{{ __repository_url }}/{{ sb2bi_package }}"
+    dest: "{{ __extraction_folder }}"
   register: download_packages_name
   until: download_packages_name is succeeded
   retries: 3
 
-- name:         "Extract IBM Sterling B2B Package"
-  command:
-    chdir={{ __si_repository }}
+- name: "Extract IBM Sterling B2B Package"
+  ansible.builtin.command: chdir={{ __si_repository }}
     {{__sdk_install_path }}/bin/jar xf {{ __extraction_folder }}/{{ sb2bi_package }}
   register: __sb2b_extract_pkgs
   until: __sb2b_extract_pkgs.rc == 0

@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "ibm-connect-direct-scc"
+  labels:
+    app: "ibm-connect-direct-scc"
+rules:
+  - apiGroups:
+      - security.openshift.io
+    resourceNames:
+      - ibm-connect-direct-scc
+    resources:
+      - securitycontextconstraints
+    verbs:
+      - use

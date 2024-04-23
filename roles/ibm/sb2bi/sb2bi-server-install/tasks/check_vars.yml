@@ -3,15 +3,13 @@
 - name: "Check required variables"
   assert:
     that:
-    - repository_url is defined and repository_url != ''
-    - sb2bi_package is defined and sb2bi_package != ''
-    - sdk_package is defined and sdk_package != ''
-    - urplc_file is defined and urplc_file != ''
-    - jdbc_file is defined and jdbc_file != ''
-    - sdk_installer is defined and sdk_installer != ''
+      - repository_url is defined and repository_url != ''
+      - sb2bi_package is defined and sb2bi_package != ''
+      - sdk_package is defined and sdk_package != ''
+      - urplc_file is defined and urplc_file != ''
+      - jdbc_file is defined and jdbc_file != ''
+      - sdk_installer is defined and sdk_installer != ''
     fail_msg: "One or more required variables are not defined"
-
-
 #- debug: var=ansible_default_ipv4.address
 #- debug: var=__si_initialPort
 #- debug: var=__si_apiGatewayPort

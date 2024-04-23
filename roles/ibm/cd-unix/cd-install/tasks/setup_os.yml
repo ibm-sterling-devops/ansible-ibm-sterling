@@ -1,12 +1,12 @@
 ---
 - name: Install OS Packages
   ansible.builtin.package:
-    name: ['unzip', 'lsof', 'tar', 'wget','openssl']
+    name: ["unzip", "lsof", "tar", "wget", "openssl"]
     state: present
 
 - name: Install OS Packages - Yum
   ansible.builtin.yum:
-    name: ['glibc.x86_64', 'libgcc.x86_64','libstdc++.x86_64']
+    name: ["glibc.x86_64", "libgcc.x86_64", "libstdc++.x86_64"]
     state: present
   when:
     - ansible_os_family == "RedHat"
@@ -24,7 +24,7 @@
     state: present
 
 - name: "Create directories"
-  file:
+  ansible.builtin.file:
     path: "{{ item.directory  }}"
     state: directory
     owner: "{{ __cd_user }}"
@@ -41,5 +41,15 @@
     limit_item: "{{ item.limit_item }}"
     value: "{{ item.value }}"
   with_items:
-    - { domain: "{{ __cd_user }}", limit_type: "soft", limit_item: "nofile", value: "60000"}
-    - { domain: "{{ __cd_user }} ", limit_type: "hard", limit_item: "nofile", value: "80000"}
+    - {
+        domain: "{{ __cd_user }}",
+        limit_type: "soft",
+        limit_item: "nofile",
+        value: "60000",
+      }
+    - {
+        domain: "{{ __cd_user }} ",
+        limit_type: "hard",
+        limit_item: "nofile",
+        value: "80000",
+      }
