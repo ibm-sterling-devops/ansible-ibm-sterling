@@ -87,18 +87,3 @@
       - scc_dbuser is defined and scc_dbuser != ""
       - scc_dbpassword is defined and scc_dbpassword != ""
     fail_msg: "Database Properties are required"
-
-- name: "Generate secret {{ scc_db_secret }}"
-  no_log: false
-  kubernetes.core.k8s:
-    definition:
-      apiVersion: v1
-      kind: Secret
-      type: Opaque
-      metadata:
-        name: "{{ scc_db_secret }}"
-        namespace: "{{ scc_namespace }}"
-      data:
-        DB_USER: "{{ scc_dbuser | b64encode }}"
-        DB_PASSWORD: "{{ scc_dbpassword | b64encode }}"
-  register: scc_db_secret_cout

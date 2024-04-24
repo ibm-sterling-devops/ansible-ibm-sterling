@@ -26,18 +26,18 @@
 - name: Set Facts for JMS Configuration from mq_namespace
 #  no_log: true
   ansible.builtin.set_fact:
-    si_jmsuser: "app"
-    si_jmsvendor: "IBMMQ"
-    si_jmsconnectionfactory: "com.ibm.mq.jms.MQQueueConnectionFactory"
-    si_jmsqueuename: "DEV.QUEUE.1"
-    si_jmschannel: "DEV.APP.SVRCONN"
-    si_jmsenablessl: "false"
-    si_jmspassword: "{{ jms_secret_cout.resources[0].data.appPassword | b64decode }}"
-    # si_jmskeystorepassword: "{{ jms_secret_cout.resources[0].data.JMS_KEYSTORE_PASSWORD | b64decode }}"
-    # si_jmstruststorepassword: "{{ jms_secret_cout.resources[0].data.JMS_TRUSTSTORE_PASSWORD | b64decode }}"
-    si_jmshost: "mq-data.{{ mq_namespace }}.svc.cluster.local"
-    si_jmsport: "{{ jms_svc_cout.resources[0].spec.ports[0].port }}"
-    si_jmsconnectionnamelist: "mq-data.{{ mq_namespace }}.svc.cluster.local({{ jms_svc_cout.resources[0].spec.ports[0].port }})"
+    scc_jmsuser: "app"
+    scc_jmsvendor: "IBMMQ"
+    scc_jmsconnectionfactory: "com.ibm.mq.jms.MQQueueConnectionFactory"
+    scc_jmsqueuename: "DEV.QUEUE.1"
+    scc_jmschannel: "DEV.APP.SVRCONN"
+    scc_jmsenablessl: "false"
+    scc_jmspassword: "{{ jms_secret_cout.resources[0].data.appPassword | b64decode }}"
+    # scc_jmskeystorepassword: "{{ jms_secret_cout.resources[0].data.JMS_KEYSTORE_PASSWORD | b64decode }}"
+    # scc_jmstruststorepassword: "{{ jms_secret_cout.resources[0].data.JMS_TRUSTSTORE_PASSWORD | b64decode }}"
+    scc_jmshost: "mq-data.{{ mq_namespace }}.svc.cluster.local"
+    scc_jmsport: "{{ jms_svc_cout.resources[0].spec.ports[0].port }}"
+    scc_jmsconnectionnamelist: "mq-data.{{ mq_namespace }}.svc.cluster.local({{ jms_svc_cout.resources[0].spec.ports[0].port }})"
   when:
     - mq_namespace is defined and mq_namespace != ""
     - jms_secret_cout is defined and jms_secret_cout != ""
@@ -46,19 +46,19 @@
 - name: Debug
   ansible.builtin.debug:
     msg:
-      - "JMS User     ................. {{ si_jmsuser }}"
-      - "JMS Password ................. {{ si_jmspassword }}"
-      - "JMS keypw    ................. {{ si_jmskeystorepassword }}"
-      - "JMS trustpw  ................. {{ si_jmstruststorepassword }}"
+      - "JMS User     ................. {{ scc_jmsuser }}"
+      - "JMS Password ................. {{ scc_jmspassword }}"
+      - "JMS keypw    ................. {{ scc_jmskeystorepassword }}"
+      - "JMS trustpw  ................. {{ scc_jmstruststorepassword }}"
 
 - name: "Fail if Database Information is not provided"
   ansible.builtin.assert:
     that:
-      - si_jmsuser is defined and si_jmsuser != ""
-      - si_jmspassword is defined and si_jmspassword != ""
+      - scc_jmsuser is defined and scc_jmsuser != ""
+      - scc_jmspassword is defined and scc_jmspassword != ""
     fail_msg: "JMS Queue Properties are required"
 
-- name: "Generate secret '{{ si_jms_secret }}'"
+- name: "Generate secret '{{ scc_jms_secret }}'"
   no_log: false
   kubernetes.core.k8s:
     definition:
@@ -66,11 +66,11 @@
       kind: Secret
       type: Opaque
       metadata:
-        name: "{{ si_jms_secret }}"
-        namespace: "{{ si_namespace }}"
+        name: "{{ scc_jms_secret }}"
+        namespace: "{{ scc_namespace }}"
       data:
-        JMS_USERNAME: "{{ si_jmsuser | b64encode }}"
-        JMS_PASSWORD: "{{ si_jmspassword | b64encode }}"
-        # JMS_KEYSTORE_PASSWORD: "{{ si_jmskeystorepassword | b64encode }}"
-        # JMS_TRUSTSTORE_PASSWORD: "{{ si_jmstruststorepassword | b64encode }}"
-  register: si_jms_secret_cout
+        JMS_USERNAME: "{{ scc_jmsuser | b64encode }}"
+        JMS_PASSWORD: "{{ scc_jmspassword | b64encode }}"
+        # JMS_KEYSTORE_PASSWORD: "{{ scc_jmskeystorepassword | b64encode }}"
+        # JMS_TRUSTSTORE_PASSWORD: "{{ scc_jmstruststorepassword | b64encode }}"
+  register: scc_jms_secret_cout

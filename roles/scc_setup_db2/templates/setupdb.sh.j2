@@ -183,11 +183,11 @@ function apply_settings_sccm {
     db2_ct=$?
 
     if [ $db2_ct -ne 0 ]; then
-        echo "apply_settings: ERROR - Failed to connect to db2"
+        echo "apply_settings_sccm: ERROR - Failed to connect to db2"
         exit 1
     fi
 
-    echo "apply_settings: connected to SCCM sucessfully"
+    echo "apply_settings_sccm: connected to SCCM sucessfully"
 
     db2 update db cfg for SCCM using CATALOGCACHE_SZ 300;
     db2_updb_1=$?
@@ -201,10 +201,10 @@ function apply_settings_sccm {
     db2 update dbm cfg using svcename 50000;
     db2_updb_4=$?
 
-    echo "apply_settings: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 | db2_updb_4=$db2_updb_4"
+    echo "apply_settings_sccm: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 | db2_updb_4=$db2_updb_4"
     # if [ "$db2_updb_1" -ne 0 ] || [ "$db2_updb_2" -ne 0 ] || [ "$db2_updb_3" -ne 0 ]
     # then
-    #     echo "apply_settings: ERROR - Failed to start to db2"
+    #     echo "apply_settings_sccm: ERROR - Failed to start to db2"
     #     exit 3
     # fi
 
@@ -230,13 +230,78 @@ function apply_settings_sccm {
     db2_start=$?
 
     echo ""
-    echo "apply_settings: db2 restart conreset=$db2_cr | terminate=$db2_t | forceapp=$db2_fal | deactivate=$db2_ddb | db2stop=$db2_stop | db2start=$db2_start "
+    echo "apply_settings_sccm: db2 restart conreset=$db2_cr | terminate=$db2_t | forceapp=$db2_fal | deactivate=$db2_ddb | db2stop=$db2_stop | db2start=$db2_start "
     if [ "$db2_cr" -ne 0 ] || [ "$db2_t" -ne 0 ] || [ "$db2_fal" -ne 0 ] || [ "$db2_ddb" -ne 0 ] || [ "$db2_stop" -ne 0 ] || [ "$db2_start" -ne 0 ]
     then
-        echo "apply_settings: ERROR - Failed to start to db2 "
+        echo "apply_settings_sccm: ERROR - Failed to start to db2 "
         exit 3
     fi
-    echo "apply_settings: finished sucessfully "
+    echo "apply_settings_sccm: finished sucessfully "
+}
+
+
+function apply_settings_sccd {
+
+    echo ""
+
+    db2 connect to SCCD
+    db2_ct=$?
+
+    if [ $db2_ct -ne 0 ]; then
+        echo "apply_settings_sccd: ERROR - Failed to connect to db2"
+        exit 1
+    fi
+
+    echo "apply_settings_sccd: connected to SCCD sucessfully"
+
+    db2 update db cfg for SCCD using CATALOGCACHE_SZ 300;
+    db2_updb_1=$?
+
+    db2 update db cfg for SCCD using UTIL_HEAP_SZ AUTOMATIC;
+    db2_updb_2=$?
+
+    db2 update db cfg for SCCD using CHNGPGS_THRESH 80;
+    db2_updb_3=$?
+
+    db2 update dbm cfg using svcename 50000;
+    db2_updb_4=$?
+
+    echo "apply_settings_sccd: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 | db2_updb_4=$db2_updb_4"
+    # if [ "$db2_updb_1" -ne 0 ] || [ "$db2_updb_2" -ne 0 ] || [ "$db2_updb_3" -ne 0 ]
+    # then
+    #     echo "apply_settings_sccd: ERROR - Failed to start to db2"
+    #     exit 3
+    # fi
+
+
+    db2 connect reset
+    db2_cr=$?
+
+    db2 terminate
+    db2_t=$?
+
+    db2 force applications all
+    db2_fal=$?
+
+    db2 deactivate db SCCD
+    db2_ddb=$?
+
+    echo "Run db2stop"
+    db2stop
+    db2_stop=$?
+
+    echo "Run db2start"
+    db2start
+    db2_start=$?
+
+    echo ""
+    echo "apply_settings_sccd: db2 restart conreset=$db2_cr | terminate=$db2_t | forceapp=$db2_fal | deactivate=$db2_ddb | db2stop=$db2_stop | db2start=$db2_start "
+    if [ "$db2_cr" -ne 0 ] || [ "$db2_t" -ne 0 ] || [ "$db2_fal" -ne 0 ] || [ "$db2_ddb" -ne 0 ] || [ "$db2_stop" -ne 0 ] || [ "$db2_start" -ne 0 ]
+    then
+        echo "apply_settings_sccd: ERROR - Failed to start to db2 "
+        exit 3
+    fi
+    echo "apply_settings_sccd: finished sucessfully "
 }
 
 ########################## Main Part of Shell Script ##########################
@@ -247,20 +312,24 @@ echo "Starting db2 - db2_verify_and_start"
 db2_verify_and_start
 echo ""
 
-{% if scc_install_ccm is defined and scc_install_ccm == "true" %}
+{% if scc_install_ccm is defined and scc_install_ccm %}
 echo "Creating IBM Sterling Control Center Database - create_sccm_db"
 create_sccm_db
 echo ""
 
-echo "Applying settings to DB2"
+echo "Applying settings to DB2 - apply_settings_sccm"
 apply_settings_sccm
 echo ""
 
 {% endif %}
 
-{% if scc_install_ccd is defined and scc_install_ccd == "true" %}
+{% if scc_install_ccd is defined and scc_install_ccd %}
 echo "Creating IBM Sterling Control Center Database - create_sccd_db"
 create_sccd_db
+echo ""
+
+echo "Applying settings to DB2 - apply_settings_sccd"
+apply_settings_sccD
 echo ""
 {% endif %}
 

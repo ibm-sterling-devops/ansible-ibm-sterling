@@ -12,7 +12,6 @@
     msg:
       - "Db2 namespace .......................... {{ db2_namespace }}"
       - "Db2 instance name ...................... {{ db2_instance_name }}"
-      - "Db2 database name ...................... {{ db2_dbname }}"
       - "Db2 Pod name ........................... {{ db2_pod_name }}"
       - "Db2 Container name ..................... {{ db2_container }}"
 

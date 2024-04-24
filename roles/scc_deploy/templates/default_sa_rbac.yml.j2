@@ -2,8 +2,8 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ibm-b2bi-role-{{ si_namespace }}
-  namespace: {{ si_namespace }}
+  name: ibm-scc-role-{{ scc_namespace }}
+  namespace: {{ scc_namespace }}
 rules:
   - apiGroups: ['route.openshift.io']
     resources: ['routes','routes/custom-host']
@@ -16,13 +16,13 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ibm-b2bi-rolebinding-{{ si_namespace }}
-  namespace: {{ si_namespace }}
+  name: ibm-scc-rolebinding-{{ scc_namespace }}
+  namespace: {{ scc_namespace }}
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: {{ si_namespace }}
+    namespace: {{ scc_namespace }}
 roleRef:
   kind: Role
-  name: ibm-b2bi-role-{{ si_namespace }}
+  name: ibm-scc-role-{{ scc_namespace }}
   apiGroup: rbac.authorization.k8s.io

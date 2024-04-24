@@ -47,7 +47,7 @@ entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-# Defaults for B2Bi instances.
+# Defaults
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
@@ -67,6 +67,8 @@ scc_cert_pem: "{{ my_workdir }}/cdcert.pem"
 
 scc_jms_secret: scc-jms-secret
 
+scc_nodename: "scc0-{{ scc_instanceid }}"
+
 scc_ascc_host: "asi.{{ scc_instanceid }}.{{ scc_domain }}"
 scc_ac_host: "ac.{{ scc_instanceid }}.{{ scc_domain }}"
 scc_api_host: "api.{{ scc_instanceid }}.{{ scc_domain }}"
@@ -81,9 +83,9 @@ scc_helm:
   release: s0
   timeout: "120m0s"
   values_yaml: "{{ my_workdir }}/myscc_values.yml"
-  chart: "{{ my_workdir }}/ibm-b2bi-prod/"
+  chart: "{{ my_workdir }}/ibm-sccm/"
 
-# Sterling B2Bi Compatibility Matrix
+# Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
   6.3.1.0_iFix01_2024-02-01:
@@ -94,7 +96,6 @@ compatibility_matrix:
     helm_version: "3.1.0"
     image_tag: "6.3.1.0_2023-12-15"
     copy_resources_tag: "6.2.1.0_ifix08_2022-09-16"
-
 
 # Storage Class Matrix - definition by Cloud Provider
 # -----------------------------------------------------------------------------

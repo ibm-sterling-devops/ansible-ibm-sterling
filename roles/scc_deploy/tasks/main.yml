@@ -2,7 +2,7 @@
 - name: Check for required environment variables
   ansible.builtin.include_tasks: 01_check_vars.yml
 
-- name: Create namespace and secrets for Sterling B2Bi
+- name: Create namespace and secrets for Sterling Control Center
   ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
 
 - name: Applying Pod Security
