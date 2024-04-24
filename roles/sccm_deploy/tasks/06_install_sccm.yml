@@ -1,27 +1,4 @@
 ---
-- name: Define Sterling B2Bi helm chart values
-  ansible.builtin.set_fact:
-    sccm_helm_values:
-      setupCfg:
-        licenseAcceptEnableSfg: "true"
-        licenseAcceptEnableFileOperation: "true"
-        dbCreateSchema: "true"
-        defaultDocumentStorageType: "DB"
-      asi:
-        ingress:
-          internal:
-            host: "{{ sccm_asccm_host }}"
-      ac:
-        ingress:
-          internal:
-            host: "{{ sccm_ac_host }}"
-      api:
-        ingress:
-          internal:
-            host: "{{ sccm_api_host }}"
-      purge:
-        schedule: "0 0 * * *"
-
 - name: Generate my_values.yml
   ansible.builtin.template:
     src: "values.yaml.j2"
@@ -31,8 +8,7 @@
   ansible.builtin.debug:
     msg: "helm install --timeout {{ sccm_helm.timeout }} -f {{ sccm_helm.values_yaml }} -n {{ sccm_namespace }} {{ sccm_helm.release }} {{ sccm_helm.chart }}"
 
-# - name: Run Helm delete command
-#   shell: "helm delete --namespace {{ sccm_namespace }} {{ sccm_helm_release }} {{ my_workdir }}/ibm-connect-direct/"
+# helm install test -f values.yaml -n control-center ./ibm-sccm-version.tgz
 
 - name: Run Helm install command
   ansible.builtin.shell: 

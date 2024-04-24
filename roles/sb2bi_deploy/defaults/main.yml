@@ -62,7 +62,7 @@ mq_secret: mymq-secret
 si_helm:
   release: s0
   timeout: "120m0s"
-  values: "{{ my_workdir }}/myb2bi_values.yml"
+  values_yaml: "{{ my_workdir }}/myb2bi_values.yml"
   chart: "{{ my_workdir }}/ibm-b2bi-prod/"
 
 # Sterling B2Bi Compatibility Matrix
