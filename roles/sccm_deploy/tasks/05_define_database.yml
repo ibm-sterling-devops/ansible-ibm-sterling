@@ -40,6 +40,9 @@
 #  no_log: true
   ansible.builtin.set_fact:
     sccm_dbdrivers: "db2jcc4.jar"
+    sccm_dbdriver_loc: "/app/CC/user_inputs/db2jcc4.jar"
+    sccm_mssqlglobal: "false"
+    sccm_oracle_racorscan: ""
   when:
     - sccm_dbvendor is defined and sccm_dbvendor == "DB2"
 
@@ -48,6 +51,8 @@
   ansible.builtin.set_fact:
     sccm_dbdrivers: "ojdbc8.jar"
     sccm_oracleUseServiceName: "true"
+    sccm_mssqlglobal: "false"
+    sccm_oracle_racorscan: ""
   when:
     - sccm_dbvendor is defined and sccm_dbvendor == "Oracle"
 
@@ -55,6 +60,8 @@
 #  no_log: true
   ansible.builtin.set_fact:
     sccm_dbdrivers: "mssql_FIXME.jar"
+    sccm_mssqlglobal: "false"
+    sccm_oracle_racorscan: ""
   when:
     - sccm_dbvendor is defined and sccm_dbvendor == "SQLServer"
 

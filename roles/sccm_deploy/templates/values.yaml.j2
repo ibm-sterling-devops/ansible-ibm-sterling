@@ -1,1101 +1,307 @@
-global:
-  license: true
-  licenseType: "{{ si_licenseType }}"
-  image:
-    repository: "cp.icr.io/cp/ibm-b2bi/b2bi"
-    tag: "{{ compatibility_matrix[ si_version ].global.image.tag | default('') }}"
-    digest:
-    pullPolicy: IfNotPresent
-    pullSecret: "{{ si_registry_secret }}"
-  networkPolicies:
-    ingress:
-      enabled: true
-      customPolicies:
-      #- name:
-      #  fromSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450  
-      
-    egress:
-      enabled: true
-      customPolicies:
-      #- name:
-      #  toSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450
+# Default values for mychart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
 
-arch:
-  amd64: "2 - No Preference"
-  ppc64le: "2 - No Preference"
-  s390x: "2 - No Preference"
+replicaCount: 1 
 
+# Control Center image details
+image:
+  repository: "cp.icr.io/cp/ibm-scc/ibmscc"
+  tag: "{{ compatibility_matrix[sccm_version].image_tag }}"
+  imageSecrets: "{{ sccm_registry_secret }}"
+  digest:
+    enabled:
+    value:
+  pullPolicy: IfNotPresent
+
+# If you want to override the default full name( <release name>-ibm-sccm )
+nameOverride: ""
+fullnameOverride: ""
+
+# Use name field if you want to override default name 
+# Use create field as false if you want to manually create and give that service account name
 serviceAccount:
-  name: default
+  create: true
+  name: ""
 
-resourcesInit:
-  enabled: true 
-  image:
-    repository: "cp.icr.io/cp/ibm-b2bi/b2bi-resources"
-    tag: "{{ compatibility_matrix[ si_version ].resourcesInit.image.tag | default('') }}"
-    digest:
-    pullPolicy: "IfNotPresent"
-  command:
+service:
+  type: LoadBalancer
+  loadBalancerIP: ""
+  
+  # Load Balancer sources
+  # https://kubernetes.io/docs/concepts/services-networking/
+  # E.g -
+  # loadBalancerSourceRanges:
+  # - 10.10.10.0/24
+  loadBalancerSourceRanges: []
+  
+  sessionAffinity: "ClientIP"
+  swingConsole:
+    name: "swing-console"
+    port: 58080
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  webConsole:
+    name: "web-console"
+    port: 58082
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  swingConsoleSecure:
+    name: "swing-console-secure"
+    port: 58081
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  webConsoleSecure:
+    name: "web-console-secure"
+    port: 58083
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  externalIP: ""
+  # Specify this to set annotations 
+  annotations: {}
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: cm
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01  
 
-persistence:
+ccArgs:
+  appUserUID: "1010"
+  ccInterval: "2h"
+  # This variable will be used to drop tables for fresh install in dev environment
+  devEnvDropTables: "false"
+  #Use this flag to enable auto rebalance of monitored servers when scaled up
+  enableAutoRebalanceServers: "true"
+
+  #Control center database information
+  #Specify engineNamePrefix for new install only and if you want to change engine name with this prefix, you have to run configcc manually
+  engineNamePrefix: ""
+  productEntitlement: "CCD,CCM"
+  dbType: {{ sccm_dbvendor }}
+  dbHost: {{ sccm_dbhost }}
+  dbPort: {{ sccm_dbport }}
+  dbUser: {{ sccm_dbuser }}
+  dbName: {{ sccm_dbname }}
+  dbLoc: "none"
+  dbInit: "true"
+  dbPartition: "false"
+  dbDrivers: "{{ sccm_dbdriver_loc }}"
+  #Globalization is only needed if data to be stored contains multi-byte characters, which are common in character sets such as Kanji.
+  #Database I/O performance may drop multiple orders of magnitude if globalization support is selected, so it is NOT recommended you do so with MSSQL.
+  #If you set true for mssqlGlobal variable, then your database size can also increase significantly.
+  mssqlGlobal: "{{ sccm_mssqlglobal }}"
+ 
+  autoStopJavaWebAppServer: "true"
+  eventRepositoryAuth: "false"
+  
+  #Email related details
+  emailHostname: "{{ sccm_emailhostname }}"
+  emailPort: "{{ sccm_emailport }}"
+  emailUser: "{{ sccm_emailuser }}"
+  emailRespond: "{{ sccm_emailrespond }}"
+  ccAdminEmailAddress: "{{ sccm_ccadmin_emailaddress }}"
+  smtpTLSEnabled: "{{ sccm_smtp_tlsenabled }}"
+  
+  oracleRacOrScan: "{{ sccm_oracle_racorscan }}"
+  
+  #JMS related details if needed to post events to remote JMS system
+  jmsEnable: ""
+  jmsType: ""
+  jmsHost: ""
+  jmsPort: ""
+  jmsQueueManager: ""
+  jmsChannel: ""
+  jmsSubject: ""
+  jmsTopic: ""
+  jmsEmbedBroker: ""
+  jmsDataDirectory: ""
+  jmsTimeToLive: ""
+  jmsRetries: ""
+  jmsRetryWait: ""
+  jmsBrokerName: ""
+  
+  #Secure parameters
+  dbSSL: ""
+    
+  # Keystore and truststore configuration
+  keyStore: "/app/CC/user_inputs/CCenter.keystore"
+  trustStore: "/app/CC/user_inputs/CCenter.truststore"
+  keyAlias: "ccalias120"
+  adminEmailAddress: "{{ sccm_ccadmin_emailaddress }}"
+
+  #Seas Parameters
+  packagePath: "../packages"
+  seasPrimaryAddress: ""
+  seasPrimaryPort: ""
+  seasAlternativeAddress: ""
+  seasAlternativePort: ""
+  seasSecureConnection: "N"
+  seasProfileName: "test"
+  seasPersistentConnection: "N"
+  seasSecureProtocol: ""
+
+#From the given values 70% resources will be allocated to EP and remaining 20% will be allocated to webappserver
+resources: 
+  limits:
+    cpu: 3000m
+    memory: 8Gi
+    ephemeral-storage: "4Gi"
+  requests:
+    cpu: 1500m
+    memory: 4Gi
+    ephemeral-storage: "2Gi"
+
+initResources:
+  limits:
+    cpu: 500m
+    memory: 2Gi
+  requests:
+    cpu: 250m
+    memory: 1Gi
+
+# Customer can use extra init containers to make 
+# certain resources available for main container
+# userInput's enabled should be true if user_input directory
+# will be shared for resources like DB Drivers and certificates in waiting state
+extraInitContainers:
+ - name: "copy-resources"
+   repository: "cp.icr.io/cp/ibm-scc/ibmscc"
+   tag: "{{ compatibility_matrix[sccm_version].copy_resources_tag }}"
+   imageSecrets: "scc-image-secret"
+   pullPolicy: IfNotPresent
+   command: "cp -r /jdbc_drivers/ /app/conf"
+   digest:
+     enabled: false
+     value:
+   userInput:
+     enabled: false
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: {}
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+persistentVolumeCCM:
   enabled: true
-  useDynamicProvisioning: {{ si_use_dynamic_provisioning }}
-
-appResourcesPVC:
-  enabled: false     # must be false if resourcesInit is true
-  storageClassName: "{{ storage_class_matrix[ si_storage_class ].rom | default('') }}"
+  claimName: ""
+  #if claim name is not given and enabled is true then next 3 parameters are required
+  storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwo | default('manual') }}"
+  size: {{ sccm_helm_values.persistentVolumeCCM.size | default('100Mi') }} # 20Gi
+  accessMode: "ReadWriteOnce"
+  useDynamicProvisioning: true
   selector:
     label: "intent"
     value: "resources"
-  accessMode: ReadOnlyMany
-  size: {{ si_helm_values.appResourcesPVC.size | default('100Mi') }}
-  preDefinedResourcePVCName: 
 
-
-appLogsPVC:
-  storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
-  selector:
-    label: "intent"
-    value: "logs"
-  accessMode: ReadWriteMany
-  size: {{ si_helm_values.appLogsPVC.size | default('500Mi') }}
-  preDefinedLogsPVCName: 
-  
-appDocumentsPVC:
-  enabled: {{ si_helm_values.global.appDocumentsPVC.enabled | default('false') }}
-  storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
-  selector:
-    label: "intent"
-    value: "documents"
-  accessMode: ReadWriteMany
-  size: {{ si_helm_values.appDocumentsPVC.size | default('500Mi') }}
-  enableVolumeClaimPerPod: false
-  preDefinedDocumentPVCName: 
-
-extraPVCs: []
-
-security:
-  supplementalGroups: [65534]
-  fsGroup:
-  fsGroupChangePolicy: "OnRootMismatch"
-  runAsUser:
-  runAsGroup: 
-
-ingress:
+#persistence volume for resources like jdbc drivers
+# can skip this if init conatiner is used for copying resources 
+# or warpper image is used with required resources
+persistentVolumeUserInputs:
   enabled: true
+  claimName: ""
+  #if claim name is not given and enabled is true then next 3 properties are required
+  storageClassName: "manual"
+  size: 2Gi
+  accessMode: "ReadWriteOnce"
+  selector:
+    label: ""
+    value: ""
+    
+# Manage Storage permission 
+storageSecurity:
+  # fsGroup -  Used for controlling access to block storage such as Ceph RBD, iSCSI, and some Cloud storage.
+  fsGroup: ""
+  # supplementalGroups - supplemental Groups IDs are used for controlling access to shared storage like NFS and GlusterFS
+  # Replace supplementalGroup Id with NFS User's groupId if the root squash is enabled on NFS server otherwise volume access will fail
+  supplementalGroups: [65534]
+  
+# liveness and Probeness
+livenessProbe:
+  initialDelaySeconds: 175
+  timeoutSeconds: 45
+  periodSeconds: 120
+
+readinessProbe:
+  initialDelaySeconds: 175
+  timeoutSeconds: 15
+  periodSeconds: 120
+  
+secret:
+  # Secret with all passwords such as db and admin passwords
+  secretName:  "{{ sccm_secret }}"
+  # secret with keystore and truststore
+  certsSecretName: "{{ sccm_cert_secret }}"
+
+# for ibm cloud environment
+dashboard:
+  enabled: "{{ sccm_dashboard }}"
+
+# applicable for openshift environment for accessing UI 
+route:
+  enabled: "{{ sccm_oc_route }}"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+arch: "amd64"
+
+license: true
+
+licenseType: "{{ sccm_licensetype }}"
+
+# Set network policy
+# https://kubernetes.io/docs/concepts/services-networking/network-policies/
+# Default ingress policy will be created from Service object of values if no custom ingress policy is specified
+networkPolicy:
+  policyTypes:
+    - Ingress
+    - Egress
+  # apply ingress rule. Default allow all ingress traffic
+  # ingress:
+  #   - {}
+  # apply egress rule. Default allow all egress traffic 
+  egress: 
+    - {}
+  
+# can be used when ingress controller is available
+# can be used for rule based access 
+# TLS related configuration is requierd if passthrough termination is not used
+ingress:
+  enabled: false
+  host: ""
   controller: "nginx"
   annotations: {}
-  port:
-
-dataSetup:
-  enabled: true
-  upgrade: false
-  image:
-    repository: "cp.icr.io/cp/ibm-b2bi/b2bi-dbsetup"
-    tag: "{{ compatibility_matrix[ si_version ].dataSetup.image.tag | default('') }}"
-    digest:
-    pullPolicy: IfNotPresent
-    pullSecret: "{{ si_registry_secret }}"
-    extraLabels: {}
-
-env:
-  tz: "{{ si_helm_values.env.tz | default('UTC') }}"
-  upgradeCompatibilityVerified: false
-  debugMode: false
-  extraEnvs: []
-
-logs:
-  enableAppLogOnConsole: false
-      
-  # In standalone kubernetes environment, if PodSecurityPolicy is enabled and no default PSPs are present then change the value below to true.      
-applyPolicyToKubeSystem: false
-
-integrations:
-  seasIntegration:
-    isEnabled: {{ si_helm_values.integrations.seasIntegration.isEnabled | default('false') }}
-    seasVersion: "{{ compatibility_matrix[ si_version ].integrations.seasIntegration.seasVersion | default('q.0') }}"
-  itxIntegration:
-{% if (si_helm_values.integrations.itxIntegration is not defined) or (si_helm_values.integrations.itxIntegration.enabled is not defined) or (si_helm_values.integrations.itxIntegration.enabled == "false") %}
+  tls:
     enabled: false
-{% else %}
-    enabled: true
-    dataSetup:
-      enabled: true
-    image:
-      repository: "cp.icr.io/cp/ibm-itx-rs"
-      tag: "{{ compatibility_matrix[ si_version ].integrations.itxIntegration.image.tag | default('') }}"
-      digest:
-      pullPolicy: IfNotPresent
-      pullSecret: "{{ si_registry_secret }}"
-    dataPVC:
-      name: itxdata
-      useDynamicProvisioning: true  
-      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
-      selector:
-        label: "intent"
-        value: "itxdata"
-      accessMode: ReadWriteMany
-      size: 100Mi
-      preDefinedDataPVCName:
-    logsPVC:
-      name: itxlogs
-      useDynamicProvisioning: true
-      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
-      selector:
-        label: "intent"
-        value: "itxlogs"
-      accessMode: ReadWriteMany
-      size: 100Mi
-      preDefinedLogsPVCName:
-    log:
-      includeHostInLogNames: true
-      jniLog:
-        level: "none"
-      cmgrLog:
-        level: "none"
-{% endif %}
-  itxaIntegration:
-{% if (si_helm_values.integrations.itxaIntegration is not defined) or (si_helm_values.integrations.itxaIntegration.enabled is not defined) or (si_helm_values.integrations.itxaIntegration.enabled == "false") %}
-    enabled: false
-{% else %}
-    enabled: true
-    dataSetup:
-      enabled: true
-    image:
-      repository: "cp.icr.io/cp/ibm-itxa-runtime"
-      tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.image.tag | default('') }}"
-      digest:
-      pullPolicy: IfNotPresent
-      pullSecret: "{{ si_registry_secret }}"
-    appSecret: "{{ si_itxa_secret | default('itxa-oracle-secrets') }}"
-    secureDBConnection:
-      enabled: false
-      dbservercertsecretname: ""
-    persistence:
-      claims:
-        name: itxa-logs-pvc
-    sso:
-      host: "speui.apps.openshift.in.dev"
-      port: 443
-      ssl:
-        enabled: true
-    resourcesInit:
-      enabled: true
-      image:
-        repository: "cp.icr.io/cp/ibm-itxa-resources"
-        tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.tag | default('') }}"
-        digest:
-        pullPolicy: "IfNotPresent"
-{% endif %}
+    secretName: ""
 
-setupCfg:
-  upgrade: false
-  basePort: 50000
-  licenseAcceptEnableSfg: {{ si_helm_values.setupCfg.licenseAcceptEnableSfg | default('false') }}
-  licenseAcceptEnableEbics: {{ si_helm_values.setupCfg.licenseAcceptEnableEbics | default('false') }}
-  licenseAcceptEnableFinancialServices: {{ si_helm_values.setupCfg.licenseAcceptEnableFinancialServices | default('false') }}
-  licenseAcceptEnableFileOperation: {{ si_helm_values.setupCfg.licenseAcceptEnableFileOperation | default('false') }}
-
-  systemPassphraseSecret: {{ si_system_passphrase_secret }}
-  enableFipsMode: {{ si_helm_values.setupCfg.enableFipsMode | default('false') }}
-  nistComplianceMode: "{{ si_helm_values.setupCfg.nistComplianceMode | default('off') }}"
-
-  dbVendor: {{ si_dbvendor }}
-  dbHost: {{ si_dbhost }}
-  dbPort: {{ si_dbport }}
-  dbData: {{ si_dbname }}
-  dbDrivers: {{ si_dbdrivers }}
-  dbCreateSchema: {{ si_helm_values.setupCfg.dbCreateSchema | default('true') }}
-  oracleUseServiceName: {{ si_oracleUseServiceName | default('false') }}
-  usessl:  {{ si_helm_values.setupCfg.usessl | default('false') }}
-  
-  dbSecret: {{ si_db_secret }}
-  dbTruststore: {{ si_helm_values.setupCfg.dbTruststore | default('') }}
-  dbTruststoreSecret: {{ si_helm_values.setupCfg.dbTruststoreSecret | default('') }}
-  dbKeystore: {{ si_helm_values.setupCfg.dbKeystore | default('') }}
-  dbKeystoreSecret: {{ si_helm_values.setupCfg.dbKeystoreSecret | default('') }}
-    
-  connectionpoolFailoverEnable: false
-  adminEmailAddress: {{ si_adminmailaddr }} 
-  smtpHost: {{ si_adminsmtphost }}
-  terminationGracePeriod: 30
-
-  jmsVendor: {{ si_jmsvendor }}
-  jmsConnectionFactory: {{ si_jmsconnectionfactory }}
-  jmsConnectionFactoryInstantiator:
-  jmsQueueName: {{ si_jmsqueuename }}
-  jmsHost: {{ si_jmshost }}
-  jmsPort: {{ si_jmsport }}
-  jmsConnectionNameList: {{ si_jmsconnectionnamelist }}
-  jmsChannel: {{ si_jmschannel }}
-  jmsEnableSsl: {{ si_jmsenablessl }}
-  jmsSecret: {{ si_jms_secret }}
-  jmsKeystorePath:
-  jmsKeystoreSecret: {{ si_jms_keystore_secret | default('') }}
-  jmsTruststorePath:
-  jmsTruststoreSecret: {{ si_jms_truststore_secret | default('') }}
-  jmsCiphersuite:
-  jmsProtocol: {{ si_helm_values.setupCfg.jmsProtocol | default('TLSv1.2') }}
-
-
-  libertyKeystoreLocation:
-  libertyKeystoreSecret: {{ si_liberty_keystore_secret | default('') }}
-  
-  libertyProtocol: {{ si_helm_values.setupCfg.libertyProtocol | default('TLSv1.2') }}
-  libertySecret: {{ si_liberty_secret | default('') }}
-  libertyJvmOptions:
- 
-  defaultDocumentStorageType: {{ si_helm_values.setupCfg.defaultDocumentStorageType | default('DB') }}
- 
-  restartCluster: false
-  useSslForRmi: true
-  rmiTlsSecretName:
-
-  sapSncSecretName:
-  sapSncLibVendorName:
-  sapSncLibVersion:
-  sapSncLibName:  
-
-
-asi:
-  replicaCount: 1
-  
-  env:
-    jvmOptions:
-    extraEnvs: []
-    
-  frontendService:
-    type: ClusterIP
-    sessionAffinityConfig:
-      timeoutSeconds: 10800
-
-    externalTrafficPolicy: Cluster
-    ports:
-      http: 
-        name: http
-        port: 35000
-        targetPort: http
-        nodePort: 30000
-        protocol: TCP
-      https: 
-        name: https
-        port: 35001
-        targetPort: https
-        nodePort: 30001
-        protocol: TCP
-      soa: 
-        name: soa
-        port: 35002
-        targetPort: soa
-        nodePort: 30002
-        protocol: TCP
-      soassl: 
-        name: soassl
-        port: 35003
-        targetPort: soassl
-        nodePort: 30003
-        protocol: TCP
-      restHttpAdapter: 
-        name: rest-adapter
-        port: 35007
-        targetPort: rest-adapter
-        nodePort: 30007
-        protocol: TCP
-    extraPorts: []
-      #-name: http-1
-      # port: 46000
-      # targetPort: http
-      # nodePort: 30100
-      # protocol: TCP
-    loadBalancerIP:  
-    loadBalancerSourceRanges: []
-      #- "143.231.0.0/16"
-    annotations: {}  
-  
-  backendService:
-    type: LoadBalancer
-    sessionAffinity: None
-    sessionAffinityConfig:
-      timeoutSeconds: 10800
-
-    externalTrafficPolicy: Cluster
-    ports: []
-      #- name: adapter-1
-      #  port: 30201
-      #  targetPort: 30201
-      #  nodePort: 30201
-      #  protocol: TCP
-    portRanges:
-      - name: adapters
-        portRange: 30351-30353
-        targetPortRange: 30351-30353
-        nodePortRange: 30351-30353
-        protocol: TCP
-      #- name: adapters
-      #  portRange: 30501-30600
-      #  targetPortRange: 30501-30600
-      #  nodePortRange: 30501-30600
-      #  protocol: TCP
-    loadBalancerIP:  
-    loadBalancerSourceRanges: []
-      #- "143.231.0.0/16"
-    annotations: {}
-      
-  livenessProbe:
-    initialDelaySeconds: 60
-    timeoutSeconds: 30
-    periodSeconds: 60
-
-  readinessProbe:
-    initialDelaySeconds: 60
-    timeoutSeconds: 5
-    periodSeconds: 60
-    command:
-    arg: []
-     
-  startupProbe:
-    initialDelaySeconds: 120
-    timeoutSeconds: 30
-    periodSeconds: 60
-    failureThreshold: 3
-       
-  internalAccess:
-    enableHttps: true
-    httpsPort:   
-    tlsSecretName:  
-      
-  externalAccess:
-    protocol: http
-    address: 
-    port:
-    
-  ingress:
-    internal:
-      host: "{{ si_helm_values.asi.ingress.internal.host }}"
-      tls:
-        enabled: true
-        secretName: ""
-      extraPaths: []
-      #  - routePrefix: "hello"
-      #    path: "/hello"
-      #    servicePort: "my-http"
-      #    enableHttps: false
-    external:
-      host: ""
-      tls:
-        enabled: true
-        secretName: ""
-      extraPaths: []
-      #  - routePrefix: "hello"
-      #    path: "/hello"
-      #    servicePort: "my-http"
-      #    enableHttps: false
-      #    access: "internal"
-
-  extraPVCs: []
-
-
-  extraInitContainers: []
-    #- name: wait-for-postgresql
-    #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
-    #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
-    #  command:
-
-  resources: 
-    limits:
-      cpu: 4000m
-      memory: 8Gi
-      ephemeral-storage: "4Gi"
-    requests:
-      cpu: 2000m
-      memory: 4Gi
-      ephemeral-storage: "2Gi"
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 2
-    targetCPUUtilizationPercentage: 60
-
-  defaultPodDisruptionBudget:
-    enabled: false
-    minAvailable: 1
-  
-  # for pod Affinity and podAntiAffinity
-  extraLabels: {}
-    #asiLabel: asiValue
-  
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  podAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  
-  topologySpreadConstraints: []
-    #- maxSkew: 1
-    #  topologyKey: topology.kubernetes.io/zone
-    #  whenUnsatisfiable: DoNotSchedule
-    #- maxSkew: 1
-    #  topologyKey: kubernetes.io/hostname
-    #  whenUnsatisfiable: ScheduleAnyway
-    
-  # for Taints and Tolerations  
-  tolerations: [] 
-  #- key: "key1"
-  #  operator: "Equal"
-  #  value: "value1"
-  #  effect: "NoExecute"
-  #  tolerationSeconds: 3600
-  #- key: "key2"
-  #  operator: "Exists"
-  #  effect: "NoSchedule"
-
-  #To provide additional secrets inside application. If mountAsVolume is set to true, secret will be mounted as volume under /ibm/resources/<secretName> directory
-  #else it will exposed as environment variable
-  extraSecrets: []
-    #- mountAsVolume: true
-    #  secretName: jms-truststore
-    #- mountAsVolume: true
-    #  secretName: db-truststore
-
-  #To provide additional configmaps inside application. If mountAsVolume is set to true, configmap will be mounted as volume under /ibm/resources/<configMapName> directory
-  #else it will exposed as environment variable
-  extraConfigMaps: []
-    #- mountAsVolume: true
-    #  configMapName: my-configmap-1
-    #- mountAsVolume: false
-    #  configMapName: my-configmap-2
-  
-  #If myFG is hosted on HTTP Server adapter on ASI server, provide the internal port/protocol details used while configuring that.
-  myFgAccess:
-    myFgPort:
-    myFgProtocol:
-
-  hostAliases: []
-  #- ip: "127.0.0.1"
-  #  hostnames:
-  #  - "foo.local"
-  #  - "bar.local"
-  #- ip: "10.1.2.3"
-  #  hostnames:
-  #  - "foo.remote"
-  #  - "bar.remote"
-  
-  performanceTuning:
-    allocateMemToBI: false
-    allocateMemToSAP: false
-    allocateMemToCLA: false
-    threadsPerCore: 4
-    override: []
-      #- NOAPP.INITIAL_CYCLES_7=53
-      #- NOAPP.EXEC_CYCLE_7=53
-      #- NOAPP.MIN_POOL_SIZE_7=0
-      #- NOAPP.MAX_POOL_SIZE_7=13
-      #- NOAPP.RESOURCE_ALLOCATION_7=93
-  
-  networkPolicies:
-    ingress:
-      customPolicies:
-      #- name:
-      #  fromSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450       
-    egress:
-      customPolicies:
-      #- name:
-      #  toSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450
-
-ac:
-  replicaCount: 1
-
-  env:
-    jvmOptions:
-    extraEnvs: []
-    
-  frontendService:
-    type: ClusterIP
-    sessionAffinityConfig:
-      timeoutSeconds: 10800
-    
-    externalTrafficPolicy: Cluster
-    ports:
-      http: 
-        name: http
-        port: 35004
-        targetPort: http
-        nodePort: 30004
-        protocol: TCP
-    extraPorts: []
-      #-name: http-1
-      # port: 37000
-      # targetPort: http
-      # nodePort: 30200
-      # protocol: TCP
-    loadBalancerIP:  
-    loadBalancerSourceRanges: []
-      #- "143.231.0.0/16"
-    annotations: {}  
-      
-  backendService:
-    type: LoadBalancer
-    sessionAffinity: None
-    sessionAffinityConfig:
-      timeoutSeconds: 10800
-
-    externalTrafficPolicy: Cluster
-    ports: []
-      #- name: adapter-1
-      #  port: 30401
-      #  targetPort: 30401
-      #  nodePort: 30401
-      #  protocol: TCP
-    portRanges:
-      - name: adapters
-        portRange: 30501-30600
-        targetPortRange: 30501-30600
-        nodePortRange: 30501-30600
-        protocol: TCP
-    loadBalancerIP:  
-    loadBalancerSourceRanges: []
-      #- "143.231.0.0/16"
-    annotations: {} 
-
-  livenessProbe:
-    initialDelaySeconds: 60
-    timeoutSeconds: 5
-    periodSeconds: 60
-    
-  readinessProbe:
-    initialDelaySeconds: 60
-    timeoutSeconds: 5
-    periodSeconds: 60
-    command:
-    arg: []
-
-  internalAccess:
-    enableHttps: true
-    tlsSecretName:
-      
-  ingress:
-    internal:
-      host: "{{ si_helm_values.ac.ingress.internal.host }}"
-      tls:
-        enabled: true
-        secretName: ""
-      extraPaths: []
-      #  - routePrefix: "hello"
-      #    path: "/hello"
-      #    servicePort: "my-http"
-      #    enableHttps: false
-    external:
-      host: ""
-      tls:
-        enabled: true
-        secretName: ""
-      extraPaths: []
-      #  - routePrefix: "hello"
-      #    path: "/hello"
-      #    servicePort: "my-http"
-      #    enableHttps: false
-      #    access: "internal"
-  
-  extraPVCs: []
-
-  extraInitContainers: []
-    #- name: wait-for-postgresql
-    #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
-    #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
-    #  command:
-
-  resources: 
-    limits:
-      cpu: 4000m
-      memory: 8Gi
-      ephemeral-storage: "4Gi"
-    requests:
-      cpu: 2000m
-      memory: 4Gi
-      ephemeral-storage: "2Gi"
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 2
-    targetCPUUtilizationPercentage: 60
-
-  defaultPodDisruptionBudget:
-    enabled: false
-    minAvailable: 1
-  
-
-  extraLabels: {}
-    #acLabel: acValue
-  
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  podAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  
-  topologySpreadConstraints: []
-    #- maxSkew: 1
-    #  topologyKey: topology.kubernetes.io/zone
-    #  whenUnsatisfiable: DoNotSchedule
-    #- maxSkew: 1
-    #  topologyKey: kubernetes.io/hostname
-    #  whenUnsatisfiable: ScheduleAnyway
-  
-  # for Taints and Tolerations  
-  tolerations: [] 
-  #- key: "key1"
-  #  operator: "Equal"
-  #  value: "value1"
-  #  effect: "NoExecute"
-  #  tolerationSeconds: 3600
-  #- key: "key2"
-  #  operator: "Exists"
-  #  effect: "NoSchedule"  
-
-  #To provide additional secrets inside application. If mountAsVolume is set to true, secret will be mounted as volume under /ibm/resources/<secretName> directory
-  #else it will exposed as environment variable
-  extraSecrets: []
-    #- mountAsVolume: true
-    #  secretName: jms-truststore
-    #- mountAsVolume: true
-    #  secretName: db-truststore
-
-  #To provide additional configmaps inside application. If mountAsVolume is set to true, configmap will be mounted as volume under /ibm/resources/<configMapName> directory
-  #else it will exposed as environment variable
-  extraConfigMaps: []
-    #- mountAsVolume: true
-    #  configMapName: my-configmap-1
-    #- mountAsVolume: false
-    #  configMapName: my-configmap-2
-
-  #If myFG is hosted on HTTP Server adapter on AC server, provide the internal port/protocol details used while configuring that.
-  myFgAccess:
-    myFgPort:
-    myFgProtocol:
-  
-  hostAliases: []
-  #- ip: "127.0.0.1"
-  #  hostnames:
-  #  - "foo.local"
-  #  - "bar.local"
-  #- ip: "10.1.2.3"
-  #  hostnames:
-  #  - "foo.remote"
-  #  - "bar.remote"
- 
-  performanceTuning:
-    allocateMemToSAP: false
-    
-  networkPolicies:
-    ingress:
-      customPolicies:
-      #- name:
-      #  fromSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450        
-    egress:
-      customPolicies:
-      #- name:
-      #  toSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450
-    
-api:
-  replicaCount: 1
-
-  env:
-    #It will be deprecated in future release. Instead use config/jvm.options file to override or add any additional jvm configuration.
-    jvmOptions:
-    extraEnvs: []
-    
-  frontendService:
-    type: ClusterIP
-    sessionAffinityConfig:
-      timeoutSeconds: 10800
-    externalTrafficPolicy: Cluster
-    ports:
-      http:
-        name: http
-        port: 35005
-        targetPort: http
-        nodePort: 30005
-        protocol: TCP
-      https:
-        name: https
-        port: 35006
-        targetPort: https
-        nodePort: 30006
-        protocol: TCP
-    extraPorts: []
-      #-name: http-1
-      # port: 35000
-      # targetPort: http
-      # nodePort: 30300
-      # protocol: TCP
-    loadBalancerIP:  
-    loadBalancerSourceRanges: []
-      #- "143.231.0.0/16"
-    annotations: {}  
-  
-  livenessProbe:
-    initialDelaySeconds: 60
-    timeoutSeconds: 5
-    periodSeconds: 60
-    
-  readinessProbe:
-    initialDelaySeconds: 60
-    timeoutSeconds: 5
-    periodSeconds: 60
-    command:
-    arg: []
-      #- arg1
-      #- arg2
-      
-  internalAccess:
-    enableHttps: true
-    tlsSecretName:
-
-  externalAccess:
-    protocol: http
-    address: 
-    port: 
-
-  ingress:
-    internal:
-      host: "{{ si_helm_values.api.ingress.internal.host }}"
-      tls:
-        enabled: true
-        secretName: ""
-
-  extraPVCs: []
-
-  ## Additional init containers, e. g. for providing custom themes
-  extraInitContainers: []
-    #- name: wait-for-postgresql
-    #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
-    #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
-    #  command:
-
-  resources: 
-    limits:
-      cpu: 4000m
-      memory: 4Gi
-      ephemeral-storage: "4Gi"
-    requests:
-      cpu: 2000m
-      memory: 2Gi
-      ephemeral-storage: "2Gi"
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 2
-    targetCPUUtilizationPercentage: 60
-    
-  defaultPodDisruptionBudget:
-    enabled: false
-    minAvailable: 1
-  
-  extraLabels: {}
-    #apiLabel: apiValue
-  
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  podAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-  
-  topologySpreadConstraints: []
-    #- maxSkew: 1
-    #  topologyKey: topology.kubernetes.io/zone
-    #  whenUnsatisfiable: DoNotSchedule
-    #- maxSkew: 1
-    #  topologyKey: kubernetes.io/hostname
-    #  whenUnsatisfiable: ScheduleAnyway
-    
-  tolerations: [] 
-  #- key: "key1"
-  #  operator: "Equal"
-  #  value: "value1"
-  #  effect: "NoExecute"
-  #  tolerationSeconds: 3600
-  #- key: "key2"
-  #  operator: "Exists"
-  #  effect: "NoSchedule"  
-
-  extraSecrets: []
-    #- mountAsVolume: true
-    #  secretName: jms-truststore
-    #- mountAsVolume: true
-    #  secretName: db-truststore
-
-  extraConfigMaps: []
-    #- mountAsVolume: true
-    #  configMapName: my-configmap-1
-    #- mountAsVolume: false
-    #  configMapName: my-configmap-2
-  
-  hostAliases: []
-  #- ip: "127.0.0.1"
-  #  hostnames:
-  #  - "foo.local"
-  #  - "bar.local"
-  #- ip: "10.1.2.3"
-  #  hostnames:
-  #  - "foo.remote"
-  #  - "bar.remote"
-  
-  networkPolicies:
-    ingress:
-      customPolicies:
-      #- name:
-      #  fromSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450       
-    egress:
-      customPolicies:
-      #- name:
-      #  toSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450
-
-nameOverride: ""
-
-fullnameOverride: ""
-
-# Test container
-test:
-  image:
-    repository: 'cp.icr.io/cp/opencontent-common-utils'
-    tag: "{{ compatibility_matrix[ si_version ].test.image.tag | default('') }}"
-    digest:
-    pullPolicy: 'IfNotPresent'
-
-purge:
-  enabled: true
-  image:
-    repository: "cp.icr.io/cp/ibm-b2bi/b2bi-purge"
-    tag: "{{ compatibility_matrix[ si_version ].purge.image.tag | default('') }}"
-    digest:
-    pullPolicy: IfNotPresent
-    pullSecret: "{{ si_registry_secret }}"
-    extraLabels: {}
-  # Provide a schedule for the purge job as a cron expression. For example "0 0 * * *" will run the purge job at 00:00 every day
-  schedule: "{{ si_helm_values.purge.schedule }}"
-  startingDeadlineSeconds: 60
-  activeDeadlineSeconds: 3600
-  concurrencyPolicy: Forbid
-  suspend: false
-  successfulJobsHistoryLimit: 3
-  failedJobsHistoryLimit: 1
-  env:
-    jvmOptions:
-    extraEnvs: []
-  
-  internalAccess:
-    enableHttps: true
-    tlsSecretName: 
-
-  resources: 
-    limits:
-      cpu: 500m
-      memory: 1Gi
-      ephemeral-storage: "1Gi"
-    requests:
-      cpu: 100m
-      memory: 500Mi 
-      ephemeral-storage: "500Mi"
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
-    preferredDuringSchedulingIgnoredDuringExecution: []
-
-documentService:
-{% if (si_helm_values.documentService is not defined) or (si_helm_values.documentService.enabled is not defined) or (si_helm_values.documentService.enabled == "false") %}
+# Pod Disruption Budget configuration details
+defaultPodDisruptionBudget:
   enabled: false
-{% else %}
-  enabled: true
-  sslEnabled: true
-  useGrpc: true
-  readBufferSize: 32768
-  grpcPoolSize: 150
-  keepAliveGrpc: 300
-  license: false
-  replicaCount: 1
-  image:
-    repository: cp.icr.io/cp/ibm-b2bi/b2bi-documentservice
-    pullPolicy: IfNotPresent
-    tag: "{{ compatibility_matrix[ si_version ].documentService.image.tag | default('') }}"
-    digest:
-    pullSecret: "{{ si_registry_secret }}"
-  serviceAccount:
-    name: default
-  application:
-    server:
-      ssl:
-        enabled: true
-        tlsSecretName: 
-        trustStoreSecretName:
-        clientAuth: want
-    logging:
-      level: ERROR
-  objectstore:
-    name:  {{ si_helm_values.documentService.objectstore.name | default('') }}
-    endpoint: {{ si_helm_values.documentService.objectstore.endpoint | default('') }}
-    namespace: {{ si_helm_values.documentService.objectstore.namespace | default('') }}
-    region: {{ si_helm_values.documentService.objectstore.region | default('') }}
-    secretName: {{ si_documentservice_objectstore_secret | default('') }}
-    useKeysFromSecrets: {{ si_helm_values.documentService.objectstore.useKeysFromSecrets | default('false') }} 
-  connectionPoolConfig:
-    maxTotalConnections: 250
-    maxConnectionsPerRoute: 100
-    connectTimeout: 10000
-    readTimeout: 60000
-    idleTimeout: 60000
-    idleMonitorThread: true
-    waitTimeout: 30000
-    keepAlive: 300000
-    retryCount: 2
-    disableContentCompression: true
-{% endif %}
+  minAvailable: 1
+
+# secure computing mode(seccomp) settings, default type is RuntimeDefault, 
+# if type is other than RuntimeDefault then profile value must be given
+secComp:
+  type: RuntimeDefault
+  profile: ""
+
+#set timezone of container
+timeZone: "America/New_York"
+
+# For troubleshooting purpose only
+debugScripts: true

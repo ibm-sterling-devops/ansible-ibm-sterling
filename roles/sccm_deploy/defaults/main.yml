@@ -5,17 +5,15 @@ sccm_instanceid: "{{ lookup('env', 'SCCM_INSTANCEID') }}"
 sccm_domain: "{{ lookup('env', 'SCCM_DOMAIN') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 
-sccm_licenseType: "{{ lookup('env', ' SCCM_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+sccm_licensetype: "{{ lookup('env', ' SCCM_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 sccm_system_passphrase: "{{ lookup('env', ' SCCM_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
 
 sccm_admin: "{{ lookup('env', 'SCCM_ADMIN') | default('admin', true) }}"
 sccm_admin_password: "{{ lookup('env', ' SCCM_ADMIN_PASSWORD') | default('passwOrd', true) }}"
 sccm_truststore_password: "{{ lookup('env', ' SCCM_TRUSTSTORE_PASSWORD') | default('changeit', true) }}"
 sccm_keystore_password: "{{ lookup('env', ' SCCM_KEYSTORE_PASSWORD') | default('changeit', true) }}"
-sccm_email_password: "{{ lookup('env', ' SCCM_EMAIL_PASSWORD') | default('passwOrd', true) }}"
 sccm_userkey: "{{ lookup('env', ' SCCM_EMAIL_PASSWORD') | default('passwOrd', true) }}"
-sccm_adminmailaddr: "{{ lookup('env', ' SCCM_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
-sccm_adminsmtphost: "{{ lookup('env', ' SCCM_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
+
 
 sccm_dbvendor: "{{ lookup('env', ' SCCM_DBVENDOR') }}"
 sccm_dbhost: "{{ lookup('env', ' SCCM_DBHOST') }}"
@@ -23,12 +21,23 @@ sccm_dbport: "{{ lookup('env', ' SCCM_DBPORT') }}"
 sccm_dbname: "{{ lookup('env', ' SCCM_DBNAME') }}"
 sccm_dbuser: "{{ lookup('env', ' SCCM_DBUSER') }}"
 sccm_dbpassword: "{{ lookup('env', ' SCCM_DBPASSWORD') }}"
-sccm_oracleUseServiceName: "{{ lookup('env', ' SCCM_ORACLESERVICENAME', default('false')) }}"
+
+sccm_emailhostname: "{{ lookup('env', ' SCCM_SMTPHOST') | default('smtp.company.com', true) }}"
+sccm_emailport: "{{ lookup('env', ' SCCM_SMTPPORT') | default('25', true) }}"
+sccm_emailuser: "{{ sccm_admin }}"
+sccm_emailrespond: "{{ lookup('env', ' SCCM_EMAIL_RESPOND') | default('noreply@company.com', true) }}"
+sccm_ccadmin_emailaddress: "{{ lookup('env', ' SCCM_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
+sccm_emailpassword: "{{ lookup('env', ' SCCM_EMAIL_PASSWORD') | default('passwOrd', true) }}"
+sccm_smtp_tlsenabled: "{{ lookup('env', ' SCCM_SMTP_TLSENABLED') | default('false', true) }}"
 
 sccm_jmsuser: "{{ lookup('env', ' SCCM_JMS_USERNAME') }}"
 sccm_jmspassword: "{{ lookup('env', ' SCCM_JMS_PASSWORD') }}"
 sccm_jmskeystorepassword: "{{ lookup('env', ' SCCM_JMS_KEYSTORE_PASSWORD') }}"
 sccm_jmstruststorepassword: "{{ lookup('env', ' SCCM_JMS_TRUSTSTORE_PASSWORD') }}"
+
+sccm_timezone: "{{ lookup('env', ' SCCM_TIMEZONE') | default('America/New_York', true) }}"
+sccm_dashboard: "true" # for ibm cloud environment
+sccm_oc_route: "true" # applicable for openshift environment for accessing UI 
 
 # Entitlement
 # -----------------------------------------------------------------------------
@@ -76,9 +85,12 @@ sccm_helm:
 compatibility_matrix:
   6.3.1.0_iFix01_2024-02-01:
     helm_version: "3.1.1"
+    image_tag: "6.3.1.0_iFix01_2024-02-01"
+    copy_resources_tag: "6.2.1.0_ifix08_2022-09-16"
   6.3.1.0_2023-12-15:
     helm_version: "3.1.0"
-
+    image_tag: "6.3.1.0_2023-12-15"
+    copy_resources_tag: "6.2.1.0_ifix08_2022-09-16"
 
 
 # Storage Class Matrix - definition by Cloud Provider
