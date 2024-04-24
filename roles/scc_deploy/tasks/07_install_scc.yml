@@ -1,0 +1,37 @@
+---
+- name: Generate my_values.yml
+  ansible.builtin.template:
+    src: "values.yaml.j2"
+    dest: "{{ my_workdir }}/myb2bi_values.yml"
+
+- name: Debug
+  ansible.builtin.debug:
+    msg: "helm install --timeout {{ scc_helm.timeout }} -f {{ scc_helm.values_yaml }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ scc_helm.chart }}"
+
+# helm install test -f values.yaml -n control-center ./ibm-sccm-version.tgz
+
+- name: Run Helm install command
+  ansible.builtin.shell: 
+    cmd: "helm install --timeout {{ scc_helm.timeout }} -f {{ scc_helm.values_yaml }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ scc_helm.chart }}"
+# --timeout {{ scc_helm.timeout }}
+# --wait
+
+
+# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
+# - name: Deploy Connect:Direct chart from local path
+#   kubernetes.core.helm:
+#     name: "{{ scc_helm_release }}"
+#     chart_ref: "{{ my_workdir }}/ibm-connect-direct/"
+#     release_namespace: "{{ scc_namespace }}"
+#     wait: True
+#     timeout: "{{ scc_helm_timeout }}"
+#     values_files:
+#       - "{{ my_workdir }}/myb2bi_values.yml"
+
+- name: "IBM Sterling Control Center Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "IBM Sterling Control Center status .............................. Ready!"
+      - "IBM Sterling Control Center namespace ........................... {{ scc_namespace }}"
+      # - "Pod name ............................................ {{ scc_pod_name }}"
+      # - "For username and password check secret .............. {{ scc_secret }}'"

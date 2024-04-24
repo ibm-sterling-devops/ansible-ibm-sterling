@@ -1,0 +1,109 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      # Sterling B2B
+      - lookup('env', 'SCC_INSTANCEID') != ""
+      - lookup('env', 'SCC_PRODUCTS') != ""
+      - lookup('env', 'SCC_DOMAIN') != ""
+      # IBM Registry
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+# 1. Check for undefined properties that do not have a default
+# -----------------------------------------------------------------------------
+- name: "Fail scc_instanceid is 'not provided' or 'over 8 characters' or 'has uppercase characters'"
+  ansible.builtin.assert:
+    that:
+      - scc_instanceid is defined and scc_instanceid != ""
+      - scc_instanceid | length <= 8
+      - scc_instanceid is match('[a-z0-9]+')
+    fail_msg: "Property 'scc_instanceid' is greater than 8 character long or has uppercase characters"
+
+# TODO: Check for CCM, CCD or CCM,CCD or CCD,CCM
+
+- name: "Fail if entitled_registry_key is not provided"
+  ansible.builtin.assert:
+    that: entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "entitled_registry_key property is required"
+
+- name: "Fail scc_domain is 'not provided' "
+  ansible.builtin.assert:
+    that:
+      - scc_domain is defined and scc_domain != ""
+    fail_msg: "scc_domain property is required"
+
+# 2. Lookup Namespace availabiity
+# -----------------------------------------------------------------------------
+- name: Lookup Namespaces
+  kubernetes.core.k8s_info:
+    kind: Namespace
+  register: lookup_namespaces
+
+- name: Create List of Namespaces
+  ansible.builtin.set_fact:
+    namespace_list: "{{ lookup_namespaces.resources | map(attribute='metadata.name') | list }}"
+
+# 3. Check for DB Information
+# -----------------------------------------------------------------------------
+- name: Check for DB2 provided namespace
+  ansible.builtin.set_fact:
+    db2_namespace: "{{ env_db2_namespace }}"
+  when:
+    - env_db2_namespace is defined and env_db2_namespace != ""
+    - env_db2_namespace in namespace_list
+
+- name: Check for DB2 default namespace
+  ansible.builtin.set_fact:
+    db2_namespace: "{{ scc_db2_namespace }}"
+  when:
+    - db2_namespace == ""
+    - scc_db2_namespace in namespace_list
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that:
+      - (db2_namespace != "") or (scc_dbvendor != "")
+    fail_msg: "Database Information property is required"
+
+- name: "Install CCM,CCD ?"
+  ansible.builtin.set_fact:
+    scc_install_ccm: true 
+    scc_install_ccd: true
+    scc_install: "CCM,CCD"
+  when: 
+    - scc_products_upper.find('CCM') == -1
+    - scc_products_upper.find('CCD') == -1
+
+- name: "Install CCM ?"
+  ansible.builtin.set_fact:
+    scc_install_ccm: true 
+    scc_install_ccd: false
+    scc_install: "CCM"
+  when: 
+    - scc_install is not defined
+    - scc_products_upper.find('CCM') == -1
+
+- name: "Install CCD ?"
+  ansible.builtin.set_fact:
+    scc_install_ccm: false
+    scc_install_ccd: true
+    scc_install: "CCD"
+  when: 
+    - scc_install is not defined
+    - scc_products_upper.find('CCD') == -1
+
+- name: Fail if neither CCM nor CCD found
+  ansible.builtin.fail:
+    msg: "Neither CCM nor CCD found in scc_products variable"
+  when: scc_install is not defined
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "SCCM Instance ID ............... {{ scc_instanceid }}"
+      - "SCCM namespace ................. {{ scc_namespace }}"
+      - "Install CCM .................... {{ scc_install_ccm }}"
+      - "Install CCD .................... {{ scc_install_ccd }}"

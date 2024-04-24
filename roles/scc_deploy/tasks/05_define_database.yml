@@ -1,0 +1,104 @@
+---
+# Get Information from db2_namespace
+# -----------------------------------------------------------------------------
+- name: "Lookup Secrets from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: "{{ db2_secret }}"
+    namespace: "{{ db2_namespace }}"
+  register: db_secret_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: "Lookup Service from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: "{{ db2_id }}-ci"
+    namespace: "{{ db2_namespace }}"
+  register: db_svc_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: Set Facts for Database Configuration from db2_namespace
+#  no_log: true
+  ansible.builtin.set_fact:
+    scc_dbvendor: "DB2"
+    scc_dbhost: "{{ db2_id }}-ci.{{ db2_namespace }}.svc.cluster.local"
+    scc_dbport: "{{ db_svc_cout.resources[0].spec.ports[0].port }}"
+    scc_dbname: "SCCM"
+    scc_dbuser: "db2inst1"
+    scc_dbpassword: "{{ db_secret_cout.resources[0].data.DB2INST1_PASSWORD | b64decode }}"
+#     jdbc_url: "jdbc:db2://c-{{db2_instance_name | lower}}-db2u-engn-svc.{{ db2_namespace }}.svc:{{db2_tls_serviceport}}/{{db2_dbname}}:sslConnection=true;sslVersion={{ tls_version }};"
+  when: 
+    - db2_namespace is defined and db2_namespace != ""
+    - db_secret_cout is defined and db_secret_cout != ""
+    - db_svc_cout is defined and db_svc_cout != ""
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    scc_dbdrivers: "db2jcc4.jar"
+    scc_dbdriver_loc: "/app/CC/user_inputs/db2jcc4.jar"
+    scc_mssqlglobal: "false"
+    scc_oracle_racorscan: ""
+  when:
+    - scc_dbvendor is defined and scc_dbvendor == "DB2"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    scc_dbdrivers: "ojdbc8.jar"
+    scc_oracleUseServiceName: "true"
+    scc_mssqlglobal: "false"
+    scc_oracle_racorscan: ""
+  when:
+    - scc_dbvendor is defined and scc_dbvendor == "Oracle"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    scc_dbdrivers: "mssql_FIXME.jar"
+    scc_mssqlglobal: "false"
+    scc_oracle_racorscan: ""
+  when:
+    - scc_dbvendor is defined and scc_dbvendor == "SQLServer"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "DB Vendor ................. {{ scc_dbvendor }}"
+      - "DB Host   ................. {{ scc_dbhost }}"
+      - "DB Port   ................. {{ scc_dbport }}"
+      - "DB Name   ................. {{ scc_dbname }}"
+      - "DB User   ................. {{ scc_dbuser }}"
+      - "DB Password ............... {{ scc_dbpassword }}"
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that:
+      - scc_dbvendor is defined and scc_dbvendor != ""
+      - scc_dbhost is defined and scc_dbhost != ""
+      - scc_dbport is defined and scc_dbport != ""
+      - scc_dbname is defined and scc_dbname != ""
+      - scc_dbuser is defined and scc_dbuser != ""
+      - scc_dbpassword is defined and scc_dbpassword != ""
+    fail_msg: "Database Properties are required"
+
+- name: "Generate secret {{ scc_db_secret }}"
+  no_log: false
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque
+      metadata:
+        name: "{{ scc_db_secret }}"
+        namespace: "{{ scc_namespace }}"
+      data:
+        DB_USER: "{{ scc_dbuser | b64encode }}"
+        DB_PASSWORD: "{{ scc_dbpassword | b64encode }}"
+  register: scc_db_secret_cout
