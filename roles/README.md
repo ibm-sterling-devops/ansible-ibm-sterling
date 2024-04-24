@@ -27,9 +27,13 @@
 | sb2bi_deploy_mq               | Complete       | Deploy IBM Message Queue Community Edition for Sterling B2B |
 | sb2bi_setup_db2               | Complete       | Setup database for IBM Sterling B2B |
 | sccm_deploy                   | Development    | Deploy IBM Sterling Control Center Monitor (SCCM) |
-| sccm_deploy_db2               | Development    | Deploy IBM DB2 database for SCCM|
-| sccm_deploy_mq                | Development    | Deploy IBM Message Queue Community Edition for SCCM |
-| sccm_setup_db2                | Development    | Setup database for IBM Sterling Control Center|
+| sccm_deploy_db2               | Complete       | Deploy IBM DB2 database for SCCM|
+| sccm_deploy_mq                | Complete       | Deploy IBM Message Queue Community Edition for SCCM |
+| sccm_setup_db2                | Complete       | Setup database for IBM SCCM|
+| sccd_deploy                   | Development    | Deploy IBM Sterling Control Center Director (SCCD) |
+| sccd_deploy_db2               | Complete       | Deploy IBM DB2 database for SCCD|
+| sccd_deploy_mq                | Complete       | Deploy IBM Message Queue Community Edition for SCCD |
+| sccd_setup_db2                | Complete       | Setup database for IBM SCCD|
 
 ## Tools 
 

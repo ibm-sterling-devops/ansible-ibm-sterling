@@ -1,0 +1,13 @@
+# Configure Db2 instance
+# -----------------------------------------------------------------------------------------------------------------
+sccd_instanceid: "{{ lookup('env', 'SCCD_INSTANCEID') }}"
+db2_namespace: "sterling-ccd-{{ sccd_instanceid }}-db2"
+
+db2_instance_name: "db2inst1"
+db2_user: "db2inst1"
+db2_dbname: "SCCD"
+db2_container: "mydb2"
+
+# Others
+# -----------------------------------------------------------------------------
+my_workdir: /tmp

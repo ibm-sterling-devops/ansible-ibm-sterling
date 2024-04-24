@@ -1,8 +1,8 @@
 galaxy_info:
   author: Enio Basso (@ebasso)
-  description: Modify IBM DB2 configuration for IBM Sterling Control Center Monitor
+  description: Modify IBM DB2 configuration for IBM Sterling Control Center Director
   company: IBM
-  role_name: sccm_setup_db2
+  role_name: sccd_setup_db2
   namespace: ibm_sterling_devops
 
   license: EPL-2.0

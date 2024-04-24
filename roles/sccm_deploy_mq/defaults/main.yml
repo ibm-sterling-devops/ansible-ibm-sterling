@@ -1,14 +1,11 @@
 ---
-# Configure Db2 instance
-# -----------------------------------------------------------------------------------------------------------------
 sccm_instanceid: "{{ lookup('env', 'SCCM_INSTANCEID') }}"
-db2_namespace: "sterling-ccm-{{ sccm_instanceid }}-db2"
-db2_password: "{{ lookup('env', 'DB2_PASSWORD') | default('passw0rd', true) }}"
-db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true)}}"
+mq_namespace: "sterling-ccm-{{ sccm_instanceid }}-mq"
+mq_name: "{{ lookup('env', 'MQ_NAME') | default('mq', true) }}"
 
-db2_instance_name: "db2inst1"
-db2_user: "db2inst1"
-db2_dbname: "SCCM"
+mq_version: "{{ lookup('env', 'MQ_VERSION') | default('9.2.5.0-r3', true) }}"
+mq_admin_password: "{{ lookup('env', 'MQ_ADMIN_PASSWORD') | default('passw0rd', true) }}"
+mq_app_password: "{{ lookup('env', 'MQ_APP_PASSWORD') | default('passw0rd', true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------
@@ -18,14 +15,13 @@ entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------
-db2_registry_secret: mydb2-ibm-registry-secret
-db2_service_account: mydb2-sa
-db2_secret: mydb2-secret
-db2_id: mydb2
-db2_svc_ci: "{{ db2_id }}-ci"
-db2_svc_lb: "{{ db2_id }}-lb"
+mq_registry_secret: mymq-ibm-registry-secret
+mq_service_account: mymq-sa
+mq_secret: mymq-secret
+mq_svc_data: "{{ mq_name }}-data"
+mq_svc_web: "{{ mq_name }}-web"
+mq_route_web: "{{ mq_name }}-web"
 
-db2_storage_size: "10Gi" # 40Gi
 
 storage_class_matrix:
   ibmcloud:

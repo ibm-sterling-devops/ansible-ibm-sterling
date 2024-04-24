@@ -1,0 +1,71 @@
+---
+- name: Create setupdb script in local /tmp
+  ansible.builtin.template:
+    src: setupdb.sh.j2
+    dest: "{{ my_workdir }}/setupdb.sh"
+    mode: "777"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: "Debug information - part 2"
+  ansible.builtin.debug:
+    msg:
+      - "Db2 namespace .......................... {{ db2_namespace }}"
+      - "Db2 instance name ...................... {{ db2_instance_name }}"
+      - "Db2 database name ...................... {{ db2_dbname }}"
+      - "Db2 Pod name ........................... {{ db2_pod_name }}"
+      - "Db2 Container name ..................... {{ db2_container }}"
+
+# definition: "{{ lookup('template', 'templates/setupdb.sh.j2') }}"
+- name: Copy the setupdb script into the mydb2-0 pod
+  kubernetes.core.k8s_cp:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    local_path: "{{ my_workdir }}/setupdb.sh"
+    remote_path: "/database/config/{{ db2_user }}/setupdb.sh"
+    no_preserve: true
+    state: to_pod
+  register: cout_k8s_cp
+  retries: 10
+  delay: 30 # seconds
+
+- name: "Copy the setupdb script failed"
+  ansible.builtin.fail:
+    msg:
+      - "Result (cout_k8s_cp) ........................ {{ cout_k8s_cp }} "
+  when: cout_k8s_cp.result.find('successfully copied') == -1
+
+- name: "Wait for setupdb.sh available"
+  ansible.builtin.pause:
+    minutes: 1
+
+- name: Run db2profile to set environmnet for DB2
+  kubernetes.core.k8s_exec:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    command: "su - {{ db2_user }} -c 'source /database/config/{{ db2_user }}/sqllib/db2profile && echo $PATH | tee setprofile.log' "
+  register: cout_setprofile
+
+# need to add db2profile to run db2 commands
+# oc exec -n {{ db2_namespace }} {{ db2_pod_name }} -- su -lc '/tmp/setupdb.sh | tee /tmp/setupdb.log' {{ db2_user }}
+- name: Run setupdb to prepare Db2 for use with IBM Sterling
+  kubernetes.core.k8s_exec:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    command: "su - {{ db2_user }} -c 'pwd && ./setupdb.sh | tee setupdb.log' "
+  register: cout_setupdb
+
+- name: "Database setup debug information"
+  ansible.builtin.debug:
+    msg:
+      - "Result (stdout) ........................ {{ cout_setupdb.stdout }}"
+      - "result (stderr) ........................ {{ cout_setupdb.stderr }}"
+
+- name: "Failed to execute the script"
+  ansible.builtin.fail:
+    msg: "Failed to execute the script setupdb.sh h on DB2 instance"
+  when:
+    - cout_setupdb.rc != 0

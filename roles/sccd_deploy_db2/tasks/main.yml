@@ -8,5 +8,5 @@
 - name: Define Storage for Data Persistence
   ansible.builtin.include_tasks: 03_define_storage.yml
 
-- name: Install DB2 for Sterling Control Center Monitor
+- name: Install DB2 for Sterling Control Center Director
   ansible.builtin.include_tasks: 04_install_db2.yml
