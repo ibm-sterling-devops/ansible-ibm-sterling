@@ -20,6 +20,7 @@ entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 # Others
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
+
 cd_nodename_lower: "{{ cd_nodename | lower }}"
 cd_registry_secret: mycd-ibm-registry-secret
 cd_secret: mycd-secret
@@ -79,18 +80,25 @@ storage_class_matrix:
   redhat:
     rwx: "ocs-storagecluster-cephfs"
     rwx_nogid: "ocs-storagecluster-cephfs"
-    rwo: " ocs-storagecluster-ceph-rbd"
+    rwo: "ocs-storagecluster-ceph-rbd"
     rom: ""
     rwop: ""
   aws:
     rwx: "efs"
     rwx_nogid: "efs"
-    rwo: " gp2"
+    rwo: "gp2"
     rom: ""
     rwop: ""
   azure:
     rwx: "azurefiles-premium"
     rwx_nogid: "azurefiles-premium"
-    rwo: " managed-premium"
+    rwo: "managed-premium"
     rom: ""
     rwop: ""
+  techzone:
+    rwx: "managed-nfs-storage"
+    rwx_nogid: "managed-nfs-storage"
+    rwo: "managed-nfs-storage"
+    rom: "managed-nfs-storage"
+    rwop: "managed-nfs-storage"
+  
