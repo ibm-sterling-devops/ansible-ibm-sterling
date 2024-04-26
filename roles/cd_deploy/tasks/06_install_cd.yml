@@ -2,8 +2,6 @@
 - name: Define C:D helm chart values
   ansible.builtin.set_fact:
     cd_other_values:
-      sum:
-        enabled: "{{ 'y' if (cd_helm.sumEnabled == 1) else 'n' }}"
       persistence:
         useDynamicProvisioning: "{{ 'true' if (cd_use_dynamic_provisioning) else 'false' }}"
 
@@ -61,4 +59,4 @@
       - "IBM Sterling Connect:Direct status .................. Ready!"
       - "Connect:Direct namespace ............................ {{ cd_namespace }}"
       - "Pod name ............................................ {{ cd_pod_name }}"
-      - "For username and password check secret .............. {{ cd_secret }}'"
+      - "For username and password check secret .............. {{ cd_deploy_secret }}'"

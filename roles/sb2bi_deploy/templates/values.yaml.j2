@@ -196,8 +196,8 @@ integrations:
     dataSetup:
       enabled: true
     image:
-      repository: "cp.icr.io/cp/ibm-itxa-runtime"
-      tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.image.tag | default('') }}"
+      repository: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.image.repository }}"
+      tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.image.tag }}"
       digest:
       pullPolicy: IfNotPresent
       pullSecret: "{{ si_registry_secret }}"
@@ -216,8 +216,8 @@ integrations:
     resourcesInit:
       enabled: true
       image:
-        repository: "cp.icr.io/cp/ibm-itxa-resources"
-        tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.tag | default('') }}"
+        repository: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.repository }}"
+        tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.tag }}"
         digest:
         pullPolicy: "IfNotPresent"
 {% endif %}
@@ -290,6 +290,7 @@ setupCfg:
   sapSncLibVersion:
   sapSncLibName:  
 
+  launchClaServer: false
 
 asi:
   replicaCount: 1
@@ -334,6 +335,12 @@ asi:
         port: 35007
         targetPort: rest-adapter
         nodePort: 30007
+        protocol: TCP
+      ops: 
+        name: ops
+        port: 35008
+        targetPort: ops
+        nodePort: 30008
         protocol: TCP
     extraPorts: []
       #-name: http-1
@@ -434,6 +441,9 @@ asi:
     #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
     #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
     #  command:
+    #  shareVolume: false
+    #  localMountPath: 
+    #  appMountPath:
 
   resources: 
     limits:
@@ -676,6 +686,9 @@ ac:
     #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
     #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
     #  command:
+    #  shareVolume: false
+    #  localMountPath: 
+    #  appMountPath:
 
   resources: 
     limits:
@@ -883,6 +896,9 @@ api:
     #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
     #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
     #  command:
+    #  shareVolume: false
+    #  localMountPath: 
+    #  appMountPath:
 
   resources: 
     limits:

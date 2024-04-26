@@ -40,7 +40,7 @@ my_workdir: /tmp
 si_namespace: "sterling-b2bi-{{ si_instanceid }}-app"
 si_db2_namespace: "sterling-b2bi-{{ si_instanceid }}-db2"
 si_mq_namespace: "sterling-b2bi-{{ si_instanceid }}-mq"
-si_version: "6.2.0.0"
+si_version: "6.2.0.1"
 si_registry_secret: si-ibm-registry
 si_system_passphrase_secret: si-system-passphrase-secret
 si_db_secret: si-db-secret
@@ -68,6 +68,39 @@ si_helm:
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.2.0.1:
+    helm_version: "3.0.1"
+    global:
+      image:
+        tag: "6.2.0.1"
+    resourcesInit:
+      image:
+        tag: "6.2.0.1"
+    dataSetup:
+      image:
+        tag: "6.2.0.1"
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:
+        image:
+          tag: "10.1.2.0.20231130"
+      itxaIntegration:
+        image:
+          repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
+          tag: "10.0.1.8-x86_64"
+        resourcesInit:
+          repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
+          tag: "10.0.1.8-x86_64"
+    test:
+      image:
+        tag: '1.1.65'
+    purge:
+      image:
+        tag: "6.2.0.1"
+    documentService:
+      image:
+        tag: 1.0.0.1
   6.2.0.0:
     helm_version: "3.0.0"
     global:
@@ -87,8 +120,10 @@ compatibility_matrix:
           tag: "10.1.1.1.20221116"
       itxaIntegration:
         image:
+          repository: "cp.icr.io/cp/ibm-itxa-runtime"
           tag: "10.0.1.8"
         resourcesInit:
+          repository: "cp.icr.io/cp/ibm-itxa-resources"
           tag: "10.0.1.8"
     test:
       image:
@@ -99,34 +134,6 @@ compatibility_matrix:
     documentService:
       image:
         tag: 1.0.0.0
-  6.1.2.5:
-    helm_version: "2.1.6"
-    global:
-      image:
-        tag: "6.1.2.5"
-    resourcesInit:
-      image:
-        tag: "6.1.2.5"
-    dataSetup:
-      image:
-        tag: "6.1.2.5"
-    integrations:
-      seasIntegration:
-        seasVersion: "1.0"
-      itxIntegration:
-        image:
-          tag: ""
-      itxaIntegration:
-        image:
-          tag: ""
-        resourcesInit:
-    test:
-      image:
-        tag: ""
-    purge:
-      enabled: true
-      image:
-        tag: "6.1.2.5"
 
 
 # Storage Class Matrix - definition by Cloud Provider

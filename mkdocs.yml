@@ -1,0 +1,30 @@
+# mkdocs serve
+
+site_name: IBM Sterling Devops Ansible
+site_url: https://ibm-sterling-devops.github.io/ansible-ibm-sterling
+
+repo_name: GitHub
+repo_url: https://github.com/ibm-sterling-devops/ansible-ibm-sterling
+edit_uri: blob/master/docs/
+
+nav:
+  - "Home": index.md
+#  - "Playbooks":
+#      - "Deploy Connect:Direct": playbooks/deploy_ocp_cd.md
+# - "Roles: OCP Mgmt":
+#     - "deploy_cd": roles/deploy_cd.md
+# - "Roles: Utilities":
+#     - "cloudbeaver": roles/cloudbeaver.md
+
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+  prev_next_buttons_location: none
+extra_css:
+  - extra.css
+markdown_extensions:
+  - toc:
+      permalink: 
+  - admonition

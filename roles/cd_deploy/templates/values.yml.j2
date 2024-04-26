@@ -11,11 +11,11 @@ replicaCount: 1
 image:
   repository: "{{ compatibility_matrix[cd_version].image_repository }}"
   tag: "{{ compatibility_matrix[cd_version].image_tag }}"
-  imageSecrets: "{{ cd_registry_secret }}"
+  imageSecrets: "{{ cd_deploy_registry_secret }}"
   digest:
-    enabled: {{ cd_other_values.digest.enabled | default('false') }}
-    value: "{{ compatibility_matrix[cd_version].images_digest_value }}"
-  pullPolicy: {{ cd_other_values.image.pullPolicy | default('IfNotPresent') }}
+    enabled: false
+    value: ""
+  pullPolicy: IfNotPresent
 
 nameOverride: ""
 
@@ -38,7 +38,7 @@ cdArgs:
   trustedAddr: []
 
 sum:
-  enabled: "{{ cd_other_values.sum.enabled }}"
+  enabled: "{{ 'y' if (cd_deploy_sum_enabled == 1) else 'n' }}"
 
 oum:
   enabled: "y"
@@ -92,8 +92,8 @@ networkPolicyEgress:
   to: []
 
 secret:
-  secretName: "{{ cd_secret }}"
-  certSecretName: "{{ cd_cert_secret }}"
+  secretName: "{{ cd_deploy_secret }}"
+  certSecretName: "{{ cd_deploy_cert_secret }}"
 
 serviceAccount:
 {% if cd_other_values.serviceAccount.name is defined and cd_other_values.serviceAccount.name != "" %}

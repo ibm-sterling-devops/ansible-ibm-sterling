@@ -51,9 +51,7 @@ MainPage [README.md](../README.md)
 
 ```
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
-
 export SI_INSTANCEID=dev01
-
 export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 
 oc login --token=sha256~KpQBSI.... --server=https://api.ocp-27000....:6443
