@@ -9,8 +9,9 @@ edit_uri: blob/master/docs/
 
 nav:
   - "Home": index.md
-#  - "Playbooks":
-#      - "Deploy Connect:Direct": playbooks/deploy_ocp_cd.md
+  - "Playbooks":
+      - "Deploy Connect:Direct": deploy_ocp_cd.md
+      - "Deploy Sterling B2Bi": deploy_ocp_sb2bi.md
 # - "Roles: OCP Mgmt":
 #     - "deploy_cd": roles/deploy_cd.md
 # - "Roles: Utilities":
