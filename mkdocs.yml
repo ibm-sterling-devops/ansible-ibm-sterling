@@ -12,8 +12,9 @@ nav:
   - "Playbooks":
       - "Deploy Connect:Direct": deploy_ocp_cd.md
       - "Deploy Sterling B2Bi": deploy_ocp_sb2bi.md
-# - "Roles: OCP Mgmt":
-#     - "deploy_cd": roles/deploy_cd.md
+  - "Roles:":
+      - "deploy_cd": roles/cd_deploy.md
+      - "deploy_cd": roles/sb2bi_deploy.md
 # - "Roles: Utilities":
 #     - "cloudbeaver": roles/cloudbeaver.md
 
