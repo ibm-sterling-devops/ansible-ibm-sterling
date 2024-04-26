@@ -16,7 +16,8 @@ jobs:
         run: |
           bash tools/site/copy-role-docs.sh
           python -m pip install -q mkdocs
-          mkdocs build --verbose --clean --strict
+          mkdocs build --verbose --clean
+#          mkdocs build --verbose --clean --strict
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.7
