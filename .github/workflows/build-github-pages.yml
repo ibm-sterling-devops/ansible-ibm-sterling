@@ -1,4 +1,4 @@
-name: Build Documentation
+name: build-github-pages
 on:
   push:
     branches:
