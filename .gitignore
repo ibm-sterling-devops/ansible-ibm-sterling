@@ -1,6 +1,7 @@
 *.DS_Store*
 .env
 .vscode
+result.txt
 
 environments/hosts.*
 playbooks/dev*
