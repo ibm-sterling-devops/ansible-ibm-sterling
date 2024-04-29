@@ -1,0 +1,28 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      # CONNECT:DIRECT
+      - lookup('env', 'SSP_INSTANCEID') != ""
+      # IBM
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+# Check for undefined properties that do not have a default
+# -----------------------------------------------------------------------------
+- name: "Fail if ssp_cm_namespace is not provided"
+  ansible.builtin.assert:
+    that: ssp_cm_namespace is defined and ssp_cm_namespace != ""
+    fail_msg: "ssp_cm_namespace property is required"
+
+- name: "Fail if entitled_registry_key is not provided"
+  ansible.builtin.assert:
+    that: entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "entitled_registry_key property is required"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "Kubernets Namespace ................. {{ ssp_cm_namespace }}"

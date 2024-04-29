@@ -30,6 +30,10 @@
 | scc_deploy_db2                | Development    | Deploy IBM DB2 database for SCCM or SCCD|
 | scc_deploy_mq                 | Development    | Deploy IBM Message Queue Community Edition for SCCM or SCCD|
 | scc_setup_db2                 | Development    | Setup database for IBM SCCM or SCCD|
+| seas_deploy                   | Complete       | Setup SEAS|
+| ssp_cm_deploy                 | Development    | Setup database for IBM Sterling Secure Proxy Configuration Manager|
+| ssp_deploy                    | Development    | Setup database for IBM Sterling Secure Proxy Engine|
+| ssp_ps_deploy                 | Development    | Setup database for IBM Sterling Secure Proxy Perimeter Server|
 
 ## Tools 
 
