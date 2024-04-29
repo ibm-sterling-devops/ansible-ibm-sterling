@@ -1,0 +1,160 @@
+license: true
+licenseType: "{{ seas_license_type }}"
+timezone: "UTC"
+
+image:
+  repository:  "{{ compatibility_matrix[seas_version].image_repository }}"
+  tag: "{{ compatibility_matrix[seas_version].image_tag }}"
+  imageSecrets: "{{ seas_registry_secret }}"
+  digest:
+    enabled: false
+    value: ""
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+arch: "amd64"
+
+seasArgs:
+  maxHeapSize: "1024m"
+
+storageSecurity:
+  fsGroup: 65534
+  supplementalGroups: [65534]
+  
+persistentVolume:
+  enabled: true
+  useDynamicProvisioning: {{ seas_other_values.persistence.useDynamicProvisioning }}
+  existingClaimName: ""
+  labelName: "app.kubernetes.io/name"
+  labelValue: "ibm-seas-pv"
+  storageClassName: "{{ storage_class_matrix[ seas_storage_class ].rwo }}"  
+  size:  {{ seas_other_values.pvClaim.size | default('100Mi') }}
+  accessMode: "ReadWriteOnce"
+
+service:
+  type: "LoadBalancer"
+  loadBalancerIP: "" 
+  externalIP: ""
+  annotations: {}
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: seas
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01
+
+  externalTrafficPolicy: ""
+  sessionAffinity: "ClientIP"
+  nonSecure:
+    servicePort: 61365
+    containerPort: 61365
+  secure:
+    servicePort: 61366
+    containerPort: 61366
+  jetty:
+    servicePort: 9080
+    containerPort: 9080
+
+secret:
+  secretName: "{{ seas_secret }}"
+
+serviceAccount:
+  create: true
+  name: "" 
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+    ephemeral-storage: "5Gi"
+  requests:
+    cpu: 1000m
+    memory: 1Gi
+    ephemeral-storage: "3Gi"
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+  #    nodeSelectorTerms:
+  #    - matchExpressions:
+  #      - key: kubernetes.io/e2e-az-name
+  #        operator: In
+  #        values:
+  #        - e2e-az1
+  #        - e2e-az2
+# The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+# architecture preference specified in 'arch'
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+livenessProbe:
+  initialDelaySeconds: 175
+  timeoutSeconds: 30
+  periodSeconds: 60
+  failureThreshold: 10
+
+readinessProbe:
+  initialDelaySeconds: 170
+  timeoutSeconds: 5
+  periodSeconds: 60
+  failureThreshold: 10
+
+route:
+  enabled: true
+
+dashboard:
+  enabled: false
+
+customProperties: []
+# below is the example: 
+#customProperties:
+#  - security_FIPS_MODE=false
+#  - log_audit.log.maxfilesize=10MB
+
+
+# Add/Update VM arguments in the list format
+# <Key as Java property name>=<value>
+vmArguments: []
+# below is the example:
+#vmArguments:
+#  - Djavax.net.debug=ssl,handshake,data,trustmanager
+#  - Xdump:java+heap:events=user
+
+# The custom directories/files can be mapped using the list format.
+# For mapping, We need to provide full path of the file or directory. 
+# First we need to create the directory with 'SEAS_RESOURCES' name if it is not available into PV. 
+# and keep the custom directories/files into created directory. 
+customFiles: []
+# In the below example we need to keep log4j2.xml, guilog4j2.xml and krb5.conf files inside 'SEAS_RESOURCES' directory.
+# so that the container will copy these files into conf directory.   
+# customFiles:
+#  - /conf/log4j2.xml	
+#  - /conf/guilog4j2.xml	
+#  - /conf/krb5.conf
+
+networkPolicy:
+  policyTypes:
+  - Ingress
+  - Egress
+
+  # apply ingress rule.
+  ingress:
+  - from:
+    ports:
+    - protocol: TCP
+      port: 61366
+    - protocol: TCP
+      port: 61365
+    - protocol: TCP
+      port: 9080
+
+  # apply egress rule. 
+  egress:
+  - to:
+    ports:
+    - protocol: TCP
+      port: 389

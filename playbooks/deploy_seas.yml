@@ -1,0 +1,8 @@
+---
+- name: Deploy IBM Sterling External Authentication Service (SEAS)
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - seas_deploy

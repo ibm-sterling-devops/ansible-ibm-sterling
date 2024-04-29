@@ -1,0 +1,4084 @@
+ansible-playbook [core 2.16.6]
+  config file = /Users/ebasso/GitHub/ibm-sterling-devops/ansible.cfg
+  configured module search path = ['/Users/ebasso/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /opt/homebrew/lib/python3.11/site-packages/ansible
+  ansible collection location = /Users/ebasso/.ansible/collections:/usr/share/ansible/collections
+  executable location = /opt/homebrew/bin/ansible-playbook
+  python version = 3.11.9 (main, Apr  2 2024, 08:25:04) [Clang 15.0.0 (clang-1500.3.9.4)] (/opt/homebrew/opt/python@3.11/bin/python3.11)
+  jinja version = 3.1.3
+  libyaml = True
+Using /Users/ebasso/GitHub/ibm-sterling-devops/ansible.cfg as config file
+host_list declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+Skipping due to inventory source not existing or not being readable by the current user
+script declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+auto declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+Skipping due to inventory source not existing or not being readable by the current user
+yaml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+Skipping due to inventory source not existing or not being readable by the current user
+ini declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+Skipping due to inventory source not existing or not being readable by the current user
+toml declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: dev_seas.yml *********************************************************
+1 plays in playbooks/dev_seas.yml
+
+PLAY [Deploy IBM Sterling Control Center Monitor on RedHat OpenShift] **********
+
+TASK [Get Cluster information] *************************************************
+task path: /Users/ebasso/GitHub/ibm-sterling-devops/ansible-ibm-sterling/playbooks/dev_seas.yml:9
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: ebasso
+<127.0.0.1> EXEC /bin/sh -c 'echo ~ebasso && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '( umask 77 && mkdir -p "` echo /Users/ebasso/.ansible/tmp `"&& mkdir "` echo /Users/ebasso/.ansible/tmp/ansible-tmp-1714404371.535321-32957-88591534440186 `" && echo ansible-tmp-1714404371.535321-32957-88591534440186="` echo /Users/ebasso/.ansible/tmp/ansible-tmp-1714404371.535321-32957-88591534440186 `" ) && sleep 0'
+Using module file /Users/ebasso/.ansible/collections/ansible_collections/kubernetes/core/plugins/modules/k8s_cluster_info.py
+<127.0.0.1> PUT /Users/ebasso/.ansible/tmp/ansible-local-32955er7_bz23/tmp0y22423e TO /Users/ebasso/.ansible/tmp/ansible-tmp-1714404371.535321-32957-88591534440186/AnsiballZ_k8s_cluster_info.py
+<127.0.0.1> EXEC /bin/sh -c 'chmod u+x /Users/ebasso/.ansible/tmp/ansible-tmp-1714404371.535321-32957-88591534440186/ /Users/ebasso/.ansible/tmp/ansible-tmp-1714404371.535321-32957-88591534440186/AnsiballZ_k8s_cluster_info.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c '/opt/homebrew/opt/python@3.11/bin/python3.11 /Users/ebasso/.ansible/tmp/ansible-tmp-1714404371.535321-32957-88591534440186/AnsiballZ_k8s_cluster_info.py && sleep 0'
+<127.0.0.1> EXEC /bin/sh -c 'rm -f -r /Users/ebasso/.ansible/tmp/ansible-tmp-1714404371.535321-32957-88591534440186/ > /dev/null 2>&1 && sleep 0'
+ok: [localhost] => {
+    "apis": {
+        "acme.cert-manager.io/v1": {
+            "Challenge": {
+                "categories": [
+                    "cert-manager",
+                    "cert-manager-acme"
+                ],
+                "name": "challenges",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "challenge"
+            },
+            "Order": {
+                "categories": [
+                    "cert-manager",
+                    "cert-manager-acme"
+                ],
+                "name": "orders",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "order"
+            }
+        },
+        "acme.cis.ibm.com/v1alpha1": {
+            "ChallengePayload": {
+                "categories": [],
+                "name": "cis",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ci"
+            }
+        },
+        "addons.mas.ibm.com/v1": {
+            "MVIEdge": {
+                "categories": [],
+                "name": "mviedges",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "mviedge"
+            },
+            "ReplicaDB": {
+                "categories": [],
+                "name": "replicadbs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "replicadb"
+            }
+        },
+        "admissionregistration.k8s.io/v1": {
+            "MutatingWebhookConfiguration": {
+                "categories": [
+                    "api-extensions"
+                ],
+                "name": "mutatingwebhookconfigurations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "mutatingwebhookconfiguration"
+            },
+            "ValidatingWebhookConfiguration": {
+                "categories": [
+                    "api-extensions"
+                ],
+                "name": "validatingwebhookconfigurations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "validatingwebhookconfiguration"
+            }
+        },
+        "apiextensions.k8s.io/v1": {
+            "CustomResourceDefinition": {
+                "categories": [
+                    "api-extensions"
+                ],
+                "name": "customresourcedefinitions",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "crd",
+                    "crds"
+                ],
+                "singular_name": "customresourcedefinition"
+            }
+        },
+        "apiregistration.k8s.io/v1": {
+            "APIService": {
+                "categories": [
+                    "api-extensions"
+                ],
+                "name": "apiservices",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "apiservice"
+            }
+        },
+        "apiserver.openshift.io/v1": {
+            "APIRequestCount": {
+                "categories": [],
+                "name": "apirequestcounts",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "apirequestcount"
+            }
+        },
+        "apps.mas.ibm.com/v1": {
+            "BuildDataInterpreter": {
+                "categories": [],
+                "name": "builddatainterpreters",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "bdi"
+                ],
+                "singular_name": "builddatainterpreter"
+            },
+            "HealthApp": {
+                "categories": [],
+                "name": "healthapps",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "healthapp"
+            },
+            "HealthWorkspace": {
+                "categories": [],
+                "name": "healthworkspaces",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "healthworkspace"
+            },
+            "HealthextWorkspace": {
+                "categories": [],
+                "name": "healthextworkspaces",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "healthextworkspace"
+            },
+            "Imagestitching": {
+                "categories": [],
+                "name": "imagestitchings",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "imagestitching"
+            },
+            "ManageApp": {
+                "categories": [],
+                "name": "manageapps",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "manageapp"
+            },
+            "ManageBuild": {
+                "categories": [],
+                "name": "managebuilds",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "managebuild"
+            },
+            "ManageDeployment": {
+                "categories": [],
+                "name": "managedeployments",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "managedeployment"
+            },
+            "ManageOfflineUpgradeRequest": {
+                "categories": [],
+                "name": "manageofflineupgraderequests",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "manageofflineupgraderequest"
+            },
+            "ManageServerBundle": {
+                "categories": [],
+                "name": "manageserverbundles",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "manageserverbundle"
+            },
+            "ManageStatusChecker": {
+                "categories": [],
+                "name": "managestatuscheckers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "managestatuschecker"
+            },
+            "ManageWorkspace": {
+                "categories": [],
+                "name": "manageworkspaces",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "manageworkspace"
+            },
+            "MonitorApp": {
+                "categories": [],
+                "name": "monitorapps",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "monitorapp"
+            },
+            "MonitorWorkspace": {
+                "categories": [],
+                "name": "monitorworkspaces",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "monitorworkspace"
+            },
+            "OpenTelemetryDeployment": {
+                "categories": [],
+                "name": "opentelemetrydeployments",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "opentelemetrydeployment"
+            }
+        },
+        "apps.openshift.io/v1": {
+            "DeploymentConfig": {
+                "categories": [
+                    "all"
+                ],
+                "name": "deploymentconfigs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "dc"
+                ],
+                "singular_name": "deploymentconfig"
+            }
+        },
+        "apps/v1": {
+            "ControllerRevision": {
+                "categories": [],
+                "name": "controllerrevisions",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "controllerrevision"
+            },
+            "DaemonSet": {
+                "categories": [
+                    "all"
+                ],
+                "name": "daemonsets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ds"
+                ],
+                "singular_name": "daemonset"
+            },
+            "Deployment": {
+                "categories": [
+                    "all"
+                ],
+                "name": "deployments",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "deploy"
+                ],
+                "singular_name": "deployment"
+            },
+            "ReplicaSet": {
+                "categories": [
+                    "all"
+                ],
+                "name": "replicasets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "rs"
+                ],
+                "singular_name": "replicaset"
+            },
+            "StatefulSet": {
+                "categories": [
+                    "all"
+                ],
+                "name": "statefulsets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "sts"
+                ],
+                "singular_name": "statefulset"
+            }
+        },
+        "asset-data-dictionary.ibm.com/v1": {
+            "AssetDataDictionary": {
+                "categories": [],
+                "name": "assetdatadictionaries",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "assetdatadictionary"
+            },
+            "DataDictionaryWorkspace": {
+                "categories": [],
+                "name": "datadictionaryworkspaces",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "datadictionaryworkspace"
+            }
+        },
+        "authentication.k8s.io/v1": {
+            "TokenReview": {
+                "categories": [],
+                "name": "tokenreviews",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tokenreview"
+            }
+        },
+        "authorization.k8s.io/v1": {
+            "LocalSubjectAccessReview": {
+                "categories": [],
+                "name": "localsubjectaccessreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "localsubjectaccessreview"
+            },
+            "SelfSubjectAccessReview": {
+                "categories": [],
+                "name": "selfsubjectaccessreviews",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "selfsubjectaccessreview"
+            },
+            "SelfSubjectRulesReview": {
+                "categories": [],
+                "name": "selfsubjectrulesreviews",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "selfsubjectrulesreview"
+            },
+            "SubjectAccessReview": {
+                "categories": [],
+                "name": "subjectaccessreviews",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "subjectaccessreview"
+            }
+        },
+        "authorization.openshift.io/v1": {
+            "ClusterRole": {
+                "categories": [],
+                "name": "clusterroles",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clusterrole"
+            },
+            "ClusterRoleBinding": {
+                "categories": [],
+                "name": "clusterrolebindings",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clusterrolebinding"
+            },
+            "LocalResourceAccessReview": {
+                "categories": [],
+                "name": "localresourceaccessreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "localresourceaccessreview"
+            },
+            "LocalSubjectAccessReview": {
+                "categories": [],
+                "name": "localsubjectaccessreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "localsubjectaccessreview"
+            },
+            "ResourceAccessReview": {
+                "categories": [],
+                "name": "resourceaccessreviews",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "resourceaccessreview"
+            },
+            "Role": {
+                "categories": [],
+                "name": "roles",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "role"
+            },
+            "RoleBinding": {
+                "categories": [],
+                "name": "rolebindings",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "rolebinding"
+            },
+            "RoleBindingRestriction": {
+                "categories": [],
+                "name": "rolebindingrestrictions",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "rolebindingrestriction"
+            },
+            "SelfSubjectRulesReview": {
+                "categories": [],
+                "name": "selfsubjectrulesreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "selfsubjectrulesreview"
+            },
+            "SubjectAccessReview": {
+                "categories": [],
+                "name": "subjectaccessreviews",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "subjectaccessreview"
+            },
+            "SubjectRulesReview": {
+                "categories": [],
+                "name": "subjectrulesreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "subjectrulesreview"
+            }
+        },
+        "autoscaling/v1": {
+            "HorizontalPodAutoscaler": {
+                "categories": [
+                    "all"
+                ],
+                "name": "horizontalpodautoscalers",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "hpa"
+                ],
+                "singular_name": "horizontalpodautoscaler"
+            }
+        },
+        "autoscaling/v2": {
+            "HorizontalPodAutoscaler": {
+                "categories": [
+                    "all"
+                ],
+                "name": "horizontalpodautoscalers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "hpa"
+                ],
+                "singular_name": "horizontalpodautoscaler"
+            }
+        },
+        "autoscaling/v2beta2": {
+            "HorizontalPodAutoscaler": {
+                "categories": [
+                    "all"
+                ],
+                "name": "horizontalpodautoscalers",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "hpa"
+                ],
+                "singular_name": "horizontalpodautoscaler"
+            }
+        },
+        "batch/v1": {
+            "CronJob": {
+                "categories": [
+                    "all"
+                ],
+                "name": "cronjobs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "cj"
+                ],
+                "singular_name": "cronjob"
+            },
+            "Job": {
+                "categories": [
+                    "all"
+                ],
+                "name": "jobs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "job"
+            }
+        },
+        "build.openshift.io/v1": {
+            "Build": {
+                "categories": [
+                    "all"
+                ],
+                "name": "builds",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "build"
+            },
+            "BuildConfig": {
+                "categories": [
+                    "all"
+                ],
+                "name": "buildconfigs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "bc"
+                ],
+                "singular_name": "buildconfig"
+            }
+        },
+        "cert-manager.io/v1": {
+            "Certificate": {
+                "categories": [
+                    "cert-manager"
+                ],
+                "name": "certificates",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "cert",
+                    "certs"
+                ],
+                "singular_name": "certificate"
+            },
+            "CertificateRequest": {
+                "categories": [
+                    "cert-manager"
+                ],
+                "name": "certificaterequests",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "cr",
+                    "crs"
+                ],
+                "singular_name": "certificaterequest"
+            },
+            "ClusterIssuer": {
+                "categories": [
+                    "cert-manager"
+                ],
+                "name": "clusterissuers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clusterissuer"
+            },
+            "Issuer": {
+                "categories": [
+                    "cert-manager"
+                ],
+                "name": "issuers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "issuer"
+            }
+        },
+        "certificates.k8s.io/v1": {
+            "CertificateSigningRequest": {
+                "categories": [],
+                "name": "certificatesigningrequests",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "csr"
+                ],
+                "singular_name": "certificatesigningrequest"
+            }
+        },
+        "cloudcredential.openshift.io/v1": {
+            "CredentialsRequest": {
+                "categories": [],
+                "name": "credentialsrequests",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "credentialsrequest"
+            }
+        },
+        "components.iot.ibm.com/v1": {
+            "Actions": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "actions",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "actions"
+            },
+            "Auth": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "auths",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "auth"
+            },
+            "DataPower": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "datapowers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "datapower"
+            },
+            "Devops": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "devops",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "devops"
+            },
+            "Dm": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "dms",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "dm"
+            },
+            "Dsc": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "dscs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "dsc"
+            },
+            "Edgeconfig": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "edgeconfigs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "edgeconfig"
+            },
+            "Fpl": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "fpls",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "fpl"
+            },
+            "Guardian": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "guardians",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "guardian"
+            },
+            "Mbgx": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "mbgxes",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "mbgx"
+            },
+            "Mfgx": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "mfgxes",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "mfgx"
+            },
+            "Monitor": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "monitors",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "monitor"
+            },
+            "Orgmgmt": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "orgmgmts",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "orgmgmt"
+            },
+            "Provision": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "provisions",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "provision"
+            },
+            "Registry": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "registries",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "registry"
+            },
+            "State": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "states",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "state"
+            },
+            "WebUI": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "webuis",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "webui"
+            }
+        },
+        "config.mas.ibm.com/v1": {
+            "BasCfg": {
+                "categories": [],
+                "name": "bascfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "bascfg"
+            },
+            "IDPCfg": {
+                "categories": [],
+                "name": "idpcfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "idpcfg"
+            },
+            "JdbcCfg": {
+                "categories": [],
+                "name": "jdbccfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "jdbccfg"
+            },
+            "KafkaCfg": {
+                "categories": [],
+                "name": "kafkacfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "kafkacfg"
+            },
+            "MongoCfg": {
+                "categories": [],
+                "name": "mongocfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "mongocfg"
+            },
+            "ObjectStorageCfg": {
+                "categories": [],
+                "name": "objectstoragecfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "objectstoragecfg"
+            },
+            "PushNotificationCfg": {
+                "categories": [],
+                "name": "pushnotificationcfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "pushnotificationcfg"
+            },
+            "ScimCfg": {
+                "categories": [],
+                "name": "scimcfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "scimcfg"
+            },
+            "SlsCfg": {
+                "categories": [],
+                "name": "slscfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "slscfg"
+            },
+            "SmtpCfg": {
+                "categories": [],
+                "name": "smtpcfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "smtpcfg"
+            },
+            "WatsonStudioCfg": {
+                "categories": [],
+                "name": "watsonstudiocfgs",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "watsonstudiocfg"
+            }
+        },
+        "config.openshift.io/v1": {
+            "APIServer": {
+                "categories": [],
+                "name": "apiservers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "apiserver"
+            },
+            "Authentication": {
+                "categories": [],
+                "name": "authentications",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "authentication"
+            },
+            "Build": {
+                "categories": [],
+                "name": "builds",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "build"
+            },
+            "ClusterOperator": {
+                "categories": [],
+                "name": "clusteroperators",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "co"
+                ],
+                "singular_name": "clusteroperator"
+            },
+            "ClusterVersion": {
+                "categories": [],
+                "name": "clusterversions",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clusterversion"
+            },
+            "Console": {
+                "categories": [],
+                "name": "consoles",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "console"
+            },
+            "DNS": {
+                "categories": [],
+                "name": "dnses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "dns"
+            },
+            "FeatureGate": {
+                "categories": [],
+                "name": "featuregates",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "featuregate"
+            },
+            "Image": {
+                "categories": [],
+                "name": "images",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "image"
+            },
+            "ImageContentPolicy": {
+                "categories": [],
+                "name": "imagecontentpolicies",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "imagecontentpolicy"
+            },
+            "Infrastructure": {
+                "categories": [],
+                "name": "infrastructures",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "infrastructure"
+            },
+            "Ingress": {
+                "categories": [],
+                "name": "ingresses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ingress"
+            },
+            "Network": {
+                "categories": [],
+                "name": "networks",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "network"
+            },
+            "Node": {
+                "categories": [],
+                "name": "nodes",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "node"
+            },
+            "OAuth": {
+                "categories": [],
+                "name": "oauths",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "oauth"
+            },
+            "OperatorHub": {
+                "categories": [],
+                "name": "operatorhubs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "operatorhub"
+            },
+            "Project": {
+                "categories": [],
+                "name": "projects",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "project"
+            },
+            "Proxy": {
+                "categories": [],
+                "name": "proxies",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "proxy"
+            },
+            "Scheduler": {
+                "categories": [],
+                "name": "schedulers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "scheduler"
+            }
+        },
+        "console.openshift.io/v1": {
+            "ConsoleCLIDownload": {
+                "categories": [],
+                "name": "consoleclidownloads",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "consoleclidownload"
+            },
+            "ConsoleExternalLogLink": {
+                "categories": [],
+                "name": "consoleexternalloglinks",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "consoleexternalloglink"
+            },
+            "ConsoleLink": {
+                "categories": [],
+                "name": "consolelinks",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "consolelink"
+            },
+            "ConsoleNotification": {
+                "categories": [],
+                "name": "consolenotifications",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "consolenotification"
+            },
+            "ConsolePlugin": {
+                "categories": [],
+                "name": "consoleplugins",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "consoleplugin"
+            },
+            "ConsoleQuickStart": {
+                "categories": [],
+                "name": "consolequickstarts",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "consolequickstart"
+            },
+            "ConsoleYAMLSample": {
+                "categories": [],
+                "name": "consoleyamlsamples",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "consoleyamlsample"
+            }
+        },
+        "console.openshift.io/v1alpha1": {
+            "ConsolePlugin": {
+                "categories": [],
+                "name": "consoleplugins",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "consoleplugin"
+            }
+        },
+        "controlplane.operator.openshift.io/v1alpha1": {
+            "PodNetworkConnectivityCheck": {
+                "categories": [],
+                "name": "podnetworkconnectivitychecks",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "podnetworkconnectivitycheck"
+            }
+        },
+        "coordination.k8s.io/v1": {
+            "Lease": {
+                "categories": [],
+                "name": "leases",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "lease"
+            }
+        },
+        "core.ibmevents.ibm.com/v1beta2": {
+            "StrimziPodSet": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "strimzipodsets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "sps"
+                ],
+                "singular_name": "strimzipodset"
+            }
+        },
+        "core.mas.ibm.com/v1": {
+            "Suite": {
+                "categories": [],
+                "name": "suites",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "suite"
+            },
+            "Workspace": {
+                "categories": [],
+                "name": "workspaces",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "workspace"
+            }
+        },
+        "core.strimzi.io/v1beta2": {
+            "StrimziPodSet": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "strimzipodsets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "sps"
+                ],
+                "singular_name": "strimzipodset"
+            }
+        },
+        "crd.projectcalico.org/v1": {
+            "BGPConfiguration": {
+                "categories": [],
+                "name": "bgpconfigurations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "bgpconfiguration"
+            },
+            "BGPFilter": {
+                "categories": [],
+                "name": "bgpfilters",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "bgpfilter"
+            },
+            "BGPPeer": {
+                "categories": [],
+                "name": "bgppeers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "bgppeer"
+            },
+            "BlockAffinity": {
+                "categories": [],
+                "name": "blockaffinities",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "blockaffinity"
+            },
+            "CalicoNodeStatus": {
+                "categories": [],
+                "name": "caliconodestatuses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "caliconodestatus"
+            },
+            "ClusterInformation": {
+                "categories": [],
+                "name": "clusterinformations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clusterinformation"
+            },
+            "FelixConfiguration": {
+                "categories": [],
+                "name": "felixconfigurations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "felixconfiguration"
+            },
+            "GlobalNetworkPolicy": {
+                "categories": [],
+                "name": "globalnetworkpolicies",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "globalnetworkpolicy"
+            },
+            "GlobalNetworkSet": {
+                "categories": [],
+                "name": "globalnetworksets",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "globalnetworkset"
+            },
+            "HostEndpoint": {
+                "categories": [],
+                "name": "hostendpoints",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "hostendpoint"
+            },
+            "IPAMBlock": {
+                "categories": [],
+                "name": "ipamblocks",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ipamblock"
+            },
+            "IPAMConfig": {
+                "categories": [],
+                "name": "ipamconfigs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ipamconfig"
+            },
+            "IPAMHandle": {
+                "categories": [],
+                "name": "ipamhandles",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ipamhandle"
+            },
+            "IPPool": {
+                "categories": [],
+                "name": "ippools",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ippool"
+            },
+            "IPReservation": {
+                "categories": [],
+                "name": "ipreservations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ipreservation"
+            },
+            "KubeControllersConfiguration": {
+                "categories": [],
+                "name": "kubecontrollersconfigurations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "kubecontrollersconfiguration"
+            },
+            "NetworkPolicy": {
+                "categories": [],
+                "name": "networkpolicies",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "networkpolicy"
+            },
+            "NetworkSet": {
+                "categories": [],
+                "name": "networksets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "networkset"
+            }
+        },
+        "db2u.databases.ibm.com/v1": {
+            "Db2uCluster": {
+                "categories": [],
+                "name": "db2uclusters",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "db2u"
+                ],
+                "singular_name": "db2ucluster"
+            },
+            "Db2uInstance": {
+                "categories": [],
+                "name": "db2uinstances",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "db2"
+                ],
+                "singular_name": "db2uinstance"
+            },
+            "Formation": {
+                "categories": [],
+                "name": "formations",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "formation"
+            },
+            "FormationLock": {
+                "categories": [],
+                "name": "formationlocks",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "formationlock"
+            }
+        },
+        "db2u.databases.ibm.com/v1alpha1": {
+            "BigSQL": {
+                "categories": [],
+                "name": "bigsqls",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "bigsql"
+            },
+            "Db2uEngine": {
+                "categories": [],
+                "name": "db2uengines",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "db2uengine"
+            },
+            "Db2uHadr": {
+                "categories": [],
+                "name": "db2uhadrs",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "db2uhadr"
+            },
+            "Db2uHelmMigration": {
+                "categories": [],
+                "name": "db2uhelmmigrations",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "db2uhelmmigration"
+            }
+        },
+        "db2ubnr.databases.ibm.com/v1alpha1": {
+            "Db2uBackup": {
+                "categories": [],
+                "name": "db2ubackups",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "db2ubackup"
+            },
+            "Db2uRestore": {
+                "categories": [],
+                "name": "db2urestores",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "db2urestore"
+            }
+        },
+        "db2ulog.databases.ibm.com/v1alpha1": {
+            "Db2uLogStream": {
+                "categories": [],
+                "name": "db2ulogstreams",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "db2ulogstream"
+            }
+        },
+        "discovery.k8s.io/v1": {
+            "EndpointSlice": {
+                "categories": [],
+                "name": "endpointslices",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "endpointslice"
+            }
+        },
+        "eclipse.org/v1": {
+            "Amlen": {
+                "categories": [],
+                "name": "amlens",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "amlen"
+            }
+        },
+        "events.k8s.io/v1": {
+            "Event": {
+                "categories": [],
+                "name": "events",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ev"
+                ],
+                "singular_name": "event"
+            }
+        },
+        "flowcontrol.apiserver.k8s.io/v1beta1": {
+            "FlowSchema": {
+                "categories": [],
+                "name": "flowschemas",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "flowschema"
+            },
+            "PriorityLevelConfiguration": {
+                "categories": [],
+                "name": "prioritylevelconfigurations",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "prioritylevelconfiguration"
+            }
+        },
+        "flowcontrol.apiserver.k8s.io/v1beta2": {
+            "FlowSchema": {
+                "categories": [],
+                "name": "flowschemas",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "flowschema"
+            },
+            "PriorityLevelConfiguration": {
+                "categories": [],
+                "name": "prioritylevelconfigurations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "prioritylevelconfiguration"
+            }
+        },
+        "grafana.integreatly.org/v1beta1": {
+            "Grafana": {
+                "categories": [],
+                "name": "grafanas",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "grafana"
+            },
+            "GrafanaAlertRuleGroup": {
+                "categories": [],
+                "name": "grafanaalertrulegroups",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "grafanaalertrulegroup"
+            },
+            "GrafanaDashboard": {
+                "categories": [],
+                "name": "grafanadashboards",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "grafanadashboard"
+            },
+            "GrafanaDatasource": {
+                "categories": [],
+                "name": "grafanadatasources",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "grafanadatasource"
+            },
+            "GrafanaFolder": {
+                "categories": [],
+                "name": "grafanafolders",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "grafanafolder"
+            }
+        },
+        "helm.openshift.io/v1beta1": {
+            "HelmChartRepository": {
+                "categories": [],
+                "name": "helmchartrepositories",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "helmchartrepository"
+            },
+            "ProjectHelmChartRepository": {
+                "categories": [],
+                "name": "projecthelmchartrepositories",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "projecthelmchartrepository"
+            }
+        },
+        "ibm.com/v1alpha1": {
+            "RBACSync": {
+                "categories": [],
+                "name": "rbacsyncs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "rbacsync"
+            }
+        },
+        "ibmcpcs.ibm.com/v1": {
+            "SecretShare": {
+                "categories": [],
+                "name": "secretshares",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "secretshare"
+            }
+        },
+        "ibmevents.ibm.com/v1alpha1": {
+            "KafkaBridge": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkabridges",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kb"
+                ],
+                "singular_name": "kafkabridge"
+            },
+            "KafkaConnector": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkaconnectors",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kctr"
+                ],
+                "singular_name": "kafkaconnector"
+            },
+            "KafkaMirrorMaker2": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkamirrormaker2s",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kmm2"
+                ],
+                "singular_name": "kafkamirrormaker2"
+            },
+            "KafkaRebalance": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkarebalances",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kr"
+                ],
+                "singular_name": "kafkarebalance"
+            }
+        },
+        "ibmevents.ibm.com/v1beta1": {
+            "Kafka": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkas",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "k"
+                ],
+                "singular_name": "kafka"
+            },
+            "KafkaConnect": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkaconnects",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kc"
+                ],
+                "singular_name": "kafkaconnect"
+            },
+            "KafkaMirrorMaker": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkamirrormakers",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kmm"
+                ],
+                "singular_name": "kafkamirrormaker"
+            },
+            "KafkaTopic": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkatopics",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kt"
+                ],
+                "singular_name": "kafkatopic"
+            },
+            "KafkaUser": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkausers",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "ku"
+                ],
+                "singular_name": "kafkauser"
+            }
+        },
+        "ibmevents.ibm.com/v1beta2": {
+            "Kafka": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkas",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "k"
+                ],
+                "singular_name": "kafka"
+            },
+            "KafkaBridge": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkabridges",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kb"
+                ],
+                "singular_name": "kafkabridge"
+            },
+            "KafkaConnect": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkaconnects",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kc"
+                ],
+                "singular_name": "kafkaconnect"
+            },
+            "KafkaConnector": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkaconnectors",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kctr"
+                ],
+                "singular_name": "kafkaconnector"
+            },
+            "KafkaMirrorMaker": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkamirrormakers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kmm"
+                ],
+                "singular_name": "kafkamirrormaker"
+            },
+            "KafkaMirrorMaker2": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkamirrormaker2s",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kmm2"
+                ],
+                "singular_name": "kafkamirrormaker2"
+            },
+            "KafkaNodePool": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkanodepools",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "knp"
+                ],
+                "singular_name": "kafkanodepool"
+            },
+            "KafkaRebalance": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkarebalances",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kr"
+                ],
+                "singular_name": "kafkarebalance"
+            },
+            "KafkaTopic": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkatopics",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kt"
+                ],
+                "singular_name": "kafkatopic"
+            },
+            "KafkaUser": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkausers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ku"
+                ],
+                "singular_name": "kafkauser"
+            }
+        },
+        "image.openshift.io/v1": {
+            "Image": {
+                "categories": [],
+                "name": "images",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "image"
+            },
+            "ImageSignature": {
+                "categories": [],
+                "name": "imagesignatures",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "imagesignature"
+            },
+            "ImageStream": {
+                "categories": [
+                    "all"
+                ],
+                "name": "imagestreams",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "is"
+                ],
+                "singular_name": "imagestream"
+            },
+            "ImageStreamImage": {
+                "categories": [],
+                "name": "imagestreamimages",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "isimage"
+                ],
+                "singular_name": "imagestreamimage"
+            },
+            "ImageStreamImport": {
+                "categories": [],
+                "name": "imagestreamimports",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "imagestreamimport"
+            },
+            "ImageStreamMapping": {
+                "categories": [],
+                "name": "imagestreammappings",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "imagestreammapping"
+            },
+            "ImageStreamTag": {
+                "categories": [],
+                "name": "imagestreamtags",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "istag"
+                ],
+                "singular_name": "imagestreamtag"
+            },
+            "ImageTag": {
+                "categories": [],
+                "name": "imagetags",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "itag"
+                ],
+                "singular_name": "imagetag"
+            }
+        },
+        "imageregistry.operator.openshift.io/v1": {
+            "Config": {
+                "categories": [],
+                "name": "configs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "config"
+            },
+            "ImagePruner": {
+                "categories": [],
+                "name": "imagepruners",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "imagepruner"
+            }
+        },
+        "ingress.operator.openshift.io/v1": {
+            "DNSRecord": {
+                "categories": [],
+                "name": "dnsrecords",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "dnsrecord"
+            }
+        },
+        "internal.mas.ibm.com/v1": {
+            "CoreIDP": {
+                "categories": [],
+                "name": "coreidps",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "coreidp"
+            }
+        },
+        "iot.ibm.com/v1": {
+            "IoT": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "iots",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "iot"
+            },
+            "IoTWorkspace": {
+                "categories": [
+                    "all",
+                    "allmas",
+                    "alliot"
+                ],
+                "name": "iotworkspaces",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "iotworkspace"
+            }
+        },
+        "k8s.cni.cncf.io/v1": {
+            "NetworkAttachmentDefinition": {
+                "categories": [],
+                "name": "network-attachment-definitions",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "net-attach-def"
+                ],
+                "singular_name": "network-attachment-definition"
+            }
+        },
+        "kafka.strimzi.io/v1alpha1": {
+            "KafkaTopic": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkatopics",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kt"
+                ],
+                "singular_name": "kafkatopic"
+            },
+            "KafkaUser": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkausers",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "ku"
+                ],
+                "singular_name": "kafkauser"
+            }
+        },
+        "kafka.strimzi.io/v1beta1": {
+            "KafkaTopic": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkatopics",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "kt"
+                ],
+                "singular_name": "kafkatopic"
+            },
+            "KafkaUser": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkausers",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "ku"
+                ],
+                "singular_name": "kafkauser"
+            }
+        },
+        "kafka.strimzi.io/v1beta2": {
+            "Kafka": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkas",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "k"
+                ],
+                "singular_name": "kafka"
+            },
+            "KafkaBridge": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkabridges",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kb"
+                ],
+                "singular_name": "kafkabridge"
+            },
+            "KafkaConnect": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkaconnects",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kc"
+                ],
+                "singular_name": "kafkaconnect"
+            },
+            "KafkaConnector": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkaconnectors",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kctr"
+                ],
+                "singular_name": "kafkaconnector"
+            },
+            "KafkaMirrorMaker": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkamirrormakers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kmm"
+                ],
+                "singular_name": "kafkamirrormaker"
+            },
+            "KafkaMirrorMaker2": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkamirrormaker2s",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kmm2"
+                ],
+                "singular_name": "kafkamirrormaker2"
+            },
+            "KafkaNodePool": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkanodepools",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "knp"
+                ],
+                "singular_name": "kafkanodepool"
+            },
+            "KafkaRebalance": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkarebalances",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kr"
+                ],
+                "singular_name": "kafkarebalance"
+            },
+            "KafkaTopic": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkatopics",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "kt"
+                ],
+                "singular_name": "kafkatopic"
+            },
+            "KafkaUser": {
+                "categories": [
+                    "strimzi"
+                ],
+                "name": "kafkausers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ku"
+                ],
+                "singular_name": "kafkauser"
+            }
+        },
+        "machineconfiguration.openshift.io/v1": {
+            "ContainerRuntimeConfig": {
+                "categories": [],
+                "name": "containerruntimeconfigs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "ctrcfg"
+                ],
+                "singular_name": "containerruntimeconfig"
+            },
+            "KubeletConfig": {
+                "categories": [],
+                "name": "kubeletconfigs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "kubeletconfig"
+            },
+            "MachineConfig": {
+                "categories": [],
+                "name": "machineconfigs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "mc"
+                ],
+                "singular_name": "machineconfig"
+            },
+            "MachineConfigPool": {
+                "categories": [],
+                "name": "machineconfigpools",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "mcp"
+                ],
+                "singular_name": "machineconfigpool"
+            }
+        },
+        "metrics.k8s.io/v1beta1": {
+            "NodeMetrics": {
+                "categories": [],
+                "name": "nodes",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "node"
+            },
+            "PodMetrics": {
+                "categories": [],
+                "name": "pods",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "pod"
+            }
+        },
+        "migration.k8s.io/v1alpha1": {
+            "StorageState": {
+                "categories": [],
+                "name": "storagestates",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "storagestate"
+            },
+            "StorageVersionMigration": {
+                "categories": [],
+                "name": "storageversionmigrations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "storageversionmigration"
+            }
+        },
+        "mongodbcommunity.mongodb.com/v1": {
+            "MongoDBCommunity": {
+                "categories": [],
+                "name": "mongodbcommunity",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "mdbc"
+                ],
+                "singular_name": "mongodbcommunity"
+            }
+        },
+        "monitoring.coreos.com/v1": {
+            "Alertmanager": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "alertmanagers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "am"
+                ],
+                "singular_name": "alertmanager"
+            },
+            "PodMonitor": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "podmonitors",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "pmon"
+                ],
+                "singular_name": "podmonitor"
+            },
+            "Probe": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "probes",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "prb"
+                ],
+                "singular_name": "probe"
+            },
+            "Prometheus": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "prometheuses",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "prom"
+                ],
+                "singular_name": "prometheus"
+            },
+            "PrometheusRule": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "prometheusrules",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "promrule"
+                ],
+                "singular_name": "prometheusrule"
+            },
+            "ServiceMonitor": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "servicemonitors",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "smon"
+                ],
+                "singular_name": "servicemonitor"
+            },
+            "ThanosRuler": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "thanosrulers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ruler"
+                ],
+                "singular_name": "thanosruler"
+            }
+        },
+        "monitoring.coreos.com/v1alpha1": {
+            "AlertmanagerConfig": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "alertmanagerconfigs",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "amcfg"
+                ],
+                "singular_name": "alertmanagerconfig"
+            }
+        },
+        "monitoring.coreos.com/v1beta1": {
+            "AlertmanagerConfig": {
+                "categories": [
+                    "prometheus-operator"
+                ],
+                "name": "alertmanagerconfigs",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "amcfg"
+                ],
+                "singular_name": "alertmanagerconfig"
+            }
+        },
+        "network.operator.openshift.io/v1": {
+            "EgressRouter": {
+                "categories": [],
+                "name": "egressrouters",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "egressrouter"
+            },
+            "OperatorPKI": {
+                "categories": [],
+                "name": "operatorpkis",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "operatorpki"
+            }
+        },
+        "networking.k8s.io/v1": {
+            "Ingress": {
+                "categories": [],
+                "name": "ingresses",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ing"
+                ],
+                "singular_name": "ingresse"
+            },
+            "IngressClass": {
+                "categories": [],
+                "name": "ingressclasses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ingressclasse"
+            },
+            "NetworkPolicy": {
+                "categories": [],
+                "name": "networkpolicies",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "netpol"
+                ],
+                "singular_name": "networkpolicie"
+            }
+        },
+        "node.k8s.io/v1": {
+            "RuntimeClass": {
+                "categories": [],
+                "name": "runtimeclasses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "runtimeclasse"
+            }
+        },
+        "oauth.openshift.io/v1": {
+            "OAuthAccessToken": {
+                "categories": [],
+                "name": "oauthaccesstokens",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "oauthaccesstoken"
+            },
+            "OAuthAuthorizeToken": {
+                "categories": [],
+                "name": "oauthauthorizetokens",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "oauthauthorizetoken"
+            },
+            "OAuthClient": {
+                "categories": [],
+                "name": "oauthclients",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "oauthclient"
+            },
+            "OAuthClientAuthorization": {
+                "categories": [],
+                "name": "oauthclientauthorizations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "oauthclientauthorization"
+            },
+            "TokenReview": {
+                "categories": [],
+                "name": "tokenreviews",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tokenreview"
+            },
+            "UserOAuthAccessToken": {
+                "categories": [],
+                "name": "useroauthaccesstokens",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "useroauthaccesstoken"
+            }
+        },
+        "operator.ibm.com/v1": {
+            "NamespaceScope": {
+                "categories": [],
+                "name": "namespacescopes",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "nss"
+                ],
+                "singular_name": "namespacescope"
+            }
+        },
+        "operator.ibm.com/v1alpha1": {
+            "OperandBindInfo": {
+                "categories": [],
+                "name": "operandbindinfos",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "opbi"
+                ],
+                "singular_name": "operandbindinfo"
+            },
+            "OperandConfig": {
+                "categories": [],
+                "name": "operandconfigs",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "opcon"
+                ],
+                "singular_name": "operandconfig"
+            },
+            "OperandRegistry": {
+                "categories": [],
+                "name": "operandregistries",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "opreg"
+                ],
+                "singular_name": "operandregistry"
+            },
+            "OperandRequest": {
+                "categories": [],
+                "name": "operandrequests",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "opreq"
+                ],
+                "singular_name": "operandrequest"
+            },
+            "PodPreset": {
+                "categories": [],
+                "name": "podpresets",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "podpreset"
+            }
+        },
+        "operator.ibm.com/v3": {
+            "CommonService": {
+                "categories": [],
+                "name": "commonservices",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "commonservice"
+            }
+        },
+        "operator.openshift.io/v1": {
+            "CSISnapshotController": {
+                "categories": [],
+                "name": "csisnapshotcontrollers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "csisnapshotcontroller"
+            },
+            "ClusterCSIDriver": {
+                "categories": [],
+                "name": "clustercsidrivers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clustercsidriver"
+            },
+            "Config": {
+                "categories": [
+                    "coreoperators"
+                ],
+                "name": "configs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "config"
+            },
+            "Console": {
+                "categories": [],
+                "name": "consoles",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "console"
+            },
+            "DNS": {
+                "categories": [],
+                "name": "dnses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "dns"
+            },
+            "Etcd": {
+                "categories": [
+                    "coreoperators"
+                ],
+                "name": "etcds",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "etcd"
+            },
+            "IngressController": {
+                "categories": [],
+                "name": "ingresscontrollers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ingresscontroller"
+            },
+            "InsightsOperator": {
+                "categories": [],
+                "name": "insightsoperators",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "insightsoperator"
+            },
+            "KubeAPIServer": {
+                "categories": [],
+                "name": "kubeapiservers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "kubeapiserver"
+            },
+            "KubeControllerManager": {
+                "categories": [
+                    "coreoperators"
+                ],
+                "name": "kubecontrollermanagers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "kubecontrollermanager"
+            },
+            "KubeScheduler": {
+                "categories": [
+                    "coreoperators"
+                ],
+                "name": "kubeschedulers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "kubescheduler"
+            },
+            "KubeStorageVersionMigrator": {
+                "categories": [],
+                "name": "kubestorageversionmigrators",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "kubestorageversionmigrator"
+            },
+            "Network": {
+                "categories": [],
+                "name": "networks",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "network"
+            },
+            "OpenShiftAPIServer": {
+                "categories": [
+                    "coreoperators"
+                ],
+                "name": "openshiftapiservers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "openshiftapiserver"
+            },
+            "OpenShiftControllerManager": {
+                "categories": [
+                    "coreoperators"
+                ],
+                "name": "openshiftcontrollermanagers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "openshiftcontrollermanager"
+            },
+            "ServiceCA": {
+                "categories": [],
+                "name": "servicecas",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "serviceca"
+            },
+            "Storage": {
+                "categories": [],
+                "name": "storages",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "storage"
+            }
+        },
+        "operator.openshift.io/v1alpha1": {
+            "CertManager": {
+                "categories": [],
+                "name": "certmanagers",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "certmanager"
+            },
+            "ImageContentSourcePolicy": {
+                "categories": [],
+                "name": "imagecontentsourcepolicies",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "imagecontentsourcepolicy"
+            }
+        },
+        "operator.tekton.dev/v1alpha1": {
+            "OpenShiftPipelinesAsCode": {
+                "categories": [],
+                "name": "openshiftpipelinesascodes",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "opac",
+                    "pac"
+                ],
+                "singular_name": "openshiftpipelinesascode"
+            },
+            "TektonAddon": {
+                "categories": [],
+                "name": "tektonaddons",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektonaddon"
+            },
+            "TektonChain": {
+                "categories": [],
+                "name": "tektonchains",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektonchain"
+            },
+            "TektonConfig": {
+                "categories": [],
+                "name": "tektonconfigs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektonconfig"
+            },
+            "TektonHub": {
+                "categories": [],
+                "name": "tektonhubs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektonhub"
+            },
+            "TektonInstallerSet": {
+                "categories": [],
+                "name": "tektoninstallersets",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektoninstallerset"
+            },
+            "TektonPipeline": {
+                "categories": [],
+                "name": "tektonpipelines",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektonpipeline"
+            },
+            "TektonResult": {
+                "categories": [],
+                "name": "tektonresults",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektonresult"
+            },
+            "TektonTrigger": {
+                "categories": [],
+                "name": "tektontriggers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tektontrigger"
+            }
+        },
+        "operator.tigera.io/v1": {
+            "APIServer": {
+                "categories": [],
+                "name": "apiservers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "apiserver"
+            },
+            "ImageSet": {
+                "categories": [],
+                "name": "imagesets",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "imageset"
+            },
+            "Installation": {
+                "categories": [],
+                "name": "installations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "installation"
+            },
+            "TigeraStatus": {
+                "categories": [],
+                "name": "tigerastatuses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tigerastatus"
+            }
+        },
+        "operators.coreos.com/v1": {
+            "OLMConfig": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "olmconfigs",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "olmconfig"
+            },
+            "Operator": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "operators",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "operator"
+            },
+            "OperatorCondition": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "operatorconditions",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "condition"
+                ],
+                "singular_name": "operatorcondition"
+            },
+            "OperatorGroup": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "operatorgroups",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "og"
+                ],
+                "singular_name": "operatorgroup"
+            }
+        },
+        "operators.coreos.com/v1alpha1": {
+            "CatalogSource": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "catalogsources",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "catsrc"
+                ],
+                "singular_name": "catalogsource"
+            },
+            "ClusterServiceVersion": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "clusterserviceversions",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "csv",
+                    "csvs"
+                ],
+                "singular_name": "clusterserviceversion"
+            },
+            "InstallPlan": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "installplans",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "ip"
+                ],
+                "singular_name": "installplan"
+            },
+            "Subscription": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "subscriptions",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "sub",
+                    "subs"
+                ],
+                "singular_name": "subscription"
+            }
+        },
+        "operators.coreos.com/v1alpha2": {
+            "OperatorGroup": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "operatorgroups",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "og"
+                ],
+                "singular_name": "operatorgroup"
+            }
+        },
+        "operators.coreos.com/v2": {
+            "OperatorCondition": {
+                "categories": [
+                    "olm"
+                ],
+                "name": "operatorconditions",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "condition"
+                ],
+                "singular_name": "operatorcondition"
+            }
+        },
+        "packages.operators.coreos.com/v1": {
+            "PackageManifest": {
+                "categories": [],
+                "name": "packagemanifests",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "packagemanifest"
+            }
+        },
+        "performance.openshift.io/v1": {
+            "PerformanceProfile": {
+                "categories": [],
+                "name": "performanceprofiles",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "performanceprofile"
+            }
+        },
+        "performance.openshift.io/v1alpha1": {
+            "PerformanceProfile": {
+                "categories": [],
+                "name": "performanceprofiles",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "performanceprofile"
+            }
+        },
+        "performance.openshift.io/v2": {
+            "PerformanceProfile": {
+                "categories": [],
+                "name": "performanceprofiles",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "performanceprofile"
+            }
+        },
+        "pipelinesascode.tekton.dev/v1alpha1": {
+            "Repository": {
+                "categories": [],
+                "name": "repositories",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "repo"
+                ],
+                "singular_name": "repository"
+            }
+        },
+        "policy/v1": {
+            "PodDisruptionBudget": {
+                "categories": [],
+                "name": "poddisruptionbudgets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "pdb"
+                ],
+                "singular_name": "poddisruptionbudget"
+            }
+        },
+        "postgres-operator.crunchydata.com/v1beta1": {
+            "PGAdmin": {
+                "categories": [],
+                "name": "pgadmins",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "pgadmin"
+            },
+            "PGUpgrade": {
+                "categories": [],
+                "name": "pgupgrades",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "pgupgrade"
+            },
+            "PostgresCluster": {
+                "categories": [],
+                "name": "postgresclusters",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "postgrescluster"
+            }
+        },
+        "project.openshift.io/v1": {
+            "Project": {
+                "categories": [],
+                "name": "projects",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "project"
+            },
+            "ProjectRequest": {
+                "categories": [],
+                "name": "projectrequests",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "projectrequest"
+            }
+        },
+        "quota.openshift.io/v1": {
+            "AppliedClusterResourceQuota": {
+                "categories": [],
+                "name": "appliedclusterresourcequotas",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "appliedclusterresourcequota"
+            },
+            "ClusterResourceQuota": {
+                "categories": [],
+                "name": "clusterresourcequotas",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "clusterquota"
+                ],
+                "singular_name": "clusterresourcequota"
+            }
+        },
+        "rbac.authorization.k8s.io/v1": {
+            "ClusterRole": {
+                "categories": [],
+                "name": "clusterroles",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clusterrole"
+            },
+            "ClusterRoleBinding": {
+                "categories": [],
+                "name": "clusterrolebindings",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "clusterrolebinding"
+            },
+            "Role": {
+                "categories": [],
+                "name": "roles",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "role"
+            },
+            "RoleBinding": {
+                "categories": [],
+                "name": "rolebindings",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "rolebinding"
+            }
+        },
+        "resolution.tekton.dev/v1alpha1": {
+            "ResolutionRequest": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "resolutionrequests",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "resolutionrequest",
+                    "resolutionrequests"
+                ],
+                "singular_name": "resolutionrequest"
+            }
+        },
+        "resolution.tekton.dev/v1beta1": {
+            "ResolutionRequest": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "resolutionrequests",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "resolutionrequest",
+                    "resolutionrequests"
+                ],
+                "singular_name": "resolutionrequest"
+            }
+        },
+        "route.openshift.io/v1": {
+            "Route": {
+                "categories": [
+                    "all"
+                ],
+                "name": "routes",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "route"
+            }
+        },
+        "samples.operator.openshift.io/v1": {
+            "Config": {
+                "categories": [],
+                "name": "configs",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "config"
+            }
+        },
+        "scheduling.k8s.io/v1": {
+            "PriorityClass": {
+                "categories": [],
+                "name": "priorityclasses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "pc"
+                ],
+                "singular_name": "priorityclasse"
+            }
+        },
+        "security.internal.openshift.io/v1": {
+            "RangeAllocation": {
+                "categories": [],
+                "name": "rangeallocations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "rangeallocation"
+            }
+        },
+        "security.openshift.io/v1": {
+            "PodSecurityPolicyReview": {
+                "categories": [],
+                "name": "podsecuritypolicyreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "podsecuritypolicyreview"
+            },
+            "PodSecurityPolicySelfSubjectReview": {
+                "categories": [],
+                "name": "podsecuritypolicyselfsubjectreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "podsecuritypolicyselfsubjectreview"
+            },
+            "PodSecurityPolicySubjectReview": {
+                "categories": [],
+                "name": "podsecuritypolicysubjectreviews",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "podsecuritypolicysubjectreview"
+            },
+            "RangeAllocation": {
+                "categories": [],
+                "name": "rangeallocations",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "rangeallocation"
+            },
+            "SecurityContextConstraints": {
+                "categories": [],
+                "name": "securitycontextconstraints",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "scc"
+                ],
+                "singular_name": "securitycontextconstraint"
+            }
+        },
+        "sls.ibm.com/v1": {
+            "LicenseClient": {
+                "categories": [],
+                "name": "licenseclients",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "licenseclient"
+            },
+            "LicenseService": {
+                "categories": [],
+                "name": "licenseservices",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "licenseservice"
+            }
+        },
+        "snapshot.storage.k8s.io/v1": {
+            "VolumeSnapshot": {
+                "categories": [],
+                "name": "volumesnapshots",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "vs"
+                ],
+                "singular_name": "volumesnapshot"
+            },
+            "VolumeSnapshotClass": {
+                "categories": [],
+                "name": "volumesnapshotclasses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "vsclass",
+                    "vsclasses"
+                ],
+                "singular_name": "volumesnapshotclass"
+            },
+            "VolumeSnapshotContent": {
+                "categories": [],
+                "name": "volumesnapshotcontents",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "vsc",
+                    "vscs"
+                ],
+                "singular_name": "volumesnapshotcontent"
+            }
+        },
+        "storage.k8s.io/v1": {
+            "CSIDriver": {
+                "categories": [],
+                "name": "csidrivers",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "csidriver"
+            },
+            "CSINode": {
+                "categories": [],
+                "name": "csinodes",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "csinode"
+            },
+            "CSIStorageCapacity": {
+                "categories": [],
+                "name": "csistoragecapacities",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "csistoragecapacitie"
+            },
+            "StorageClass": {
+                "categories": [],
+                "name": "storageclasses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "sc"
+                ],
+                "singular_name": "storageclasse"
+            },
+            "VolumeAttachment": {
+                "categories": [],
+                "name": "volumeattachments",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "volumeattachment"
+            }
+        },
+        "storage.k8s.io/v1beta1": {
+            "CSIStorageCapacity": {
+                "categories": [],
+                "name": "csistoragecapacities",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "csistoragecapacitie"
+            }
+        },
+        "tekton.dev/v1": {
+            "Pipeline": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "pipelines",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "pipeline"
+            },
+            "PipelineRun": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "pipelineruns",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "pr",
+                    "prs"
+                ],
+                "singular_name": "pipelinerun"
+            },
+            "Task": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "tasks",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "task"
+            },
+            "TaskRun": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "taskruns",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "tr",
+                    "trs"
+                ],
+                "singular_name": "taskrun"
+            }
+        },
+        "tekton.dev/v1alpha1": {
+            "StepAction": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "stepactions",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "stepaction"
+            },
+            "VerificationPolicy": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "verificationpolicies",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "verificationpolicy"
+            }
+        },
+        "tekton.dev/v1beta1": {
+            "ClusterTask": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "clustertasks",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "clustertask"
+            },
+            "CustomRun": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "customruns",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "customrun"
+            },
+            "Pipeline": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "pipelines",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "pipeline"
+            },
+            "PipelineRun": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "pipelineruns",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "pr",
+                    "prs"
+                ],
+                "singular_name": "pipelinerun"
+            },
+            "Task": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "tasks",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [],
+                "singular_name": "task"
+            },
+            "TaskRun": {
+                "categories": [
+                    "tekton",
+                    "tekton-pipelines"
+                ],
+                "name": "taskruns",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "tr",
+                    "trs"
+                ],
+                "singular_name": "taskrun"
+            }
+        },
+        "template.openshift.io/v1": {
+            "BrokerTemplateInstance": {
+                "categories": [],
+                "name": "brokertemplateinstances",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "brokertemplateinstance"
+            },
+            "Template": {
+                "categories": [],
+                "name": "processedtemplates",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "processedtemplate"
+            },
+            "TemplateInstance": {
+                "categories": [],
+                "name": "templateinstances",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "templateinstance"
+            }
+        },
+        "triggers.tekton.dev/v1alpha1": {
+            "ClusterInterceptor": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "clusterinterceptors",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [
+                    "ci"
+                ],
+                "singular_name": "clusterinterceptor"
+            },
+            "ClusterTriggerBinding": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "clustertriggerbindings",
+                "namespaced": false,
+                "preferred": false,
+                "short_names": [
+                    "ctb"
+                ],
+                "singular_name": "clustertriggerbinding"
+            },
+            "EventListener": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "eventlisteners",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "el"
+                ],
+                "singular_name": "eventlistener"
+            },
+            "Interceptor": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "interceptors",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "ni"
+                ],
+                "singular_name": "interceptor"
+            },
+            "Trigger": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "triggers",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "tri"
+                ],
+                "singular_name": "trigger"
+            },
+            "TriggerBinding": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "triggerbindings",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "tb"
+                ],
+                "singular_name": "triggerbinding"
+            },
+            "TriggerTemplate": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "triggertemplates",
+                "namespaced": true,
+                "preferred": false,
+                "short_names": [
+                    "tt"
+                ],
+                "singular_name": "triggertemplate"
+            }
+        },
+        "triggers.tekton.dev/v1beta1": {
+            "ClusterTriggerBinding": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "clustertriggerbindings",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "ctb"
+                ],
+                "singular_name": "clustertriggerbinding"
+            },
+            "EventListener": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "eventlisteners",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "el"
+                ],
+                "singular_name": "eventlistener"
+            },
+            "Trigger": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "triggers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "tri"
+                ],
+                "singular_name": "trigger"
+            },
+            "TriggerBinding": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "triggerbindings",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "tb"
+                ],
+                "singular_name": "triggerbinding"
+            },
+            "TriggerTemplate": {
+                "categories": [
+                    "tekton",
+                    "tekton-triggers"
+                ],
+                "name": "triggertemplates",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "tt"
+                ],
+                "singular_name": "triggertemplate"
+            }
+        },
+        "truststore-mgr.ibm.com/v1": {
+            "Truststore": {
+                "categories": [],
+                "name": "truststores",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "truststore"
+            }
+        },
+        "tuned.openshift.io/v1": {
+            "Profile": {
+                "categories": [],
+                "name": "profiles",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "profile"
+            },
+            "Tuned": {
+                "categories": [],
+                "name": "tuneds",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "tuned"
+            }
+        },
+        "uds.ibm.com/v1": {
+            "AnalyticsProxy": {
+                "categories": [],
+                "name": "analyticsproxies",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "analyticsproxy"
+            },
+            "AnalyticsProxyWithSubmodule": {
+                "categories": [],
+                "name": "analyticsproxieswithsubmodules",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "analyticsproxywithsubmodule"
+            },
+            "GenerateKey": {
+                "categories": [],
+                "name": "generatekeys",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "generatekey"
+            }
+        },
+        "user.openshift.io/v1": {
+            "Group": {
+                "categories": [],
+                "name": "groups",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "group"
+            },
+            "Identity": {
+                "categories": [],
+                "name": "identities",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "identitie"
+            },
+            "User": {
+                "categories": [],
+                "name": "users",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "user"
+            },
+            "UserIdentityMapping": {
+                "categories": [],
+                "name": "useridentitymappings",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "useridentitymapping"
+            }
+        },
+        "v1": {
+            "Binding": {
+                "categories": [],
+                "name": "bindings",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "binding"
+            },
+            "ComponentStatus": {
+                "categories": [],
+                "name": "componentstatuses",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "cs"
+                ],
+                "singular_name": "componentstatuse"
+            },
+            "ConfigMap": {
+                "categories": [],
+                "name": "configmaps",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "cm"
+                ],
+                "singular_name": "configmap"
+            },
+            "Endpoints": {
+                "categories": [],
+                "name": "endpoints",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ep"
+                ],
+                "singular_name": "endpoint"
+            },
+            "Event": {
+                "categories": [],
+                "name": "events",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "ev"
+                ],
+                "singular_name": "event"
+            },
+            "LimitRange": {
+                "categories": [],
+                "name": "limitranges",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "limits"
+                ],
+                "singular_name": "limitrange"
+            },
+            "List": {
+                "categories": [],
+                "name": null,
+                "namespaced": null,
+                "preferred": null,
+                "short_names": [],
+                "singular_name": null
+            },
+            "Namespace": {
+                "categories": [],
+                "name": "namespaces",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "ns"
+                ],
+                "singular_name": "namespace"
+            },
+            "Node": {
+                "categories": [],
+                "name": "nodes",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "no"
+                ],
+                "singular_name": "node"
+            },
+            "PersistentVolume": {
+                "categories": [],
+                "name": "persistentvolumes",
+                "namespaced": false,
+                "preferred": true,
+                "short_names": [
+                    "pv"
+                ],
+                "singular_name": "persistentvolume"
+            },
+            "PersistentVolumeClaim": {
+                "categories": [],
+                "name": "persistentvolumeclaims",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "pvc"
+                ],
+                "singular_name": "persistentvolumeclaim"
+            },
+            "Pod": {
+                "categories": [
+                    "all"
+                ],
+                "name": "pods",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "po"
+                ],
+                "singular_name": "pod"
+            },
+            "PodTemplate": {
+                "categories": [],
+                "name": "podtemplates",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "podtemplate"
+            },
+            "ReplicationController": {
+                "categories": [
+                    "all"
+                ],
+                "name": "replicationcontrollers",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "rc"
+                ],
+                "singular_name": "replicationcontroller"
+            },
+            "ResourceQuota": {
+                "categories": [],
+                "name": "resourcequotas",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "quota"
+                ],
+                "singular_name": "resourcequota"
+            },
+            "Secret": {
+                "categories": [],
+                "name": "secrets",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "secret"
+            },
+            "Service": {
+                "categories": [
+                    "all"
+                ],
+                "name": "services",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "svc"
+                ],
+                "singular_name": "service"
+            },
+            "ServiceAccount": {
+                "categories": [],
+                "name": "serviceaccounts",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [
+                    "sa"
+                ],
+                "singular_name": "serviceaccount"
+            }
+        },
+        "whereabouts.cni.cncf.io/v1alpha1": {
+            "IPPool": {
+                "categories": [],
+                "name": "ippools",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "ippool"
+            },
+            "OverlappingRangeIPReservation": {
+                "categories": [],
+                "name": "overlappingrangeipreservations",
+                "namespaced": true,
+                "preferred": true,
+                "short_names": [],
+                "singular_name": "overlappingrangeipreservation"
+            }
+        }
+    },
+    "changed": false,
+    "connection": {
+        "cert_file": null,
+        "host": "https://c106-e.us-south.containers.cloud.ibm.com:31994",
+        "password": null,
+        "proxy": null,
+        "ssl_ca_cert": null,
+        "username": null,
+        "verify_ssl": true
+    },
+    "invocation": {
+        "module_args": {
+            "api_key": null,
+            "ca_cert": null,
+            "client_cert": null,
+            "client_key": null,
+            "context": null,
+            "host": null,
+            "impersonate_groups": null,
+            "impersonate_user": null,
+            "invalidate_cache": true,
+            "kubeconfig": null,
+            "no_proxy": null,
+            "password": null,
+            "persist_config": null,
+            "proxy": null,
+            "proxy_headers": null,
+            "username": null,
+            "validate_certs": null
+        }
+    },
+    "version": {
+        "client": "29.0.0",
+        "server": {
+            "kubernetes": {
+                "buildDate": "2024-04-04T12:54:26Z",
+                "compiler": "gc",
+                "gitCommit": "f5b7c3e8faedd51935d77828a5fc72c7540236f4",
+                "gitTreeState": "clean",
+                "gitVersion": "v1.25.16+bd92d70",
+                "goVersion": "go1.19.13 X:strictfipsruntime",
+                "major": "1",
+                "minor": "25",
+                "platform": "linux/amd64"
+            }
+        }
+    }
+}
+
+TASK [Check for SCC Resource] **************************************************
+task path: /Users/ebasso/GitHub/ibm-sterling-devops/ansible-ibm-sterling/playbooks/dev_seas.yml:20
+ok: [localhost] => {
+    "ansible_facts": {
+        "scc_resource": true
+    },
+    "changed": false
+}
+
+TASK [Check if SCC API version] ************************************************
+task path: /Users/ebasso/GitHub/ibm-sterling-devops/ansible-ibm-sterling/playbooks/dev_seas.yml:25
+ok: [localhost] => {
+    "ansible_facts": {
+        "scc_apiversion": true
+    },
+    "changed": false
+}
+
+TASK [Check for PSP Resource] **************************************************
+task path: /Users/ebasso/GitHub/ibm-sterling-devops/ansible-ibm-sterling/playbooks/dev_seas.yml:32
+skipping: [localhost] => {
+    "changed": false,
+    "false_condition": "'policy/v1beta1' in k8s_cl_info.apis",
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [Check if PSP API version] ************************************************
+task path: /Users/ebasso/GitHub/ibm-sterling-devops/ansible-ibm-sterling/playbooks/dev_seas.yml:37
+fatal: [localhost]: FAILED! => {
+    "msg": "The conditional check 'psp_resource' failed. The error was: error while evaluating conditional (psp_resource): 'psp_resource' is undefined. 'psp_resource' is undefined\n\nThe error appears to be in '/Users/ebasso/GitHub/ibm-sterling-devops/ansible-ibm-sterling/playbooks/dev_seas.yml': line 37, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n    - name: Check if PSP API version\n      ^ here\n"
+}
+
+NO MORE HOSTS LEFT *************************************************************
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=3    changed=0    unreachable=0    failed=1    skipped=1    rescued=0    ignored=0   
+
