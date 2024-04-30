@@ -33,7 +33,7 @@ cd_use_dynamic_provisioning: false
 # Helm Variables
 # -----------------------------------------------------------------------------
 cd_helm:
-  release: "mycd0"
+  release: "s0"
   timeout: "10m0s"
   values_yaml: "{{ my_workdir }}/mycd_values.yml"
   chart: "{{ my_workdir }}/ibm-connect-direct/"

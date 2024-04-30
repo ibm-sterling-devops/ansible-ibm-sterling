@@ -5,11 +5,7 @@
     state: absent
   with_items:
     - "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
-    - "{{ my_workdir }}/ibm-connect-direct"
     - "{{ my_workdir }}/mycd_values.yml"
-    - "{{ my_workdir }}/cdcert.pem"
-    - "{{ my_workdir }}/cdcert.crt"
-    - "{{ my_workdir }}/cdcert.cer"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:
@@ -20,56 +16,105 @@
   until: download_cout is succeeded
   retries: 3
 
-- name: "Extract Helm chart"
-  ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz -C {{ my_workdir }}"
-  register: untar_cout
-  changed_when: ( untar_cout.rc == 0)
-
-# TODO: not works on MacOS
-# - name: "Extract Helm chart"
-#   ansible.builtin.unarchive:
-#     src: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
-#     dest: "{{ my_workdir }}"
-#   register: untar_cout
-#  changed_when: ( untar_cout.rc == 0)
-
-- name: Change Pre-Install Scripts Permissions
-  ansible.builtin.file:
-    path: "{{ item.file_path }}/{{ item.file_name }}"
-    mode: ugo+x
-  with_items:
-    - { file_name: "createSecurityClusterPrereqs.sh",
-        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/clusterAdministration" }
-    - { file_name: "createSecurityNamespacePrereqs.sh",
-        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/namespaceAdministration" }
-
-# TODO: migrate from Shell to module kubernetes.core.k8s
-#
-# Create Security Cluster Prereqs
+# Check for Kubernetes Resources and APIs
 # -----------------------------------------------------------------------------
-- name: Run Pre-Install Scripts createSecurityClusterPrereqs.sh
-  ansible.builtin.command:
-    cmd: "{{ item.file_path }}/{{ item.file_name }} {{ cd_deploy_sum_enabled }}"
-    chdir: "{{ item.file_path }}/"
-  register: script_cout
-  changed_when: ( script_cout.rc == 0 )
-  with_items:
-    - { file_name: "createSecurityClusterPrereqs.sh",
-        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/clusterAdministration" }
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cl_info
 
-# Creating a Role Based Access Control (RBAC)
+- name: Check for SCC Resource
+  ansible.builtin.set_fact:
+    scc_resource: false
+    scc_apiversion: false
+    psp_resource: false
+    psp_apiversion: false
+
+- name: Check for SCC Resource
+  ansible.builtin.set_fact:
+    scc_resource: true
+  when: "'security.openshift.io/v1' in k8s_cl_info.apis"
+
+- name: Check if SCC API version
+  ansible.builtin.set_fact:
+    scc_apiversion: true
+  when:
+    - scc_resource
+    - "'SecurityContextConstraints' in k8s_cl_info.apis['security.openshift.io/v1']"
+
+- name: Check for PSP Resource
+  ansible.builtin.set_fact:
+    psp_resource: true
+  when: "'policy/v1beta1' in k8s_cl_info.apis"
+
+- name: Check if PSP API version
+  ansible.builtin.set_fact:
+    psp_apiversion: true
+  when:
+    - psp_resource
+    - "'PodSecurityPolicy' in k8s_cl_info.apis['policy/v1beta1']"
+
+# Debug
 # -----------------------------------------------------------------------------
-# - name: "Creating a Role Based Access Control (RBAC)"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/namespaceAdministration/ibm-cdu-rb-scc.yaml.j2') }}"
+- name: Debug Apply Pod Security
+  ansible.builtin.debug:
+    msg:
+      - "scc_resource ................. {{ scc_resource }}"
+      - "scc_apiversion ............... {{ scc_apiversion }}"
+      - "psp_resource ................. {{ psp_apiversion }}"
+      - "psp_apiversion ............... {{ psp_apiversion }}"
 
-- name: Run Pre-Install Scripts createSecurityNamespacePrereqs.sh
-  ansible.builtin.command:
-    cmd: "{{ item.file_path }}/{{ item.file_name }} {{ cd_namespace }}"
-    chdir: "{{ item.file_path }}/"
-  register: script_cout
-  changed_when: ( script_cout.rc == 0 )
-  with_items:
-    - { file_name: "createSecurityNamespacePrereqs.sh",
-        file_path: "{{ my_workdir }}/ibm-connect-direct/ibm_cloud_pak/pak_extensions/pre-install/namespaceAdministration" }
+# Creating Pod Security Policy for Kubernetes Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Security Context Constraints
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-cdu-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion and (cd_deploy_sum_enabled != 1)
+
+- name: Creating Security Context Constraints Sum Enabled
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-cdu-scc-sum.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion and (cd_deploy_sum_enabled == 1)
+
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-cdu-cr-scc.yaml') | from_yaml }}"
+    namespace: "{{ cd_namespace }}"
+  when: scc_resource and scc_apiversion
+
+- name: Adding all namespace users to SCC...
+  kubernetes.core.k8s:
+    state: present
+    template: 'namespaceAdministration/ibm-cdu-rb-scc.yaml.j2'
+    namespace: "{{ cd_namespace }}"
+  when: scc_resource and scc_apiversion
+
+# Creating security context constraints for OpenShift Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Pod Security Policy
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'clusterAdministration/ibm-cdu-psp.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion and (cd_deploy_sum_enabled != 1)
+
+- name: Creating Pod Security Policy Sum Enabled
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'clusterAdministration/ibm-cdu-psp-sum.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion and (cd_deploy_sum_enabled == 1)
+
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'clusterAdministration/ibm-cdu-cr.yaml') | from_yaml }}"
+    namespace: "{{ cd_namespace }}"
+  when: psp_resource and psp_apiversion
+
+- name: Adding a RoleBinding for all namespace users to the PSP...
+  kubernetes.core.k8s:
+    state: present
+    template: 'namespaceAdministration/ibm-cdu-rb.yaml.j2'
+    namespace: "{{ cd_namespace }}"
+  when: psp_resource and psp_apiversion

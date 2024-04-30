@@ -11,17 +11,21 @@
     dest: "{{ my_workdir }}/mycd_values.yml"
     mode: "0640"
 
+- name: "Set fact helm file"
+  ansible.builtin.set_fact:
+    my_helmfile: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
+
 - name: Debug
   ansible.builtin.debug:
     msg:
       - "Image Repository ................. {{ compatibility_matrix[cd_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[cd_version].image_tag }}"
       - "cd_other_values  ................. {{ cd_other_values }}"
-      - "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm.release }} {{ cd_helm.chart }}"
+      - "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm.release }} {{ my_helmfile }}"
 
 - name: Run Helm install command
   ansible.builtin.shell:
-    cmd: "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm.release }} {{ cd_helm.chart }}"
+    cmd: "helm install --timeout {{ cd_helm.timeout }} -f {{ cd_helm.values_yaml }} -n {{ cd_namespace }} {{ cd_helm.release }} {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
 
