@@ -5,6 +5,13 @@ ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.03', true) }}"
 
 ssp_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
+ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
+ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') | default('changeit', true) }}"
+ssp_keycert_encrypt_passphrase: "{{ lookup('env', 'SSP_KEYCERT_ENCRYPT_PASSPHRASE') | default('Change1t@', true) }}"
+ssp_custom_keycert_passphrase: "{{ lookup('env', 'SSP_CUSTOM_KEYCERT_PASSPHRASE') | default('Change1t@', true) }}"
+
+# lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=8)
+
 # Entitlement
 # -----------------------------------------------------------------------------
 entitled_registry: "cp.icr.io"

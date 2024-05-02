@@ -5,15 +5,16 @@
       persistence:
         useDynamicProvisioning: "{{ 'true' if (ssp_use_dynamic_provisioning) else 'false' }}"
 
-- name: Generate my_values.yml
-  ansible.builtin.template:
-    src: "values.yml.j2"
-    dest: "{{ my_workdir }}/myssp_values.yml"
-    mode: "0640"
-
 - name: "Set fact helm file"
   ansible.builtin.set_fact:
     my_helmfile: "{{ my_workdir }}/ibm-ssp-engine-{{ compatibility_matrix[ssp_version].helm_version }}.tgz"
+    my_valuesfile: "{{ my_workdir }}/myssp_values-{{ my_serial }}.yml"
+
+- name: Generate my_values.yml
+  ansible.builtin.template:
+    src: "values.yml.j2"
+    dest: "{{ my_valuesfile }}"
+    mode: "0640"
 
 - name: Debug
   ansible.builtin.debug:
@@ -21,11 +22,11 @@
       - "Image Repository ................. {{ compatibility_matrix[ssp_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[ssp_version].image_tag }}"
       - "ssp_other_values  ................. {{ ssp_other_values }}"
-      - "helm install --timeout {{ my_helm.timeout }} -f {{ my_helm.values_yaml }} -n {{ ssp_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
+      - "helm install --timeout {{ my_helm.timeout }} -f {{ my_valuesfile }} -n {{ ssp_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
 
 - name: Run Helm install command
   ansible.builtin.shell:
-    cmd: "helm install --timeout {{ my_helm.timeout }} -f {{ my_helm.values_yaml }} -n {{ ssp_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
+    cmd: "helm install --timeout {{ my_helm.timeout }} -f {{ my_valuesfile }} -n {{ ssp_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
 

@@ -5,6 +5,19 @@ ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.03', true) }
 
 ssp_cm_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
+ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
+ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') | default('changeit', true) }}"
+ssp_keycert_encrypt_passphrase: "{{ lookup('env', 'SSP_KEYCERT_ENCRYPT_PASSPHRASE') | default('Change1t@', true) }}"
+ssp_custom_keycert_passphrase: "{{ lookup('env', 'SSP_CUSTOM_KEYCERT_PASSPHRASE') | default('Change1t@', true) }}"
+ssp_commoncert_password: "{{ lookup('env', 'SSP_COMMONCERT_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_engcert_password: "{{ lookup('env', 'SSP_ENGCERT_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_cmclientcert_password: "{{ lookup('env', 'SSP_CMCLIENTCERT_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_cmcert_password: "{{ lookup('env', 'SSP_CMCERT_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_cmservercert_password: "{{ lookup('env', 'SSP_CMSERVERCERT_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_webcert_password: "{{ lookup('env', 'SSP_WEBCERT_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_exportcert_password: "{{ lookup('env', 'SSP_EXPORTEDCERT_PASSWORD') | default('Passw0rd@', true) }}"
+
 # Entitlement
 # -----------------------------------------------------------------------------
 entitled_registry: "cp.icr.io"
