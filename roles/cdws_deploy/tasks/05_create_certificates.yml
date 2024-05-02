@@ -1,0 +1,42 @@
+---
+# Create Certificate for Connect:Direct on Kubernetes
+# -----------------------------------------------------------------------------
+- name: Running OpenSSL command
+  ansible.builtin.command:
+    cmd: "openssl req -x509 -sha512 -days 3650 -newkey rsa:2048 -new -nodes -keyout {{ cdws_cert_key }} -out {{ cdws_cert_crt }} -subj '/CN={{ cdws_nodename }}'"
+  register: cout
+  changed_when: false
+
+- name: Concat C:D certificates
+  ansible.builtin.shell:
+    cmd: "cat {{ cdws_cert_key }} {{ cdws_cert_crt }} > {{ cdws_cert_pem }}"
+  changed_when: false
+  when: cout.rc == 0
+
+# - name: Generate OpenSSL certificate
+#  ansible.builtin.openssl_certificate:
+#    path: "{{ my_cert_certificatecrt }}"
+#    privatekey_path: "{{ my_cert_privatekey }}"
+#    privatekey_passphrase: "{{ cdws_localCertPassphrase }}"
+#    #subject: "/CN={{ cdws_nodename }}""
+#    #  commonName: "/{{ cdws_nodename }}"
+#    provider: selfsigned
+#    #    signature_algorithms:
+#    #      - sha512WithRSAEncryption
+#    #   days:  3650
+#    force: yes
+
+# Create Certificate for Connect:Direct on Kubernetes
+# CD install script only support extensions .crt, .pem and .cer
+# -----------------------------------------------------------------------------
+- name: Create or update Kubernetes secret with certificates files
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "{{ cdws_deploy_cert_secret }}"
+        namespace: "{{ cdws_namespace }}"
+      data:
+        cdcert.pem: "{{ lookup('file', cdws_cert_pem) | b64encode }}"

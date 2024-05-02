@@ -72,8 +72,8 @@
     scc_install_ccd: true
     scc_install: "CCM,CCD"
   when: 
-    - scc_products_upper.find('CCM') == -1
-    - scc_products_upper.find('CCD') == -1
+    - scc_products_upper.find('CCM') != -1
+    - scc_products_upper.find('CCD') != -1
 
 - name: "Install CCM ?"
   ansible.builtin.set_fact:
@@ -82,7 +82,7 @@
     scc_install: "CCM"
   when: 
     - scc_install is not defined
-    - scc_products_upper.find('CCM') == -1
+    - scc_products_upper.find('CCM') != -1
 
 - name: "Install CCD ?"
   ansible.builtin.set_fact:
@@ -91,12 +91,25 @@
     scc_install: "CCD"
   when: 
     - scc_install is not defined
-    - scc_products_upper.find('CCD') == -1
+    - scc_products_upper.find('CCD') != -1
 
 - name: Fail if neither CCM nor CCD found
   ansible.builtin.fail:
     msg: "Neither CCM nor CCD found in scc_products variable"
   when: scc_install is not defined
+
+- name: Unique Id for files
+  ansible.builtin.set_fact:
+    my_serial: "{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}"
+
+- name: Unique Id for files
+  ansible.builtin.set_fact:
+    scc_cert_crt: "{{ my_workdir }}/scccert-{{ my_serial }}.crt"  
+    scc_cert_key: "{{ my_workdir }}/scckey-{{ my_serial }}.pem"
+    scc_cert_pem: "{{ my_workdir }}/scccert-{{ my_serial }}.pem"
+    scc_keyalias: "ccalias120"
+    scc_keystore: "{{ my_workdir }}/scckeystore-{{ my_serial }}.jks"
+    scc_truststore: "{{ my_workdir }}/scctruststore-{{ my_serial }}.jks"
 
 # Debug
 # -----------------------------------------------------------------------------
@@ -107,3 +120,4 @@
       - "SCCM namespace ................. {{ scc_namespace }}"
       - "Install CCM .................... {{ scc_install_ccm }}"
       - "Install CCD .................... {{ scc_install_ccd }}"
+      - "my_serial ...................... {{ my_serial }}"

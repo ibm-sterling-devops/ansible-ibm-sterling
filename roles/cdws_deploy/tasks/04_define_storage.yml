@@ -63,5 +63,5 @@
 
 - name: Check for Azure StorageClass
   ansible.builtin.set_fact:
-    db2_use_dynamic_provisioning: true
-    db2_storage_class: "{{ my_storage_class }}"
+    cdws_use_dynamic_provisioning: true
+    cdws_storage_class: "{{ my_storage_class }}"

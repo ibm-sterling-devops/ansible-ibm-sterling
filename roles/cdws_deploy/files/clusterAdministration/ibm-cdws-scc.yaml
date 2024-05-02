@@ -1,0 +1,45 @@
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities: null
+apiVersion: security.openshift.io/v1
+defaultAddCapabilities: null
+fsGroup:
+  type: MustRunAs
+  ranges:
+  - min: 1
+    max: 4294967294
+kind: SecurityContextConstraints
+metadata:
+  name: ibm-cdws-scc 
+  labels:
+    app: "ibm-cdws-scc"
+    app.kubernetes.io/instance: "ibm-cdws"
+    app.kubernetes.io/managed-by: "ibm-cdws"
+    app.kubernetes.io/name: "ibm-cdws"
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- ALL
+runAsUser:
+  type: MustRunAsRange
+  uidRangeMin: 1000
+  uidRangeMax: 65535
+seccompProfiles:
+- runtime/default
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+users: []
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret

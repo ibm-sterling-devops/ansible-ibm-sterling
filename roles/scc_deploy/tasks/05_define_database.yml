@@ -40,12 +40,29 @@
 #  no_log: true
   ansible.builtin.set_fact:
     scc_dbdrivers: "db2jcc4.jar"
-    scc_dbdriver_loc: "/app/CC/user_inputs/db2jcc4.jar"
+    scc_dbdriver_loc: "/app/CC/conf/db2jcc4.jar,/app/CC/conf/db2jcc_license_cu.jar"
     scc_mssqlglobal: "false"
     scc_oracle_racorscan: ""
   when:
     - scc_dbvendor is defined and scc_dbvendor == "DB2"
 
+# # Followings are DB drivers available inside jdbc driver container
+# 1. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/db2jcc_license_cu.jar
+# 2. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/db2jcc4.jar
+# 3. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.33.31/db2jcc_license_cu.jar
+# 4. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.33.31/db2jcc4.jar
+# 5. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-11.2.3.jre17.jar
+# 6. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-12.6.1.jre11.jar
+# 7. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-11.2.3.jre8.jar
+# 8. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-12.6.1.jre8.jar
+# 9. /ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-11.2.3.jre17.jar
+# 10./ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-12.6.1.jre11.jar
+# 11./ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-12.6.1.jre8.jar
+# 12./ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-11.2.3.jre8.jar
+# 13./ibm/scc/resoures/dbdrivers/oracle/v19c/ojdbc10.jar
+# 14./ibm/scc/resoures/dbdrivers/oracle/v19c/ojdbc8.jar
+# 15./ibm/scc/resoures/dbdrivers/oracle/v21c/ojdbc11.jar
+# 16./ibm/scc/resoures/dbdrivers/oracle/v21c/ojdbc8.jar
 - name: Set Facts for Database Configuration when is Oracle
 #  no_log: true
   ansible.builtin.set_fact:

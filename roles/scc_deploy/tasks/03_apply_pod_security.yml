@@ -1,63 +1,103 @@
 ---
 - name: "Cleanup directories and files"
   ansible.builtin.file:
-    path: "{{ my_workdir }}/ibm-sccm-{{ compatibility_matrix[scc_version].helm_version }}"
+    path: "{{ item }}"
     state: absent
   with_items:
-    - "{{ my_workdir }}/ibm-sccm-{{ compatibility_matrix[scc_version].helm_version  }}.tgz"
-    - "{{ my_workdir }}/ibm-sccm"
-    - "{{ my_workdir }}/myscc_values.yml"
+    - "{{ my_workdir }}/ibm-sccm-{{ compatibility_matrix[scc_version].helm_version }}.tgz"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:
     url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-sccm-{{ compatibility_matrix[scc_version].helm_version }}.tgz"
     dest: "{{ my_workdir }}/ibm-sccm-{{ compatibility_matrix[scc_version].helm_version }}.tgz"
+    mode: "0640"
   register: download_cout
   until: download_cout is succeeded
   retries: 3
 
-- name: "Extract Helm chart"
-  ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-sccm-{{ compatibility_matrix[scc_version].helm_version }}.tgz -C {{ my_workdir }}"
-  register: untar_cout
-  changed_when: ( untar_cout.rc == 0)
-
-
-# - name: Download Chart using  ibm-sccm and repo_url
-#   kubernetes.core.helm_pull:
-#     chart_ref: ibm-sccm
-#     repo_url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-sccm-{{ compatibility_matrix[ scc_version ].helm_version  }}.tgz"
-#     untar_chart: yes
-#     destination: "{{ my_workdir }}/ibm-sccm"
-# repo_url: https://github.com/grafana/helm-charts/releases/download/grafana-5.6.0/grafana-5.6.0.tgz
-
-# Creating a Role Based Access Control (RBAC)
+# Check for Kubernetes Resources and APIs
 # -----------------------------------------------------------------------------
-- name: "Creating a Role Based Access Control (RBAC)"
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cl_info
+
+- name: Check for SCC Resource
+  ansible.builtin.set_fact:
+    scc_resource: false
+    scc_apiversion: false
+    psp_resource: false
+    psp_apiversion: false
+
+- name: Check for SCC Resource
+  ansible.builtin.set_fact:
+    scc_resource: true
+  when: "'security.openshift.io/v1' in k8s_cl_info.apis"
+
+- name: Check if SCC API version
+  ansible.builtin.set_fact:
+    scc_apiversion: true
+  when:
+    - scc_resource
+    - "'SecurityContextConstraints' in k8s_cl_info.apis['security.openshift.io/v1']"
+
+- name: Check for PSP Resource
+  ansible.builtin.set_fact:
+    psp_resource: true
+  when: "'policy/v1beta1' in k8s_cl_info.apis"
+
+- name: Check if PSP API version
+  ansible.builtin.set_fact:
+    psp_apiversion: true
+  when:
+    - psp_resource
+    - "'PodSecurityPolicy' in k8s_cl_info.apis['policy/v1beta1']"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug Apply Pod Security
+  ansible.builtin.debug:
+    msg:
+      - "scc_resource ................. {{ scc_resource }}"
+      - "scc_apiversion ............... {{ scc_apiversion }}"
+      - "psp_resource ................. {{ psp_apiversion }}"
+      - "psp_apiversion ............... {{ psp_apiversion }}"
+
+# Creating Pod Security Policy for Kubernetes Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Security Context Constraints
   kubernetes.core.k8s:
     state: present
-    definition: "{{ lookup('template', 'templates/default_sa_rbac.yml.j2') }}"
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-sccm-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion
 
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-sccm-cr-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion
 
-# # Creating a Custom PodSecurityPolicy - Removed in Kubernetes v1.25
-# # -----------------------------------------------------------------------------
-# - name: "Creating a Custom PodSecurityPolicy"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_podsecplcy.yml.j2') }}"
+- name: Adding all namespace users to SCC...
+  kubernetes.core.k8s:
+    state: present
+    template: 'namespaceAdministration/ibm-sccm-rb-scc.yaml.j2'
+  when: scc_resource and scc_apiversion
 
-# - name: "Creating a Custom Role and Role Binding for the custom PodSecurityPolicy"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_podsecplcy_rbac.yml.j2') }}"
+# Creating security context constraints for OpenShift Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Pod Security Policy
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'clusterAdministration/ibm-sccm-psp.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion
 
-# # Creating a Custom SecurityContextConstraints definition - Removed in Kubernetes v1.25
-# # -----------------------------------------------------------------------------
-# - name: "Creating a Custom SecurityContextConstraints"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_secctxtcons.yml.j2') }}"
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'clusterAdministration/ibm-sccm-cr.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion
 
-# - name: "Creating a Custom Role and Role Binding for the custom PodSecurityPolicy"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_podsecplcy_rbac.yml.j2') }}"
+- name: Adding a RoleBinding for all namespace users to the PSP...
+  kubernetes.core.k8s:
+    state: present
+    template: 'namespaceAdministration/ibm-sccm-rb.yaml.j2'
+  when: psp_resource and psp_apiversion

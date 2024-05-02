@@ -2,7 +2,7 @@
 # Configure Db2 instance
 # -----------------------------------------------------------------------------------------------------------------
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
-db2_namespace: "sterling-cc-{{ scc_instanceid }}-db2"
+db2_namespace: "ibm-scc-{{ scc_instanceid }}-db2"
 db2_password: "{{ lookup('env', 'DB2_PASSWORD') | default('passw0rd', true) }}"
 db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true)}}"
 
@@ -17,7 +17,7 @@ entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------
-db2_registry_secret: mydb2-ibm-registry-secret
+db2_registry_secret: ibm-registry-secret
 db2_service_account: mydb2-sa
 db2_secret: mydb2-secret
 db2_id: mydb2

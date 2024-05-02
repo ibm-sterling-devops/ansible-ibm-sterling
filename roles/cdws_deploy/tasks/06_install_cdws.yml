@@ -1,0 +1,66 @@
+---
+- name: Define CDWS helm chart values
+  ansible.builtin.set_fact:
+    cdws_other_values:
+      persistence:
+        useDynamicProvisioning: "{{ 'true' if (cdws_use_dynamic_provisioning) else 'false' }}"
+
+- name: Generate my_values.yml
+  ansible.builtin.template:
+    src: "values.yml.j2"
+    dest: "{{ my_workdir }}/mycdws_values.yml"
+    mode: "0640"
+
+- name: "Set fact helm file"
+  ansible.builtin.set_fact:
+    my_helmfile: "{{ my_workdir }}/ibm-cdws-{{ compatibility_matrix[cdws_version].helm_version }}.tgz"
+
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "Image Repository ................. {{ compatibility_matrix[cdws_version].image_repository }}"
+      - "Image Tag        ................. {{ compatibility_matrix[cdws_version].image_tag }}"
+      - "cdws_other_values  ................. {{ cdws_other_values }}"
+      - "helm install --timeout {{ cdws_helm.timeout }} -f {{ cdws_helm.values_yaml }} -n {{ cdws_namespace }} {{ cdws_helm.release }} {{ my_helmfile }}"
+
+- name: Run Helm install command
+  ansible.builtin.shell:
+    cmd: "helm install --timeout {{ cdws_helm.timeout }} -f {{ cdws_helm.values_yaml }} -n {{ cdws_namespace }} {{ cdws_helm.release }} {{ my_helmfile }}"
+  register: helm_cout
+  changed_when: helm_cout.rc != 0
+
+# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
+# - name: Deploy Connect:Direct chart from local path
+#   kubernetes.core.helm:
+#     name: "{{ cdws_helm_release }}"
+#     chart_ref: "{{ cdws_helm.chart }}"
+#     release_namespace: "{{ cdws_namespace }}"
+#     wait: True
+#     timeout: "{{ cdws_helm.timeout }}"
+#     values_files: "{{ cdws_helm.values }}"
+
+- name: "Lookup Connect:Direct Pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ cdws_namespace }}"
+    label_selectors:
+      - release={{ cdws_helm.release }}
+    wait: true
+    wait_sleep: 30
+    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: cdws_pod
+
+- name: Configure facts
+  ansible.builtin.set_fact:
+    cdws_pod_name: "{{ cdws_pod.resources[0].metadata.name }}"
+
+- name: "IBM Sterling Connect:Direct Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "IBM Sterling Connect:Direct status .................. Ready!"
+      - "Connect:Direct namespace ............................ {{ cdws_namespace }}"
+      - "Pod name ............................................ {{ cdws_pod_name }}"
+      - "For username and password check secret .............. {{ cdws_secret }}'"

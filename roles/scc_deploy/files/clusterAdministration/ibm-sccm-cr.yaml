@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: "ibm-sccm-psp"
+  labels:
+    app: "ibm-sccm-psp"
+rules:
+  - apiGroups:
+      - policy
+    resourceNames:
+      - ibm-sccm-psp
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use

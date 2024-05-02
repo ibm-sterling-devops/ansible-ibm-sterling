@@ -23,20 +23,25 @@
         .userKey: "{{ scc_userkey | b64encode }}"
   register: scc_secret_cout
 
+- name: "Set fact helm file"
+  ansible.builtin.set_fact:
+    my_helmfile: "{{ my_workdir }}/ibm-sccm-{{ compatibility_matrix[scc_version].helm_version }}.tgz"
+    my_valuesfile: "{{ my_workdir }}/myscc_values-{{ my_serial }}.yml"
+
 - name: Generate my_values.yml
   ansible.builtin.template:
     src: "values.yaml.j2"
-    dest: "{{ my_workdir }}/myscc_values.yml"
+    dest: "{{ my_valuesfile }}"
 
 - name: Debug
   ansible.builtin.debug:
-    msg: "helm install --timeout {{ scc_helm.timeout }} -f {{ scc_helm.values_yaml }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ scc_helm.chart }}"
+    msg: "helm install --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
 
 # helm install test -f values.yaml -n control-center ./ibm-sccm-version.tgz
 
 - name: Run Helm install command
   ansible.builtin.shell: 
-    cmd: "helm install --wait --timeout {{ scc_helm.timeout }} -f {{ scc_helm.values_yaml }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ scc_helm.chart }}"
+    cmd: "helm install --wait --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
 
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html

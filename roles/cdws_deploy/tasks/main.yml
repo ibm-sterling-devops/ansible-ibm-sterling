@@ -1,0 +1,18 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.include_tasks: 01_check_vars.yml
+
+- name: Create namespace and secrets for Connect:Direct
+  ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
+
+- name: Applying Pod Security
+  ansible.builtin.include_tasks: 03_apply_pod_security.yml
+
+- name: Define Storage for Data Persistence
+  ansible.builtin.include_tasks: 04_define_storage.yml
+
+- name: "Create Certificate for Secure+"
+  ansible.builtin.include_tasks: 05_create_certificates.yml
+
+- name: Install Connect:Direct Web Service using Helm Chart
+  ansible.builtin.include_tasks: 06_install_cdws.yml

@@ -1,0 +1,84 @@
+---
+cdws_namespace: "{{ lookup('env', 'CDWS_NAMESPACE') | default('sterling-cdws01', true) }}"
+
+cdws_version: "{{ lookup('env', 'CDWS_VERSION') | default('6.3.0.7_ifix000', true) }}"
+
+cdws_truststore_password: "{{ lookup('env', 'CDWS_TRUSTSTOREPASSWORD') | default('changeit', true) }}"
+cdws_keystore_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('changeit', true) }}"
+cdws_cacert_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('passw0rd', true) }}"
+
+cdws_license_type: "{{ lookup('env', 'CDWS_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+
+# Entitlement
+# -----------------------------------------------------------------------------
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# Others
+# -----------------------------------------------------------------------------
+my_workdir: /tmp
+
+cdws_nodename: localhost
+cdws_registry_secret: ibm-registry-secret
+cdws_secret: cdws-secret
+cdws_deploy_cert_secret: mycdws-cert-secret
+cdws_cert_crt: "{{ my_workdir }}/cdwscert.crt"  # CD install script only support extensions .crt, .pem and .cer
+cdws_cert_key: "{{ my_workdir }}/cdwskey.pem"
+cdws_cert_pem: "{{ my_workdir }}/cdwscert.pem"
+cdws_use_dynamic_provisioning: false
+
+# Helm Variables
+# -----------------------------------------------------------------------------
+cdws_helm:
+  release: "s0"
+  timeout: "10m0s"
+  values_yaml: "{{ my_workdir }}/mycdws_values.yml"
+  chart: "{{ my_workdir }}/ibm-cdws/"
+
+# https://github.com/IBM/charts/tree/master/repo/ibm-helm
+compatibility_matrix:
+  6.3.0.7_ifix000:
+    helm_version: "1.0.0"
+    image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.3_certified_container_6.3.0.7"
+    image_tag: "6.3.0.7_ifix000"
+    ocp_version: "4.14"
+    k8s_min_version: ">= 1.27"
+    k8s_max_version: "<1.28"
+    helm_min_version: ">= 3.2"
+
+
+# Storage Class Matrix
+# in ibmcloud.rwo: In IBM Cloud, the ReadWriteOnce storage class is 'ibmc-block-gold' but Connect:Direct not worked with it.
+# -----------------------------------------------------------------------------
+storage_class_matrix:
+  ibmcloud:
+    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
+    rwo: "ibmc-file-gold"       # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with C:D
+    rom: ""                     # ReadOnlyMany
+    rwop: ""                    # ReadWriteOncePod
+  redhat:
+    rwx: "ocs-storagecluster-cephfs"
+    rwx_nogid: "ocs-storagecluster-cephfs"
+    rwo: "ocs-storagecluster-ceph-rbd"
+    rom: ""
+    rwop: ""
+  aws:
+    rwx: "efs"
+    rwx_nogid: "efs"
+    rwo: "gp2"
+    rom: ""
+    rwop: ""
+  azure:
+    rwx: "azurefiles-premium"
+    rwx_nogid: "azurefiles-premium"
+    rwo: "managed-premium"
+    rom: ""
+    rwop: ""
+  techzone:
+    rwx: "managed-nfs-storage"
+    rwx_nogid: "managed-nfs-storage"
+    rwo: "managed-nfs-storage"
+    rom: "managed-nfs-storage"
+    rwop: "managed-nfs-storage"

@@ -51,27 +51,20 @@ entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
-scc_namespace: "sterling-cc-{{ scc_instanceid }}-app"
-scc_db2_namespace: "sterling-cc-{{ scc_instanceid }}-db2"
-scc_mq_namespace: "sterling-cc-{{ scc_instanceid }}-mq"
+scc_namespace: "ibm-scc-{{ scc_instanceid }}-app"
+scc_db2_namespace: "ibm-scc-{{ scc_instanceid }}-db2"
+scc_mq_namespace: "ibm-scc-{{ scc_instanceid }}-mq"
 
-scc_version: "6.3.1.0_iFix01_2024-02-01"
+scc_version: "6.3.1.0_2024-04-30"
 scc_products_upper: "{{ scc_products | upper }}"
 
 scc_registry_secret: ibm-registry-secret
 scc_secret: ibm-scc-secret
 scc_cert_secret: ibm-scc-certs-secret
-scc_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support extensions .crt, .pem and .cer
-scc_cert_key: "{{ my_workdir }}/cdkey.pem"
-scc_cert_pem: "{{ my_workdir }}/cdcert.pem"
 
 scc_jms_secret: scc-jms-secret
 
-scc_nodename: "scc0-{{ scc_instanceid }}"
-
-scc_ascc_host: "asi.{{ scc_instanceid }}.{{ scc_domain }}"
-scc_ac_host: "ac.{{ scc_instanceid }}.{{ scc_domain }}"
-scc_api_host: "api.{{ scc_instanceid }}.{{ scc_domain }}"
+scc_name: "icc-{{ scc_instanceid }}"
 
 db2_namespace: ""
 db2_secret: mydb2-secret
@@ -82,20 +75,19 @@ db2_id: mydb2
 scc_helm:
   release: s0
   timeout: "120m0s"
-  values_yaml: "{{ my_workdir }}/myscc_values.yml"
   chart: "{{ my_workdir }}/ibm-sccm/"
 
 # Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
-  6.3.1.0_iFix01_2024-02-01:
-    helm_version: "3.1.1"
-    image_tag: "6.3.1.0_iFix01_2024-02-01"
-    copy_resources_tag: "6.2.1.0_ifix08_2022-09-16"
-  6.3.1.0_2023-12-15:
-    helm_version: "3.1.0"
-    image_tag: "6.3.1.0_2023-12-15"
-    copy_resources_tag: "6.2.1.0_ifix08_2022-09-16"
+  6.3.1.0_2024-04-30:
+    helm_version: "3.1.2"
+    image_tag: "6.3.1.0_2024-04-30"
+    copy_dbdriver_repository: "cp.icr.io/cp/ibm-scc/ibmscc_dbdrivers"
+    copy_dbdriver_tag: "2024"
+    copy_dbdriver_command: "cp /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/* /app/conf/"
+    kube_version: '>=1.23.0'
+
 
 # Storage Class Matrix - definition by Cloud Provider
 # -----------------------------------------------------------------------------

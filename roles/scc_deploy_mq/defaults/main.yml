@@ -1,6 +1,6 @@
 ---
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
-mq_namespace: "sterling-cc-{{ scc_instanceid }}-mq"
+mq_namespace: "ibm-scc-{{ scc_instanceid }}-mq"
 mq_name: "{{ lookup('env', 'MQ_NAME') | default('mq', true) }}"
 
 mq_version: "{{ lookup('env', 'MQ_VERSION') | default('9.2.5.0-r3', true) }}"

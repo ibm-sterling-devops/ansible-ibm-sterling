@@ -1,0 +1,175 @@
+replicaCount: 1
+
+image:
+  repository: "{{ compatibility_matrix[cdws_version].image_repository }}"
+  tag: "{{ compatibility_matrix[cdws_version].image_tag }}"
+  imageSecrets: "{{ cdws_registry_secret }}"
+  digest:
+    enabled: false
+    value: ""
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+ 
+serviceAccount:
+  create: true
+  name: ""
+
+service:
+  type: LoadBalancer
+  loadBalancerIP: ""
+  sessionAffinity: "ClientIP"
+
+  loadBalancerSourceRanges: []
+  port: 9443
+  webConsoleName: "cdws-web-console"
+  protocol: TCP
+  externalIP: ""
+  externalTrafficPolicy: ""
+  allowIngressTraffic: true
+  annotations: {}
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: cm
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01
+
+cdwsParams:
+  certificateLabel: "mftwebservices"
+  certificateExpiryTime: 3650
+  commonName: "localhost"
+  organization: "OrganizationName"
+  locality: "Irving"
+  state: "Texas"
+  country: "US"
+  emailId: "noreply@noreply.com"
+  dnsName: "localhost"
+  ipAddress: "127.0.0.1"
+
+networkPolicy:
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - {}
+  egress:
+    - {}
+
+ingress:
+  enabled: false
+  host: ""
+  controller: "nginx"
+  annotations: {}
+  tls:
+    enabled: false
+    secretName: ""
+
+defaultPodDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+resources:
+  limits:
+    cpu: 3000m
+    memory: 2Gi
+    ephemeral-storage: "3Gi"
+  requests:
+    cpu: 1500m
+    memory: 1Gi
+    ephemeral-storage: "2Gi"
+
+initResources:
+  limits:
+    cpu: 500m
+    memory: 2Gi
+  requests:
+    cpu: 250m
+    memory: 1Gi
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: {}
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+storageSecurity:
+  fsGroup:
+  supplementalGroups: [65534]
+  runAsUser: 1010
+  runAsGroup:
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+persistence:
+  enabled: true
+  useDynamicProvisioning: {{ cdws_other_values.persistence.useDynamicProvisioning }}
+
+pvClaim:
+  existingClaimName: "{{ cdws_other_values.pvClaim.existingClaimName | default('') }}"
+  storageClassName: "{{ storage_class_matrix[ cdws_storage_class ].rwo }}" 
+  accessMode: "ReadWriteOnce"
+  selector:
+    label: "intent"
+    value: "cdws-vol"
+  size: {{ cdws_other_values.pvClaim.size | default('100Mi') }} #500Mi
+
+persistentVolumeExtra:
+  enabled: false
+  claimName: ""
+  storageClassName: "manual"
+  size: 100Mi
+  accessMode: "ReadWriteOnce"
+  selector:
+    label: ""
+    value: ""
+
+startupProbe:
+  initialDelaySeconds: 50
+  timeoutSeconds: 15
+  periodSeconds: 15
+
+livenessProbe:
+  initialDelaySeconds: 15
+  timeoutSeconds: 10
+  periodSeconds: 15
+
+readinessProbe:
+  initialDelaySeconds: 15
+  timeoutSeconds: 10
+  periodSeconds: 15
+
+# for ibm cloud environment
+dashboard:
+  enabled: true
+
+# applicable for openshift environment for accessing UI
+route:
+  enabled: true
+
+arch: "amd64"
+
+license: true
+licenseType: "{{ cdws_license_type }}"
+
+secret:
+  secretName:  "{{ cdws_secret }}"
+  # Secret name for CA-signed certificate.
+  caCertSecretName: ""
+  # Secret name for trusted certificate.
+  trustCertSecretName: ""
+
+secComp:
+  type: RuntimeDefault
+  profile: ""
+
+timeZone: "America/New_York"
