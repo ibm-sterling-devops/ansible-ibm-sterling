@@ -84,7 +84,7 @@ ccArgs:
   dbLoc: "none"
   dbInit: "true"
   dbPartition: "false"
-  dbDrivers: "{{ scc_dbdriver_loc }}"
+  dbDrivers: "{{ scc_dbdrivers }}"
   #Globalization is only needed if data to be stored contains multi-byte characters, which are common in character sets such as Kanji.
   #Database I/O performance may drop multiple orders of magnitude if globalization support is selected, so it is NOT recommended you do so with MSSQL.
   #If you set true for mssqlGlobal variable, then your database size can also increase significantly.

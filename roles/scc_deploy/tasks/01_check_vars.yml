@@ -66,6 +66,8 @@
       - (db2_namespace != "") or (scc_dbvendor != "")
     fail_msg: "Database Information property is required"
 
+# 4. Check for Products to Install
+# -----------------------------------------------------------------------------
 - name: "Install CCM,CCD ?"
   ansible.builtin.set_fact:
     scc_install_ccm: true 

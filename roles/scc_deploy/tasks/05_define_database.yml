@@ -2,7 +2,6 @@
 # Get Information from db2_namespace
 # -----------------------------------------------------------------------------
 - name: "Lookup Secrets from db2_namespace if provided"
-#  no_log: true
   kubernetes.core.k8s_info:
     api_version: v1
     kind: Secret
@@ -12,7 +11,6 @@
   when: db2_namespace is defined and db2_namespace != ""
 
 - name: "Lookup Service from db2_namespace if provided"
-#  no_log: true
   kubernetes.core.k8s_info:
     api_version: v1
     kind: Service
@@ -21,6 +19,12 @@
   register: db_svc_cout
   when: db2_namespace is defined and db2_namespace != ""
 
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "db_svc_cout ................. {{ db_svc_cout }}"
+
+# jdbc_url: "jdbc:db2://c-{{db2_instance_name | lower}}-db2u-engn-svc.{{ db2_namespace }}.svc:{{db2_tls_serviceport}}/{{db2_dbname}}:sslConnection=true;sslVersion={{ tls_version }};"
 - name: Set Facts for Database Configuration from db2_namespace
 #  no_log: true
   ansible.builtin.set_fact:
@@ -30,7 +34,6 @@
     scc_dbname: "SCCM"
     scc_dbuser: "db2inst1"
     scc_dbpassword: "{{ db_secret_cout.resources[0].data.DB2INST1_PASSWORD | b64decode }}"
-#     jdbc_url: "jdbc:db2://c-{{db2_instance_name | lower}}-db2u-engn-svc.{{ db2_namespace }}.svc:{{db2_tls_serviceport}}/{{db2_dbname}}:sslConnection=true;sslVersion={{ tls_version }};"
   when: 
     - db2_namespace is defined and db2_namespace != ""
     - db_secret_cout is defined and db_secret_cout != ""
@@ -39,8 +42,7 @@
 - name: Set Facts for Database Configuration when is Oracle
 #  no_log: true
   ansible.builtin.set_fact:
-    scc_dbdrivers: "db2jcc4.jar"
-    scc_dbdriver_loc: "/app/CC/conf/db2jcc4.jar,/app/CC/conf/db2jcc_license_cu.jar"
+    scc_dbdrivers: "/app/CC/conf/db2jcc4.jar,/app/CC/conf/db2jcc_license_cu.jar"
     scc_mssqlglobal: "false"
     scc_oracle_racorscan: ""
   when:
@@ -66,8 +68,7 @@
 - name: Set Facts for Database Configuration when is Oracle
 #  no_log: true
   ansible.builtin.set_fact:
-    scc_dbdrivers: "ojdbc8.jar"
-    scc_oracleUseServiceName: "true"
+    scc_dbdrivers: "/app/CC/conf/ojdbc8.jar"
     scc_mssqlglobal: "false"
     scc_oracle_racorscan: ""
   when:
@@ -76,7 +77,7 @@
 - name: Set Facts for Database Configuration when is Oracle
 #  no_log: true
   ansible.builtin.set_fact:
-    scc_dbdrivers: "mssql_FIXME.jar"
+    scc_dbdrivers: "/app/CC/conf/mssql-jdbc-12.6.1.jre8.jar"
     scc_mssqlglobal: "false"
     scc_oracle_racorscan: ""
   when:
@@ -98,6 +99,7 @@
   ansible.builtin.assert:
     that:
       - scc_dbvendor is defined and scc_dbvendor != ""
+      - scc_dbdrivers is defined and scc_dbdrivers != ""
       - scc_dbhost is defined and scc_dbhost != ""
       - scc_dbport is defined and scc_dbport != ""
       - scc_dbname is defined and scc_dbname != ""

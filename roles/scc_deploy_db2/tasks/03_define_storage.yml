@@ -61,7 +61,7 @@
     that: my_storage_class is defined and my_storage_class != ""
     fail_msg: "my_storage_class must be defined"
 
-- name: Check for Azure StorageClass
+- name: Define Storage Class for DB2
   ansible.builtin.set_fact:
     db2_use_dynamic_provisioning: true
     db2_storage_class: "{{ my_storage_class }}"

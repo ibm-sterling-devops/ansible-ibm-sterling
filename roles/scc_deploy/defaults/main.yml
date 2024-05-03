@@ -1,21 +1,21 @@
 ---
-# Get values from Environment Variables
-# -----------------------------------------------------------------------------
+# Environment variables
+# -----------------------------------------------------------------------------------------------------------------
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('', true) }}" # productEntitlement: "CCD,CCM"
 
 scc_domain: "{{ lookup('env', 'SCC_DOMAIN') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 
 scc_licensetype: "{{ lookup('env', ' SCC_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
-scc_system_passphrase: "{{ lookup('env', ' SCC_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
 
+scc_system_passphrase: "{{ lookup('env', ' SCC_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
 scc_admin: "{{ lookup('env', 'SCC_ADMIN') | default('admin', true) }}"
 scc_admin_password: "{{ lookup('env', ' SCC_ADMIN_PASSWORD') | default('passwOrd', true) }}"
 scc_truststore_password: "{{ lookup('env', ' SCC_TRUSTSTORE_PASSWORD') | default('changeit', true) }}"
 scc_keystore_password: "{{ lookup('env', ' SCC_KEYSTORE_PASSWORD') | default('changeit', true) }}"
 scc_userkey: "{{ lookup('env', ' SCC_EMAIL_PASSWORD') | default('passwOrd', true) }}"
-
 
 scc_dbvendor: "{{ lookup('env', ' SCC_DBVENDOR') }}"
 scc_dbhost: "{{ lookup('env', ' SCC_DBHOST') }}"
@@ -38,25 +38,26 @@ scc_jmskeystorepassword: "{{ lookup('env', ' SCC_JMS_KEYSTORE_PASSWORD') }}"
 scc_jmstruststorepassword: "{{ lookup('env', ' SCC_JMS_TRUSTSTORE_PASSWORD') }}"
 
 scc_timezone: "{{ lookup('env', ' SCC_TIMEZONE') | default('America/New_York', true) }}"
-scc_dashboard: "true" # for ibm cloud environment
-scc_oc_route: "true" # applicable for openshift environment for accessing UI 
 
-# Entitlement
+
+# Configure instance
 # -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
-
-# Defaults
-# -----------------------------------------------------------------------------
-my_workdir: /tmp
-
 scc_namespace: "ibm-scc-{{ scc_instanceid }}-app"
 scc_db2_namespace: "ibm-scc-{{ scc_instanceid }}-db2"
 scc_mq_namespace: "ibm-scc-{{ scc_instanceid }}-mq"
 
 scc_version: "6.3.1.0_2024-04-30"
 scc_products_upper: "{{ scc_products | upper }}"
+
+scc_dashboard: "true" # for ibm cloud environment
+scc_oc_route: "true" # applicable for openshift environment for accessing UI 
+
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+
+# Role Internal
+# -----------------------------------------------------------------------------
+my_workdir: /tmp
 
 scc_registry_secret: ibm-registry-secret
 scc_secret: ibm-scc-secret

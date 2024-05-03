@@ -1,5 +1,8 @@
 ---
+# Environment variables
+# -----------------------------------------------------------------------------------------------------------------
 seas_namespace: "{{ lookup('env', 'SEAS_NAMESPACE') }}"
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 seas_version: "{{ lookup('env', 'SEAS_VERSION') | default('6.1.0.0.06', true) }}"
 seas_sys_passphrase: "{{ lookup('env', 'SEAS_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
@@ -10,13 +13,14 @@ seas_truststore_passphrase: "{{ lookup('env', 'SEAS_TRUSTSTOREPASSWORD') | defau
 
 seas_license_type: "{{ lookup('env', 'SEAS_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
-# Entitlement
+
+# Configure instance
 # -----------------------------------------------------------------------------
 entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-# Others
+
+# Role Internal
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
@@ -24,8 +28,6 @@ seas_registry_secret: ibm-registry-secret
 seas_secret: ibm-seas-secret
 seas_use_dynamic_provisioning: false
 
-# Helm Variables
-# -----------------------------------------------------------------------------
 my_helm:
   release: "s0"
   timeout: "10m0s"
