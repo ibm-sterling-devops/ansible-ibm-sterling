@@ -1,0 +1,14 @@
+---
+# .ansible-lint
+
+exclude_paths:
+    - .ansible-lint
+    - .github
+    - .vscode
+    - hosts
+    - README.md
+    - LICENSE
+
+skip_list:
+    - var-naming[no-role-prefix]
+    - yaml[line-length]

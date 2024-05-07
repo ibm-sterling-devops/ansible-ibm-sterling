@@ -60,7 +60,7 @@ entitled_registry_user: cp
 my_workdir: /tmp
 
 scc_registry_secret: ibm-registry-secret
-scc_secret: ibm-scc-secret
+sccm_secret: ibm-sccm-secret
 scc_cert_secret: ibm-scc-certs-secret
 
 scc_jms_secret: scc-jms-secret
@@ -96,8 +96,8 @@ storage_class_matrix:
   ibmcloud:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-block-gold"      # ReadWriteOnce
-    rom: "ibmc-file-gold-gid"       # ReadOnlyMany  #FIXME need to define this value
+    rwo: "ibmc-file-gold-gid"   # ReadWriteOnce  # IBM Sterling Control Center only works with ibmc-file-gold-gid
+    rom: "ibmc-file-gold-gid"   # ReadOnlyMany  
     rwop: ""                    # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"

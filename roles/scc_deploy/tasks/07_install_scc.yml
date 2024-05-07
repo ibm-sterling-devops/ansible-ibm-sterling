@@ -1,7 +1,7 @@
 ---
 # Create Secrets for IBM Sterling Control Center
 # -----------------------------------------------------------------------------
-- name: "Generate secret "
+- name: "Generate secret sccm_secret"
   no_log: false
   kubernetes.core.k8s:
     definition:
@@ -9,7 +9,7 @@
       kind: Secret
       type: Opaque
       metadata:
-        name: "{{ scc_secret }}"
+        name: "{{ sccm_secret }}"
         namespace: "{{ scc_namespace }}"
       data:
         .ccDBPassword: "{{ scc_dbpassword | b64encode }}"
@@ -21,7 +21,7 @@
         .jmsUserId: "{{ scc_jmsuser | b64encode }}"
         .jmsPassword: "{{ scc_jmspassword | b64encode }}"
         .userKey: "{{ scc_userkey | b64encode }}"
-  register: scc_secret_cout
+  register: sccm_secret_cout
 
 - name: "Set fact helm file"
   ansible.builtin.set_fact:
