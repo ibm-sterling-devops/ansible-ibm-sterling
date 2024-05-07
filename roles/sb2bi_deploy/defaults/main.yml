@@ -7,7 +7,7 @@ env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"
 
 si_licensetype: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
-si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
+si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passw0rd', true) }}"
 
 si_dbvendor: "{{ lookup('env', 'SI_DBVENDOR') }}"
 si_dbhost: "{{ lookup('env', 'SI_DBHOST') }}"

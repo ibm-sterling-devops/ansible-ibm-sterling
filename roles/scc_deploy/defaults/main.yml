@@ -10,12 +10,12 @@ env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 
 scc_licensetype: "{{ lookup('env', ' SCC_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
-scc_system_passphrase: "{{ lookup('env', ' SCC_SYSTEM_PASSPHRASE') | default('passwOrd', true) }}"
+scc_system_passphrase: "{{ lookup('env', ' SCC_SYSTEM_PASSPHRASE') | default('passw0rd', true) }}"
 scc_admin: "{{ lookup('env', 'SCC_ADMIN') | default('admin', true) }}"
-scc_admin_password: "{{ lookup('env', ' SCC_ADMIN_PASSWORD') | default('passwOrd', true) }}"
+scc_admin_password: "{{ lookup('env', ' SCC_ADMIN_PASSWORD') | default('passw0rd', true) }}"
 scc_truststore_password: "{{ lookup('env', ' SCC_TRUSTSTORE_PASSWORD') | default('changeit', true) }}"
 scc_keystore_password: "{{ lookup('env', ' SCC_KEYSTORE_PASSWORD') | default('changeit', true) }}"
-scc_userkey: "{{ lookup('env', ' SCC_EMAIL_PASSWORD') | default('passwOrd', true) }}"
+scc_userkey: "{{ lookup('env', ' SCC_EMAIL_PASSWORD') | default('passw0rd', true) }}"
 
 scc_dbvendor: "{{ lookup('env', ' SCC_DBVENDOR') }}"
 scc_dbhost: "{{ lookup('env', ' SCC_DBHOST') }}"
@@ -29,7 +29,7 @@ scc_emailport: "{{ lookup('env', ' SCC_SMTPPORT') | default('25', true) }}"
 scc_emailuser: "{{ scc_admin }}"
 scc_emailrespond: "{{ lookup('env', ' SCC_EMAIL_RESPOND') | default('noreply@company.com', true) }}"
 scc_ccadmin_emailaddress: "{{ lookup('env', ' SCC_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
-scc_emailpassword: "{{ lookup('env', ' SCC_EMAIL_PASSWORD') | default('passwOrd', true) }}"
+scc_emailpassword: "{{ lookup('env', ' SCC_EMAIL_PASSWORD') | default('passw0rd', true) }}"
 scc_smtp_tlsenabled: "{{ lookup('env', ' SCC_SMTP_TLSENABLED') | default('false', true) }}"
 
 scc_jmsuser: "{{ lookup('env', ' SCC_JMS_USERNAME') }}"
