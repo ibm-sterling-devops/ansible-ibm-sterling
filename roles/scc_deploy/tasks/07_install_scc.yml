@@ -1,7 +1,7 @@
 ---
 # Create Secrets for IBM Sterling Control Center
 # -----------------------------------------------------------------------------
-- name: "Generate secret sccm_secret"
+- name: "Generate secret scc_secret"
   no_log: false
   kubernetes.core.k8s:
     definition:
@@ -9,7 +9,7 @@
       kind: Secret
       type: Opaque
       metadata:
-        name: "{{ sccm_secret }}"
+        name: "{{ scc_secret }}"
         namespace: "{{ scc_namespace }}"
       data:
         .ccDBPassword: "{{ scc_dbpassword | b64encode }}"
@@ -21,7 +21,7 @@
         .jmsUserId: "{{ scc_jmsuser | b64encode }}"
         .jmsPassword: "{{ scc_jmspassword | b64encode }}"
         .userKey: "{{ scc_userkey | b64encode }}"
-  register: sccm_secret_cout
+  register: scc_secret_cout
 
 - name: "Set fact helm file"
   ansible.builtin.set_fact:
@@ -32,6 +32,7 @@
   ansible.builtin.template:
     src: "values.yaml.j2"
     dest: "{{ my_valuesfile }}"
+    mode: "0640"
 
 - name: Debug
   ansible.builtin.debug:
@@ -40,7 +41,7 @@
 # helm install test -f values.yaml -n control-center ./ibm-sccm-version.tgz
 
 - name: Run Helm install command
-  ansible.builtin.shell: 
+  ansible.builtin.command:
     cmd: "helm install --wait --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
 
 

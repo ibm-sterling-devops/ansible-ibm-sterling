@@ -13,4 +13,5 @@
   roles:
     - scc_deploy_db2
     - scc_setup_db2
+    - scc_deploy_mq
     - scc_deploy

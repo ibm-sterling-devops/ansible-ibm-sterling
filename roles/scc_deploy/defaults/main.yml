@@ -50,7 +50,7 @@ scc_version: "6.3.1.0_2024-04-30"
 scc_products_upper: "{{ scc_products | upper }}"
 
 scc_dashboard: "true" # for ibm cloud environment
-scc_oc_route: "true" # applicable for openshift environment for accessing UI 
+scc_oc_route: "true"  # applicable for openshift environment for accessing UI
 
 entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
@@ -60,7 +60,7 @@ entitled_registry_user: cp
 my_workdir: /tmp
 
 scc_registry_secret: ibm-registry-secret
-sccm_secret: ibm-sccm-secret
+scc_secret: ibm-scc-secret
 scc_cert_secret: ibm-scc-certs-secret
 
 scc_jms_secret: scc-jms-secret
