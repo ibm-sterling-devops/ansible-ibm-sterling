@@ -11,5 +11,8 @@
 - name: Define Storage for Data Persistence
   ansible.builtin.include_tasks: 04_define_storage.yml
 
+- name: "Create Certificate for SSP"
+  ansible.builtin.include_tasks: 05_create_certificates.yml
+
 - name: Install SSP using Helm Chart
-  ansible.builtin.include_tasks: 05_install_ssp.yml
+  ansible.builtin.include_tasks: 06_install_ssp.yml

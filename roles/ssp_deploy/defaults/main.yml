@@ -1,8 +1,10 @@
 ---
+# Environment variables
+# -----------------------------------------------------------------------------------------------------------------
 ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.03', true) }}"
-
 ssp_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
 ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
@@ -10,24 +12,28 @@ ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') 
 ssp_keycert_encrypt_passphrase: "{{ lookup('env', 'SSP_KEYCERT_ENCRYPT_PASSPHRASE') | default('Change1t@', true) }}"
 ssp_custom_keycert_passphrase: "{{ lookup('env', 'SSP_CUSTOM_KEYCERT_PASSPHRASE') | default('Change1t@', true) }}"
 
+ssp_timezone: "{{ lookup('env', ' SSP_TIMEZONE') | default('America/New_York', true) }}"
 # lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=8)
 
-# Entitlement
+# Configure instance
 # -----------------------------------------------------------------------------
+ssp_namespace: "ibm-ssp-{{ ssp_instanceid }}-engine"
+ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
+
 entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-# Others
+# Role Internal
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
-ssp_cm_namespace: "sterling-ssp-cm-{{ ssp_instanceid }}"
-ssp_namespace: "sterling-spp-{{ ssp_instanceid }}"
-
 ssp_registry_secret: ibm-registry-secret
-ssp_secret: ibm-seas-secret
+ssp_secret: ibm-ssp-secret
+ssp_keycert_secretname: ibm-ssp-keycert
 ssp_use_dynamic_provisioning: false
+ssp_nameoverride: ssp-{{ ssp_instanceid }}
+
+ssp_cm_keycert_secretname: ibm-ssp-cm-keycert
 
 # Helm Variables
 # -----------------------------------------------------------------------------
@@ -35,7 +41,7 @@ my_helm:
   release: "s0"
   timeout: "10m0s"
   values_yaml: "{{ my_workdir }}/myssp_values.yml"
-  chart: "{{ my_workdir }}/ibm-seas"
+  chart: "{{ my_workdir }}/ibm-ssp-engine"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:

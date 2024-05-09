@@ -25,7 +25,7 @@
       - "helm install --timeout {{ my_helm.timeout }} -f {{ my_valuesfile }} -n {{ ssp_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
 
 - name: Run Helm install command
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "helm install --timeout {{ my_helm.timeout }} -f {{ my_valuesfile }} -n {{ ssp_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
@@ -40,7 +40,7 @@
 #     timeout: "{{ my_helm.timeout }}"
 #     values_files: "{{ my_helm.values }}"
 
-- name: "Lookup SEAS Pod"
+- name: "Lookup SSP Engine Pod"
   kubernetes.core.k8s_info:
     kind: Pod
     namespace: "{{ ssp_namespace }}"
@@ -61,7 +61,7 @@
 - name: "IBM Sterling SEAS Summary:"
   ansible.builtin.debug:
     msg:
-      - "IBM Sterling SEAS status ............................ Ready!"
-      - "SEAS namespace ...................................... {{ ssp_namespace }}"
-      - "Pod name ............................................ {{ ssp_pod_name }}"
-      - "For username and password check secret .............. {{ ssp_secret }}'"
+      - "IBM Sterling SSP status ............................ Ready!"
+      - "SSP namespace ...................................... {{ ssp_namespace }}"
+      - "Pod name ........................................... {{ ssp_pod_name }}"
+      - "For username and password check secret ............. {{ ssp_secret }}'"
