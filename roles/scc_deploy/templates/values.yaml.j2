@@ -1,6 +1,5 @@
 replicaCount: 1
 
-# Control Center image details
 image:
   repository: "cp.icr.io/cp/ibm-scc/ibmscc"
   tag: "{{ compatibility_matrix[scc_version].image_tag }}"
@@ -10,12 +9,9 @@ image:
     value: ""
   pullPolicy: IfNotPresent
 
-# If you want to override the default full name( <release name>-ibm-sccm )
 nameOverride: ""
 fullnameOverride: ""
 
-# Use name field if you want to override default name
-# Use create field as false if you want to manually create and give that service account name
 serviceAccount:
   create: true
   name: ""
@@ -24,11 +20,6 @@ service:
   type: LoadBalancer
   loadBalancerIP: ""
 
-  # Load Balancer sources
-  # https://kubernetes.io/docs/concepts/services-networking/
-  # E.g -
-  # loadBalancerSourceRanges:
-  # - 10.10.10.0/24
   loadBalancerSourceRanges: []
 
   sessionAffinity: "ClientIP"
@@ -36,28 +27,23 @@ service:
     name: "swing-console"
     port: 58080
     protocol: "TCP"
-    # for network policy
     allowIngressTraffic: true
   webConsole:
     name: "web-console"
     port: 58082
     protocol: "TCP"
-    # for network policy
     allowIngressTraffic: true
   swingConsoleSecure:
     name: "swing-console-secure"
     port: 58081
     protocol: "TCP"
-    # for network policy
     allowIngressTraffic: true
   webConsoleSecure:
     name: "web-console-secure"
     port: 58083
     protocol: "TCP"
-    # for network policy
     allowIngressTraffic: true
   externalIP: ""
-  # Specify this to set annotations
   annotations:
     {}
     #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
@@ -67,15 +53,11 @@ service:
 ccArgs:
   appUserUID: "1010"
   ccInterval: "2h"
-  # This variable will be used to drop tables for fresh install in dev environment
   devEnvDropTables: "false"
-  #Use this flag to enable auto rebalance of monitored servers when scaled up
   enableAutoRebalanceServers: "true"
-
-  #Control center database information
-  #Specify engineNamePrefix for new install only and if you want to change engine name with this prefix, you have to run configcc manually
   engineNamePrefix: ""
   productEntitlement: "{{ scc_install }}"
+
   dbType: "{{ scc_dbvendor }}"
   dbHost: "{{ scc_dbhost }}"
   dbPort: "{{ scc_dbport }}"
@@ -85,15 +67,11 @@ ccArgs:
   dbInit: "true"
   dbPartition: "false"
   dbDrivers: "{{ scc_dbdrivers }}"
-  #Globalization is only needed if data to be stored contains multi-byte characters, which are common in character sets such as Kanji.
-  #Database I/O performance may drop multiple orders of magnitude if globalization support is selected, so it is NOT recommended you do so with MSSQL.
-  #If you set true for mssqlGlobal variable, then your database size can also increase significantly.
   mssqlGlobal: "{{ scc_mssqlglobal }}"
 
   autoStopJavaWebAppServer: "true"
   eventRepositoryAuth: "false"
 
-  #Email related details
   emailHostname: "{{ scc_emailhostname }}"
   emailPort: "{{ scc_emailport }}"
   emailUser: "{{ scc_emailuser }}"
@@ -196,9 +174,6 @@ persistentVolumeCCM:
     label: "app"
     value: "sterling-cc"
 
-#persistence volume for resources like jdbc drivers
-# can skip this if init conatiner is used for copying resources
-# or warpper image is used with required resources
 persistentVolumeUserInputs:
   enabled: true
   claimName: ""
@@ -218,7 +193,6 @@ storageSecurity:
   # Replace supplementalGroup Id with NFS User's groupId if the root squash is enabled on NFS server otherwise volume access will fail
   supplementalGroups: [65534]
 
-# liveness and Probeness
 livenessProbe:
   initialDelaySeconds: 175
   timeoutSeconds: 45
@@ -230,9 +204,7 @@ readinessProbe:
   periodSeconds: 120
 
 secret:
-  # Secret with all passwords such as db and admin passwords
   secretName: "{{ scc_secret }}"
-  # secret with keystore and truststore
   certsSecretName: "{{ scc_cert_secret }}"
 
 # for ibm cloud environment
@@ -256,9 +228,6 @@ license: true
 
 licenseType: "{{ scc_licensetype }}"
 
-# Set network policy
-# https://kubernetes.io/docs/concepts/services-networking/network-policies/
-# Default ingress policy will be created from Service object of values if no custom ingress policy is specified
 networkPolicy:
   policyTypes:
     - Ingress
@@ -282,18 +251,14 @@ ingress:
     enabled: false
     secretName: ""
 
-# Pod Disruption Budget configuration details
 defaultPodDisruptionBudget:
   enabled: false
   minAvailable: 1
 
-# secure computing mode(seccomp) settings, default type is RuntimeDefault,
-# if type is other than RuntimeDefault then profile value must be given
 secComp:
   type: RuntimeDefault
   profile: ""
 
-#set timezone of container
 timeZone: "America/New_York"
 
 # For troubleshooting purpose only

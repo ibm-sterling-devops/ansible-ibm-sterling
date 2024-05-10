@@ -1,5 +1,5 @@
 ---
-- name: "Lookup db2 Pod"
+- name: "Lookup DB2 Pod"
   kubernetes.core.k8s_info:
     kind: Pod
     namespace: "{{ db2_namespace }}"

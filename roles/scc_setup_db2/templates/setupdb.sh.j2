@@ -29,7 +29,7 @@ function db2_verify_and_start {
 
         while [ $counter -lt $max_checks ]; do
             if db2gcf -s | grep Available >/dev/null; then
-                echo "db2_verify_and_start: DB2 is Avaliable "
+                echo "db2_verify_and_start: DB2 is Available "
                 break  # Exit loop if condition is met
             else
                 echo "db2_verify_and_start: DB2 is starting. Waiting $interval seconds before next check... "
@@ -39,7 +39,7 @@ function db2_verify_and_start {
         done
 
         if [ $counter -eq $max_checks ]; then
-            echo "db2_verify_and_start: ERROR: DB2 is NOT Avaliable. Please check. "
+            echo "db2_verify_and_start: ERROR: DB2 is NOT Available. Please check. "
             exit 2
         fi
 
@@ -48,52 +48,6 @@ function db2_verify_and_start {
 }
 
 
-
-
-function config_settings {
-
-    db2set DB2_PARALLEL_IO=ON
-    db2_pi=$?
-
-    db2set DB2_SKIPDELETED=ON;
-    db2_sd=$?
-
-    db2set DB2_SKIPINSERTED=ON;
-    db2_si=$?
-
-    db2set DB2_USE_ALTERNATE_PAGE_CLEANING=ON;
-    db2_uapc=$?
-
-    db2set DB2_EVALUNCOMMITTED=ON;
-    db2_eu=$?
-
-    db2set DB2LOCK_TO_RB=STATEMENT;
-    db2_lock=$?
-
-    db2set DB2COMM=TCPIP
-    db2_comm=$?
-    # db2 update dbm cfg using DFT_MON_BUFPOOL ON;
-    # db2 update dbm cfg using DFT_MON_LOCK ON;
-    # db2 update dbm cfg using DFT_MON_SORT ON;
-    # db2 update dbm cfg using DFT_MON_STMT ON;
-    # db2 update dbm cfg using DFT_MON_TABLE ON;
-    # db2 update dbm cfg using DFT_MON_TIMESTAMP ON;
-    # db2 update dbm cfg using DFT_MON_UOW ON;
-    # db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
-
-    echo "config_settings: $db2_pi | $db2_sd | $db2_si | $db2_uapc | $db2_eu | $db2_lock | $db2_comm " 
-    if [ "$db2_pi" -ne 0 ] || [ "$db2_sd" -ne 0 ] || [ "$db2_si" -ne 0 ] || [ "$db2_uapc" -ne 0 ] || [ "$db2_eu" -ne 0 ] || [ "$db2_lock" -ne 0 ] 
-    then
-        echo "config_settings: ERROR - error detected "
-        exit 1
-    fi
-
-    if [ "$db2_comm" -ne 0 ]
-    then
-        echo "config_settings: ERROR - error detected DB2COMM"
-        exit 2
-    fi
-}
 
 function create_sccm_db {
 
@@ -198,42 +152,22 @@ function apply_settings_sccm {
     db2 update db cfg for SCCM using CHNGPGS_THRESH 80;
     db2_updb_3=$?
 
-    db2 update dbm cfg using svcename 50000;
-    db2_updb_4=$?
 
-    echo "apply_settings_sccm: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 | db2_updb_4=$db2_updb_4"
+    echo "apply_settings_sccm: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 "
     # if [ "$db2_updb_1" -ne 0 ] || [ "$db2_updb_2" -ne 0 ] || [ "$db2_updb_3" -ne 0 ]
     # then
     #     echo "apply_settings_sccm: ERROR - Failed to start to db2"
-    #     exit 3
+    #     exit 2
     # fi
-
 
     db2 connect reset
     db2_cr=$?
 
-    db2 terminate
-    db2_t=$?
-
-    db2 force applications all
-    db2_fal=$?
-
-    db2 deactivate db SCCM
-    db2_ddb=$?
-
-    echo "Run db2stop"
-    db2stop
-    db2_stop=$?
-
-    echo "Run db2start"
-    db2start
-    db2_start=$?
-
     echo ""
-    echo "apply_settings_sccm: db2 restart conreset=$db2_cr | terminate=$db2_t | forceapp=$db2_fal | deactivate=$db2_ddb | db2stop=$db2_stop | db2start=$db2_start "
-    if [ "$db2_cr" -ne 0 ] || [ "$db2_t" -ne 0 ] || [ "$db2_fal" -ne 0 ] || [ "$db2_ddb" -ne 0 ] || [ "$db2_stop" -ne 0 ] || [ "$db2_start" -ne 0 ]
+    echo "apply_settings_sccm: conreset=$db2_cr "
+    if [ "$db2_cr" -ne 0 ]
     then
-        echo "apply_settings_sccm: ERROR - Failed to start to db2 "
+        echo "apply_settings_sccm: ERROR - conreset "
         exit 3
     fi
     echo "apply_settings_sccm: finished sucessfully "
@@ -263,28 +197,87 @@ function apply_settings_sccd {
     db2 update db cfg for SCCD using CHNGPGS_THRESH 80;
     db2_updb_3=$?
 
-    db2 update dbm cfg using svcename 50000;
-    db2_updb_4=$?
-
-    echo "apply_settings_sccd: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 | db2_updb_4=$db2_updb_4"
+    echo "apply_settings_sccd: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 "
     # if [ "$db2_updb_1" -ne 0 ] || [ "$db2_updb_2" -ne 0 ] || [ "$db2_updb_3" -ne 0 ]
     # then
     #     echo "apply_settings_sccd: ERROR - Failed to start to db2"
-    #     exit 3
+    #     exit 2
     # fi
 
 
     db2 connect reset
     db2_cr=$?
 
+    echo ""
+    echo "apply_settings_sccd: db2 restart conreset=$db2_cr "
+    if [ "$db2_cr" -ne 0 ]
+    then
+        echo "apply_settings_sccd: ERROR - conreset "
+        exit 3
+    fi
+    echo "apply_settings_sccd: finished sucessfully "
+}
+
+
+function config_settings {
+
+    db2set DB2_PARALLEL_IO=ON
+    db2_pi=$?
+
+    db2set DB2_SKIPDELETED=ON;
+    db2_sd=$?
+
+    db2set DB2_SKIPINSERTED=ON;
+    db2_si=$?
+
+    db2set DB2_USE_ALTERNATE_PAGE_CLEANING=ON;
+    db2_uapc=$?
+
+    db2set DB2_EVALUNCOMMITTED=ON;
+    db2_eu=$?
+
+    db2set DB2LOCK_TO_RB=STATEMENT;
+    db2_lock=$?
+
+    echo ""
+    echo "db2set DB2COMM=TCPIP"
+    db2set DB2COMM=TCPIP
+    db2_comm=$?
+
+    echo ""
+    echo "db2 update dbm cfg to svcename 50000;"
+    db2 update dbm cfg using svcename 50000;
+    db2_svcename=$?
+
+    # db2 update dbm cfg using DFT_MON_BUFPOOL ON;
+    # db2 update dbm cfg using DFT_MON_LOCK ON;
+    # db2 update dbm cfg using DFT_MON_SORT ON;
+    # db2 update dbm cfg using DFT_MON_STMT ON;
+    # db2 update dbm cfg using DFT_MON_TABLE ON;
+    # db2 update dbm cfg using DFT_MON_TIMESTAMP ON;
+    # db2 update dbm cfg using DFT_MON_UOW ON;
+    # db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
+
+    echo "config_settings: db2_pi=$db2_pi | db2_sd=$db2_sd | db2_si=$db2_si | db2_uapc=$db2_uapc | db2_eu=$db2_eu | db2_lock=$db2_lock | db2_comm=$db2_comm | db2_svcename=$db2_svcename " 
+    if [ "$db2_pi" -ne 0 ] || [ "$db2_sd" -ne 0 ] || [ "$db2_si" -ne 0 ] || [ "$db2_uapc" -ne 0 ] || [ "$db2_eu" -ne 0 ] || [ "$db2_lock" -ne 0 ] 
+    then
+        echo "config_settings: ERROR - error detected "
+        exit 1
+    fi
+
+    if [ "$db2_comm" -ne 0 ] 
+    then
+        echo "config_settings: ERROR - error detected DB2COMM"
+        exit 2
+    fi
+    # || [ "$db2_svcename" -ne 0 ]
+
+
     db2 terminate
     db2_t=$?
 
     db2 force applications all
     db2_fal=$?
-
-    db2 deactivate db SCCD
-    db2_ddb=$?
 
     echo "Run db2stop"
     db2stop
@@ -295,13 +288,37 @@ function apply_settings_sccd {
     db2_start=$?
 
     echo ""
-    echo "apply_settings_sccd: db2 restart conreset=$db2_cr | terminate=$db2_t | forceapp=$db2_fal | deactivate=$db2_ddb | db2stop=$db2_stop | db2start=$db2_start "
-    if [ "$db2_cr" -ne 0 ] || [ "$db2_t" -ne 0 ] || [ "$db2_fal" -ne 0 ] || [ "$db2_ddb" -ne 0 ] || [ "$db2_stop" -ne 0 ] || [ "$db2_start" -ne 0 ]
+    echo "apply_settings: terminate=$db2_t | forceapp=$db2_fal | db2stop=$db2_stop | db2start=$db2_start "
+    if [ "$db2_t" -ne 0 ] || [ "$db2_fal" -ne 0 ] || [ "$db2_stop" -ne 0 ] || [ "$db2_start" -ne 0 ]
     then
-        echo "apply_settings_sccd: ERROR - Failed to start to db2 "
+        echo "apply_settings: ERROR - Failed to start to db2 "
         exit 3
     fi
-    echo "apply_settings_sccd: finished sucessfully "
+
+    echo ""
+    echo "apply_settings: Check if DB2 is Available "
+    counter=0
+    max_checks=5
+    interval=30
+
+    while [ $counter -lt $max_checks ]; do
+        if db2gcf -s | grep Available >/dev/null; then
+            echo "apply_settings: DB2 is Available "
+            break  # Exit loop if condition is met
+        else
+            echo "apply_settings: DB2 is starting. Waiting $interval seconds before next check... "
+            sleep $interval
+            counter=$((counter + 1))
+        fi
+    done
+
+    if [ $counter -eq $max_checks ]; then
+        echo "apply_settings: ERROR: DB2 is NOT Available. Please check. "
+        exit 2
+    fi
+
+
+    echo "apply_settings: finished sucessfully "
 }
 
 ########################## Main Part of Shell Script ##########################
@@ -312,7 +329,10 @@ echo "Starting db2 - db2_verify_and_start"
 db2_verify_and_start
 echo ""
 
-{% if scc_install_ccm is defined and scc_install_ccm %}
+
+# Steps for SCC Monitor
+# -----------------------------------------------------------------------------
+{% if scc_install_monitor %}
 echo "Creating IBM Sterling Control Center Database - create_sccm_db"
 create_sccm_db
 echo ""
@@ -320,23 +340,27 @@ echo ""
 echo "Applying settings to DB2 - apply_settings_sccm"
 apply_settings_sccm
 echo ""
-
 {% endif %}
 
-{% if scc_install_ccd is defined and scc_install_ccd %}
+
+# Steps for SCC director
+# -----------------------------------------------------------------------------
+{% if scc_install_director %}
 echo "Creating IBM Sterling Control Center Database - create_sccd_db"
 create_sccd_db
 echo ""
 
 echo "Applying settings to DB2 - apply_settings_sccd"
-apply_settings_sccD
+apply_settings_sccd
 echo ""
 {% endif %}
 
+
+# Steps for General
+# -----------------------------------------------------------------------------
 echo "Define Config settings to DB2 - config_settings"
 config_settings
 echo ""
-
 
 
 echo "End of script setupdb.sh "

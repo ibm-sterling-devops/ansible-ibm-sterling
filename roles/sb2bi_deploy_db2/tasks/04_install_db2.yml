@@ -107,7 +107,7 @@
                   storage: "{{ db2_storage_size | default('40Gi') }}"
               storageClassName: "{{ storage_class_matrix[db2_storage_class].rwo | default('') }}"
 
-- name: "Lookup db2 Pod"
+- name: "Lookup DB2 Pod"
   kubernetes.core.k8s_info:
     kind: Pod
     namespace: "{{ db2_namespace }}"
