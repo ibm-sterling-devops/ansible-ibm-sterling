@@ -16,7 +16,7 @@
         .adminUserId: "{{ scc_admin | b64encode }}"
         .adminUserPassword: "{{ scc_admin_password | b64encode }}"
         .trustStorePassword: "{{ scc_truststore_password | b64encode }}"
-        .keyStorePassword: "{{ scc_keystore_password| b64encode }}"
+        .keyStorePassword: "{{ scc_keystore_password | b64encode }}"
         .emailPassword: "{{ scc_emailpassword | b64encode }}"
         .jmsUserId: "{{ scc_jmsuser | b64encode }}"
         .jmsPassword: "{{ scc_jmspassword | b64encode }}"
@@ -38,12 +38,10 @@
   ansible.builtin.debug:
     msg: "helm install --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
 
-# helm install test -f values.yaml -n control-center ./ibm-sccm-version.tgz
-
 - name: Run Helm install command
   ansible.builtin.command:
-    cmd: "helm install --wait --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
-
+    cmd: "helm install --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
+  # --wait 
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Deploy Connect:Direct chart from local path
