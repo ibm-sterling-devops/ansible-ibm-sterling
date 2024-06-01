@@ -40,7 +40,7 @@ my_workdir: /tmp
 si_namespace: "sterling-b2bi-{{ si_instanceid }}-app"
 si_db2_namespace: "sterling-b2bi-{{ si_instanceid }}-db2"
 si_mq_namespace: "sterling-b2bi-{{ si_instanceid }}-mq"
-si_version: "6.2.0.1"
+si_version: "6.2.0.2"
 si_registry_secret: si-ibm-registry
 si_system_passphrase_secret: si-system-passphrase-secret
 si_db_secret: si-db-secret
@@ -68,6 +68,39 @@ si_helm:
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.2.0.2:
+    helm_version: "3.0.2"
+    global:
+      image:
+        tag: "6.2.0.2"
+    resourcesInit:
+      image:
+        tag: "6.2.0.2"
+    dataSetup:
+      image:
+        tag: "6.2.0.2"
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:
+        image:
+          tag: "10.1.2.0.20231130"
+      itxaIntegration:
+        image:
+          repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
+          tag: "10.0.1.9-x86_64"
+        resourcesInit:
+          repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
+          tag: "10.0.1.9-x86_64"
+    test:
+      image:
+        tag: '1.1.65'
+    purge:
+      image:
+        tag: "6.2.0.2"
+    documentService:
+      image:
+        tag: 1.0.0.2
   6.2.0.1:
     helm_version: "3.0.1"
     global:

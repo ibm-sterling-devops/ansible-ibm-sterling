@@ -1,0 +1,337 @@
+# Default values for mychart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1 
+
+# Control Center image details
+image:
+  repository: "cp.icr.io/cp/ibm-scc/ibmscc"
+  tag: "6.3.1.0_iFix02_2024-05-28"
+  imageSecrets: ""
+  digest:
+    enabled: true
+    value: sha256:463c8ef64635df00fac6f07ad570808cb2caa252b014a602db607fbe5cad5c84
+  pullPolicy: IfNotPresent
+
+# If you want to override the default full name( <release name>-ibm-sccm )
+nameOverride: ""
+fullnameOverride: ""
+
+# Use name field if you want to override default name 
+# Use create field as false if you want to manually create and give that service account name
+serviceAccount:
+  create: true
+  name: ""
+
+service:
+  type: LoadBalancer
+  loadBalancerIP: ""
+  
+  # Load Balancer sources
+  # https://kubernetes.io/docs/concepts/services-networking/
+  # E.g -
+  # loadBalancerSourceRanges:
+  # - 10.10.10.0/24
+  loadBalancerSourceRanges: []
+  
+  sessionAffinity: "ClientIP"
+  swingConsole:
+    name: "swing-console"
+    port: 58080
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  webConsole:
+    name: "web-console"
+    port: 58082
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  swingConsoleSecure:
+    name: "swing-console-secure"
+    port: 58081
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  webConsoleSecure:
+    name: "web-console-secure"
+    port: 58083
+    protocol: "TCP"
+    # for network policy
+    allowIngressTraffic: true
+  externalIP: ""
+  # Specify this to set annotations 
+  annotations: {}
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: cm
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01  
+
+ccArgs:
+  appUserUID: "1010"
+  ccInterval: "2h"
+  # This variable will be used to drop tables for fresh install in dev environment
+  devEnvDropTables: "false"
+  #Use this flag to enable auto rebalance of monitored servers when scaled up
+  enableAutoRebalanceServers: "true"
+
+  #Control center database information
+  #Specify engineNamePrefix for new install only and if you want to change engine name with this prefix, you have to run configcc manually
+  engineNamePrefix: ""
+  productEntitlement: "CCD,CCM"
+  dbType: "MSSQL"
+  dbHost: ""
+  dbPort: "1433"
+  dbUser: "ibm"
+  dbName: "CC_HELM"
+  dbLoc: "none"
+  dbInit: "false"
+  dbPartition: "false"
+  dbDrivers: "/app/CC/conf/db2jcc4.jar,/app/CC/conf/db2jcc_license_cu.jar"
+  #Globalization is only needed if data to be stored contains multi-byte characters, which are common in character sets such as Kanji.
+  #Database I/O performance may drop multiple orders of magnitude if globalization support is selected, so it is NOT recommended you do so with MSSQL.
+  #If you set true for mssqlGlobal variable, then your database size can also increase significantly.
+  mssqlGlobal: "false"
+ 
+  autoStopJavaWebAppServer: "true"
+  eventRepositoryAuth: "false"
+  
+  #Email related details
+  emailHostname: "localhost"
+  emailPort: "25"
+  emailUser: ""
+  emailRespond: "noone@anywhere"
+  ccAdminEmailAddress: "noone@anywhere"
+  smtpTLSEnabled: "true"
+  
+  oracleRacOrScan: ""
+  
+  #JMS related details if needed to post events to remote JMS system
+  jmsEnable: ""
+  jmsType: ""
+  jmsHost: ""
+  jmsPort: ""
+  jmsQueueManager: ""
+  jmsChannel: ""
+  jmsSubject: ""
+  jmsTopic: ""
+  jmsEmbedBroker: ""
+  jmsDataDirectory: ""
+  jmsTimeToLive: ""
+  jmsRetries: ""
+  jmsRetryWait: ""
+  jmsBrokerName: ""
+  
+  #Secure parameters
+  dbSSL: ""
+    
+  # Keystore and truststore configuration
+  keyStore: "/app/CC/user_inputs/CCenter.keystore"
+  trustStore: "/app/CC/user_inputs/CCenter.truststore"
+  keyAlias: "ccalias120"
+  adminEmailAddress: "admin@test.com"
+
+  #Seas Parameters
+  packagePath: "../packages"
+  seasPrimaryAddress: ""
+  seasPrimaryPort: ""
+  seasAlternativeAddress: ""
+  seasAlternativePort: ""
+  seasSecureConnection: "N"
+  seasProfileName: "test"
+  seasPersistentConnection: "N"
+  seasSecureProtocol: ""
+
+#From the given values 70% resources will be allocated to EP and remaining 20% will be allocated to webappserver
+resources: 
+  limits:
+    cpu: 3000m
+    memory: 8Gi
+    ephemeral-storage: "4Gi"
+  requests:
+    cpu: 1500m
+    memory: 4Gi
+    ephemeral-storage: "2Gi"
+
+initResources:
+  limits:
+    cpu: 500m
+    memory: 2Gi
+  requests:
+    cpu: 250m
+    memory: 1Gi
+
+# Customer can use extra init containers to make 
+# certain resources available for main container
+# userInput's enabled should be true if user_input directory
+# will be shared for resources like DB Drivers and certificates in waiting state
+#
+# Followings are DB drivers available inside jdbc driver container
+# 1. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/db2jcc_license_cu.jar
+# 2. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/db2jcc4.jar
+# 3. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.33.31/db2jcc_license_cu.jar
+# 4. /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.33.31/db2jcc4.jar
+# 5. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-11.2.3.jre17.jar
+# 6. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-12.6.1.jre11.jar
+# 7. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-11.2.3.jre8.jar
+# 8. /ibm/scc/resoures/dbdrivers/mssql/v2017/mssql-jdbc-12.6.1.jre8.jar
+# 9. /ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-11.2.3.jre17.jar
+# 10./ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-12.6.1.jre11.jar
+# 11./ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-12.6.1.jre8.jar
+# 12./ibm/scc/resoures/dbdrivers/mssql/v2019/mssql-jdbc-11.2.3.jre8.jar
+# 13./ibm/scc/resoures/dbdrivers/oracle/v19c/ojdbc10.jar
+# 14./ibm/scc/resoures/dbdrivers/oracle/v19c/ojdbc8.jar
+# 15./ibm/scc/resoures/dbdrivers/oracle/v21c/ojdbc11.jar
+# 16./ibm/scc/resoures/dbdrivers/oracle/v21c/ojdbc8.jar
+#
+# To copy JDBC driver from the CC resources container, 
+# uncomment the following and remove empty square braketss next to extraInitContainers and 
+# specify the appropriate JDBC Driver path from the above list in command section for your database server type and version.
+extraInitContainers: []
+#  - name: "copy-dbdriver"
+#    repository: "cp.icr.io/cp/ibm-scc/ibmscc_dbdrivers"
+#    tag: "2024"
+#    imageSecrets: "ibm-entitlement-key"
+#    pullPolicy: Always
+#    command: "cp /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/* /app/conf/"
+#    digest:
+#      enabled: false
+#      value: sha256:a1bd211ef90e446af809db2421abdd0fe60e1ae6d44ef646fe98e97b94fd13ce
+#    userInput:
+#      enabled: false
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: {}
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+#persistence Volume for runtime environments such as logs, conf
+persistentVolumeCCM:
+  enabled: true
+  claimName: ""
+  #if claim name is not given and enabled is true then next 3 parameters are required
+  storageClassName: "manual"
+  size: 20Gi
+  accessMode: "ReadWriteOnce"
+  useDynamicProvisioning: false
+  selector:
+    label: ""
+    value: ""
+
+#persistence volume for resources like jdbc drivers
+# can skip this if init conatiner is used for copying resources 
+# or warpper image is used with required resources
+persistentVolumeUserInputs:
+  enabled: true
+  claimName: ""
+  #if claim name is not given and enabled is true then next 3 properties are required
+  storageClassName: "manual"
+  size: 2Gi
+  accessMode: "ReadWriteOnce"
+  selector:
+    label: ""
+    value: ""
+    
+# Manage Storage permission 
+storageSecurity:
+  # fsGroup -  Used for controlling access to block storage such as Ceph RBD, iSCSI, and some Cloud storage.
+  fsGroup: ""
+  # supplementalGroups - supplemental Groups IDs are used for controlling access to shared storage like NFS and GlusterFS
+  # Replace supplementalGroup Id with NFS User's groupId if the root squash is enabled on NFS server otherwise volume access will fail
+  supplementalGroups: [65534]
+  
+# liveness and Probeness
+livenessProbe:
+  initialDelaySeconds: 175
+  timeoutSeconds: 45
+  periodSeconds: 120
+
+readinessProbe:
+  initialDelaySeconds: 175
+  timeoutSeconds: 15
+  periodSeconds: 120
+  
+secret:
+  # Secret with all passwords such as db and admin passwords
+  secretName:  ""
+  # secret with keystore and truststore
+  certsSecretName: ""
+
+# for ibm cloud environment
+dashboard:
+  enabled: true
+
+# applicable for openshift environment for accessing UI 
+route:
+  enabled: true
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+arch: "amd64"
+
+# Change license to true to indicate that you have read and agree to license agreements
+# Refer: https://www.ibm.com/support/customer/csol/terms/?id=L-QZDV-G39NEP&lc=en#detail-document (L-QZDV-G39NEP)
+license: false
+
+# Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
+# Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
+licenseType: non-prod
+
+# Set network policy
+# https://kubernetes.io/docs/concepts/services-networking/network-policies/
+# Default ingress policy will be created from Service object of values if no custom ingress policy is specified
+networkPolicy:
+  policyTypes:
+    - Ingress
+    - Egress
+  # apply ingress rule. Default allow all ingress traffic
+  # ingress:
+  #   - {}
+  # apply egress rule. Default allow all egress traffic 
+  egress: 
+    - {}
+  
+# can be used when ingress controller is available
+# can be used for rule based access 
+# TLS related configuration is requierd if passthrough termination is not used
+ingress:
+  enabled: false
+  host: ""
+  controller: "nginx"
+  annotations: {}
+  tls:
+    enabled: false
+    secretName: ""
+
+# Pod Disruption Budget configuration details
+defaultPodDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+# secure computing mode(seccomp) settings, default type is RuntimeDefault, 
+# if type is other than RuntimeDefault then profile value must be given
+secComp:
+  type: RuntimeDefault
+  profile: ""
+
+#set timezone of container
+timeZone: "Asia/Calcutta"
+
+# For troubleshooting purpose only
+debugScripts: true
+
+# To enable all engine logs to redirect to console of pod 
+consoleLogEnabled: true

@@ -1,4 +1,4 @@
-# (C) Copyright 2019-2023 Syncsort Incorporated. All rights reserved.
+# (C) Copyright 2019-2024 Syncsort Incorporated. All rights reserved.
 
 # Default values for b2bi.
 # This is a YAML-formatted file.
@@ -15,9 +15,9 @@ global:
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi"
   # Provide the tag value in double quotes
-    tag: "6.2.0.0"
+    tag: "6.2.0.2"
   # If digest is specified, it takes precedence over tag
-    digest: sha256:614ca27d9bc9edf9aa100703658ad599a1b3dbe1369268de95306fcedb825cbb
+    digest: sha256:18535ab14b171138bd1528b715686b829371af702d758e002c0f3c903670fb81
     pullPolicy: IfNotPresent
     pullSecret: ""
   networkPolicies:
@@ -84,8 +84,8 @@ resourcesInit:
   enabled: false
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-resources"
-    tag: "6.2.0.0"
-    digest: sha256:3d8c6afa6215915c99aa4a65fcb323ded326872f94a720117b89caef36ed9c88
+    tag: "6.2.0.2"
+    digest: sha256:02bf6aa98eab350402edc156b026cc1ac9d5470d93a8de5ffa3a010d2293e83e
     pullPolicy: "IfNotPresent"
   command:
 
@@ -155,9 +155,9 @@ dataSetup:
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-dbsetup"
     # Provide the tag value in double quotes
-    tag: "6.2.0.0"
+    tag: "6.2.0.2"
      # If digest is specified, it takes precedence over tag
-    digest: sha256:7d042d39967968ab626c1f89e039500ce2fdc181171b5d91d36ccb6d73deb698
+    digest: sha256:738efece4445701ebec090b26fec6fb596cd5d5b2ac54e912bf38c3af488f000
     pullPolicy: IfNotPresent
     pullSecret: ""
     extraLabels: {}
@@ -198,8 +198,8 @@ integrations:
       enabled: true
     image:
       repository: "cp.icr.io/cp/ibm-itx-rs"
-      tag: "10.1.1.1.20221116"
-      digest: "sha256:d6dea7cad255582d091f91c7ab226d819ce105a4146b9ac706d96262dd929afc"
+      tag: "10.1.2.0.20231130"
+      digest: "sha256:bc9b60086ca95a8ef6303be33cedabf475d10dd8ad161c75567f51d19aba13b8"
       pullPolicy: IfNotPresent
       pullSecret:
     dataPVC:
@@ -231,14 +231,15 @@ integrations:
       cmgrLog:
         # Supported levels are "none", "failures", "info" and "all". Default is "none".
         level: "none"
+  # Integration with ITXA Certified Container edition is supported only for release version 10.0.1.8 onwards
   itxaIntegration:
     enabled: false
     dataSetup:
       enabled: true
     image:
-      repository: "cp.icr.io/cp/ibm-itxa-runtime"
-      tag: "10.0.1.8"
-      digest:
+      repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
+      tag: "10.0.1.9-x86_64"
+      digest: sha256:d9deb24f62fdcc417b5b61ab320c5145a5e258009cc0f557a666f67d3b553bfe
       pullPolicy: IfNotPresent
       pullSecret:
     appSecret: "itxa-oracle-secrets"
@@ -256,9 +257,9 @@ integrations:
     resourcesInit:
       enabled: true
       image:
-        repository: "cp.icr.io/cp/ibm-itxa-resources"
-        tag: "10.0.1.8"
-        digest:
+        repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
+        tag: "10.0.1.9-x86_64"
+        digest: sha256:674198e0dbed8251b630aa163a8934e3b2a5b0426c0fa95cadfb7567f0410ccc
         pullPolicy: "IfNotPresent"
 
 #setup.cfg configuration starts here. Property names must follow camelCase format.
@@ -397,6 +398,9 @@ setupCfg:
   # SAP SNC library name. This is same as the native library file name uploaded on customization UI for the SAP SNC library.
   sapSncLibName:  
 
+  #CLA2 configurations
+  launchClaServer: false
+
 asi:
   replicaCount: 1
   
@@ -448,6 +452,12 @@ asi:
         targetPort: rest-adapter
         nodePort: 30007
         protocol: TCP
+      ops: 
+        name: ops
+        port: 35008
+        targetPort: ops
+        nodePort: 30008
+        protocol: TCP
     extraPorts: []
       #-name: http-1
       # port: 46000
@@ -497,7 +507,7 @@ asi:
   # command - command to be executed 
   # arg1, arg2.. - command arguments
   readinessProbe:
-    initialDelaySeconds: 60
+    initialDelaySeconds: 30
     timeoutSeconds: 5
     periodSeconds: 60
     command:
@@ -506,10 +516,10 @@ asi:
       #- arg2
      
   startupProbe:
-    initialDelaySeconds: 120
+    initialDelaySeconds: 300
     timeoutSeconds: 30
     periodSeconds: 60
-    failureThreshold: 3
+    failureThreshold: 6
        
   internalAccess:
     enableHttps: true
@@ -562,6 +572,9 @@ asi:
     #  image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
     #  imagePullPolicy: {{ .Values.init.image.pullPolicy }}
     #  command:
+    #  shareVolume: false
+    #  localMountPath: 
+    #  appMountPath:
 
   resources: 
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -841,6 +854,9 @@ ac:
     #  image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
     #  imagePullPolicy: {{ .Values.init.image.pullPolicy }}
     #  command:
+    #  shareVolume: false
+    #  localMountPath: 
+    #  appMountPath:
 
   resources: 
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -1073,6 +1089,9 @@ api:
     #  image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
     #  imagePullPolicy: {{ .Values.init.image.pullPolicy }}
     #  command:
+    #  shareVolume: false
+    #  localMountPath: 
+    #  appMountPath:
 
   resources: 
     # We usually recommend not to specify default resources and to leave this as a conscious
@@ -1209,8 +1228,8 @@ fullnameOverride: ""
 test:
   image:
     repository: 'cp.icr.io/cp/opencontent-common-utils'
-    tag: '1.1.62'
-    digest: sha256:f8b5b8bbb346fe35081491581ae32148ce6791cf3a90881926822cbcd5b0d8bb
+    tag: '1.1.65'
+    digest: sha256:1c72dee7fa67e738301efb7eea1b968ee668b6688d02a3e72cb8ef238ad8fcf7
     pullPolicy: 'IfNotPresent'
 
 purge:
@@ -1218,8 +1237,8 @@ purge:
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-purge"
   # Provide the tag value in double quotes
-    tag: "6.2.0.0"
-    digest: sha256:1668c8bbce36cec1003d2e3f777122a7789bd3c34970d2b62c3fdc831cc612c2
+    tag: "6.2.0.2"
+    digest: sha256:f2b3c113d0bbc4967d9248b241e33b67ca16a20bb0807ac17bfb5a6c13802a27
     pullPolicy: IfNotPresent
     pullSecret: ""
     extraLabels: {}
@@ -1269,7 +1288,7 @@ documentService:
   image:
     repository: cp.icr.io/cp/ibm-b2bi/b2bi-documentservice
     pullPolicy: IfNotPresent
-    tag: 1.0.0.0
+    tag: 1.0.0.2
     digest:
     pullSecret: ""
   serviceAccount:
