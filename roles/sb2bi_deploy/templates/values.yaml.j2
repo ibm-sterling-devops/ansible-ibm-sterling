@@ -82,7 +82,7 @@ appResourcesPVC:
     label: "intent"
     value: "resources"
   accessMode: ReadOnlyMany
-  size: {{ si_helm_values.appResourcesPVC.size | default('100Mi') }}
+  size: {{ si_helm_values.appResourcesPVC.size | default('1Gi') }}
   preDefinedResourcePVCName: 
 
 
@@ -92,7 +92,7 @@ appLogsPVC:
     label: "intent"
     value: "logs"
   accessMode: ReadWriteMany
-  size: {{ si_helm_values.appLogsPVC.size | default('500Mi') }}
+  size: {{ si_helm_values.appLogsPVC.size | default('1Gi') }}
   preDefinedLogsPVCName: 
   
 appDocumentsPVC:
@@ -102,7 +102,7 @@ appDocumentsPVC:
     label: "intent"
     value: "documents"
   accessMode: ReadWriteMany
-  size: {{ si_helm_values.appDocumentsPVC.size | default('500Mi') }}
+  size: {{ si_helm_values.appDocumentsPVC.size | default('1Gi') }}
   enableVolumeClaimPerPod: false
   preDefinedDocumentPVCName: 
 

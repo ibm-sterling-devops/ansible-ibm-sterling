@@ -104,7 +104,7 @@
   ansible.builtin.set_fact:
     my_serial: "{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}"
 
-- name: Unique Id for files
+- name: Define multiple variables
   ansible.builtin.set_fact:
     scc_cert_crt: "{{ my_workdir }}/scccert-{{ my_serial }}.crt"  
     scc_cert_key: "{{ my_workdir }}/scckey-{{ my_serial }}.pem"

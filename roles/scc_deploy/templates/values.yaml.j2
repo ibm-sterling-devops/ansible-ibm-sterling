@@ -167,19 +167,19 @@ persistentVolumeCCM:
   claimName: ""
   #if claim name is not given and enabled is true then next 3 parameters are required
   storageClassName: "{{ storage_class_matrix[scc_storage_class].rwo | default('manual') }}"
-  size: "{{ scc_helm_values.persistentVolumeCCM.size | default('100Mi')}}" # 20Gi
+  size: "{{ scc_helm_values.persistentVolumeCCM.size | default('2Gi')}}" # 20Gi
   accessMode: "ReadWriteOnce"
   useDynamicProvisioning: true
   selector:
-    label: "app"
-    value: "sterling-cc"
+    label: ""
+    value: ""
 
 persistentVolumeUserInputs:
   enabled: true
   claimName: ""
   #if claim name is not given and enabled is true then next 3 properties are required
   storageClassName: "{{ storage_class_matrix[scc_storage_class].rwo | default('manual') }}"
-  size: "{{ scc_helm_values.persistentVolumeCCM.size | default('100Mi')}}" # 2Gi
+  size: "{{ scc_helm_values.persistentVolumeCCM.size | default('2Gi')}}" # 2Gi
   accessMode: "ReadWriteOnce"
   selector:
     label: ""

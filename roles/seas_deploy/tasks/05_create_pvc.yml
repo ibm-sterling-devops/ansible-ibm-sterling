@@ -19,7 +19,7 @@
         volumeMode: Filesystem
         resources:
           requests:
-            storage: 500Mi
+            storage: 1Gi
 
 - name: Wait for PVC to be Bound
   kubernetes.core.k8s_info:
