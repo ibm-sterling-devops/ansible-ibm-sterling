@@ -28,12 +28,6 @@ seas_registry_secret: ibm-registry-secret
 seas_secret: ibm-seas-secret
 seas_use_dynamic_provisioning: false
 
-my_helm:
-  release: "s0"
-  timeout: "10m0s"
-  values_yaml: "{{ my_workdir }}/myseas_values.yml"
-  chart: "{{ my_workdir }}/ibm-seas"
-
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
   6.1.0.0.06:

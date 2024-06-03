@@ -85,6 +85,12 @@
       - (mq_namespace != "") or (si_jmsuser != "")
     fail_msg: "JMS Queue Information property is required"
 
+# 5. Serial ID
+# -----------------------------------------------------------------------------
+- name: Unique Id for files
+  ansible.builtin.set_fact:
+    my_serial: "{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}"
+
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
@@ -94,3 +100,4 @@
       - "SI namespace ................. {{ si_namespace }}"
       - "Database Namespace ........... {{ db2_namespace }}"
       - "JMS Queue Namespace .......... {{ mq_namespace }}"
+      - "my_serial ...................... {{ my_serial }}"

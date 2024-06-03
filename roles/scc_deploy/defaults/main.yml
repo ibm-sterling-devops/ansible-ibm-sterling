@@ -71,13 +71,6 @@ db2_namespace: ""
 db2_secret: mydb2-secret
 db2_id: mydb2
 
-# Helm Variables
-# -----------------------------------------------------------------------------
-scc_helm:
-  release: s0
-  timeout: "120m0s"
-  chart: "{{ my_workdir }}/ibm-sccm/"
-
 # Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:

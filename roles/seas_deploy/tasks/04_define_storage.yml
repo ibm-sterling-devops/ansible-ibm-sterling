@@ -60,5 +60,5 @@
 # -----------------------------------------------------------------------------
 - name: Set Storage Class
   ansible.builtin.set_fact:
-    seas_use_dynamic_provisioning: true
+    seas_use_dynamic_provisioning: false
     seas_storage_class: "{{ my_storage_class }}"

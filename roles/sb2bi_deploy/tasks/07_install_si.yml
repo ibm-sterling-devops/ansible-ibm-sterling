@@ -22,21 +22,26 @@
       purge:
         schedule: "0 0 * * *"
 
+- name: "Set fact helm file"
+  ansible.builtin.set_fact:
+    my_helmfile: "{{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}.tgz"
+    my_valuesfile: "{{ my_workdir }}/myb2bi_values-{{ my_serial }}.yml"
+
 - name: Generate my_values.yml
   ansible.builtin.template:
     src: "values.yaml.j2"
-    dest: "{{ my_workdir }}/myb2bi_values.yml"
-    mode: "0666"
+    dest: "{{ my_valuesfile }}"
+    mode: "0640"
 
 - name: Debug
   ansible.builtin.debug:
-    msg: "helm install --timeout {{ si_helm.timeout }} -f {{ si_helm.values_yaml }} -n {{ si_namespace }} {{ si_helm.release }} {{ si_helm.chart }}"
+    msg: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ si_namespace }} s0 {{ si_helm.chart }}"
+#   msg: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ si_namespace }} s0 {{ my_helmfile }}"
 
 - name: Run Helm install command
   ansible.builtin.shell:
-    cmd: "helm install --timeout {{ si_helm.timeout }} -f {{ si_helm.values_yaml }} -n {{ si_namespace }} {{ si_helm.release }} {{ si_helm.chart }}"
+    cmd: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ si_namespace }} s0 {{ si_helm.chart }}"
 # --wait
-
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Deploy Connect:Direct chart from local path

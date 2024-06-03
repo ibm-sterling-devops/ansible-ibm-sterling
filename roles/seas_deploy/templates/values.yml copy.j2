@@ -25,6 +25,9 @@ persistentVolume:
   enabled: true
   useDynamicProvisioning: false
   existingClaimName: "s0-ibm-seas-pvc-{{ my_serial }}"
+  storageClassName: "{{ storage_class_matrix[ seas_storage_class ].rwo }}"  
+  size: {{ seas_other_values.pvClaim.size | default('100Mi') }}
+  accessMode: "ReadWriteOnce"
 
 service:
   type: "LoadBalancer"

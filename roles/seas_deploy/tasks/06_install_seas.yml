@@ -1,31 +1,25 @@
 ---
-- name: Define SEAS helm chart values
+- name: "Set fact helm file"
   ansible.builtin.set_fact:
-    seas_other_values:
-      persistence:
-        useDynamicProvisioning: "{{ 'true' if (seas_use_dynamic_provisioning) else 'false' }}"
+    my_helmfile: "{{ my_workdir }}/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
+    my_valuesfile: "{{ my_workdir }}/myseas_values-{{ my_serial }}.yml"
 
 - name: Generate my_values.yml
   ansible.builtin.template:
     src: "values.yml.j2"
-    dest: "{{ my_workdir }}/myseas_values.yml"
+    dest: "{{ my_valuesfile }}"
     mode: "0640"
-
-- name: "Set fact helm file"
-  ansible.builtin.set_fact:
-    my_helmfile: "{{ my_workdir }}/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
 
 - name: Debug
   ansible.builtin.debug:
     msg:
-      - "Image Repository ................. {{ compatibility_matrix[seas_version].image_repository }}"
-      - "Image Tag        ................. {{ compatibility_matrix[seas_version].image_tag }}"
-      - "seas_other_values  ................. {{ seas_other_values }}"
-      - "helm install --timeout {{ my_helm.timeout }} -f {{ my_helm.values_yaml }} -n {{ seas_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
+      - "Image Repository  ................. {{ compatibility_matrix[seas_version].image_repository }}"
+      - "Image Tag         ................. {{ compatibility_matrix[seas_version].image_tag }}"
+      - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ seas_namespace }} s0 {{ my_helmfile }}"
 
 - name: Run Helm install command
   ansible.builtin.shell:
-    cmd: "helm install --timeout {{ my_helm.timeout }} -f {{ my_helm.values_yaml }} -n {{ seas_namespace }} {{ my_helm.release }} {{ my_helmfile }}"
+    cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ seas_namespace }} s0 {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
 
@@ -44,7 +38,7 @@
     kind: Pod
     namespace: "{{ seas_namespace }}"
     label_selectors:
-      - release={{ my_helm.release }}
+      - release=s0
     wait: true
     wait_sleep: 30
     wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state

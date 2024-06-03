@@ -11,5 +11,8 @@
 - name: Define Storage for Data Persistence
   ansible.builtin.include_tasks: 04_define_storage.yml
 
+- name: Create PVC for SEAS
+  ansible.builtin.include_tasks: 05_create_pvc.yml
+
 - name: Install SEAS using Helm Chart
-  ansible.builtin.include_tasks: 05_install_seas.yml
+  ansible.builtin.include_tasks: 06_install_seas.yml

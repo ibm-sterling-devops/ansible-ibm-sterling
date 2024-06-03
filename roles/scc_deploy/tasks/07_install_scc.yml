@@ -36,11 +36,11 @@
 
 - name: Debug
   ansible.builtin.debug:
-    msg: "helm install --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
+    msg: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ scc_namespace }} s0 {{ my_helmfile }}"
 
 - name: Run Helm install command
   ansible.builtin.command:
-    cmd: "helm install --timeout {{ scc_helm.timeout }} -f {{ my_valuesfile }} -n {{ scc_namespace }} {{ scc_helm.release }} {{ my_helmfile }}"
+    cmd: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ scc_namespace }} s0 {{ my_helmfile }}"
   # --wait 
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html

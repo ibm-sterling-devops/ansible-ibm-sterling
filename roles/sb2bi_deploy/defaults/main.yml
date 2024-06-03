@@ -60,16 +60,13 @@ mq_secret: mymq-secret
 # Helm Variables
 # -----------------------------------------------------------------------------
 si_helm:
-  release: s0
-  timeout: "120m0s"
-  values_yaml: "{{ my_workdir }}/myb2bi_values.yml"
   chart: "{{ my_workdir }}/ibm-b2bi-prod/"
 
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
   6.2.0.2:
-    helm_version: "3.0.2"
+    helm_version: "3.0.4"
     global:
       image:
         tag: "6.2.0.2"
