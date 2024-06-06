@@ -69,7 +69,7 @@ storage_class_matrix:
   ibmcloud:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-file-gold"       # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with C:D
+    rwo: "ibmc-file-gold-gid"   # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with C:D
     rom: ""                     # ReadOnlyMany
     rwop: ""                    # ReadWriteOncePod
   redhat:
