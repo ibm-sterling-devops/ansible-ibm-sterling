@@ -1,0 +1,281 @@
+# Default values for ibm-cdws.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Replic number for CDWS pod
+replicaCount: 1
+
+# Specify the respective Docker Image details for CDWS
+image:
+  # Specify the repository name alongwith image name
+  repository: cp.icr.io/cp/ibm-cdws/cdws6.3_certified_container_6.3.0.8
+  # Specify respective pull policy to be used to override default `IfNotPresent` policy
+  pullPolicy: Always
+  # Specify the image pull secret for the service, if the image is in private registry 
+  # protected with password
+  imageSecrets: ""
+  # Enable true/false to pull image from Entitled Registry using below digest
+  digest:
+    enabled: false
+    value: "sha256:0677f610e7b87a0f64ebac1f3504340a4d92aeb4046669d1951a1176587080c3"
+  # Specify the tag name for the image in double quotes
+  tag: "6.3.0.8_ifix000"
+
+# If you want to override the default full name( <release name>-ibm-cdws )
+nameOverride: ""
+ 
+# Use create field as false if you want to manually create and give that service account name
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # Use name field if you want to override default name
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Specify these fields for Services
+service:
+  # ClusterPort to be exposed
+  type: LoadBalancer
+  loadBalancerIP: ""
+  sessionAffinity: "ClientIP"
+
+  # Load Balancer sources
+  # https://kubernetes.io/docs/concepts/services-networking/
+  # E.g -
+  # loadBalancerSourceRanges:
+  # - 10.10.10.0/24
+  loadBalancerSourceRanges: []
+  port: 9443
+  webConsoleName: "cdws-web-console"
+  protocol: TCP
+  externalIP: ""
+  # Specify external traffic policy, if required
+  externalTrafficPolicy: ""
+  # for network policy
+  allowIngressTraffic: true
+  # Specify this to set annotations
+  annotations: {}
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: cm
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01
+
+# Specify these fields to provide config values for CDWS application
+cdwsParams:
+  # Specify label for self-signed/ca-signed certificate
+  certificateLabel: "mftwebservices"
+  # Specify expiration time for self-signed certificate in days
+  certificateExpiryTime: 365
+  # Specify the common name for self-signed certificate
+  commonName: "localhost"
+  # Specify the organization name for self-signed certificate
+  organization: "OrganizationName"
+  # Specify the locality for self-signed certificate
+  locality: "Irving"
+  # Specify the state for self-signed certificate
+  state: "Texas"
+  # Specify the country for self-signed certificate
+  country: "US"
+  # Specify the email ID for self-signed certificate
+  emailId: "noreply@noreply.com"
+  # Specify the DNS name(SAN) for self-signed certificate
+  dnsName: "localhost"
+  # Specify the IP Address(SAN) for self-signed certificate
+  ipAddress: "127.0.0.1"
+  # Set this parameter to 'yes' to configure RESTful API interface only
+  restOnly: "no"
+
+# Set network policy
+# https://kubernetes.io/docs/concepts/services-networking/network-policies/
+# Default ingress policy will be created from Service object of values if no custom ingress policy is specified
+networkPolicy:
+  policyTypes:
+    - Ingress
+    - Egress
+  # apply ingress rule. Default allow all ingress traffic
+  ingress:
+    - {}
+  # apply egress rule. Default allow all egress traffic
+  egress:
+    - {}
+
+# can be used when ingress controller is available
+# can be used for rule based access 
+# TLS related configuration is required if passthrough termination is not used
+# Ref: https://kubernetes.io/docs/reference/kubernetes-api/service-resources/ingress-v1/#IngressSpec
+ingress:
+  enabled: false
+  # Specify hostname to access CDWS, Eg. webconsole.ui
+  host: ""
+  controller: "nginx"
+  annotations: {}
+  # Configure these parameters for secure connection.
+  tls:
+    enabled: false
+    secretName: ""
+
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
+# Pod Disruption Budget configuration details
+defaultPodDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+# Configure resource requests and limits
+# ref: http://kubernetes.io/docs/user-guide/compute-resources/
+resources:
+  limits:
+    cpu: 3000m
+    memory: 2Gi
+    ephemeral-storage: "3Gi"
+  requests:
+    cpu: 1500m
+    memory: 1Gi
+    ephemeral-storage: "2Gi"
+
+# Configure resource requests and limits for init container
+initResources:
+  limits:
+    cpu: 500m
+    memory: 2Gi
+  requests:
+    cpu: 250m
+    memory: 1Gi
+
+affinity:
+  # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
+  # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+  # architecture preference specified in 'arch'
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: {}
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+
+# Manage Storage permission
+storageSecurity:
+  # fsGroup -  Used for controlling access to block storage such as Ceph RBD, iSCSI, and some Cloud storage.
+  fsGroup:
+  # supplementalGroups - supplemental Groups IDs are used for controlling access to shared storage like NFS and GlusterFS
+  # Replace supplementalGroup Id with NFS User's groupId if the root squash is enabled on NFS server otherwise volume access will fail
+  supplementalGroups: [65534]
+  runAsUser: 1010
+  runAsGroup:
+
+# Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+# Ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+# Set enabled to true to enable autoscaling for automatically scaling the workload to match demand.
+autoscaling:
+  # Specify to enable autoscaling.
+  enabled: true
+  # Specfiy to define number of minumum replicas of pods when autoscaling is enabled
+  minReplicas: 1
+  # Specfiy to define number of maximum replicas of pods when autoscaling is enabled
+  maxReplicas: 2
+  # Specify target CPU utilization in percentage to autoscale
+  targetCPUUtilizationPercentage: 70
+  # Specify target memory utilization in percentage to autoscale
+  targetMemoryUtilizationPercentage: 70
+
+# persistence section specifies persistence settings which apply to the whole chart
+# Ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+persistence:
+  # enabled is whether to use Persistent Volumes or not
+  enabled: true
+  # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes 
+  useDynamicProvisioning: false
+
+# Specify these fields for Persistence Volume Claim details
+pvClaim:
+  # Specify the existing PV claim name to be used for deployment
+  existingClaimName: ""
+  # Specify this to use any Storage Class for PVC
+  storageClassName: "manual"
+  # Specify persistent volume access mode
+  # ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+  accessMode: "ReadWriteOnce"
+  selector:
+    # Specify this to use selector label name for PV-PVC bind
+    label: ""
+    # Specify this to use selector label value for PV-PVC bind
+    value: ""
+  # Specify this to request specific size on persistent volume.
+  size: 500Mi
+
+# persistence volume for providing absolute path for files when required
+persistentVolumeExtra:
+  # Specify this to enable extra persistent volume mount
+  enabled: false
+  # Specify the existing PV claim name to be used for deployment
+  claimName: ""
+  #if claim name is not given and enabled is true then next 3 properties are required
+  storageClassName: "manual"
+  # Specify this to request specific size on persistent volume.
+  size: 100Mi
+  # Specify persistent volume access mode
+  # ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+  accessMode: "ReadWriteOnce"
+  selector:
+    # Specify this to use selector label name for PV-PVC bind
+    label: ""
+    # Specify this to use selector label value for PV-PVC bind
+    value: ""
+
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# startup, liveness and Probeness details for the health of pods
+startupProbe:
+  initialDelaySeconds: 50
+  timeoutSeconds: 15
+  periodSeconds: 15
+
+livenessProbe:
+  initialDelaySeconds: 15
+  timeoutSeconds: 10
+  periodSeconds: 15
+
+readinessProbe:
+  initialDelaySeconds: 15
+  timeoutSeconds: 10
+  periodSeconds: 15
+
+# for ibm cloud environment
+dashboard:
+  enabled: true
+
+# applicable for openshift environment for accessing UI
+route:
+  enabled: true
+
+# Currently, the only supported architecture for CDWS is `amd64`
+arch: "amd64"
+
+# Change license to true to indicate that you have read and agree to license agreements
+# Refer: https://www-40.ibm.com/software/sla/sladb.nsf (L/N: L-FYHF-K7J2TN)
+license: false
+
+# Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
+# Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
+licenseType: prod
+
+# Specify the Secret configuration for CDWS
+secret:
+  # Secret with all passwords such as keystore and truststore passwords.
+  secretName:  ""
+  # Secret name for CA-signed certificate.
+  caCertSecretName: ""
+  # Secret name for trusted certificate.
+  trustCertSecretName: ""
+
+# secure computing mode(seccomp) settings, default type is RuntimeDefault,
+# if type is other than RuntimeDefault then profile value must be given
+secComp:
+  type: RuntimeDefault
+  profile: ""
+
+#set timezone of container
+timeZone: "Asia/Calcutta"

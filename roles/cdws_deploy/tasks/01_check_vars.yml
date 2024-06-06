@@ -20,6 +20,33 @@
     that: entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "entitled_registry_key property is required"
 
+# Check Supported version
+# -----------------------------------------------------------------------------
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cluster_info
+
+- name: Extract Kubernetes version number
+  ansible.builtin.set_fact:
+    k8s_version: "{{ k8s_cluster_info.version.server.kubernetes.major }}.{{ k8s_cluster_info.version.server.kubernetes.minor }}"
+
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "C:D WebService version  ...................... {{ cdws_version }}"
+      - "  K8s Min version ................ >= {{ compatibility_matrix[cdws_version].k8s_min_version }}"
+      - "  K8s Max version ................ <= {{ compatibility_matrix[cdws_version].k8s_max_version }}"
+      - "Kubernetes Cluster version ....... {{ k8s_version }}"
+
+- name: Ensure C:D WebService is supported in Kubernetes Cluster
+  ansible.builtin.assert:
+    that:
+      - cdws_version != ""
+      - k8s_version != ""
+      - "k8s_version is version( compatibility_matrix[cdws_version].k8s_min_version, '>=')"
+      - "k8s_version is version( compatibility_matrix[cdws_version].k8s_max_version, '<=')"
+    fail_msg: "C:D WebService version is NOT supported in current Kubernetes Cluster"
+
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
