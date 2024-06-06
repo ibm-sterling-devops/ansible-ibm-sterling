@@ -19,9 +19,9 @@ image:
 cmArgs:
    # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy CM first.
    # Set the value "false" to Import Key Cert Exported from Secure Proxy Engine if you have installed Secure Proxy Engine first.
-  keyCertExport: true
+  keyCertExport: false
   # Set the certificate alias value. 
-  keyCertAliasName: "keycert"
+  keyCertAliasName: "keyCert"
   # JVM max heap size - don't set more than container limit resource memory. 
   maxHeapSize: "2048m"
   # Enable/Disable host name verification
@@ -39,10 +39,10 @@ persistentVolume:
   enabled: true
   useDynamicProvisioning: {{ ssp_cm_other_values.persistence.useDynamicProvisioning }}
   existingClaimName: ""
-  labelName: "app.kubernetes.io/name"
-  labelValue: "ibm-ssp-cm-pv"
+  labelName: ""
+  labelValue: ""
   storageClassName: "{{ storage_class_matrix[ ssp_cm_storage_class ].rwo }}"
-  size: {{ ssp_cm_other_values.pvClaim.size | default('100Mi') }}
+  size: 1Gi
   accessMode: "ReadWriteOnce"    
 
 storageSecurity:
@@ -69,8 +69,7 @@ service:
 
 secret:
   secretName: "{{ ssp_cm_secret }}"
-  # Secret name for the imported Key Certificate from Engine - Use this if you are installing Configuration Manager after Engine otherwise it's not needed. 
-  keyCertSecretName: "{{ ssp_cm_keysecret }}"
+  keyCertSecretName: "{{ ssp_keycert_secret }}"
 
 serviceAccount:
   create: true

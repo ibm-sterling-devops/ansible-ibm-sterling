@@ -13,12 +13,12 @@ image:
   pullPolicy: IfNotPresent
 
 
-nameOverride: "{{ ssp_nameoverride }}"
+nameOverride: ""
 arch: "amd64"
 engineArgs:
    # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy Engine before CM
    # Set the value "false" to Import Key Cert Exported from Secure Proxy CM if you have installed Secure Proxy CM first
-  keyCertExport: false
+  keyCertExport: true
   # Certificate alias value. 
   keyCertAliasName: "keycert"
   # JVM max heap size - don't set more than container limit resource memory. 
@@ -30,12 +30,12 @@ engineArgs:
 
 persistentVolume:
   enabled: true
-  useDynamicProvisioning: {{ ssp_other_values.persistence.useDynamicProvisioning }}
+  useDynamicProvisioning: true
   existingClaimName: ""
-  labelName: "app.kubernetes.io/name"
-  labelValue: "ibm-ssp-engine-pv"
+  labelName: ""
+  labelValue: ""
   storageClassName: "{{ storage_class_matrix[ ssp_storage_class ].rwo }}"
-  size: {{ ssp_other_values.pvClaim.size | default('100Mi') }}
+  size: 2Gi
   accessMode: "ReadWriteOnce"    
 
 storageSecurity:
@@ -113,7 +113,7 @@ service2:
 
 secret:
   secretName: "{{ ssp_secret }}"
-  keyCertSecretName: "{{ ssp_keycert_secretname }}"
+#  keyCertSecretName: "{{ ssp_keycert_secretname }}" # comentei
 
 serviceAccount:
   create: true

@@ -1,0 +1,32 @@
+---
+- name: "Set fact cert file"
+  ansible.builtin.set_fact:
+    my_certfile: "{{ my_workdir }}/defkeyCert_{{ my_serial }}.txt"
+
+# kubectl cp some-namespace/some-pod:/tmp/foo /tmp/bar
+- name: Copy /spinstall/IBM/SP/defkeyCert.txt from a remote pod to {{ my_certfile }} 
+  kubernetes.core.k8s_cp:
+    namespace: "{{ ssp_namespace }}"
+    pod: "s0-ibm-ssp-engine-0"
+    #container: "s0-ibm-ssp-engine"
+    remote_path: /spinstall/IBM/SP/defkeyCert.txt
+    local_path: "{{ my_certfile }}"
+    state: from_pod
+  register: cout_k8s_cp
+  retries: 10
+  delay: 30 # seconds
+
+# Create Certificate for Connect:Direct on Kubernetes
+# CD install script only support extensions .crt, .pem and .cer
+# -----------------------------------------------------------------------------
+- name: Create or update Kubernetes secret with certificates files
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: "{{ ssp_keycert_secret }}"
+        namespace: "{{ ssp_cm_namespace }}"
+      data:
+        keyCert: "{{ lookup('file', my_certfile) | b64encode }}"

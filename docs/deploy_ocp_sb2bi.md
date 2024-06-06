@@ -41,7 +41,7 @@ export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 To run playbook the playbook
 
 ```bash 
-ansible-playbook playbooks/deploy_sb2bi.yml
+ansible-playbook playbooks/deploy_sb2b.yml
 ```
 
 MainPage [README.md](../README.md)

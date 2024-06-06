@@ -20,9 +20,14 @@
     that: entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "entitled_registry_key property is required"
 
+- name: Unique Id for files
+  ansible.builtin.set_fact:
+    my_serial: "{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}"
+
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug
   ansible.builtin.debug:
     msg:
       - "Kubernets Namespace ................. {{ ssp_cm_namespace }}"
+      - "my_serial ........................... {{ my_serial }}"

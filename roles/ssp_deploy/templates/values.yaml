@@ -19,13 +19,13 @@ image:
   # Specify the repository name along with image name
   repository: "cp.icr.io/cp/ibm-ssp-engine/ssp-engine-docker-image"
   # Specify the tag name for the image  
-  tag: "6.1.0.0.03"
+  tag: "6.1.0.0.03plus"
   # Specify the image pull secret for the service, if the image is in private registry 
   imageSecrets: ""
   # Enable true/false to use image digest
   digest:
     enabled: true
-    value: sha256:1da2d373e2d67769015eb640ce19273eb17022946210149f612c4b50e53fa8ce
+    value: sha256:c034501cb5150fb69f5ca74e21e6b24e9c840f4f2d37abef1aec8dbec59b5024
   # Specify respective pull policy to used to override default `IfNotPresent` policy  
   pullPolicy: IfNotPresent
 
