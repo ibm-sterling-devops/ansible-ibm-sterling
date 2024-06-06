@@ -36,7 +36,7 @@ export SI_INSTANCEID=dev01
 export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 ```
 
-Playbook will run the last version of Sterling B2Bi, but take of Kubernetes/Openshift version is supported
+Playbook will run the last version of Sterling B2Bi, but take care of Kubernetes/Openshift version is supported
 
 | Sterling B2Bi (helm) | Kubernetes          | OpenShift           | Helm      |
 |----------------------|---------------------|---------------------|-----------|
