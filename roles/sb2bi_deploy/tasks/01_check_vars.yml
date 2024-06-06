@@ -30,7 +30,34 @@
       - si_domain is defined and si_domain != ""
     fail_msg: "si_domain property is required"
 
-# 2. Lookup Namespace availabiity
+# Check Supported version
+# -----------------------------------------------------------------------------
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cluster_info
+
+- name: Extract Kubernetes version number
+  ansible.builtin.set_fact:
+    k8s_version: "{{ k8s_cluster_info.version.server.kubernetes.major }}.{{ k8s_cluster_info.version.server.kubernetes.minor }}"
+
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "SI version  ...................... {{ si_version }}"
+      - "  K8s Min version ................ >= {{ compatibility_matrix[si_version].k8s_min_version }}"
+      - "  K8s Max version ................ <= {{ compatibility_matrix[si_version].k8s_max_version }}"
+      - "Kubernetes Cluster version ....... {{ k8s_version }}"
+
+- name: Ensure Sterling B2B is supported in Kubernetes Cluster
+  ansible.builtin.assert:
+    that:
+      - si_version != ""
+      - k8s_version != ""
+      - "k8s_version is version( compatibility_matrix[si_version].k8s_min_version, '>=')"
+      - "k8s_version is version( compatibility_matrix[si_version].k8s_max_version, '<=')"
+    fail_msg: "Sterling B2B version is NOT supported in current Kubernetes Cluster"
+
+# Lookup Namespace availabiity
 # -----------------------------------------------------------------------------
 - name: Lookup Namespaces
   kubernetes.core.k8s_info:
