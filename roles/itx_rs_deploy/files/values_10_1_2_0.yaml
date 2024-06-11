@@ -1,0 +1,138 @@
+####################################################################
+# Licensed Materials Property of HCL
+# (c) Copyright HCL Technologies Ltd. 2020, 2023. All rights reserved.
+# 
+# Trademark of HCL Technologies Limited
+####################################################################
+
+# Must set accept to true to accept the license
+# Please refer to: https://ibm.biz/ITX_License1012
+license:
+  accept: false
+
+general:
+  serviceAccountName: "itx-rs"
+  replicaCount: 1
+  env: ""
+  # Supported values: "fenced" and "unfenced"
+  runMode: "unfenced"
+  matchNodeLabel:
+    name: ""
+    value: ""
+
+image:
+  repository: "cp.icr.io/cp/ibm-itx-rs"
+  digest: "sha256:bc9b60086ca95a8ef6303be33cedabf475d10dd8ad161c75567f51d19aba13b8"
+  tag: 10.1.2.0.20231130
+  pullPolicy: IfNotPresent
+  secret: "ibm-entitlement-key"
+
+probes:
+  liveness:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 30
+    timeoutSeconds: 45	
+  readiness:
+    enabled: true
+    initialDelaySeconds: 7
+    periodSeconds: 60
+    timeoutSeconds: 45	
+
+map:
+  fileExtension: "lnx" 
+  unloadTimeMinutes: 10
+  maxThreads: 50
+  syncTimeoutSeconds: 300
+  disableCaching: false 
+  allAttachments: false  
+
+# Logging settings. Value -1 for days means infinite time.
+log:
+  includeHostInLogNames: true
+  accessLog:
+    # Supported levels are "none" and "all". Default is "all".
+    level: "all"
+    days: -1
+  serverLog:
+     # Supported levels are "none", "failures", "info" and "all". Default is "info".
+     level: "info"
+     days: -1
+  serviceLog:
+     # Supported levels are "none", "failures", "info" and "all". Default is "info".
+     level: "all"
+     days: -1
+     stdErr: true
+  execLog:
+     level: "all"
+     fileCount: 5
+     fileSizeKiB: 100
+     stdErr: true
+  jniLog:
+     # Supported levels are "none", "failures", "info" and "all". Default is "none".
+     level: "none"
+  cmgrLog:
+     # Supported levels are "none", "failures", "info" and "all". Default is "none".
+     level: "none"
+
+resourceRegistry:
+  configFile: ""
+
+redis:
+  host: ""
+  port: 6379
+  timeoutSeconds: 2
+  secret: ""
+  stem: "itx-rs"
+  catalogCacheEnabled: false
+
+resources:
+  enabled: true
+  requests:
+    cpu: "1000m"
+    memory: "4Gi"
+  limits:
+    cpu: "4000m"
+    memory: "16Gi"
+  
+persistence:
+  fsGroup: ""
+  data:
+    capacity: "10Gi"
+    accessMode: ReadWriteOnce
+    useDynamicProvisioning: true
+    storageClassName: ""
+    matchVolumeLabel:
+      name: ""
+      value: ""
+  logs:
+    capacity: "10Gi"
+    accessMode: ReadWriteOnce
+    useDynamicProvisioning: true
+    storageClassName: ""
+    matchVolumeLabel:
+      name: ""
+      value: ""
+
+ssl:
+  enabled: false
+  serviceServingCertificates: false
+  clientAuth: false
+  secret: ""
+
+service:
+  type: ClusterIP
+  port:
+    http: 8080
+    https: 8443
+
+route:
+  enabled: true
+  host: ""
+  
+autoscaling:
+  enabled: false
+  maxReplicas: 5
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80

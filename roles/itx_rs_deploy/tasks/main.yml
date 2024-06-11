@@ -2,7 +2,7 @@
 - name: Check for required environment variables
   ansible.builtin.include_tasks: 01_check_vars.yml
 
-- name: Create namespace and secrets for SSP CM
+- name: Create namespace and secrets for ITX
   ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
 
 - name: Applying Pod Security
@@ -11,5 +11,5 @@
 - name: Define Storage for Data Persistence
   ansible.builtin.include_tasks: 04_define_storage.yml
 
-- name: Install SSP using Helm Chart
-  ansible.builtin.include_tasks: 05_install_ssp.yml
+- name: Install ITX using Helm Chart
+  ansible.builtin.include_tasks: 05_install_itx_rs.yml

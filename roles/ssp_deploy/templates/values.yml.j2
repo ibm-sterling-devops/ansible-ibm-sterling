@@ -20,7 +20,7 @@ engineArgs:
    # Set the value "false" to Import Key Cert Exported from Secure Proxy CM if you have installed Secure Proxy CM first
   keyCertExport: true
   # Certificate alias value. 
-  keyCertAliasName: "keycert"
+  keyCertAliasName: "keyCert"
   # JVM max heap size - don't set more than container limit resource memory. 
   maxHeapSize: "2048m"
   # Change SSP brand name if required else keep it as it is.
@@ -113,7 +113,7 @@ service2:
 
 secret:
   secretName: "{{ ssp_secret }}"
-#  keyCertSecretName: "{{ ssp_keycert_secretname }}" # comentei
+  # keyCertSecretName: "ssp-engine-keycert" # Do not enable, require create a secret!
 
 serviceAccount:
   create: true

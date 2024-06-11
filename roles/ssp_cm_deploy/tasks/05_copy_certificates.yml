@@ -4,11 +4,10 @@
     my_certfile: "{{ my_workdir }}/defkeyCert_{{ my_serial }}.txt"
 
 # kubectl cp some-namespace/some-pod:/tmp/foo /tmp/bar
-- name: Copy /spinstall/IBM/SP/defkeyCert.txt from a remote pod to {{ my_certfile }} 
+- name: Copy /spinstall/IBM/SP/defkeyCert.txt from a remote pod to {{ my_certfile }}
   kubernetes.core.k8s_cp:
     namespace: "{{ ssp_namespace }}"
     pod: "s0-ibm-ssp-engine-0"
-    #container: "s0-ibm-ssp-engine"
     remote_path: /spinstall/IBM/SP/defkeyCert.txt
     local_path: "{{ my_certfile }}"
     state: from_pod
@@ -26,7 +25,7 @@
       apiVersion: v1
       kind: Secret
       metadata:
-        name: "{{ ssp_keycert_secret }}"
+        name: "{{ ssp_cm_keycert_secret }}"
         namespace: "{{ ssp_cm_namespace }}"
       data:
-        keyCert: "{{ lookup('file', my_certfile) | b64encode }}"
+        ssp-engine-keycert: "{{ lookup('file', my_certfile) | b64encode }}"

@@ -1,0 +1,33 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      # CONNECT:DIRECT
+      - lookup('env', 'ITX_RS_NAMESPACE') != ""
+      # IBM
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+# Check for undefined properties that do not have a default
+# -----------------------------------------------------------------------------
+- name: "Fail if itx_rs_namespace is not provided"
+  ansible.builtin.assert:
+    that: itx_rs_namespace is defined and itx_rs_namespace != ""
+    fail_msg: "itx_rs_namespace property is required"
+
+- name: "Fail if entitled_registry_key is not provided"
+  ansible.builtin.assert:
+    that: entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "entitled_registry_key property is required"
+
+- name: Unique Id for files
+  ansible.builtin.set_fact:
+    my_serial: "{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "Kubernets Namespace ................. {{ itx_rs_namespace }}"
+      - "my_serial ........................... {{ my_serial }}"

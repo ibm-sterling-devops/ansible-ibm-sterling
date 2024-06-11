@@ -1,0 +1,24 @@
+---
+- name: "Cleanup directories and files"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ my_workdir }}/ibm-itx-rs-prod-{{ compatibility_matrix[itx_rs_version].helm_version }}.tgz"
+    - "{{ my_workdir }}/myitx_rs_values.yml"
+
+- name: "Download Helm chart"
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-itx-rs-prod-{{ compatibility_matrix[itx_rs_version].helm_version }}.tgz"
+    dest: "{{ my_workdir }}/ibm-itx-rs-prod-{{ compatibility_matrix[itx_rs_version].helm_version }}.tgz"
+    mode: "0640"
+  register: download_cout
+  until: download_cout is succeeded
+  retries: 3
+
+# Creating Pod Security Policy for Kubernetes Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Security Context Constraints
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-itx-rs-scc.yaml') | from_yaml }}"

@@ -1,25 +1,16 @@
 ---
 # Environment variables
 # -----------------------------------------------------------------------------------------------------------------
-ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
+itxa_namespace: "{{ lookup('env', 'ITXA_NAMESPACE') }}"
+itxa_instanceid: "{{ lookup('env', 'ITXA_INSTANCEID') }}"
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.03plus', true) }}"
-ssp_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+itxa_version: "{{ lookup('env', 'ITXA_VERSION') | default('10.1.2.0.20231130', true) }}"
 
-ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
-ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') | default('changeit', true) }}"
-ssp_keycert_encrypt_passphrase: "{{ lookup('env', 'SSP_KEYCERT_ENCRYPT_PASSPHRASE') | default('Change1t@', true) }}"
-ssp_custom_keycert_passphrase: "{{ lookup('env', 'SSP_CUSTOM_KEYCERT_PASSPHRASE') | default('Change1t@', true) }}"
-
-ssp_timezone: "{{ lookup('env', ' SSP_TIMEZONE') | default('America/New_York', true) }}"
-# lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=8)
+itxa_sys_passphrase: "{{ lookup('env', 'ITXA_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
 
 # Configure instance
 # -----------------------------------------------------------------------------
-ssp_namespace: "ibm-ssp-{{ ssp_instanceid }}-engine"
-ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
-
 entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
 
@@ -27,19 +18,14 @@ entitled_registry_user: cp
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
-ssp_registry_secret: ibm-registry-secret
-ssp_secret: ibm-ssp-secret
-ssp_keycert_secret: ssp-engine-keycert
-ssp_keycert_alias: MyKeyCert
-ssp_use_dynamic_provisioning: false
-ssp_nameoverride: ssp-{{ ssp_instanceid }}
+itxa_registry_secret: ibm-registry-secret
+itxa_secret: ibm-itx-rs-secret
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
-  6.1.0.0.03plus:
-    helm_version: "1.3.5"
-    image_repository: "cp.icr.io/cp/ibm-ssp-engine/ssp-engine-docker-image"
-    image_tag: "6.1.0.0.03plus"
+  10.1.2.0.20231130:
+    helm_version: "2.1.0"
+    image_tag: "10.1.2.0.20231130"
 
 # Storage Class Matrix
 # -----------------------------------------------------------------------------
@@ -47,7 +33,7 @@ storage_class_matrix:
   ibmcloud:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-file-gold"       # ReadWriteOnce
+    rwo: "ibmc-file-gold-gid"   # ReadWriteOnce
     rom: ""                     # ReadOnlyMany
     rwop: ""                    # ReadWriteOncePod
   redhat:
