@@ -1,10 +1,4 @@
 ---
-- name: Define SSP Enginge helm chart values
-  ansible.builtin.set_fact:
-    ssp_cm_other_values:
-      persistence:
-        useDynamicProvisioning: "{{ 'true' if (ssp_cm_use_dynamic_provisioning) else 'false' }}"
-
 - name: "Set fact helm file"
   ansible.builtin.set_fact:
     my_helmfile: "{{ my_workdir }}/ibm-ssp-cm-{{ compatibility_matrix[ssp_cm_version].helm_version }}.tgz"
@@ -21,26 +15,29 @@
     msg:
       - "Image Repository ................. {{ compatibility_matrix[ssp_cm_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[ssp_cm_version].image_tag }}"
-      - "ssp_cm_other_values  ................. {{ ssp_cm_other_values }}"
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_cm_namespace }} s0 {{ my_helmfile }}"
 
-# - name: Run Helm install command
-#   ansible.builtin.command:
-#     cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_cm_namespace }} s0 {{ my_helmfile }}"
-#   register: helm_cout
-#   changed_when: helm_cout.rc != 0
+- name: Run Helm install command
+  ansible.builtin.command:
+    cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_cm_namespace }} s0 {{ my_helmfile }}"
+  register: helm_cout
+  changed_when: helm_cout.rc != 0
 
 # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
-- name: Run Helm from local path
-  kubernetes.core.helm:
-    name: "s0"
-    chart_ref: "{{ my_helmfile }}"
-    release_namespace: "{{ ssp_cm_namespace }}"
-    wait: True
-    timeout: "10m0s"
-    values_files: "{{ my_valuesfile }}"
-  tags:
-    - exec_helm
+# - name: Run Helm from local path
+#   kubernetes.core.helm:
+#     name: "s0"
+#     chart_ref: "{{ my_helmfile }}"
+#     release_namespace: "{{ ssp_cm_namespace }}"
+#     wait: true
+#     timeout: "10m0s"
+#     values_files: "{{ my_valuesfile }}"
+#   tags:
+#     - exec_helm
+
+- name: "Wait : Give 1 minute to container to be ready"
+  ansible.builtin.pause:
+    minutes: 1
 
 - name: "Lookup SSP CM Pod"
   kubernetes.core.k8s_info:
@@ -50,7 +47,7 @@
       - release=s0
     wait: true
     wait_sleep: 30
-    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_timeout: 600 # 10 mins until we give up waiting for the pod to get into the expected state
     wait_condition:
       type: Ready
       status: "True"
@@ -60,7 +57,7 @@
   ansible.builtin.set_fact:
     ssp_cm_pod_name: "{{ ssp_cm_pod.resources[0].metadata.name }}"
 
-- name: "IBM Sterling SEAS Summary:"
+- name: "IBM Sterling SSP CM Summary:"
   ansible.builtin.debug:
     msg:
       - "IBM Sterling SEAS status ............................ Ready!"

@@ -2,20 +2,20 @@
 - name: "Set fact cert file"
   ansible.builtin.set_fact:
     my_certfile: "{{ my_workdir }}/defkeyCert_{{ my_serial }}.txt"
-  when: not ssp_cm_generate_certificates
+  when: not ssp_generate_certificates
 
 # kubectl cp some-namespace/some-pod:/tmp/foo /tmp/bar
 - name: Copy /spinstall/IBM/SPcm/defkeyCert.txt from a remote pod to {{ my_certfile }}
   kubernetes.core.k8s_cp:
-    namespace: "{{ ssp_namespace }}"
-    pod: "s0-ibm-ssp-engine-0"
+    namespace: "{{ ssp_cm_namespace }}"
+    pod: "s0-ibm-ssp-cm-0"
     remote_path: /spinstall/IBM/SPcm/defkeyCert.txt
     local_path: "{{ my_certfile }}"
     state: from_pod
   register: cout_k8s_cp
   retries: 10
   delay: 30 # seconds
-  when: not ssp_cm_generate_certificates
+  when: not ssp_generate_certificates
 
 # Create Certificate for Connect:Direct on Kubernetes
 # CD install script only support extensions .crt, .pem and .cer
@@ -27,8 +27,8 @@
       apiVersion: v1
       kind: Secret
       metadata:
-        name: "{{ ssp_cm_keycert_secret }}"
-        namespace: "{{ ssp_cm_namespace }}"
+        name: "{{ ssp_keycert_secret }}"
+        namespace: "{{ ssp_namespace }}"
       data:
         keycert: "{{ lookup('file', my_certfile) | b64encode }}"
-  when: not ssp_cm_generate_certificates
+  when: not ssp_generate_certificates

@@ -1,0 +1,8 @@
+- name: Deploy IBM Sterling Secure Proxy
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - ssp_cm_deploy  # don't change this order, waiting for a fix
+    - ssp_deploy

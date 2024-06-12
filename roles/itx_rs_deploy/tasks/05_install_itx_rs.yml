@@ -44,7 +44,7 @@
   ansible.builtin.set_fact:
     itx_rs_pod_name: "{{ itx_rs_pod.resources[0].metadata.name }}"
 
-- name: "IBM Sterling SEAS Summary:"
+- name: "IBM Sterling ITX RS Summary:"
   ansible.builtin.debug:
     msg:
       - "IBM Sterling ITX RS status ............................ Ready!"

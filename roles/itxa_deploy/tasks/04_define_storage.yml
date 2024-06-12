@@ -60,5 +60,5 @@
 # -----------------------------------------------------------------------------
 - name: Set Storage Class
   ansible.builtin.set_fact:
-    itx_rs_use_dynamic_provisioning: true
-    itx_rs_storage_class: "{{ my_storage_class }}"
+    itxa_use_dynamic_provisioning: true
+    itxa_storage_class: "{{ my_storage_class }}"

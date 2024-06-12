@@ -40,6 +40,10 @@
 #     timeout: "10m0s"
 #     values_files: "{{ my_valuesfile }}"
 
+- name: "Wait : Give 1 minute to container to be ready"
+  ansible.builtin.pause:
+    minutes: 1
+
 - name: "Lookup SSP Engine Pod"
   kubernetes.core.k8s_info:
     kind: Pod
@@ -48,7 +52,7 @@
       - release=s0
     wait: true
     wait_sleep: 30
-    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_timeout: 600 # 10 mins until we give up waiting for the pod to get into the expected state
     wait_condition:
       type: Ready
       status: "True"
@@ -65,3 +69,4 @@
       - "SSP namespace ...................................... {{ ssp_namespace }}"
       - "Pod name ........................................... {{ ssp_pod_name }}"
       - "For username and password check secret ............. {{ ssp_secret }}'"
+

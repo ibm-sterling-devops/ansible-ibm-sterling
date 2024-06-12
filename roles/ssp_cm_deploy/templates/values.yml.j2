@@ -19,9 +19,13 @@ image:
 cmArgs:
    # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy CM first.
    # Set the value "false" to Import Key Cert Exported from Secure Proxy Engine if you have installed Secure Proxy Engine first.
+{% if (ssp_cm_generate_certificates) %}
+  keyCertExport: true
+{% else %}
   keyCertExport: false
   # Set the certificate alias value. 
-  keyCertAliasName: "{{ ssp_cm_keycert_alias }}"
+  keyCertAliasName: "keycert"
+{% endif %}
   # JVM max heap size - don't set more than container limit resource memory. 
   maxHeapSize: "2048m"
   # Enable/Disable host name verification
@@ -37,7 +41,7 @@ cmArgs:
 
 persistentVolume:
   enabled: true
-  useDynamicProvisioning: {{ ssp_cm_other_values.persistence.useDynamicProvisioning }}
+  useDynamicProvisioning: true
   existingClaimName: ""
   labelName: ""
   labelValue: ""
@@ -69,7 +73,11 @@ service:
 
 secret:
   secretName: "{{ ssp_cm_secret }}"
+{% if (ssp_cm_generate_certificates) %}
+  keyCertSecretName: ""
+{% else %}
   keyCertSecretName: "{{ ssp_cm_keycert_secret }}"
+{% endif %}
 
 serviceAccount:
   create: true

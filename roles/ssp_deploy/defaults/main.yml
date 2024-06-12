@@ -29,10 +29,11 @@ my_workdir: /tmp
 
 ssp_registry_secret: ibm-registry-secret
 ssp_secret: ibm-ssp-secret
-ssp_keycert_secret: ssp-engine-keycert
-ssp_keycert_alias: MyKeyCert
+ssp_keycert_secret: ssp-cm-keycert
 ssp_use_dynamic_provisioning: false
 ssp_nameoverride: ssp-{{ ssp_instanceid }}
+
+ssp_generate_certificates: false
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:

@@ -4,13 +4,13 @@
     path: "{{ item }}"
     state: absent
   with_items:
-    - "{{ my_workdir }}/ibm-itx-rs-prod-{{ compatibility_matrix[itx_rs_version].helm_version }}.tgz"
-    - "{{ my_workdir }}/myitx_rs_values.yml"
+    - "{{ my_workdir }}/ibm-itxa-prod-{{ compatibility_matrix[itxa_version].helm_version }}.tgz"
+    - "{{ my_workdir }}/myitxa_values.yml"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:
-    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-itx-rs-prod-{{ compatibility_matrix[itx_rs_version].helm_version }}.tgz"
-    dest: "{{ my_workdir }}/ibm-itx-rs-prod-{{ compatibility_matrix[itx_rs_version].helm_version }}.tgz"
+    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-itxa-prod-{{ compatibility_matrix[itxa_version].helm_version }}.tgz"
+    dest: "{{ my_workdir }}/ibm-itxa-prod-{{ compatibility_matrix[itxa_version].helm_version }}.tgz"
     mode: "0640"
   register: download_cout
   until: download_cout is succeeded
@@ -21,4 +21,4 @@
 - name: Creating Security Context Constraints
   kubernetes.core.k8s:
     state: present
-    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-itx-rs-scc.yaml') | from_yaml }}"
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-itxa-scc.yaml') | from_yaml }}"

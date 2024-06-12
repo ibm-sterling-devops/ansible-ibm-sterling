@@ -34,8 +34,9 @@ ssp_cm_namespace: "ibm-ssp-{{ ssp_cm_instanceid }}-cm"
 ssp_cm_registry_secret: ibm-registry-secret
 ssp_cm_secret: ibm-ssp-cm-secret
 ssp_cm_keycert_secret: ssp-engine-keycert
-ssp_cm_keycert_alias: ssp-engine-keycert  # Do not change
 ssp_cm_use_dynamic_provisioning: false
+
+ssp_cm_generate_certificates: true  # true when run SSPCm and after SSP
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:

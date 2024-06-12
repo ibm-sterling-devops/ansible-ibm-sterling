@@ -12,21 +12,22 @@ image:
     value: "" 
   pullPolicy: IfNotPresent
 
-
 nameOverride: ""
 arch: "amd64"
 engineArgs:
    # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy Engine before CM
    # Set the value "false" to Import Key Cert Exported from Secure Proxy CM if you have installed Secure Proxy CM first
+{% if (ssp_generate_certificates) %}
   keyCertExport: true
-  # Certificate alias value. 
-  keyCertAliasName: "keyCert"
+{% else %}
+  keyCertExport: false
+  # Set the certificate alias value. 
+  keyCertAliasName: "keycert"
+{% endif %}
   # JVM max heap size - don't set more than container limit resource memory. 
   maxHeapSize: "2048m"
   # Change SSP brand name if required else keep it as it is.
   signOnDirName: "Signon"
-
-
 
 persistentVolume:
   enabled: true
@@ -113,7 +114,11 @@ service2:
 
 secret:
   secretName: "{{ ssp_secret }}"
-  # keyCertSecretName: "ssp-engine-keycert" # Do not enable, require create a secret!
+{% if (ssp_generate_certificates) %}
+  keyCertSecretName: ""
+{% else %}
+  keyCertSecretName: "{{ ssp_keycert_secret }}"
+{% endif %}
 
 serviceAccount:
   create: true
