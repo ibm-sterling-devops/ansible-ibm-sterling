@@ -62,7 +62,7 @@
   ansible.builtin.set_fact:
     ssp_pod_name: "{{ ssp_pod.resources[0].metadata.name }}"
 
-- name: "IBM Sterling SEAS Summary:"
+- name: "IBM Sterling Secure Proxy Summary:"
   ansible.builtin.debug:
     msg:
       - "IBM Sterling SSP status ............................ Ready!"

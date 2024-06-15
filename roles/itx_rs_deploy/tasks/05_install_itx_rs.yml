@@ -34,7 +34,7 @@
       - release=s0
     wait: true
     wait_sleep: 30
-    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_timeout: 600 # 10 mins until we give up waiting for the pod to get into the expected state
     wait_condition:
       type: Ready
       status: "True"
@@ -49,5 +49,5 @@
     msg:
       - "IBM Sterling ITX RS status ............................ Ready!"
       - "ITX RS namespace ...................................... {{ itx_rs_namespace }}"
-      - "Pod name ........................................... {{ itx_rs_pod_name }}"
-      - "For username and password check secret ............. {{ itx_rs_secret }}'"
+      - "Pod name .............................................. {{ itx_rs_pod_name }}"
+      - "For username and password check secret ................ {{ itx_rs_secret }}'"

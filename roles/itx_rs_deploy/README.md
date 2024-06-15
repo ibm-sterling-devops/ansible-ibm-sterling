@@ -1,13 +1,7 @@
-# Role SSP CM
+# Role ITX RS
 
+```bash
+export ITX_RS_NAMESPACE=ibm-itx-rs-dev01
 
-SSP_CM_NAMESPACE
-
-SSP_CM_VERSION: 6.1.0.0.06
-
-
-
-SSP_CM_LICENSETYPE:
- default value: non-prod
- 
-suported values: prod or no-prod
+ansible-playbook playbooks/deploy_itx_rs.yml
+```
