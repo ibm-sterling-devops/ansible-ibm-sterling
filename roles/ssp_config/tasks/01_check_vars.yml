@@ -1,0 +1,65 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      - lookup('env', 'SSP_INSTANCEID') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+# 1. Check for undefined properties that do not have a default
+# -----------------------------------------------------------------------------
+- name: "Fail if ssp_namespace is not provided"
+  ansible.builtin.assert:
+    that: ssp_namespace is defined and ssp_namespace != ""
+    fail_msg: "ssp_namespace property is required"
+
+- name: "Fail if ssp_cm_namespace is not provided"
+  ansible.builtin.assert:
+    that: ssp_cm_namespace is defined and ssp_cm_namespace != ""
+    fail_msg: "ssp_cm_namespace property is required"
+
+# 2. Lookup Service from SSP Namespace"
+# -----------------------------------------------------------------------------
+- name: "Lookup Service from SSP Namespace"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: "{{ ssp_service }}"
+    namespace: "{{ ssp_namespace }}"
+  register: ssp_svc_cout
+
+- name: Set Facts for SSP Engine
+  ansible.builtin.set_fact:
+    ssp_engine_host: "{{ ssp_svc_cout.resources[0].spec.clusterIP }}"
+  when:
+    - ssp_svc_cout is defined and ssp_svc_cout != ""
+
+# 3. Lookup Routefrom SSPcm Namespace"
+# -----------------------------------------------------------------------------
+- name: "Lookup Route from SSPcm Namespace"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: route.openshift.io/v1
+    kind: Route
+    name: "{{ ssp_cm_route }}"
+    namespace: "{{ ssp_cm_namespace }}"
+  register: ssp_cm_svc_cout
+
+- name: Debug
+  ansible.builtin.debug:
+    var: ssp_cm_svc_cout
+
+- name: Set Facts for SSP CM URL
+  ansible.builtin.set_fact:
+    ssp_cm_url: "{{ ssp_cm_svc_cout.resources[0].spec.host }}"
+  when:
+    - ssp_cm_svc_cout is defined and ssp_cm_svc_cout != ""
+
+# 4. Print Debug information
+# -----------------------------------------------------------------------------
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "SSP Engine Host ................. {{ ssp_engine_host }}"
+      - "SSP CM URL ...................... {{ ssp_cm_url }}"
+      - "SSP CM Admin .................... {{ ssp_admin_user }}"

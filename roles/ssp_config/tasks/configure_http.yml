@@ -1,0 +1,198 @@
+---
+- name: Manage HTTP Policy, Netmap, and Adapter
+  hosts: localhost
+  gather_facts: no
+  vars:
+    system_password: "{{ lookup('env', 'SYSTEM_PASSWORD') }}"
+    http_policy_xml: |
+      <httpPolicyDef>
+        <authenticationType>basic</authenticationType>
+        <blockCommonExploits>true</blockCommonExploits>
+        <commonExploitStrings>"--", "'","%00"</commonExploitStrings>
+        <description><![CDATA[HTTPDesc]]></description>
+        <eaCertValidation>false</eaCertValidation>
+        <name>Http_Policy_test</name>
+        <protocol>http</protocol>
+        <protocolValidationOn>true</protocolValidationOn>
+        <status></status>
+        <userAuthentication>none</userAuthentication>
+        <userMapping>passthru</userMapping>
+      </httpPolicyDef>
+    http_netmap_xml: |
+      <netmapDef>
+        <description><![CDATA[HttpDesc]]></description>
+        <inboundNodes>
+          <inboundNodeDef>
+            <description><![CDATA[InboundDesc]]></description>
+            <logLevel>NONE</logLevel>
+            <name>InboundNode</name>
+            <peerAddressPattern>*</peerAddressPattern>
+            <policyId>Http_Policy_test</policyId>
+            <secureConnection>false</secureConnection>
+          </inboundNodeDef>
+        </inboundNodes>
+        <name>Http_Netmap_test</name>
+        <outboundNodes>
+          <outboundNodeDef>
+            <addresses>
+              <address>
+                <nodeName>OutboundNode</nodeName>
+                <host>1.1.1.1</host>
+                <port>3333</port>
+              </address>
+            </addresses>
+            <description><![CDATA[OutboundDesc]]></description>
+            <logLevel>NONE</logLevel>
+            <name>Outbound</name>
+            <secureConnection>false</secureConnection>
+            <validDestination>1.1.1.1</validDestination>
+            <validDestinationPort>3333</validDestinationPort>
+          </outboundNodeDef>
+        </outboundNodes>
+        <protocol>http</protocol>
+        <status></status>
+      </netmapDef>
+    http_adapter_xml: |
+      <httpAdapterDef>
+        <description><![CDATA[HttpDesc]]></description>
+        <engines></engines>
+        <listenPort>2222</listenPort>
+        <logLevel>ERROR</logLevel>
+        <maxSessions>150</maxSessions>
+        <name>Http_Adapter_test</name>
+        <netmap>Http_Netmap_test</netmap>
+        <netmapKey>Outbound</netmapKey>
+        <htmlUrlRewrite>false</htmlUrlRewrite>
+        <properties>
+          <property>
+            <name>html.rewrite.threads</name>
+            <value>10</value>
+          </property>
+          <property>
+            <name>http.commands.allowed</name>
+            <value></value>
+          </property>
+          <property>
+            <name>http.commands.prohibited</name>
+            <value></value>
+          </property>
+          <property>
+            <name>httpMaxHeaderFieldLength</name>
+            <value>8192</value>
+          </property>
+          <property>
+            <name>httpMaxNumHeaderFields</name>
+            <value>1024</value>
+          </property>
+          <property>
+            <name>max.ps.client.threads</name>
+            <value>10</value>
+          </property>
+          <property>
+            <name>max.ps.server.threads</name>
+            <value>10</value>
+          </property>
+        </properties>
+        <protocol>http</protocol>
+        <sessionTimeout>3</sessionTimeout>
+        <ssoConfig></ssoConfig>
+        <standardRoute>Outbound</standardRoute>
+        <status></status>
+        <urlRoutingType>standardRouting</urlRoutingType>
+      </httpAdapterDef>
+  tasks:
+    - name: Login to the system
+      uri:
+        url: "http://example.com/api/login"
+        method: POST
+        body: "{{ system_password }}"
+        body_format: json
+        return_content: true
+      register: login_response
+
+    - name: Check login success
+      fail:
+        msg: "Login failed"
+      when: login_response.status != 200
+
+    - name: Delete existing HTTP Adapter
+      uri:
+        url: "http://example.com/api/adapters/Http_Adapter_test"
+        method: DELETE
+        status_code: 204
+      failed_when: false
+
+    - name: Delete existing HTTP Netmap
+      uri:
+        url: "http://example.com/api/netmaps/Http_Netmap_test"
+        method: DELETE
+        status_code: 204
+      failed_when: false
+
+    - name: Delete existing HTTP Policy
+      uri:
+        url: "http://example.com/api/policies/Http_Policy_test"
+        method: DELETE
+        status_code: 204
+      failed_when: false
+
+    - name: Create HTTP Policy
+      uri:
+        url: "http://example.com/api/policies"
+        method: POST
+        body: "{{ http_policy_xml }}"
+        headers:
+          Content-Type: application/xml
+        return_content: true
+      register: create_policy_response
+
+    - name: Check HTTP Policy creation success
+      fail:
+        msg: "Failed to create HTTP Policy"
+      when: create_policy_response.status != 201
+
+    - name: Create HTTP Netmap
+      uri:
+        url: "http://example.com/api/netmaps"
+        method: POST
+        body: "{{ http_netmap_xml }}"
+        headers:
+          Content-Type: application/xml
+        return_content: true
+      register: create_netmap_response
+
+    - name: Check HTTP Netmap creation success
+      fail:
+        msg: "Failed to create HTTP Netmap"
+      when: create_netmap_response.status != 201
+
+    - name: Create HTTP Adapter
+      uri:
+        url: "http://example.com/api/adapters"
+        method: POST
+        body: "{{ http_adapter_xml }}"
+        headers:
+          Content-Type: application/xml
+        return_content: true
+      register: create_adapter_response
+
+    - name: Check HTTP Adapter creation success
+      fail:
+        msg: "Failed to create HTTP Adapter"
+      when: create_adapter_response.status != 201
+
+    - name: Log off the system
+      uri:
+        url: "http://example.com/api/logout"
+        method: POST
+        return_content: true
+      register: logout_response
+
+    - name: Check logout success
+      fail:
+        msg: "Logout failed"
+      when: logout_response.status != 200
+
+    - name: Print success message
+      debug:
+        msg: "SampleHttpPolicyNetmapAdapter successful"

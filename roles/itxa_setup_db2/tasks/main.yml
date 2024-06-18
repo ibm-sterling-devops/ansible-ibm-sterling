@@ -1,0 +1,13 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.include_tasks: 01_check_vars.yml
+
+# 2. Determine which pod to run in
+# -----------------------------------------------------------------------------
+- name: Determine which pod to run in
+  ansible.builtin.include_tasks: 02_lookup_pods.yml
+
+# 3. Prepare database for use with IBM Sterling B2Bi
+# -----------------------------------------------------------------------------
+- name: Prepare database for use with IBM Sterling B2Bi
+  ansible.builtin.include_tasks: 03_setup_db.yml

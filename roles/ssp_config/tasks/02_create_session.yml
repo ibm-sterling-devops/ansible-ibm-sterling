@@ -1,0 +1,26 @@
+---
+- name: Create session on SSP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/session
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body: '{"userId":"{{ ssp_admin_user }}","password":"{{ ssp_admin_password }}"}'
+    body_format: json
+    status_code: 200
+    validate_certs: false
+    return_content: true
+  register: response
+
+- name: Get XML content
+  ansible.builtin.set_fact:
+    xml_string: "{{ response.content }}"
+
+- name: Extract session token
+  ansible.builtin.set_fact:
+    # token_exists: "{{ xml_string is search('{\"sessionToken\":\"[a-zA-Z0-9+/=]+\"}') }}"
+    session_token_list: "{{ xml_string | regex_search('{\"sessionToken\":\"([a-zA-Z0-9+/=]+)\"}', '\\1') }}"
+
+- name: Set Facts for Engine
+  ansible.builtin.set_fact:
+    session_token: "{{ session_token_list[0] }}"

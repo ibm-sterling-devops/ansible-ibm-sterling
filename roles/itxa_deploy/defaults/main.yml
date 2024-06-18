@@ -1,13 +1,16 @@
 ---
 # Environment variables
 # -----------------------------------------------------------------------------------------------------------------
-itxa_namespace: "{{ lookup('env', 'ITXA_NAMESPACE') }}"
 itxa_instanceid: "{{ lookup('env', 'ITXA_INSTANCEID') }}"
+
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-itxa_version: "{{ lookup('env', 'ITXA_VERSION') | default('10.1.2.0.20231130', true) }}"
+itxa_version: "{{ lookup('env', 'ITXA_VERSION') | default('10.0.1.9-x86_64', true) }}"
 
-itxa_sys_passphrase: "{{ lookup('env', 'ITXA_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
+itxa_admin_password: "{{ lookup('env', 'ITXA_ADMIN_PASSWORD') | default('passw0rd', true) }}"
+itxa_tls_keystore_password: "{{ lookup('env', 'ITXA_TLS_KEYSTORE_PASSWORD') | default('changeit', true) }}"
+
+itxa_license_type: "{{ lookup('env', 'ITXA_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
 # Configure instance
 # -----------------------------------------------------------------------------
@@ -16,16 +19,27 @@ entitled_registry_user: cp
 
 # Role Internal
 # -----------------------------------------------------------------------------
+itxa_namespace: "ibm-itxa-{{ itxa_instanceid }}-app"
+itxa_db_namespace: "ibm-itxa-{{ itxa_instanceid }}-db2"
+
+db2_namespace: ""
+db2_secret: mydb2-secret
+db2_id: mydb2
+
 my_workdir: /tmp
 
 itxa_registry_secret: ibm-registry-secret
-itxa_secret: ibm-itx-rs-secret
+itxa_user_secret: itxa-user-secret
+itxa_db_secret: itxa-db-secret
+itxa_tls_secret: tls-itxa-secret
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
-  10.1.2.0.20231130:
-    helm_version: "2.1.0"
-    image_tag: "10.1.2.0.20231130"
+  10.0.1.9-x86_64:
+    helm_version: "1.0.2"
+    image_tag: "10.0.1.9-x86_64"
+    itx_image_tag: "10.1.2"
+
 
 # Storage Class Matrix
 # -----------------------------------------------------------------------------

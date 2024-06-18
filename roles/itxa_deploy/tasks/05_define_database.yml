@@ -1,0 +1,100 @@
+---
+# Get Information from db2_namespace
+# -----------------------------------------------------------------------------
+- name: "Lookup Secrets from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: "{{ db2_secret }}"
+    namespace: "{{ db2_namespace }}"
+  register: db_secret_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: "Lookup Service from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: "{{ db2_id }}-ci"
+    namespace: "{{ db2_namespace }}"
+  register: db_svc_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: Set Facts for Database Configuration from db2_namespace
+#  no_log: true
+  ansible.builtin.set_fact:
+    itxa_dbvendor: "DB2"
+    itxa_dbhost: "{{ db2_id }}-ci.{{ db2_namespace }}.svc.cluster.local"
+    itxa_dbport: "{{ db_svc_cout.resources[0].spec.ports[0].port }}"
+    itxa_dbname: "ITXADB"
+    itxa_dbuser: "db2inst1"
+    itxa_dbpassword: "{{ db_secret_cout.resources[0].data.DB2INST1_PASSWORD | b64decode }}"
+  when:
+    - db2_namespace is defined and db2_namespace != ""
+    - db_secret_cout is defined and db_secret_cout != ""
+    - db_svc_cout is defined and db_svc_cout != ""
+# jdbc_url: "jdbc:db2://c-{{db2_instance_name | lower}}-db2u-engn-svc.{{ db2_namespace }}.svc:{{db2_tls_serviceport}}
+#            /{{db2_dbname}}:sslConnection=true;sslVersion={{ tls_version }};"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    itxa_dbdrivers: "db2jcc4.jar"
+  when:
+    - itxa_dbvendor is defined and itxa_dbvendor == "DB2"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    itxa_dbdrivers: "ojdbc8.jar"
+    itxa_oracle_useservicename: "true"
+  when:
+    - itxa_dbvendor is defined and itxa_dbvendor == "Oracle"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    itxa_dbdrivers: "mssql_FIXME.jar"
+  when:
+    - itxa_dbvendor is defined and itxa_dbvendor == "SQLServer"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "DB Vendor ................. {{ itxa_dbvendor }}"
+      - "DB Host   ................. {{ itxa_dbhost }}"
+      - "DB Port   ................. {{ itxa_dbport }}"
+      - "DB Name   ................. {{ itxa_dbname }}"
+      - "DB User   ................. {{ itxa_dbuser }}"
+      - "DB Password ............... {{ itxa_dbpassword }}"
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that:
+      - itxa_dbvendor is defined and itxa_dbvendor != ""
+      - itxa_dbhost is defined and itxa_dbhost != ""
+      - itxa_dbport is defined and itxa_dbport != ""
+      - itxa_dbname is defined and itxa_dbname != ""
+      - itxa_dbuser is defined and itxa_dbuser != ""
+      - itxa_dbpassword is defined and itxa_dbpassword != ""
+    fail_msg: "Database Properties are required"
+
+- name: "Generate secret '{{ itxa_db_secret }}'"
+  no_log: true
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque
+      metadata:
+        name: "{{ itxa_db_secret }}"
+        namespace: "{{ itxa_namespace }}"
+      stringData:
+        dbUser: "{{ itxa_dbuser }}"
+        dbPassword: "{{ itxa_dbpassword }}"
+        dbHostIp: "{{ itxa_dbhost }}"
+        databaseName: ITXADB
+        dbPort: "{{ itxa_dbport }}"

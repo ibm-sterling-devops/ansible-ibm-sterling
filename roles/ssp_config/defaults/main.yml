@@ -1,0 +1,21 @@
+---
+ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
+
+ssp_admin_user: "admin"
+ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Passw0rd@', true) }}"
+
+
+ssp_namespace: "ibm-ssp-{{ ssp_instanceid }}-engine"
+ssp_service: "s0-ibm-ssp-engine"
+ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
+ssp_cm_route: "s0-ibm-ssp-cm"
+
+ssp_config_engine: true
+ssp_engine_name: "Engine_test"
+ssp_engine_description: "Engine Test 01"
+
+ssp_config_cd: false
+ssp_config_ftp: false
+ssp_config_http: false
+ssp_config_myfg: false
+ssp_config_sftp: false

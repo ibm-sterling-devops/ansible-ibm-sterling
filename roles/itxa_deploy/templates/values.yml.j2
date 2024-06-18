@@ -1,46 +1,33 @@
 global:
   license: true
-  # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and
-  # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-  licenseType: "prod"
+  licenseType: "{{ itxa_license_type }}"
   image:
-    #repository: "image-registry.openshift-image-registry.svc:5000/itxa"
+    # repository: "image-registry.openshift-image-registry.svc:5000/itxa"
     repository: "cp.icr.io/ibm-itxa"
-    pullsecret: "er-secret"
-  appSecret: "itxa-db-secret"
+    pullsecret: "{{ itxa_registry_secret }}"
+  appSecret: "{{ itxa_db_secret }}"
   tlskeystoresecret: ""
   secureDBConnection:
     enabled: false
     dbservercertsecretname: ""
   database:
-    dbvendor: oracle
+    dbvendor: db2
     # The 3 lines below are to configure pulling the db driver from an S3 bucket.  This has been replaced in favor of the resourcesinit container which automatically deploys
     # The proper db driver based on the dbvendor setting above.  Valid values for dbvendor are oracle, db2 or mssql
     #dbDriver: ""
     #s3host: "s3.us-east.cloud-object-storage.appdomain.cloud"
     #s3bucket: "nditxa"
     oracleUseServiceName: false # When set to true uses service name in JDBC connection strings for Oracle, while the default (false) utilizes SID.
-  serviceAccountName: "itxa" # This should be replaced with the actual service account name used during deployment.
+  serviceAccountName: "itxa-sa" # This should be replaced with the actual service account name used during deployment.
 
-  # Example:
-  # envs:
-  # - name: FOO
-  #   valueFrom:
-  #     secretKeyRef:
-  #       key: FOO
-  #       name: secret-resource
-  # - name: BAR
-  #   value: bar
-  #- name: LICENSE
-  #  value: accept
   persistence:
-    useDynamicProvisioning: false
-    storageClassName: ""
+    useDynamicProvisioning: true
+    storageClassName: "{{ storage_class_matrix[itxa_storage_class].rwx }}"
     appLogsPVC:
       name: "itxa-logs-pvc"
       selector:
-        label: "intent"
-        value: "itxa-logs"
+        label: "" # "intent"
+        value: "" # "itxa-logs"
       accessMode: ReadWriteMany
       requestSize: 5Gi
     securityContext:
@@ -55,17 +42,17 @@ global:
     enabled: true
     image:
       name: itxa-resources
-      tag: 10.0.1.9-x86_64
-      #digest: sha256:1d9045511c1203e6d6d25ed32c700dfca230076412915857c2c40b1409151b7c
+      tag: "{{ compatibility_matrix[itxa_version].image_tag }}"
+      digest: ""
       pullPolicy: "IfNotPresent"
 
   arch:
     amd64: "2 - No preference"
   install:
     itxaUI:
-      enabled: false
+      enabled: true
     itxadbinit:
-      enabled: false
+      enabled: true
   nginxTimeout: "10m"
   autoscaling:
     enabled: false
@@ -74,15 +61,14 @@ global:
     targetCPUUtilizationPercentage: 25
 
 logs:
-
   # true if user wish to redirect the application logs to console else false. If provided value is true , then application logs will reside inside containers. No volume mapping will be used.
   enableAppLogOnConsole: false
 
 ITX:
   image:
     repository: cp.icr.io/cp/ibm-itx-rs
-    tag: 10.1.2
-    digest: "sha256:bc9b60086ca95a8ef6303be33cedabf475d10dd8ad161c75567f51d19aba13b8"
+    tag: "{{ compatibility_matrix[itxa_version].itx_image_tag }}"
+    digest: ""
     pullPolicy: IfNotPresent
 
 
@@ -92,7 +78,7 @@ itxauiserver:
   runAsUser: 1001
   image:
     name: itxa-ui-server
-    tag: 10.0.1.9-x86_64
+    tag: "{{ compatibility_matrix[itxa_version].image_tag }}"
     #digest: sha256:f3fd11644f93efcaddabb1955cbc95ece0ee833f6e40e9a645f01792b455ec70
     pullPolicy: IfNotPresent
   config:
@@ -171,10 +157,10 @@ itxauiserver:
   importcert:
     secretname: ""
   readinessProbePath: "/spe/myspe"
-  userSecret: "itxa-user-secret"
+  userSecret: "{{ itxa_user_secret }}"
 
 itxadatasetup:
-  dbType: "oracle"
+  dbType: "db2"
   #deployPacks - if flag is set to true, will pass the path of respective pack jar to spedeploy-packs.sh and spedbinit-container.sh to deploy and load the pack into database.
   deployPacks:
     edi: false
@@ -195,6 +181,6 @@ itxadbinit:
   runAsUser: 1001
   image:
     name: itxa-init-db
-    tag: 10.0.1.9-x86_64
+    tag: "{{ compatibility_matrix[itxa_version].image_tag }}"
     #digest: sha256:ba59515d78e591d1cf19afb14ebf198a65c802a2f06e1c78ad8842ea1d4d114f
     pullPolicy: IfNotPresent

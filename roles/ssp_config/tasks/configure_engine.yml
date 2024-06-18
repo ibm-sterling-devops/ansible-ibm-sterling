@@ -1,0 +1,40 @@
+---
+# Create Engine on SSP
+# -----------------------------------------------------------------------------------
+- name: Create Engine on SSP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/engine/createEngine
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: |
+      <engineDef>
+        <certicomLogging>ERROR</certicomLogging>
+        <debugLogging>ERROR</debugLogging>
+        <description><![CDATA[{{ ssp_engine_description }}]]></description>
+        <enableAuditLogCMRouting>false</enableAuditLogCMRouting>
+        <host>{{ ssp_engine_host }}</host>
+        <localPSLogging>ERROR</localPSLogging>
+        <maverickLogging>ERROR</maverickLogging>
+        <name>{{ ssp_engine_name }}</name>
+        <port>65535</port>
+        <properties>
+          <property>
+            <name>proxy.host.name.or.ip</name>
+            <value>xx.xx.xx.xx</value>
+          </property>
+        </properties>
+        <status></status>
+        <userStore>defUserStore</userStore>
+      </engineDef>
+    status_code: 200
+    validate_certs: false
+    return_content: true
+  register: response
+
+    # body: "{{ lookup('ansible.builtin.file','issue.json') }}"
+
+- name: Display response
+  ansible.builtin.debug:
+    var: response

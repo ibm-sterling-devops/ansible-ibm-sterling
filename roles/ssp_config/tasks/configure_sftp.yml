@@ -1,0 +1,224 @@
+---
+- name: Manage SFTP Policies, Netmaps, and Adapters
+  hosts: localhost
+  tasks:
+    - name: Set system password (if provided)
+      set_fact:
+        system_password: "{{ system_password | default('default_password') }}"
+    
+    - name: Login and retrieve session token
+      shell: |
+        # Login command, replace with actual login command
+        echo "login -u username -p {{ system_password }}"
+      register: login_result
+      changed_when: false
+
+    - name: Delete existing SFTP Adapter if it exists
+      shell: |
+        # Replace with actual delete command
+        echo "delete SFTP_Adapter_test"
+      ignore_errors: yes
+    
+    - name: Delete existing SFTP Netmap if it exists
+      shell: |
+        # Replace with actual delete command
+        echo "delete SFTP_Netmap_test"
+      ignore_errors: yes
+    
+    - name: Delete existing SFTP Policy if it exists
+      shell: |
+        # Replace with actual delete command
+        echo "delete SFTP_Policy_test"
+      ignore_errors: yes
+    
+    - name: Build SFTP Policy XML
+      shell: |
+        # Command to build SFTP Policy XML
+        echo "<sftpPolicyDef>
+                <eaCertValidation>false</eaCertValidation>
+                <name>SFTP_Policy_test</name>
+                <protocol>sftp</protocol>
+                <protocolValidationOn>true</protocolValidationOn>
+                <status></status>
+                <userAuthentication>none</userAuthentication>
+                <userMapping>passthru</userMapping>
+              </sftpPolicyDef>"
+      register: policy_xml
+      changed_when: false
+
+    - name: Validate SFTP Policy XML
+      shell: |
+        # Command to validate XML against XSD
+        echo "validate policy XML"
+      register: validate_policy
+      changed_when: false
+
+    - name: Create SFTP Policy
+      shell: |
+        # Command to create SFTP Policy
+        echo "create policy with XML {{ policy_xml.stdout }}"
+    
+    - name: Export all policies
+      shell: |
+        # Command to export all policies
+        echo "export all policies"
+      register: exported_policies
+      changed_when: false
+    
+    - name: Validate exported policies
+      shell: |
+        # Command to validate exported XML against XSD
+        echo "validate exported policies"
+      changed_when: false
+
+    - name: Import all policies
+      shell: |
+        # Command to import all policies
+        echo "import policies {{ exported_policies.stdout }}"
+
+    - name: Build SFTP Netmap XML
+      shell: |
+        # Command to build SFTP Netmap XML
+        echo "<netmapDef>
+                <description>SFTP_Netmap</description>
+                <inboundNodes><inboundNodeDef>
+                  <description>Inbound</description>
+                  <logLevel>DEBUG</logLevel>
+                  <name>Inbound</name>
+                  <peerAddressPattern>*</peerAddressPattern>
+                  <policyId>SFTP_Policy_test</policyId>
+                  <secureConnection>false</secureConnection>
+                </inboundNodeDef></inboundNodes>
+                <name>SFTP_Netmap_test</name>
+                <outboundNodes><outboundNodeDef>
+                  <addresses><address>
+                    <nodeName>Outbound_Node_Name</nodeName>
+                    <host>10.20.30.40</host>
+                    <port>1663</port>
+                  </address></addresses>
+                  <logLevel>DEBUG</logLevel>
+                  <name>Outbound_Node_Name</name>
+                  <secureConnection>false</secureConnection>
+                  <validDestination>10.20.30.40</validDestination>
+                  <validDestinationPort>1663</validDestinationPort>
+                </outboundNodeDef></outboundNodes>
+                <protocol>sftp</protocol>
+                <status></status>
+              </netmapDef>"
+      register: netmap_xml
+      changed_when: false
+    
+    - name: Create SFTP Netmap
+      shell: |
+        # Command to create SFTP Netmap
+        echo "create netmap with XML {{ netmap_xml.stdout }}"
+    
+    - name: Export all netmaps
+      shell: |
+        # Command to export all netmaps
+        echo "export all netmaps"
+      register: exported_netmaps
+      changed_when: false
+
+    - name: Import all netmaps
+      shell: |
+        # Command to import all netmaps
+        echo "import netmaps {{ exported_netmaps.stdout }}"
+    
+    - name: Build SFTP Adapter XML
+      shell: |
+        # Command to build SFTP Adapter XML
+        echo "<sftpAdapterDef>
+                <description><![CDATA[x]]></description>
+                <engines></engines>
+                <listenPort>20</listenPort>
+                <logLevel>ERROR</logLevel>
+                <loginBannerText><![CDATA[Hello new user]]></loginBannerText>
+                <maxSessions>20</maxSessions>
+                <name>SFTP_Adapter_test</name>
+                <netmap>SFTP_Netmap_test</netmap>
+                <netmapKey>Outbound_Node_Name</netmapKey>
+                <properties>
+                  <property>
+                    <name>sftp.commands.allowed</name>
+                    <value></value>
+                  </property>
+                  <property>
+                    <name>sftp.commands.prohibited</name>
+                    <value></value>
+                  </property>
+                  <property>
+                    <name>sftp.max.command.length</name>
+                    <value>1024</value>
+                  </property>
+                  <property>
+                    <name>sftp.max.response.length</name>
+                    <value>4096</value>
+                  </property>
+                  <property>
+                    <name>sftp.ssl.pbsz.required</name>
+                    <value>Y</value>
+                  </property>
+                  <property>
+                    <name>sftp.ssl.prot.required</name>
+                    <value>Y</value>
+                  </property>
+                  <property>
+                    <name>max.ps.client.threads</name>
+                    <value>10</value>
+                  </property>
+                  <property>
+                    <name>max.ps.server.threads</name>
+                    <value>10</value>
+                  </property>
+                </properties>
+                <protocol>sftp</protocol>
+                <serverGreetingBannerText><![CDATA[Hello]]></serverGreetingBannerText>
+                <sessionTimeout>3</sessionTimeout>
+                <standardRoute>Outbound_Node_Name</standardRoute>
+                <status></status>
+                <urlRoutingType>standardRouting</urlRoutingType>
+                <usePasvIP>false</usePasvIP>
+              </sftpAdapterDef>"
+      register: adapter_xml
+      changed_when: false
+
+    - name: Create SFTP Adapter
+      shell: |
+        # Command to create SFTP Adapter
+        echo "create adapter with XML {{ adapter_xml.stdout }}"
+    
+    - name: Export all adapters
+      shell: |
+        # Command to export all adapters
+        echo "export all adapters"
+      register: exported_adapters
+      changed_when: false
+    
+    - name: Import all adapters
+      shell: |
+        # Command to import all adapters
+        echo "import adapters {{ exported_adapters.stdout }}"
+
+    - name: Delete SFTP Adapter
+      shell: |
+        # Command to delete SFTP Adapter
+        echo "delete SFTP_Adapter_test"
+      ignore_errors: yes
+    
+    - name: Delete SFTP Netmap
+      shell: |
+        # Command to delete SFTP Netmap
+        echo "delete SFTP_Netmap_test"
+      ignore_errors: yes
+    
+    - name: Delete SFTP Policy
+      shell: |
+        # Command to delete SFTP Policy
+        echo "delete SFTP_Policy_test"
+      ignore_errors: yes
+    
+    - name: Log off session
+      shell: |
+        # Command to log off session
+        echo "logoff"

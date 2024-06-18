@@ -1,0 +1,13 @@
+# Configure Db2 instance
+# -----------------------------------------------------------------------------------------------------------------
+itxa_instanceid: "{{ lookup('env', 'ITXA_INSTANCEID') }}"
+db2_namespace: "sterling-b2bi-{{ itxa_instanceid }}-db2"
+
+db2_instance_name: "db2inst1"
+db2_user: "db2inst1"
+db2_dbname: "ITXADB"
+db2_container: "mydb2"
+
+# Others
+# -----------------------------------------------------------------------------
+my_workdir: /tmp

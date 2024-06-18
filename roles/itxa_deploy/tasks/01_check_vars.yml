@@ -3,7 +3,7 @@
   ansible.builtin.assert:
     that:
       # CONNECT:DIRECT
-      - lookup('env', 'ITXA_NAMESPACE') != ""
+      - lookup('env', 'ITXA_INSTANCEID') != ""
       # IBM
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
@@ -20,6 +20,41 @@
     that: entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "entitled_registry_key property is required"
 
+# Lookup Namespace availabiity
+# -----------------------------------------------------------------------------
+- name: Lookup Namespaces
+  kubernetes.core.k8s_info:
+    kind: Namespace
+  register: lookup_namespaces
+
+- name: Create List of Namespaces
+  ansible.builtin.set_fact:
+    namespace_list: "{{ lookup_namespaces.resources | map(attribute='metadata.name') | list }}"
+
+# 3. Check for DB Information
+# -----------------------------------------------------------------------------
+- name: Check for DB2 provided namespace
+  ansible.builtin.set_fact:
+    db2_namespace: "{{ env_db2_namespace }}"
+  when:
+    - env_db2_namespace is defined and env_db2_namespace != ""
+    - env_db2_namespace in namespace_list
+
+- name: Check for DB2 default namespace
+  ansible.builtin.set_fact:
+    db2_namespace: "{{ itxa_db_namespace }}"
+  when:
+    - db2_namespace == ""
+    - itxa_db_namespace in namespace_list
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that:
+      - (db2_namespace != "") or (itxa_dbvendor != "")
+    fail_msg: "Database Information property is required"
+
+# 5. Serial ID
+# -----------------------------------------------------------------------------
 - name: Unique Id for files
   ansible.builtin.set_fact:
     my_serial: "{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}"
@@ -29,5 +64,7 @@
 - name: Debug
   ansible.builtin.debug:
     msg:
-      - "Kubernets Namespace ................. {{ itxa_namespace }}"
+      - "ITXA Instance ID  ................... {{ itxa_instanceid }}"
+      - "ITXA Namespace ...................... {{ itxa_namespace }}"
+      - "Database Namespace .................. {{ db2_namespace }}"
       - "my_serial ........................... {{ my_serial }}"

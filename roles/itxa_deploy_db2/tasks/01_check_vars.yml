@@ -1,0 +1,26 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      # DB2 Database
+      - lookup('env', 'ITXA_INSTANCEID') != ""
+      # IBM
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+
+# 1. Fail if required parameters are not set
+# -----------------------------------------------------------------------------
+- name: "Fail if required properties have not been provided"
+  ansible.builtin.assert:
+    that:
+      - db2_namespace is defined and db2_namespace != ""
+      - entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "One or more required properties have not been set"
+
+- name: "Fail db2_dbname is over 8 characters"
+  ansible.builtin.assert:
+    that:
+      - db2_dbname is defined and db2_dbname != ""
+      - db2_dbname | length <= 8
+    fail_msg: "Property value of db2_dbname is set to '{{ db2_dbname }}' and is greater than 8 character long."

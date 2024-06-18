@@ -1,0 +1,6 @@
+---
+- name: "Fail if db2_namespace is not provided"
+  ansible.builtin.assert:
+    that:
+      - db2_namespace is defined and db2_namespace != ""
+    fail_msg: "db2_namespace property is required"

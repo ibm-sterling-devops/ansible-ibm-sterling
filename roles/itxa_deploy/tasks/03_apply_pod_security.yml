@@ -5,7 +5,7 @@
     state: absent
   with_items:
     - "{{ my_workdir }}/ibm-itxa-prod-{{ compatibility_matrix[itxa_version].helm_version }}.tgz"
-    - "{{ my_workdir }}/myitxa_values.yml"
+    # - "{{ my_workdir }}/myitxa_values.yml"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:
@@ -72,13 +72,34 @@
     definition: "{{ lookup('file', 'files/ibm-itxa-scc.yaml') | from_yaml }}"
   when: scc_resource and scc_apiversion
 
-- name: Add SCC to group for target namespace
+# - name: Creating Cluster Role
+#   kubernetes.core.k8s:
+#     state: present
+#     definition: "{{ lookup('file', 'files/ibm-itxa-cr-scc.yaml') | from_yaml }}"
+#   when: scc_resource and scc_apiversion
+
+# - name: Adding all namespace users to SCC...
+#   kubernetes.core.k8s:
+#     state: present
+#     template: 'ibm-itxa-rb-scc.yaml.j2'
+#   when: scc_resource and scc_apiversion
+
+# Creating security context constraints for OpenShift Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Pod Security Policy
   kubernetes.core.k8s:
     state: present
-    definition:
-      apiVersion: security.openshift.io/v1
-      kind: SecurityContextConstraints
-      metadata:
-        name: ibm-itx-rs-scc
-      groups:
-        - "system:serviceaccounts:{{ itxa_namespace }}"
+    definition: "{{ lookup('file', 'ibm-itxa-psp.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion
+
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'ibm-itxa-cr.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion
+
+- name: Adding a RoleBinding for all namespace users to the PSP...
+  kubernetes.core.k8s:
+    state: present
+    template: 'ibm-itxa-rb.yaml.j2'
+  when: psp_resource and psp_apiversion
