@@ -1,0 +1,9 @@
+- name: Deploy IBM Sterling Transformation Extender Advanced
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - itxa_deploy_db2
+    - itxa_setup_db2
+    - itxa_deploy

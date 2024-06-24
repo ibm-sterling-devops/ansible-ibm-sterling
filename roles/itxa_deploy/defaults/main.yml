@@ -32,13 +32,15 @@ itxa_registry_secret: ibm-registry-secret
 itxa_user_secret: itxa-user-secret
 itxa_db_secret: itxa-db-secret
 itxa_tls_secret: tls-itxa-secret
+itxa_svc_web: "s0-ibm-itxa-prod-itxauiserver"
+itxa_route_web: "itxa-web"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
   10.0.1.9-x86_64:
     helm_version: "1.0.2"
     image_tag: "10.0.1.9-x86_64"
-    itx_image_tag: "10.1.2"
+    itx_image_tag: "10.1.2.0.20231130"
 
 
 # Storage Class Matrix

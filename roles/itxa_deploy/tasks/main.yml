@@ -14,5 +14,8 @@
 - name: Setup JDBC Configuration
   ansible.builtin.include_tasks: 05_define_database.yml
 
+- name: Create service and route for ITXA
+  ansible.builtin.include_tasks: 06_create_service_route.yml
+
 - name: Install ITXA using Helm Chart
-  ansible.builtin.include_tasks: 06_install_itxa.yml
+  ansible.builtin.include_tasks: 07_install_itxa.yml
