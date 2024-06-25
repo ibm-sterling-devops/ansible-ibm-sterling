@@ -17,51 +17,16 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 
 # Roles
 
-See complete list of [ROLES](roles/README.md)
+See complete list of [Roles](roles/README.md)
 
 
 # Getting start
 
-## Prerequisites
+## Running playbooks for standalone
 
-1) Download installation files:
+* [Install Connect:Direct (standalone)](docs/setup_cd.md)
+* [Install Sterling B2B Integrator (standalone)](docs/setup_b2b.md)
 
-| Product Name                  | PartNum | Filename                        |           Description                                        |
-|-------------------------------|---------|---------------------------------|--------------------------------------------------------------|
-| IBM Connect:Direct            |         | IBM_CD_V6.2_UNIX_RedHat.Z.tar.Z | IBM Connect:Direct 6.2.x|
-| IBM DB2 V11.5.x               |         | DB2S_11.5.4_MPML.tar.gz         | IBM DB2 V11.5.4 Multi-platform Multi-language|
-| IBM Java SDK/JRE              | M06M9ML | SB2BI_6.1.2_MP_ML_JDK.zip       | IBM Sterling B2B Integrator V6.1.2 or IBM Sterling File Gateway V6.1.2 Java SDK/JRE Multiplatform|
-| IBM Sterling B2B Integrator   | M06MCML | SB2BI_6.1.2_MP_ML.zip           | IBM Sterling B2B Integrator V6.1.2 for Multiplatform Multilingual|
-| IBM Java Unrestricted Policy  |         | unrestrictedpolicyfiles.zip     |               |
-
-2) Copy files to Web Server
-
-Example of my repository: /usr/share/nginx/html
-
-
-## Cloning ansible-ibm-websphere from git
-
-```bash 
-git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
-```
-
-## Running playbooks
-
-Install Connect:Direct (standalone)
-
-```bash 
-cd ansible-ibm-sterling
-
-ansible-playbook -i environments/hosts.dev -u root playbooks/setup-cd.yml
-```
-
-Install Sterling B2B (standalone)
-
-```bash 
-cd ansible-ibm-sterling
-
-ansible-playbook -i environments/hosts.dev -u root playbooks/setup-sb2b.yml
-```
 
 ## Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift
 
