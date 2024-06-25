@@ -1,77 +1,126 @@
 license: true
-licenseType: "{{ ssp_cm_license_type }}"
+licenseType: "{{ ssp_ps_license_type }}"
 
-nameOverride: ""
-arch: "amd64"
+timezone: "UTC"
 timezone: "UTC"
 
 # Specify the respective Docker Image details for IBMCCS
 image:
-  repository:  "{{ compatibility_matrix[ssp_cm_version].image_repository }}"
-  tag: "{{ compatibility_matrix[ssp_cm_version].image_tag }}"
-  imageSecrets: "{{ ssp_cm_registry_secret }}"
+  repository:  "{{ compatibility_matrix[ssp_ps_version].image_repository }}"
+  tag: "{{ compatibility_matrix[ssp_ps_version].image_tag }}"
+  imageSecrets: "{{ ssp_ps_registry_secret }}"
   digest:
     enabled: false
     value: "" 
   pullPolicy: IfNotPresent
 
-
-cmArgs:
-   # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy CM first.
-   # Set the value "false" to Import Key Cert Exported from Secure Proxy Engine if you have installed Secure Proxy Engine first.
-  keyCertExport: false
-  # Set the certificate alias value. 
-  keyCertAliasName: "keyCert"
-  # JVM max heap size - don't set more than container limit resource memory. 
-  maxHeapSize: "2048m"
-  # Enable/Disable host name verification
-  # Set to false, will bypass the host header check. 
-  hostNameVerification: false
-  # Following property is mandatory if you are enabling host name verification. 
-  # Specify comma delimited host names and IP addresses which can be used by users accessing CM thru browser.  
-  hostNames: ""
-  # Enable/Disable - SSP CM OSA Node Name to be used for CCM monitoring
-  # In Node Name container will add Pod name  
-  osaNodeEnable: false
+nameOverride: ""
+# Currently, the only supported architecture for IBMCCS is `amd64`
+arch: "amd64"
 
 
-persistentVolume:
-  enabled: true
-  useDynamicProvisioning: {{ ssp_cm_other_values.persistence.useDynamicProvisioning }}
-  existingClaimName: ""
-  labelName: "app.kubernetes.io/name"
-  labelValue: "ibm-ssp-cm-pv"
-  storageClassName: "{{ storage_class_matrix[ ssp_cm_storage_class ].rwo }}"
-  size: {{ ssp_cm_other_values.pvClaim.size | default('100Mi') }}
-  accessMode: "ReadWriteOnce"    
+# Specify these fields to provide config values for Perimeter Server application
+psArgs:
+  # true - The Perimeter Server will be installed in more-secure zone
+  # false - The Perimeter Server will be installed in less-secure zone
+  networkZoneSecure: false
+  # Secure Network Interface - The perimeter server to use to communicate with the Secure Proxy engine.
+  secureInterface: "*"
+   # External Network Interface - The perimeter server to use to communicate with the backend serve / trading partners.
+  externalInterface: "*"
+  # Remote port number - The Secure Proxy engine will listen on for requests from the perimeter server.
+  # Required for More secure Perimeter Server  
+  remotePort: 30900
+  # Remote HostName/IP address - The Secure Proxy engine host that will be connected to this perimeter server.
+  # Required for More secure Perimeter Server
+  remoteAddress: ""
 
-storageSecurity:
-  fsGroup: 65534
-  supplementalGroups: [65534]
-  
+  # maxAllocation - Limits the amount of memory used for network buffers.
+  maxAllocation: 768
+  # maxHeapSize - JVM heap size, don't set more than container limit resource memory. 
+  maxHeapSize: 1024
+  # restricted - set to true to enable restricted network access, controlled by restricted.policy
+  # Required for More secure Perimeter Server 
+  restricted: false
+  # receiveBufferSize - socket receive buffer size for persistent connection
+  receiveBufferSize: 131072
+  # sendBufferSize - socket send buffer size for persistent connection
+  sendBufferSize: 131072
+  # logLevel - May have values of (ERROR,WARN,INFO,COMMTRACE,DEBUG or ALL)
+  logLevel: "ERROR"
+  # rotateLogs - enables log rotation when maxLogSize is reached.
+  rotateLogs: true
+  # maxLogSize - log output will roll over when this many records have been written
+  maxLogSize: 100000
+  # maxnumLogs - after this many logs are written, old logs will be deleted.
+  maxnumLogs: 10  
+
+# Specify these fields for Services
 service:
+  # Specify this to set service type.
   type: "LoadBalancer"
+    # Specify this to set load balancer IP. It's added for cloud environment.
+  loadBalancerIP: "" 
+  # Specify this to set external IP to access application outside the cluster.
+  externalIP: ""
+  # Specify this to set annotations 
+  annotations: {}
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: ps
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01
+    
+  # Specify this to set external traffic policy 
+  externalTrafficPolicy: ""
+  # Specify this to set session Affinity
+  sessionAffinity: "ClientIP"
+  psLessSecure: 
+    # Less Secure Perimeter Server application is accessed by using below mentioned service port, 
+    # so add port as per the requirement else it would be set 30800 as default port.
+    servicePort: 30800
+    # It is not required to change the container port value. 
+    containerPort: 30800
+    
+# Specify these fields for Adapter Services
+# if you want to preserve client source IP then define service type as NodePort and externalTrafficPolicy as Local
+service2:
+  # Specify this to set service type.
+  type: "LoadBalancer"
+  # Specify this to set load balancer IP. It's added for cloud environment.
   loadBalancerIP: "" 
   externalIP: ""
   annotations: {}
     #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
-    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: cm
+    #service.kubernetes.io/ibm-load-balancer-cloud-provider-name: ps
     #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01
     
   externalTrafficPolicy: ""
   sessionAffinity: "ClientIP"
-  jetty: 
-    servicePort: 8443
-    containerPort: 8443
-  cm: 
-    servicePort: 62366
-    containerPort: 62366
+  
+  # Expose adapter ports in range format if we are using Less Secure Perimeter Server.
+  # nodePortRange - it will assign to service if you have selected service type as NodePort. 
+  portRanges: []
+    #- name: ftp-adapter
+     # portRange: 30101-30110
+     # nodePortRange: 30101-30110
+    #- name: sftp-adapter
+     # portRange: 30201-30210
+     # nodePortRange: 30201-30210
+      
+  # Expose adapter ports one by one if we are using Less Secure Perimeter Server.
+  # nodePort - it will assign to service if you have selected service type as NodePort.
+  ports: []
+    #- name: adapter1
+     # port: 30110
+     # nodePort: 30110
+    #- name: adapter2
+     # port: 30111 
+     # nodePort: 30111
+    #- name: adapter3
+     # port: 30112    
+     # nodePort: 30112 
 
-secret:
-  secretName: "{{ ssp_cm_secret }}"
-  # Secret name for the imported Key Certificate from Engine - Use this if you are installing Configuration Manager after Engine otherwise it's not needed. 
-  keyCertSecretName: "{{ ssp_cm_keysecret }}"
 
+# Specify the service account details
 serviceAccount:
   create: true
   name: "" 
@@ -79,11 +128,11 @@ serviceAccount:
 resources:
   limits:
     cpu: 1000m
-    memory: 2Gi
+    memory: 1Gi
     ephemeral-storage: "5Gi"
   requests:
     cpu: 1000m
-    memory: 2Gi
+    memory: 1Gi
     ephemeral-storage: "3Gi"
 
 affinity:
@@ -108,151 +157,26 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution: []
     preferredDuringSchedulingIgnoredDuringExecution: []
 
+# liveness and readiness Probe
 livenessProbe:
-  initialDelaySeconds: 175
+  initialDelaySeconds: 150
   timeoutSeconds: 30
   periodSeconds: 60
   failureThreshold: 10
 
 readinessProbe:
-  initialDelaySeconds: 170
+  initialDelaySeconds: 140
   timeoutSeconds: 5
   periodSeconds: 60
   failureThreshold: 10
 
+# Set this to true to create route in OpenShift cluster
 route:
-  enabled: true
+  enabled: false
   
 # Set this to true to create Monitoring Dashboard for IBMCCS
 dashboard:
   enabled: false
-  
-# The following files can be customized using key value pair in the list format.
-# conf/log4j.properties, bin/log.properties, bin/security.properties, bin/vendor.properties 
-# Add/Update: Key and Value both must be provided in the below format.
-# <File Name Without Extension>_<Property Name>=<Property Value>
-customProperties: []
-# below is the example: 
-#customProperties:
-#  - log4j_log4j.logger.org.apache.commons.beanutils=OFF
-#  - log_audit.log.maxfilesize=10MB
-
-
-# Add/Update VM arguments in the list format
-# <Key as Java property name>=<value>
-vmArguments: []
-# below is the example: 
-#vmArguments:
-#  - Dssp.cm.jetty.sni.enable=false
-#  - DvalidateThruXSD=false
-#  - DsspcmDisableClientEndpointIdentification=true
-
-
-# Set custom certificate   
-customCertificate:
-  # Common key-certificate for all components of SSP.
-  # The Engine, CM, web server, and servlet will use this key-certificate.
-  commonCert:
-    # Enable/Disable common cert
-    enabled: false
-    # Secret name of common certificate
-    secretName: ""
-    # Alias for common certificate
-    alias: ""
-    # Custom key cert file will be exported with below name under container and it will be imported into the Engine.
-    exportFileName: "exportCommonCert.txt"
-    
-  # Key-certificate for CM, web server, and servlet
-  cmCert:
-    # Enable/Disable CM cert
-    enabled: false
-    # Secret name of CM certificate
-    secretName: ""
-    # Alias for CM certificate
-    alias: ""
-   
-  # Key-certificate for CM server connection to servlet.   
-  cmServerCert:
-    # Enable/Disable CM Server cert
-    enabled: false
-    # Secret name of CM Server certificate
-    secretName: ""
-    # Alias for CM Server certificate
-    alias: ""
-    
-  # Key-certificate for Engine.
-  # Use this option when the Engine should use its own key-certificate.
-  engCert:    
-    # Enable/Disable engine cert
-    enabled: false
-    # Secret name of engine certificate
-    secretName: ""
-    # Alias for engine certificate
-    alias: ""
-    # Engine key cert file will be exported with below name under container and it will be imported into the Engine.
-    exportFileName: "exportEngineCert.txt"
-
-  # Key-certificate for CM client connection to Engine
-  cmClientCert:
-   # Enable/Disable CM Client cert
-    enabled: false
-    # Secret name of CM Client certificate
-    secretName: ""
-    # Alias for CM Client certificate
-    alias: ""
-    # CM Client key cert file will be exported with below name under container and it will be imported into the Engine.
-    exportFileName: "exportCMClientCert.txt"
-  
-  # Key-certificate for web server.  
-  webCert:
-   # Enable/Disable web cert
-    enabled: false
-    # Secret name of web certificate
-    secretName: ""
-    # Alias for web certificate
-    alias: ""
-    
-  # Enable client authentication on web server - Enabled priority is more than disabled.
-  clientAuth:
-    # Enable client Authentication 
-    enabled: false
-    # Disable client Authentication
-    disabled: false
-    # Secret Name of trusted certificate to add in web server trust store
-    trustedCertSecretName: ""
-    # Certificate alias for Jetty web server trusted certificate
-    certCAAlias: ""
-  
-  # Protocol and Cipher suites for CM 
-  cmSSL:
-    # Enable/Disable for update
-    enabled: false
-    # SSL/TLS protocol for CM.
-    protocol: "TLSv1.2"
-    # Cipher suites for CM and Separate cipher suites with semi colon.
-    ciphers: "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384;TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256;TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384;TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256;TLS_RSA_WITH_AES_256_GCM_SHA384;TLS_RSA_WITH_AES_128_GCM_SHA256"
-    # CM SSL changes key cert file will be exported with below name under container and it will be imported into the Engine.
-    exportFileName: "exportCMSSLCert.txt"
-  
-  # Protocol and Cipher suites for Jetty web server 
-  webSSL:
-    # Enable/Disable for update
-    enabled: false
-    # SSL/TLS protocol for web server.
-    protocol: "TLSv1.2"
-    # Cipher suites for web server and Separate cipher suites with semi colon.
-    ciphers: "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384;TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256;TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384;TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256;TLS_RSA_WITH_AES_256_GCM_SHA384;TLS_RSA_WITH_AES_128_GCM_SHA256"
-
-
-# The custom directories/files can be mapped using the list format.
-# For mapping, We need to provide full path of the file or directory. 
-# First we need to create the directory with 'CM_RESOURCES' name if it is not available into PV. 
-# and keep the custom directories/files into created directory. 
-customFiles: []
-# In the below example we need to keep log4j2.xml file inside 'CM_RESOURCES' directory.
-# so that the container will copy this file into respective directory.   
-#customFiles:
-#  - /conf/log4j2.xml
 
 # Set network policy
 # https://kubernetes.io/docs/concepts/services-networking/network-policies/
@@ -262,18 +186,21 @@ networkPolicy:
   - Ingress
   - Egress
   
-  # apply ingress rule.
+  # apply ingress rule. Default allow all ingress traffic.
   ingress:
   - from:
     ports:
     - protocol: TCP
-      port: 8443
+      port: 30800
     - protocol: TCP
-      port: 62366
+      port: 30900
       
-  # apply egress rule.
+  # apply egress rule. Default allow all egress traffic 
   egress:
   - to:
     ports:
     - protocol: TCP
-      port: 63366  
+      port: 63366
+   
+      
+

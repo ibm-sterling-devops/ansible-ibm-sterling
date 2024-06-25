@@ -8,8 +8,11 @@
 - name: Applying Pod Security
   ansible.builtin.include_tasks: 03_apply_pod_security.yml
 
-- name: Define Storage for Data Persistence
-  ansible.builtin.include_tasks: 04_define_storage.yml
+# - name: Define Storage for Data Persistence
+#   ansible.builtin.include_tasks: 04_define_storage.yml
+
+# - name: "Copy Certificates from SSP CM"
+#   ansible.builtin.include_tasks: 05_copy_certificates.yml
 
 - name: Install SSP PS using Helm Chart
-  ansible.builtin.include_tasks: 05_install_ssp_ps.yml
+  ansible.builtin.include_tasks: 06_install_ssp_ps.yml

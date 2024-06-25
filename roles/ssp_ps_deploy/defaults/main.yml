@@ -1,5 +1,5 @@
 ---
-ssp_ps_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
+ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
 
 ssp_ps_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.03plus', true) }}"
 
@@ -15,11 +15,13 @@ entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
-ssp_ps_namespace: "sterling-ssp-cm-{{ ssp_ps_instanceid }}"
-ssp_namespace: "sterling-spp-{{ ssp_ps_instanceid }}"
+ssp_ps_namespace: "ibm-ssp-{{ ssp_instanceid }}-ps"
+ssp_namespace: "ibm-ssp-{{ ssp_instanceid }}-engine"
+ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
 
 ssp_ps_registry_secret: ibm-registry-secret
-ssp_ps_secret: ibm-seas-secret
+ssp_ps_secret: ibm-ssp-ps-secret
+ssp_keycert_secret: ssp-cm-keycert
 ssp_ps_use_dynamic_provisioning: false
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm

@@ -1,5 +1,5 @@
 ---
-- name: Define SEAS helm chart values
+- name: Define SSP PS helm chart values
   ansible.builtin.set_fact:
     ssp_ps_other_values:
       persistence:
@@ -30,17 +30,7 @@
   register: helm_cout
   changed_when: helm_cout.rc != 0
 
-# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
-# - name: Deploy SEAS chart from local path
-#   kubernetes.core.helm:
-#     name: "{{ my_helm_release }}"
-#     chart_ref: "{{ my_helm.chart }}"
-#     release_namespace: "{{ ssp_ps_namespace }}"
-#     wait: True
-#     timeout: "{{ my_helm.timeout }}"
-#     values_files: "{{ my_helm.values }}"
-
-- name: "Lookup SEAS Pod"
+- name: "Lookup SSP PS Pod"
   kubernetes.core.k8s_info:
     kind: Pod
     namespace: "{{ ssp_ps_namespace }}"
@@ -58,10 +48,10 @@
   ansible.builtin.set_fact:
     ssp_ps_pod_name: "{{ ssp_ps_pod.resources[0].metadata.name }}"
 
-- name: "IBM Sterling SEAS Summary:"
+- name: "IBM Sterling SSP PS Summary:"
   ansible.builtin.debug:
     msg:
-      - "IBM Sterling SEAS status ............................ Ready!"
-      - "SEAS namespace ...................................... {{ ssp_ps_namespace }}"
+      - "IBM Sterling SSP PS status .......................... Ready!"
+      - "SSP PS namespace .................................... {{ ssp_ps_namespace }}"
       - "Pod name ............................................ {{ ssp_ps_pod_name }}"
       - "For username and password check secret .............. {{ ssp_ps_secret }}'"
