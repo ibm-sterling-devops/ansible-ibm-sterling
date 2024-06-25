@@ -1,13 +1,12 @@
-# ansible-ibm-sterling
-Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...
+# Ansible DevOps collection for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...
 
-# Install Sterling Products (standalone)
+## Install Sterling Products (standalone)
 
 * [Install Connect:Direct (standalone)](docs/setup_cd.md)
 * [Install Sterling B2B Integrator (standalone)](docs/setup_b2b.md)
 
 
-# Deploy Sterling Products on Redhat OpenShift / Kubernetes
+## Deploy Sterling Products on Redhat OpenShift / Kubernetes
 
 * [Deploy IBM Sterling Connect:Direct on Redhat OpenShift](docs/deploy_ocp_cd.md)
 * [Deploy IBM Sterling Connect:Direct Web Service on Redhat OpenShift](docs/deploy_ocp_cdws.md)
@@ -19,7 +18,7 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 * [Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter) ](docs/deploy_ocp_seas.md)
 
 
-# Playbooks
+## Playbooks
 
 | Playbook name            | Status         |           Description                                        |
 |--------------------------|----------------|--------------------------------------------------------------|
@@ -38,9 +37,9 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 | tools/cloudbeaver.yml    | Complete       | Deploy CloudBeaver CE to manage databases |
 | tools/openldap.yml       | Complete       | Deploy OpenLDAP as LDAP Server |
 
-# Roles
+## Roles
 
-## Standard Roles
+### Standard Roles
 
 | Role name                       | Status     |            Description of Role                                          |
 |---------------------------------|--------------|-------------------------------------------------------------------------|
@@ -58,7 +57,7 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 | ibm/sb2b/sb2b-stop              | Complete     | Stop SB2Bi |
 | others/nginx-install            | Complete     | Install Nginx |
 
-## OpenShift/Kubernetes Roles for IBM Sterling Products
+### OpenShift/Kubernetes Roles for IBM Sterling Products
 
 | Role name                     | Status      |           Description                                        |
 |-------------------------------|-------------|--------------------------------------------------------------|
@@ -82,7 +81,7 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 | ssp_deploy                    | Complete    | Deploy IBM Secure Proxy Engine|
 | ssp_ps_deploy                 | Complete    | Deploy IBM Secure Proxy Perimeter|
 
-## Tools 
+### Tools 
 
 | Role name                     | Status      |           Description                                        |
 |-------------------------------|-------------|--------------------------------------------------------------|
@@ -92,11 +91,11 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 
 
 
-# Contributors
+## Contributors
 
 See the list of [contributors](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/contributors) who participated in this project.
 
-# License
+## License
 
 This project is licensed under the Eclipse Public License - v 2.0 - see the [LICENSE.md](LICENSE.md) file for details
 
