@@ -2,13 +2,13 @@
 
 ## Prerequisites
 
-1) Download installation files:
+### Download installation files:
 
 | Product Name                  | PartNum | Filename                        |           Description       |
 |-------------------------------|---------|---------------------------------|-----------------------------|
 | IBM Connect:Direct            |         | IBM_CD_V6.2_UNIX_RedHat.Z.tar.Z | IBM Connect:Direct 6.2.x|
 
-2) Install Nginx
+### Install Nginx
 
 
 First, ensure your system is up-to-date with the latest packages. Nginx is not available in the default repositories of Red Hat-based systems. You need to install the EPEL (Extra Packages for Enterprise Linux) repository.
@@ -38,13 +38,13 @@ sudo systemctl enable nginx
  cp IBM_CD_V6.2_UNIX_RedHat.Z.tar.Z /usr/share/nginx/html
 ```
 
-## Cloning ansible-ibm-websphere from git
+### Cloning ansible-ibm-websphere from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 ```
 
-## create a inventory file 
+### Create a inventory file 
 
 Copy from template
 
@@ -58,7 +58,7 @@ Edit and provide information for your environment, like C:D node name and ip add
 
 Provide information for you nginx server
 
-## Running playbooks
+### Running playbooks
 
 Install Connect:Direct (standalone)
 
