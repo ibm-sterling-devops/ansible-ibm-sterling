@@ -1,6 +1,23 @@
 # ansible-ibm-sterling
 Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...
 
+# Install Sterling Products (standalone)
+
+* [Install Connect:Direct (standalone)](docs/setup_cd.md)
+* [Install Sterling B2B Integrator (standalone)](docs/setup_b2b.md)
+
+
+# Deploy Sterling Products on Redhat OpenShift / Kubernetes
+
+* [Deploy IBM Sterling Connect:Direct on Redhat OpenShift](docs/deploy_ocp_cd.md)
+* [Deploy IBM Sterling Connect:Direct Web Service on Redhat OpenShift](docs/deploy_ocp_cdws.md)
+* [Deploy IBM Sterling Transformation Server on Redhat OpenShift](docs/deploy_ocp_itx_rs.md)
+* [Deploy IBM Sterling Transformation Extender Advanced on Redhat OpenShift](docs/deploy_ocp_itxa.md)
+* [Deploy IBM Sterling B2B Integrator on Redhat OpenShift ](docs/deploy_ocp_sb2b.md)
+* [Deploy IBM Sterling Control Center Director/Monitor on Redhat OpenShift ](docs/deploy_ocp_scc.md)
+* [Deploy IBM Sterling External Authentication Server on Redhat OpenShift ](docs/deploy_ocp_seas.md)
+* [Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter) ](docs/deploy_ocp_seas.md)
+
 
 # Playbooks
 
@@ -24,25 +41,6 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 # Roles
 
 See complete list of [Roles](roles/README.md)
-
-
-# Install Sterling Products (standalone)
-
-* [Install Connect:Direct (standalone)](docs/setup_cd.md)
-* [Install Sterling B2B Integrator (standalone)](docs/setup_b2b.md)
-
-
-# Deploy Sterling Products on Redhat OpenShift / Kubernetes
-
-* [Deploy IBM Sterling Connect:Direct on Redhat OpenShift](docs/deploy_ocp_cd.md)
-* [Deploy IBM Sterling Connect:Direct Web Service on Redhat OpenShift](docs/deploy_ocp_cdws.md)
-* [Deploy IBM Sterling Transformation Server on Redhat OpenShift](docs/deploy_ocp_itx_rs.md)
-* [Deploy IBM Sterling Transformation Extender Advanced on Redhat OpenShift](docs/deploy_ocp_itxa.md)
-* [Deploy IBM Sterling B2B Integrator on Redhat OpenShift ](docs/deploy_ocp_sb2b.md)
-* [Deploy IBM Sterling Control Center Director/Monitor on Redhat OpenShift ](docs/deploy_ocp_scc.md)
-* [Deploy IBM Sterling External Authentication Server on Redhat OpenShift ](docs/deploy_ocp_seas.md)
-* [Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter) ](docs/deploy_ocp_seas.md)
-
 
 
 # Contributors
