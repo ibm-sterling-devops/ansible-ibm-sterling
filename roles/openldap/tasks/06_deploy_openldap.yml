@@ -1,0 +1,84 @@
+---
+# Apply Deployment
+# -----------------------------------------------------------------------------
+- name: Apply Deployment OpenLDAP
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: openldap
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap
+          app.kubernetes.io/name: openldap
+      spec:
+        selector:
+          matchLabels:
+            app: openldap
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: openldap
+          spec:
+            serviceAccountName: openldap-sa
+            containers:
+              - name: openldap
+                image: "{{ openldap_image }}"
+                ports:
+                  - name: ldap-port
+                    containerPort: 1389
+                    protocol: TCP
+                envFrom:
+                  - configMapRef:
+                      name: openldap-env
+                  - secretRef:
+                      name: openldap-secret
+                volumeMounts:
+                  - name: openldap-data
+                    mountPath: /bitnami/openldap/
+                  - name: custom-ldif-files
+                    mountPath: /ldifs/
+                # securityContext:
+                #   seccompProfile:
+                #     type: RuntimeDefault
+                #   privileged: false
+                #   allowPrivilegeEscalation: false
+                #   runAsNonRoot: true
+                #   capabilities:
+                #     drop:
+                #       - ALL
+                #     add:
+                #       - NET_BIND_SERVICE
+            volumes:
+              - name: openldap-data
+                persistentVolumeClaim:
+                  claimName: openldap-data-pvc
+              - name: custom-ldif-files
+                configMap:
+                  name: openldap-customldif
+                  defaultMode: 420
+
+# Create Service and Route
+# -----------------------------------------------------------------------------
+- name: Apply Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: openldap-svc
+        namespace: "{{ oldp_namespace }}"
+        labels:
+          app: openldap
+      spec:
+        selector:
+          app: openldap
+        ports:
+          - name: ldap-port
+            protocol: TCP
+            port: 389
+            targetPort: ldap-port
+        type: NodePort

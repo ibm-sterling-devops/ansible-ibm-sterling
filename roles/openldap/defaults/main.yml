@@ -1,17 +1,15 @@
 ---
-oldp_namespace: sterling-openldap
+oldp_namespace: "{{ openldap_namespace | default('sterling-openldap') }}"
 
-oldp_storageclass: ibmc-file-gold
-
-ldp_base_dn: dc=company,dc=com
-ldp_domain: company.com
-ldp_dc: mydc
-ldp_admin_user: ldapadmin
-ldp_admin_password: passw0rd
-ldp_bind_user: ldapbind01
-ldp_bind_password: passw0rd
-ldp_admin_group: ldapadmins
-universal_password: passw0rd
+ldp_base_dn: "{{ openldap_base_dn | default('dc=company,dc=com') }}"
+ldp_domain: "{{ openldap_base_dn | default('company.com') }}"
+ldp_dc: "{{ openldap_base_dn | default('mydc') }}"
+ldp_admin_user: "{{ openldap_admin_user | default('ldapadmin') }}"
+ldp_admin_password: "{{ openldap_admin_password | default('passw0rd') }}"
+ldp_bind_user: "{{ openldap_bind_user | default('ldapbind01') }}"
+ldp_bind_password: "{{ openldap_bind_password | default('passw0rd') }}"
+ldp_admin_group: "{{ openldap_admin_group | default('ldapadmins') }}"
+universal_password: "{{ openldap_universal_password | default('passw0rd') }}"
 
 
 ldp_user_base_dn: "ou=Users,{{ ldp_base_dn }}"
@@ -26,3 +24,37 @@ ldp_ssl_enabled: false
 ldp_ssl_secret_name: openldap-ssl-secret
 ldp_ldap_port: "389"
 ldp_ldaps_port: "636"
+
+openldap_image: docker.io/bitnami/openldap:2.6.7
+
+storage_class_matrix:
+  ibmcloud:
+    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
+    rwo: "ibmc-block-gold"      # ReadWriteOnce
+    rom: ""                     # ReadOnlyMany
+    rwop: ""                    # ReadWriteOncePod
+  redhat:
+    rwx: "ocs-storagecluster-cephfs"
+    rwx_nogid: "ocs-storagecluster-cephfs"
+    rwo: "ocs-storagecluster-ceph-rbd"
+    rom: ""
+    rwop: ""
+  aws:
+    rwx: "efs"
+    rwx_nogid: "efs"
+    rwo: "gp2"
+    rom: ""
+    rwop: ""
+  azure:
+    rwx: "azurefiles-premium"
+    rwx_nogid: "azurefiles-premium"
+    rwo: "managed-premium"
+    rom: ""
+    rwop: ""
+  techzone:
+    rwx: "managed-nfs-storage"
+    rwx_nogid: "managed-nfs-storage"
+    rwo: "managed-nfs-storage"
+    rom: "managed-nfs-storage"
+    rwop: "managed-nfs-storage"
