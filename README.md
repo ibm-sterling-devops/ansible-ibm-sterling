@@ -80,7 +80,7 @@ Ansible collection supporting devops for IBM Sterling B2Bi, IBM Connect:Direct, 
 | ssp_cm_deploy                 | Complete    | Deploy IBM Secure Proxy Configuration Manager|
 | ssp_config                    | Development | Configure Engine, Adapters in IBM SSP using REST API|
 | ssp_deploy                    | Complete    | Deploy IBM Secure Proxy Engine|
-| ssp_ps_deploy                 | Development | Deploy IBM Secure Proxy Perimeter|
+| ssp_ps_deploy                 | Complete    | Deploy IBM Secure Proxy Perimeter|
 
 ## Tools 
 
