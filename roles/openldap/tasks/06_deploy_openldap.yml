@@ -58,7 +58,7 @@
                   claimName: openldap-data-pvc
               - name: custom-ldif-files
                 configMap:
-                  name: openldap-customldif
+                  name: openldap-custom.ldif
                   defaultMode: 420
 
 # Create Service and Route

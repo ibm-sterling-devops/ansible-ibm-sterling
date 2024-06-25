@@ -1,0 +1,9 @@
+---
+oldp_namespace: "{{ openldap_namespace | default('sterling-openldap', true) }}"
+plwa_namespace: "{{ phpldapadmin_namespace | default('sterling-phpldapadmin', true) }}"
+
+oldp_host: "openldap-svc.{{ oldp_namespace }}.svc.cluster.local"
+
+ldp_admin_password: "{{ openldap_admin_password | default('passw0rd') }}"
+
+plwa_image: docker.io/osixia/phpldapadmin:latest

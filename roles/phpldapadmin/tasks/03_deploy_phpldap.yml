@@ -1,0 +1,106 @@
+---
+# Create ConfigMap
+# -----------------------------------------------------------------------------
+- name: "Create ConfigMap phpldapadmin-env"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+        name: phpldapadmin-env
+        namespace: "{{ plwa_namespace }}"
+        labels:
+          app: phpldapadmin
+      data:
+        PHPLDAPADMIN_HTTPS: "false"
+        PHPLDAPADMIN_LDAP_HOSTS: "{{ oldp_host }}"
+
+# Apply Deployment
+# -----------------------------------------------------------------------------
+- name: Apply Deployment phpldapadmin
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: phpldapadmin
+        namespace: "{{ plwa_namespace }}"
+        labels:
+          app: phpldapadmin
+          app.kubernetes.io/name: phpldapadmin
+      spec:
+        selector:
+          matchLabels:
+            app: phpldapadmin
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: phpldapadmin
+          spec:
+            serviceAccountName: phpldapadmin-sa
+            containers:
+              - name: phpldapadmin
+                image: "{{ plwa_image }}"
+                ports:
+                  - name: http
+                    containerPort: 80
+                    protocol: TCP
+                envFrom:
+                  - configMapRef:
+                      name: phpldapadmin-env
+                  - secretRef:
+                      name: phpldapadmin-secret
+
+# Create Service and Route
+# -----------------------------------------------------------------------------
+- name: Apply Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: phpldapadmin-svc
+        namespace: "{{ plwa_namespace }}"
+        labels:
+          app: phpldapadmin
+      spec:
+        selector:
+          app: phpldapadmin
+        ports:
+          - name: http
+            protocol: TCP
+            port: 80
+            targetPort: 80
+        type: ClusterIP
+
+- name: "Create Kubernetes Route"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: phpldapadmin
+        namespace: "{{ plwa_namespace }}"
+        labels:
+          app.kubernetes.io/name: phpldapadmin
+          release: s0
+      spec:
+        to:
+          kind: Service
+          name: phpldapadmin-svc
+        port:
+          targetPort: http
+        tls:
+          termination: edge
+        wildcardPolicy: None
+
+- name: "phpLDAPAdmin Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "phpLDAPAdmin .............................. Ready!"
+      - "LDAP Admin user ........................... cn=admin,dc=company,dc=com"
+      - "LDAP Admin password ....................... {{ ldp_admin_password }}"

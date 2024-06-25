@@ -17,14 +17,14 @@
         LDAP_ROOT: "{{ ldp_base_dn }}"
         LDAP_DOMAIN: "{{ ldp_domain }}"
 
-- name: "Create ConfigMap openldap-customldif"
+- name: "Create ConfigMap openldap-custom.ldif"
   kubernetes.core.k8s:
     state: present
     definition:
       kind: ConfigMap
       apiVersion: v1
       metadata:
-        name: openldap-customldif
+        name: openldap-custom.ldif
         namespace: "{{ oldp_namespace }}"
         labels:
           app: openldap

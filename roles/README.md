@@ -16,29 +16,34 @@
 | ibm/sb2b/sb2b-stop              | Complete     | Stop SB2Bi |
 | others/nginx-install            | Complete     | Install Nginx |
 
-# Kubernetes Roles
+# Kubernetes Roles for IBM Sterling Products
 
-| Role name                     | Status         |           Description                                        |
-|-------------------------------|----------------|--------------------------------------------------------------|
-| cd_deploy                     | Complete       | Deploy IBM Sterling Connect:Direct |
-| mq_deploy                     | Complete       | Deploy IBM Message Queue Community Edition |
-| sb2bi_deploy                  | Complete       | Deploy IBM Sterling B2B Integrator  |
-| sb2bi_deploy_db2              | Complete       | Deploy IBM DB2 database for Sterling B2B|
-| sb2bi_deploy_mq               | Complete       | Deploy IBM Message Queue Community Edition for Sterling B2B |
-| sb2bi_setup_db2               | Complete       | Setup database for IBM Sterling B2B |
-| scc_deploy                    | Development    | Deploy IBM Sterling Control Center Monitor (SCCM) or Control Center Director (SCCD)|
-| scc_deploy_db2                | Development    | Deploy IBM DB2 database for SCCM or SCCD|
-| scc_deploy_mq                 | Development    | Deploy IBM Message Queue Community Edition for SCCM or SCCD|
-| scc_setup_db2                 | Development    | Setup database for IBM SCCM or SCCD|
-| seas_deploy                   | Complete       | Setup SEAS|
-| ssp_cm_deploy                 | Development    | Setup database for IBM Sterling Secure Proxy Configuration Manager|
-| ssp_deploy                    | Development    | Setup database for IBM Sterling Secure Proxy Engine|
-| ssp_ps_deploy                 | Development    | Setup database for IBM Sterling Secure Proxy Perimeter Server|
+| Role name                     | Status      |           Description                                        |
+|-------------------------------|-------------|--------------------------------------------------------------|
+| cd_deploy                     | Complete    | Deploy IBM Sterling Connect:Direct |
+| cdws_deploy                   | Complete    | Deploy IBM Sterling Connect:Direct WebServices|
+| itx_rs_deploy                 | Complete    | Deploy IBM Sterling Transformation Server|
+| itxa_deploy                   | Complete    | Deploy IBM Sterling Transformation |
+| itxa_deploy_db2               | Complete    | Deploy IBM DB2 database for ITXA|
+| itxa_setup_db2                | Complete    | Setup database for IBM ITXA|
+| sb2bi_deploy                  | Complete    | Deploy IBM Sterling B2B Integrator  |
+| sb2bi_deploy_db2              | Complete    | Deploy IBM DB2 database for Sterling B2B|
+| sb2bi_deploy_mq               | Complete    | Deploy IBM Message Queue Community Edition for Sterling B2B |
+| sb2bi_setup_db2               | Complete    | Setup database for IBM Sterling B2B |
+| scc_deploy                    | Complete    | Deploy IBM Sterling Control Center Monitor/Director (SCCD)|
+| scc_deploy_db2                | Complete    | Deploy IBM DB2 database for SCCM or SCCD|
+| scc_deploy_mq                 | Complete    | Deploy IBM Message Queue Community Edition for SCCM or SCCD|
+| scc_setup_db2                 | Complete    | Setup database for IBM SCCM or SCCD|
+| seas_deploy                   | Complete    | Setup SEAS|
+| ssp_cm_deploy                 | Complete    | Deploy IBM Secure Proxy Configuration Manager|
+| ssp_config                    | Development | Configure Engine, Adapters in IBM SSP using REST API|
+| ssp_deploy                    | Complete    | Deploy IBM Secure Proxy Engine|
+| ssp_ps_deploy                 | Development | Deploy IBM Secure Proxy Perimeter|
 
-## Tools 
+# Tools 
 
-| Role name                     | Status         |           Description                                        |
-|-------------------------------|----------------|--------------------------------------------------------------|
-| cloudbeaver.yml               | Complete       | Deploy CloudBeaver CE to manage databases |
-| db2_console                   | Development    | Deploy DB2 Data Management Console |
-| openldap.yml                  | Complete       | Deploy OpenLDAP as LDAP Server |
+| Role name                     | Status      |           Description                                        |
+|-------------------------------|-------------|--------------------------------------------------------------|
+| cloudbeaver.yml               | Complete    | Deploy CloudBeaver CE to manage databases |
+| db2_console                   | Development | Deploy DB2 Data Management Console |
+| openldap.yml                  | Complete    | Deploy OpenLDAP as LDAP Server |
