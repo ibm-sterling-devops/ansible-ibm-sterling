@@ -30,37 +30,3 @@ compatibility_matrix:
     helm_version: "1.3.5"
     image_repository: "cp.icr.io/cp/ibm-ssp-ps/ssp-ps-docker-image"
     image_tag: "6.1.0.0.03plus"
-
-# Storage Class Matrix
-# -----------------------------------------------------------------------------
-storage_class_matrix:
-  ibmcloud:
-    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
-    rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-file-gold"       # ReadWriteOnce
-    rom: ""                     # ReadOnlyMany
-    rwop: ""                    # ReadWriteOncePod
-  redhat:
-    rwx: "ocs-storagecluster-cephfs"
-    rwx_nogid: "ocs-storagecluster-cephfs"
-    rwo: "ocs-storagecluster-ceph-rbd"
-    rom: ""
-    rwop: ""
-  aws:
-    rwx: "efs"
-    rwx_nogid: "efs"
-    rwo: "gp2"
-    rom: ""
-    rwop: ""
-  azure:
-    rwx: "azurefiles-premium"
-    rwx_nogid: "azurefiles-premium"
-    rwo: "managed-premium"
-    rom: ""
-    rwop: ""
-  techzone:
-    rwx: "managed-nfs-storage"
-    rwx_nogid: "managed-nfs-storage"
-    rwo: "managed-nfs-storage"
-    rom: "managed-nfs-storage"
-    rwop: "managed-nfs-storage"

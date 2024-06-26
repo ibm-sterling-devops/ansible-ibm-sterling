@@ -49,6 +49,13 @@
     - my_storage_class is not defined
     - "'managed-nfs-storage' in my_storage_list"
 
+- name: Check for IBM Spectrum Scale StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "ibm-spectrum"
+  when:
+    - my_storage_class is not defined
+    - "'scale-cnsa' in my_storage_list"
+
 # 2. Non-Dynamic Provisioning
 # -----------------------------------------------------------------------------
 # Using pre-created Persistent Volume
@@ -61,7 +68,7 @@
     that: my_storage_class is defined and my_storage_class != ""
     fail_msg: "my_storage_class must be defined"
 
-- name: Check for Azure StorageClass
+- name: Check for StorageClass
   ansible.builtin.set_fact:
     cd_use_dynamic_provisioning: true
     cd_storage_class: "{{ my_storage_class }}"

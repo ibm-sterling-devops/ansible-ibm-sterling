@@ -58,3 +58,9 @@ storage_class_matrix:
     rwo: "managed-nfs-storage"
     rom: "managed-nfs-storage"
     rwop: "managed-nfs-storage"
+  ibm-spectrum:
+    rwx: "scale-cnsa"
+    rwx_nogid: "scale-cnsa"
+    rwo: "scale-cnsa"
+    rom: "scale-cnsa"
+    rwop: "scale-cnsa"
