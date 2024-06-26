@@ -2,6 +2,7 @@
 .env
 .vscode
 result.txt
+readme.txt
 
 hosts*
 

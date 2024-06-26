@@ -16,7 +16,15 @@
         LDAP_ORGANISATION: "{{ ldp_domain }}"
         LDAP_ROOT: "{{ ldp_base_dn }}"
         LDAP_DOMAIN: "{{ ldp_domain }}"
+        LDAP_USERS: admin01,admin02
+        LDAP_PASSWORDS: passw0rd,passw0rd
 
+          # dn: {{ ldp_base_dn }}
+          # objectClass: top
+          # objectClass: dcObject
+          # objectClass: organization
+          # o: {{ ldp_domain }}
+          # dc: {{ ldp_dc }}
 - name: "Create ConfigMap openldap-custom.ldif"
   kubernetes.core.k8s:
     state: present
@@ -31,12 +39,6 @@
       data:
         01-default-users.ldif: |-
           # Main Data
-          dn: {{ ldp_base_dn }}
-          objectClass: top
-          objectClass: dcObject
-          objectClass: organization
-          o: {{ ldp_domain }}
-          dc: {{ ldp_dc }}
 
           # Units
           dn: {{ ldp_user_base_dn }}
