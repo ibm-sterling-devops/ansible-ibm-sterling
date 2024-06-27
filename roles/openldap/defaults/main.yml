@@ -1,31 +1,13 @@
 ---
-oldp_namespace: "{{ openldap_namespace | default('sterling-openldap') }}"
+openldap_namespace: "{{ lookup('env', 'OPENLDAP_NAMESPACE') | default('sterling-openldap', true) }}"
 
-ldp_base_dn: "{{ openldap_base_dn | default('dc=company,dc=com') }}"
-ldp_domain: "{{ openldap_base_dn | default('company.com') }}"
-ldp_dc: "{{ openldap_base_dn | default('mydc') }}"
-ldp_admin_user: "{{ openldap_admin_user | default('ldapadmin') }}"
-ldp_admin_password: "{{ openldap_admin_password | default('passw0rd') }}"
-ldp_bind_user: "{{ openldap_bind_user | default('ldapbind01') }}"
-ldp_bind_password: "{{ openldap_bind_password | default('passw0rd') }}"
-ldp_admin_group: "{{ openldap_admin_group | default('ldapadmins') }}"
-universal_password: "{{ openldap_universal_password | default('passw0rd') }}"
+ldp_base_dn: "{{ lookup('env', 'OPENLDAP_BASE_DN') | default('dc=company,dc=com', true) }}"
+ldp_admin_password: "{{ lookup('env', 'OPENLDAP_ADMIN_PASSW0RD') | default('passw0rd', true) }}"
+ldp_bind_password: "{{ lookup('env', 'OPENLDAP_BIND_PASSW0RD') | default('passw0rd', true) }}"
+ldp_universal_password: "{{ lookup('env', 'OPENLDAP_UNIVERSAL_PASSW0RD') | default('passw0rd', true) }}"
 
-
-ldp_user_base_dn: "ou=Users,{{ ldp_base_dn }}"
-ldp_user_base: Users
-ldp_group_base_dn: "ou=Groups,{{ ldp_base_dn }}"
-ldp_group_base: Groups
-
-ldp_uid_attr: uid
-ldp_gid_attribute: cn
-
-ldp_ssl_enabled: false
-ldp_ssl_secret_name: openldap-ssl-secret
-ldp_ldap_port: "389"
-ldp_ldaps_port: "636"
-
-openldap_image: docker.io/bitnami/openldap:2.6.7
+openldap_image: docker.io/bitnami/openldap:2.6.8
+# 2.6.7
 
 storage_class_matrix:
   ibmcloud:

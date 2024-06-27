@@ -1,8 +1,8 @@
 ---
 - name: Define Storage Class for OpenLDAP
   ansible.builtin.set_fact:
-    oldp_storageclass: "{{ storage_class_matrix[ my_storage_class].rwx }}"
-    
+    oldp_storageclass: "{{ storage_class_matrix[my_storage_class].rwx }}"
+
 # Create PVC
 # -----------------------------------------------------------------------------
 - name: Apply PVC openldap-data-pvc
@@ -12,13 +12,13 @@
       kind: PersistentVolumeClaim
       metadata:
         name: openldap-data-pvc
-        namespace: "{{ oldp_namespace }}"
+        namespace: "{{ openldap_namespace }}"
         labels:
           app: openldap
           app.kubernetes.io/name: openldap
       spec:
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         storageClassName: "{{ oldp_storageclass }}"
         # volumeMode: Filesystem
         resources:
@@ -29,7 +29,7 @@
   kubernetes.core.k8s_info:
     kind: PersistentVolumeClaim
     name: openldap-data-pvc
-    namespace: "{{ oldp_namespace }}"
+    namespace: "{{ openldap_namespace }}"
   register: pvc_info
   until: pvc_info.resources[0].status.phase == 'Bound'
   retries: 15  # Total retries will be 15 * 20s = 300s (5 minutes)

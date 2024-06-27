@@ -1,8 +1,8 @@
 ---
-oldp_namespace: "{{ openldap_namespace | default('sterling-openldap', true) }}"
-plwa_namespace: "{{ phpldapadmin_namespace | default('sterling-phpldapadmin', true) }}"
+openldap_namespace: "{{ lookup('env', 'OPENLDAP_NAMESPACE') | default('sterling-openldap', true) }}"
+phpldapadmin_namespace: "{{ lookup('env', 'PHPLDAPADMIN_NAMESPACE') | default('sterling-phpldapadmin', true) }}"
 
-oldp_host: "openldap-svc.{{ oldp_namespace }}.svc.cluster.local"
+openldap_host: "openldap-svc.{{ openldap_namespace }}.svc.cluster.local"
 
 ldp_admin_password: "{{ openldap_admin_password | default('passw0rd') }}"
 

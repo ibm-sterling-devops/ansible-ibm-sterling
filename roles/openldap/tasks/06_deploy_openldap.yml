@@ -9,7 +9,7 @@
       kind: Deployment
       metadata:
         name: openldap
-        namespace: "{{ oldp_namespace }}"
+        namespace: "{{ openldap_namespace }}"
         labels:
           app: openldap
           app.kubernetes.io/name: openldap
@@ -30,6 +30,9 @@
                 ports:
                   - name: ldap-port
                     containerPort: 1389
+                    protocol: TCP
+                  - name: ldaps-port
+                    containerPort: 1636
                     protocol: TCP
                 envFrom:
                   - configMapRef:
@@ -58,7 +61,7 @@
                   claimName: openldap-data-pvc
               - name: custom-ldif-files
                 configMap:
-                  name: openldap-custom.ldif
+                  name: openldap-custom-ldif
                   defaultMode: 420
 
 # Create Service and Route
@@ -70,7 +73,7 @@
       kind: Service
       metadata:
         name: openldap-svc
-        namespace: "{{ oldp_namespace }}"
+        namespace: "{{ openldap_namespace }}"
         labels:
           app: openldap
       spec:
@@ -81,4 +84,16 @@
             protocol: TCP
             port: 389
             targetPort: ldap-port
+          - name: ldaps-port
+            protocol: TCP
+            port: 636
+            targetPort: ldaps-port
         type: NodePort
+
+- name: "phpLDAPAdmin Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "phpLDAPAdmin .............................. Ready!"
+      - "LDAP Admin user ........................... cn=admin,{{ ldp_base_dn }}"
+      - "LDAP Admin password ....................... {{ ldp_admin_password }}"
+      - "LDAP Bind password ........................ {{ ldp_bind_password }}"

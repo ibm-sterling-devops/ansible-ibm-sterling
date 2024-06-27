@@ -12,7 +12,6 @@
 - name: "Fail if required properties have not been provided"
   ansible.builtin.assert:
     that:
-      - oldp_namespace is defined and oldp_namespace != ""
+      - openldap_namespace is defined and openldap_namespace != ""
       - ldp_base_dn is defined and ldp_base_dn != ""
-      - ldp_domain is defined and ldp_domain != ""
     fail_msg: "One or more required properties have not been set"

@@ -9,12 +9,12 @@
       apiVersion: v1
       metadata:
         name: phpldapadmin-env
-        namespace: "{{ plwa_namespace }}"
+        namespace: "{{ phpldapadmin_namespace }}"
         labels:
           app: phpldapadmin
       data:
         PHPLDAPADMIN_HTTPS: "false"
-        PHPLDAPADMIN_LDAP_HOSTS: "{{ oldp_host }}"
+        PHPLDAPADMIN_LDAP_HOSTS: "{{ openldap_host }}"
 
 # Apply Deployment
 # -----------------------------------------------------------------------------
@@ -26,7 +26,7 @@
       kind: Deployment
       metadata:
         name: phpldapadmin
-        namespace: "{{ plwa_namespace }}"
+        namespace: "{{ phpldapadmin_namespace }}"
         labels:
           app: phpldapadmin
           app.kubernetes.io/name: phpldapadmin
@@ -63,7 +63,7 @@
       kind: Service
       metadata:
         name: phpldapadmin-svc
-        namespace: "{{ plwa_namespace }}"
+        namespace: "{{ phpldapadmin_namespace }}"
         labels:
           app: phpldapadmin
       spec:
@@ -84,7 +84,7 @@
       kind: Route
       metadata:
         name: phpldapadmin
-        namespace: "{{ plwa_namespace }}"
+        namespace: "{{ phpldapadmin_namespace }}"
         labels:
           app.kubernetes.io/name: phpldapadmin
           release: s0

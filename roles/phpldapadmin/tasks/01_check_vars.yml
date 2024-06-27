@@ -12,6 +12,6 @@
 - name: "Fail if required properties have not been provided"
   ansible.builtin.assert:
     that:
-      - oldp_namespace is defined and oldp_namespace != ""
-      - plwa_namespace is defined and plwa_namespace != ""
+      - openldap_namespace is defined and openldap_namespace != ""
+      - phpldapadmin_namespace is defined and phpldapadmin_namespace != ""
     fail_msg: "One or more required properties have not been set"

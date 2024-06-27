@@ -9,160 +9,127 @@
       apiVersion: v1
       metadata:
         name: openldap-env
-        namespace: "{{ oldp_namespace }}"
+        namespace: "{{ openldap_namespace }}"
         labels:
           app: openldap
       data:
-        LDAP_ORGANISATION: "{{ ldp_domain }}"
+        BITNAMI_DEBUG: "true"
+        LDAP_LOGLEVEL: "256"
         LDAP_ROOT: "{{ ldp_base_dn }}"
-        LDAP_DOMAIN: "{{ ldp_domain }}"
-        LDAP_USERS: admin01,admin02
-        LDAP_PASSWORDS: passw0rd,passw0rd
+        # LDAP_TLS_ENFORCE: "false"
+        # LDAPTLS_REQCERT: "never"
+        # LDAP_ENABLE_TLS: "yes"
+        # LDAP_SKIP_DEFAULT_TREE: "no"
 
-          # dn: {{ ldp_base_dn }}
-          # objectClass: top
-          # objectClass: dcObject
-          # objectClass: organization
-          # o: {{ ldp_domain }}
-          # dc: {{ ldp_dc }}
-- name: "Create ConfigMap openldap-custom.ldif"
+- name: "Create ConfigMap openldap-custom-ldif"
   kubernetes.core.k8s:
     state: present
     definition:
       kind: ConfigMap
       apiVersion: v1
       metadata:
-        name: openldap-custom.ldif
-        namespace: "{{ oldp_namespace }}"
+        name: openldap-custom-ldif
+        namespace: "{{ openldap_namespace }}"
         labels:
           app: openldap
       data:
+        00-root.ldif: |-
+          # Root creation
+          dn: {{ ldp_base_dn }}
+          objectClass: dcObject
+          objectClass: organization
+          o: Example, Inc
+
+          dn: ou=users,{{ ldp_base_dn }}
+          objectclass: organizationalUnit
+          objectclass: top
+          ou: users
+
+          dn: ou=groups,{{ ldp_base_dn }}
+          objectclass: organizationalUnit
+          objectclass: top
+          ou: groups
         01-default-users.ldif: |-
-          # Main Data
+          dn: cn=ldapbind01,ou=users,{{ ldp_base_dn }}
+          cn: ldapbind01
+          gidnumber: 500
+          givenname: ldapbind01
+          homedirectory: /home/ldapbind01
+          objectclass: inetOrgPerson
+          objectclass: posixAccount
+          objectclass: top
+          sn: ldapbind01
+          uid: ldapbind01
+          uidnumber: 1000
+          userpassword: {{ ldp_bind_password }}
 
-          # Units
-          dn: {{ ldp_user_base_dn }}
-          ou: {{ ldp_user_base }}
-          objectClass: organizationalUnit
-
-          dn: {{ ldp_group_base_dn }}
-          objectClass: organizationalUnit
-          ou: {{ ldp_group_base }}
-
-          # Users
-          dn: {{ ldp_uid_attr }}={{ ldp_admin_user }},{{ ldp_user_base_dn }}
-          objectClass: top
-          objectClass: person
-          objectClass: organizationalPerson
-          objectClass: inetOrgPerson
-          cn: {{ ldp_admin_user }}
-          sn: {{ ldp_admin_user }}
-          {{ ldp_uid_attr }}: {{ ldp_admin_user }}
-          # ToDo set some domain
-          mail: {{ ldp_admin_user }}@{{ ldp_domain }}
-          userpassword:: {{ ldp_admin_user | b64encode }}
-          employeeType: admin
-
-          dn: {{ ldp_uid_attr }}={{ ldp_bind_user }},{{ ldp_user_base_dn }}
-          objectClass: top
-          objectClass: person
-          objectClass: organizationalPerson
-          objectClass: inetOrgPerson
-          cn: {{ ldp_bind_user }}
-          sn: {{ ldp_bind_user }}
-          {{ ldp_uid_attr }}: {{ ldp_bind_user }}
-          mail: {{ ldp_bind_user }}@{{ ldp_domain }}
-          userpassword:: {{ ldp_bind_password | b64encode }}
-          employeeType: admin
-
-          dn: {{ ldp_uid_attr }}=cdadmin01,{{ ldp_user_base_dn }}
-          objectClass: top
-          objectClass: person
-          objectClass: organizationalPerson
-          objectClass: inetOrgPerson
+          dn: cn=ldapbind02,ou=users,{{ ldp_base_dn }}
+          cn: ldapbind02
+          gidnumber: 500
+          givenname: ldapbind02
+          homedirectory: /home/ldapbind02
+          objectclass: inetOrgPerson
+          objectclass: posixAccount
+          objectclass: top
+          sn: ldapbind02
+          uid: ldapbind02
+          uidnumber: 1005
+          userpassword: {{ ldp_bind_password }}
+         
+          dn: cn=cdadmin01,ou=users,{{ ldp_base_dn }}
           cn: cdadmin01
+          gidnumber: 500
+          givenname: cdadmin01
+          homedirectory: /home/cdadmin01
+          objectclass: inetOrgPerson
+          objectclass: posixAccount
+          objectclass: top
           sn: cdadmin01
-          {{ ldp_uid_attr }}: cdadmin01
-          mail: cdadmin01@{{ ldp_domain }}
-          userpassword:: {{ universal_password | b64encode }}
-          employeeType: admin
+          uid: cdadmin01
+          uidnumber: 1010
+          userpassword: {{ ldp_universal_password }}
 
-          dn: {{ ldp_uid_attr }}=cdadmin02,{{ ldp_user_base_dn }}
-          objectClass: top
-          objectClass: person
-          objectClass: organizationalPerson
-          objectClass: inetOrgPerson
-          cn: cdadmin02
-          sn: cdadmin02
-          uid: cdadmin02
-          mail: cdadmin02@{{ ldp_domain }}
-          userpassword:: {{ universal_password | b64encode }}
-          employeeType: admin
-
-          dn: {{ ldp_uid_attr }}=cduser01,{{ ldp_user_base_dn }}
-          objectClass: top
-          objectClass: person
-          objectClass: organizationalPerson
-          objectClass: inetOrgPerson
+          dn: cn=cduser01,ou=users,{{ ldp_base_dn }}
           cn: cduser01
+          gidnumber: 500
+          givenname: cduser01
+          homedirectory: /home/cduser01
+          objectclass: inetOrgPerson
+          objectclass: posixAccount
+          objectclass: top
           sn: cduser01
           uid: cduser01
-          mail: cduser01@{{ ldp_domain }}
-          userpassword:: {{ universal_password | b64encode }}
+          uidnumber: 1020
+          userpassword: {{ ldp_universal_password }}
 
-          dn: {{ ldp_uid_attr }}=siuser01,{{ ldp_user_base_dn }}
-          objectClass: top
-          objectClass: person
-          objectClass: organizationalPerson
-          objectClass: inetOrgPerson
-          cn: siuser01
-          sn: siuser01
-          {{ ldp_uid_attr }}: siuser01
-          mail: siuser01@{{ ldp_domain }}
-          userpassword:: {{ universal_password | b64encode }}
+        02-default-groups.ldif: |-
+          dn: cn=defaultgroup,ou=groups,{{ ldp_base_dn }}
+          cn: defaultgroup
+          gidnumber: 500
+          objectclass: posixGroup
+          objectclass: top
 
-          dn: {{ ldp_uid_attr }}=siuser02,{{ ldp_user_base_dn }}
-          objectClass: top
-          objectClass: person
-          objectClass: organizationalPerson
-          objectClass: inetOrgPerson
-          cn: siuser02
-          sn: siuser02
-          {{ ldp_uid_attr }}: siuser02
-          mail: siuser02@{{ ldp_domain }}
-          userpassword:: {{ universal_password | b64encode }}
+          dn: cn=cdadmins,ou=groups,{{ ldp_base_dn }}
+          cn: cdadmins
+          gidnumber: 505
+          objectclass: posixGroup
+          objectclass: top
+          memberuid: cdadmin01
 
-          # Groups
-          dn: {{ ldp_gid_attribute }}={{ ldp_admin_group }},{{ ldp_group_base_dn }}
-          objectClass: top
-          objectClass: groupOfNames
-          objectClass: groupOfUniqueNames
-          cn: {{ ldp_admin_group }}
-          member: {{ ldp_uid_attr }}={{ ldp_admin_user }},{{ ldp_user_base_dn }}
-          member: {{ ldp_uid_attr }}=cpadmin1,{{ ldp_user_base_dn }}
-          member: {{ ldp_uid_attr }}=cpadmin2,{{ ldp_user_base_dn }}
-
-          dn: {{ ldp_gid_attribute }}=cdadmins,{{ ldp_group_base_dn }}
-          objectClass: top
-          objectClass: groupOfNames
-          objectClass: groupOfUniqueNames
+          dn: cn=cdusers,ou=groups,{{ ldp_base_dn }}
           cn: cdusers
-          member: {{ ldp_uid_attr }}=cdadmin01,{{ ldp_user_base_dn }}
-          member: {{ ldp_uid_attr }}=cdadmin02,{{ ldp_user_base_dn }}
+          gidnumber: 510
+          objectclass: posixGroup
+          objectclass: top
 
-          dn: {{ ldp_gid_attribute }}=cdusers,{{ ldp_group_base_dn }}
-          objectClass: top
-          objectClass: groupOfNames
-          objectClass: groupOfUniqueNames
-          cn: cdusers
-          member: {{ ldp_uid_attr }}=cdadmin01,{{ ldp_user_base_dn }}
-          member: {{ ldp_uid_attr }}=cdadmin02,{{ ldp_user_base_dn }}
-          member: {{ ldp_uid_attr }}=cduser01,{{ ldp_user_base_dn }}
+          dn: cn=siadmins,ou=groups,{{ ldp_base_dn }}
+          cn: siadmins
+          gidnumber: 515
+          objectclass: posixGroup
+          objectclass: top
 
-          dn: {{ ldp_gid_attribute }}=siusers,{{ ldp_group_base_dn }}
-          objectClass: top
-          objectClass: groupOfNames
-          objectClass: groupOfUniqueNames
-          cn: siusers
-          member: {{ ldp_uid_attr }}=siuser01,{{ ldp_user_base_dn }}
-          member: {{ ldp_uid_attr }}=siuser02,{{ ldp_user_base_dn }}
+          dn: cn=siusers,ou=groups,{{ ldp_base_dn }}
+          cn: siadmins
+          gidnumber: 520
+          objectclass: posixGroup
+          objectclass: top
