@@ -3,9 +3,6 @@
   connection: local
   gather_facts: false
   any_errors_fatal: true
-  # vars:
-  # db_vendor: DB2
-  # db_user: db2inst1
-  # db_password: password
   roles:
     - openldap
+    - phpldapadmin
