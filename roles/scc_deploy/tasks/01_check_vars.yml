@@ -70,10 +70,10 @@
 # -----------------------------------------------------------------------------
 - name: "Install CCM,CCD ?"
   ansible.builtin.set_fact:
-    scc_install_ccm: true 
+    scc_install_ccm: true
     scc_install_ccd: true
     scc_install: "CCM,CCD"
-  when: 
+  when:
     - scc_products_upper.find('CCM') != -1
     - scc_products_upper.find('CCD') != -1
 
@@ -82,7 +82,7 @@
     scc_install_ccm: true 
     scc_install_ccd: false
     scc_install: "CCM"
-  when: 
+  when:
     - scc_install is not defined
     - scc_products_upper.find('CCM') != -1
 
@@ -91,7 +91,7 @@
     scc_install_ccm: false
     scc_install_ccd: true
     scc_install: "CCD"
-  when: 
+  when:
     - scc_install is not defined
     - scc_products_upper.find('CCD') != -1
 
@@ -106,7 +106,7 @@
 
 - name: Define multiple variables
   ansible.builtin.set_fact:
-    scc_cert_crt: "{{ my_workdir }}/scccert-{{ my_serial }}.crt"  
+    scc_cert_crt: "{{ my_workdir }}/scccert-{{ my_serial }}.crt"
     scc_cert_key: "{{ my_workdir }}/scckey-{{ my_serial }}.pem"
     scc_cert_pem: "{{ my_workdir }}/scccert-{{ my_serial }}.pem"
     scc_keyalias: "ccalias120"

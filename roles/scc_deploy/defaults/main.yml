@@ -96,7 +96,7 @@ storage_class_matrix:
   ibmcloud:
     rwx: "ibmc-file-gold-gid"   # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-block-gold"   # ReadWriteOnce  # IBM Sterling Control Center only works with ibmc-file-gold-gid 
+    rwo: "ibmc-block-gold"   # ReadWriteOnce # IBM Sterling Control Center only works with ibmc-file-gold-gid
     rom: "ibmc-file-gold-gid"   # ReadOnlyMany
     rwop: ""                    # ReadWriteOncePod
   redhat:

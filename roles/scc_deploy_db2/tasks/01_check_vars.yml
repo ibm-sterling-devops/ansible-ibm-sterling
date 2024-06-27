@@ -8,7 +8,6 @@
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
 
-
 # 1. Fail if required parameters are not set
 # -----------------------------------------------------------------------------
 - name: "Fail if required properties have not been provided"
@@ -17,4 +16,3 @@
       - db2_namespace is defined and db2_namespace != ""
       - entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "One or more required properties have not been set"
-

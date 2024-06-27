@@ -8,6 +8,7 @@ exclude_paths:
     - hosts
     - README.md
     - LICENSE
+    - roles/*/files/values*.yaml
 
 skip_list:
     - var-naming[no-role-prefix]

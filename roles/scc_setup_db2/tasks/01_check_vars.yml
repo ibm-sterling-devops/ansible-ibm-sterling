@@ -16,10 +16,10 @@
 
 - name: "Install CCM ?"
   ansible.builtin.set_fact:
-    scc_install_monitor: true 
+    scc_install_monitor: true
     scc_install_director: false
     scc_install: "CCM"
-  when: 
+  when:
     - scc_install is not defined
     - scc_products_upper.find('CCM') != -1
 
@@ -28,7 +28,7 @@
     scc_install_monitor: false
     scc_install_director: true
     scc_install: "CCD"
-  when: 
+  when:
     - scc_install is not defined
     - scc_products_upper.find('CCD') != -1
 
@@ -36,3 +36,4 @@
   ansible.builtin.fail:
     msg: "Neither CCM nor CCD found in scc_products variable"
   when: scc_install is not defined
+  

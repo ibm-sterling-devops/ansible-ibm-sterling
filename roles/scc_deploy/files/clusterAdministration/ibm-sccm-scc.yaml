@@ -13,9 +13,9 @@ fsGroup:
   ranges:
     - min: 1
       max: 4294967294
-#groups:
-#- system:cluster-admins
-#- system:nodes
+# groups:
+# - system:cluster-admins
+# - system:nodes
 kind: SecurityContextConstraints
 metadata:
   name: ibm-sccm-scc

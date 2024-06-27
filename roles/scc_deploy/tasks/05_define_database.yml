@@ -34,7 +34,7 @@
     scc_dbname: "SCCM"
     scc_dbuser: "db2inst1"
     scc_dbpassword: "{{ db_secret_cout.resources[0].data.DB2INST1_PASSWORD | b64decode }}"
-  when: 
+  when:
     - db2_namespace is defined and db2_namespace != ""
     - db_secret_cout is defined and db_secret_cout != ""
     - db_svc_cout is defined and db_svc_cout != ""

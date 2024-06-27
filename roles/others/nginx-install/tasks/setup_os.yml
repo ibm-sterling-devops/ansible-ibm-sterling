@@ -6,7 +6,7 @@
     dist: "centos"
     version: "{{ ansible_distribution_major_version }}"
   when:
-   - ansible_distribution == "CentOS"
+    - ansible_distribution == "CentOS"
 
 - name: Apply repository for RHEL
   ansible.builtin.template:
@@ -16,15 +16,14 @@
     dist: "rhel"
     version: "{{ ansible_distribution_major_version }}"
   when:
-   - ansible_distribution == "RedHat"
-   - ansible_distribution_major_version == "7"
+    - ansible_distribution == "RedHat"
+    - ansible_distribution_major_version == "7"
 
 - name: Disable SELinux
-  selinux:
+  ansible.posix.selinux:
     state: disabled
   failed_when: false
   notify: reboot
-
 #  when:
 #    - ansible_os_family == "RedHat"
 #    - ansible_distribution_major_version == "8"

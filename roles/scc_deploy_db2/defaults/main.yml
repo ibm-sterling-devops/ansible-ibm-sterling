@@ -5,7 +5,7 @@ scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 db2_password: "{{ lookup('env', 'DB2_PASSWORD') | default('passw0rd', true) }}"
-db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true)}}"
+db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true) }}"
 
 
 # Configure Db2 instance

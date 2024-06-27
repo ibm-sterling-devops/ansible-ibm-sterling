@@ -1,14 +1,13 @@
 ---
 - name: Extract session token
-  set_fact:
+  ansible.builtin.set_fact:
     cd_policy_name: "exampleCdPolicy"
     adapter_name: "exampleAdapter"
     netmap_name: "exampleNetmap"
 
-
 # POST https://localhost:8443/sspcmrest/sspcm/rest/policy/createPolicy
 - name: Create CD Policy
-  uri:
+  ansible.builtin.uri:
     url: https://{{ ssp_engine_url }}/sspcmrest/sspcm/rest/policy/createCdPolicy
     method: POST
     headers:
@@ -29,13 +28,12 @@
     validate_certs: no
   register: cd_policy_result
 
-
 # ---
 # - name: Create CD Policy
 #   hosts: localhost
 #   tasks:
 #     - name: Define the CD policy XML
-#       set_fact:
+#       ansible.builtin.set_fact:
 #         cd_policy_xml: |
 #           <cdPolicyDef>
 #             <copyStepAllowed>true</copyStepAllowed>
@@ -54,7 +52,7 @@
 #           </cdPolicyDef>
 
 #     - name: Validate CD Policy against XSD
-#       uri:
+#       ansible.builtin.uri:
 #         url: http://your-ssp-host/validate-cd-policy
 #         method: POST
 #         body: "{{ cd_policy_xml }}"
@@ -63,12 +61,12 @@
 #       register: validate_cd_policy_result
 
 #     - name: Check CD Policy validation result
-#       fail:
+#       ansible.builtin.fail:
 #         msg: "CD Policy validation failed."
 #       when: validate_cd_policy_result.status != 200
 
 #     - name: Create CD Policy
-#       uri:
+#       ansible.builtin.uri:
 #         url: http://your-ssp-host/create-cd-policy
 #         method: POST
 #         body: "{{ cd_policy_xml }}"
@@ -77,14 +75,12 @@
 #       register: create_cd_policy_result
 
 #     - name: Check CD Policy creation result
-#       fail:
+#       ansible.builtin.fail:
 #         msg: "CD Policy creation failed."
 #       when: create_cd_policy_result.status != 200
 
-
-
 - name: Create Netmap
-  uri:
+  ansible.builtin.uri:
     url: https://{{ ssp_engine_url }}/sspcmrest/sspcm/rest/netmap/createNetmap
     method: POST
     headers:
@@ -114,7 +110,7 @@
 #   hosts: localhost
 #   tasks:
 #     - name: Define the CD netmap XML
-#       set_fact:
+#       ansible.builtin.set_fact:
 #         cd_netmap_xml: |
 #           <netmapDef>
 #             <description>Connect_Direct_Netmap</description>
@@ -149,7 +145,7 @@
 #           </netmapDef>
 
 #     - name: Validate CD Netmap against XSD
-#       uri:
+#       ansible.builtin.uri:
 #         url: http://your-ssp-host/validate-cd-netmap
 #         method: POST
 #         body: "{{ cd_netmap_xml }}"
@@ -158,12 +154,12 @@
 #       register: validate_cd_netmap_result
 
 #     - name: Check CD Netmap validation result
-#       fail:
+#       ansible.builtin.fail:
 #         msg: "CD Netmap validation failed."
 #       when: validate_cd_netmap_result.status != 200
 
 #     - name: Create CD Netmap
-#       uri:
+#       ansible.builtin.uri:
 #         url: http://your-ssp-host/create-cd-netmap
 #         method: POST
 #         body: "{{ cd_netmap_xml }}"
@@ -176,10 +172,8 @@
 #         msg: "CD Netmap creation failed."
 #       when: create_cd_netmap_result.status != 200
 
-
-
 - name: Create Adapter
-  uri:
+  ansible.builtin.uri:
     url: https://localhost:8443/sspcmrest/sspcm/rest/adapter/createAdapter
     method: POST
     headers:
@@ -256,24 +250,22 @@
 #         msg: "CD Adapter creation failed."
 #       when: create_cd_adapter_result.status != 200
 
-
-
 - name: Display engine creation result
-  debug:
+  ansible.builtin.debug:
     var: engine_result
 
 - name: Display HTTP policy creation result
-  debug:
+  ansible.builtin.debug:
     var: policy_result
 
 - name: Display CD policy creation result
-  debug:
+  ansible.builtin.debug:
     var: cd_policy_result
 
 - name: Display adapter creation result
-  debug:
+  ansible.builtin.debug:
     var: adapter_result
 
 - name: Display netmap creation result
-  debug:
+  ansible.builtin.debug:
     var: netmap_result

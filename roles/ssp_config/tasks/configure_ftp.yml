@@ -5,7 +5,7 @@
     - name: Set system password (if provided)
       set_fact:
         system_password: "{{ system_password | default('default_password') }}"
-    
+
     - name: Login and retrieve session token
       shell: |
         # Login command, replace with actual login command
@@ -17,20 +17,20 @@
       shell: |
         # Replace with actual delete command
         echo "delete FTP_Adapter_test"
-      ignore_errors: yes
-    
+      ignore_errors: true
+
     - name: Delete existing FTP Netmap if it exists
       shell: |
         # Replace with actual delete command
         echo "delete FTP_Netmap_test"
-      ignore_errors: yes
-    
+      ignore_errors: true
+
     - name: Delete existing FTP Policy if it exists
       shell: |
         # Replace with actual delete command
         echo "delete FTP_Policy_test"
-      ignore_errors: yes
-    
+      ignore_errors: true
+
     - name: Build FTP Policy XML
       shell: |
         # Command to build FTP Policy XML
@@ -57,14 +57,14 @@
       shell: |
         # Command to create FTP Policy
         echo "create policy with XML {{ policy_xml.stdout }}"
-    
+
     - name: Export all policies
       shell: |
         # Command to export all policies
         echo "export all policies"
       register: exported_policies
       changed_when: false
-    
+
     - name: Validate exported policies
       shell: |
         # Command to validate exported XML against XSD
@@ -107,12 +107,12 @@
               </netmapDef>"
       register: netmap_xml
       changed_when: false
-    
+
     - name: Create FTP Netmap
       shell: |
         # Command to create FTP Netmap
         echo "create netmap with XML {{ netmap_xml.stdout }}"
-    
+
     - name: Export all netmaps
       shell: |
         # Command to export all netmaps
@@ -124,7 +124,7 @@
       shell: |
         # Command to import all netmaps
         echo "import netmaps {{ exported_netmaps.stdout }}"
-    
+
     - name: Build FTP Adapter XML
       shell: |
         # Command to build FTP Adapter XML
@@ -187,14 +187,14 @@
       shell: |
         # Command to create FTP Adapter
         echo "create adapter with XML {{ adapter_xml.stdout }}"
-    
+
     - name: Export all adapters
       shell: |
         # Command to export all adapters
         echo "export all adapters"
       register: exported_adapters
       changed_when: false
-    
+
     - name: Import all adapters
       shell: |
         # Command to import all adapters
@@ -204,20 +204,20 @@
       shell: |
         # Command to delete FTP Adapter
         echo "delete FTP_Adapter_test"
-      ignore_errors: yes
-    
+      ignore_errors: true
+
     - name: Delete FTP Netmap
       shell: |
         # Command to delete FTP Netmap
         echo "delete FTP_Netmap_test"
-      ignore_errors: yes
-    
+      ignore_errors: true
+
     - name: Delete FTP Policy
       shell: |
         # Command to delete FTP Policy
         echo "delete FTP_Policy_test"
-      ignore_errors: yes
-    
+      ignore_errors: true
+
     - name: Log off session
       shell: |
         # Command to log off session

@@ -31,4 +31,3 @@
     msg:
       - "Kubernets Namespace ................. {{ ssp_ps_namespace }}"
       - "my_serial ........................... {{ my_serial }}"
-

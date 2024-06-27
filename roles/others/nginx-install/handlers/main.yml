@@ -1,6 +1,6 @@
 ---
-- name: reboot
-  reboot:
+- name: Reboot
+  ansible.builtin.reboot:
     msg: "Reboot initiated from Ansible"
     connect_timeout: 30
     reboot_timeout: 120
