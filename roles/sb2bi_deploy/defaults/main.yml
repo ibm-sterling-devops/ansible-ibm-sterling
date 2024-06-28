@@ -11,6 +11,8 @@ si_version: "{{ lookup('env', 'SI_VERSION') | default('6.2.0.2', true) }}"
 si_licensetype: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passw0rd', true) }}"
 
+si_skip_helm: "{{ lookup('env', 'SI_SKIP_HELM') | default(false, true) }}"
+
 si_dbvendor: "{{ lookup('env', 'SI_DBVENDOR') }}"
 si_dbhost: "{{ lookup('env', 'SI_DBHOST') }}"
 si_dbport: "{{ lookup('env', 'SI_DBPORT') }}"

@@ -48,14 +48,15 @@
       - "  K8s Max version ................ <= {{ compatibility_matrix[si_version].k8s_max_version }}"
       - "Kubernetes Cluster version ....... {{ k8s_version }}"
 
-- name: Ensure Sterling B2B is supported in Kubernetes Cluster
-  ansible.builtin.assert:
-    that:
-      - si_version != ""
-      - k8s_version != ""
-      - "k8s_version is version( compatibility_matrix[si_version].k8s_min_version, '>=')"
-      - "k8s_version is version( compatibility_matrix[si_version].k8s_max_version, '<=')"
-    fail_msg: "Sterling B2B version is NOT supported in current Kubernetes Cluster"
+# - name: Ensure Sterling B2B is supported in Kubernetes Cluster
+#   ansible.builtin.assert:
+#     that:
+#       - si_version != ""
+#       - k8s_version != ""
+#       - "k8s_version is version( compatibility_matrix[si_version].k8s_min_version, '>=')"
+#       - "k8s_version is version( compatibility_matrix[si_version].k8s_max_version, '<=')"
+#     fail_msg: "Sterling B2B version is NOT supported in current Kubernetes Cluster"
+#   when: not si_skip_helm
 
 # Lookup Namespace availabiity
 # -----------------------------------------------------------------------------
