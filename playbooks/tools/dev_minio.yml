@@ -1,0 +1,7 @@
+- name: Deploy Minio as S3 Provider
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - minio

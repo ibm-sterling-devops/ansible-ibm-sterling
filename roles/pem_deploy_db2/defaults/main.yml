@@ -1,0 +1,67 @@
+---
+# Environment variables
+# -----------------------------------------------------------------------------------------------------------------
+pem_instanceid: "{{ lookup('env', 'PEM_INSTANCEID') }}"
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+db2_password: "{{ lookup('env', 'DB2_PASSWORD') | default('passw0rd', true) }}"
+db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true) }}"
+
+
+# Configure Db2 instance
+# -----------------------------------------------------------------------------
+db2_namespace: "ibm-pem-{{ pem_instanceid }}-db2"
+db2_instance_name: "db2inst1"
+db2_user: "db2inst1"
+
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+
+
+# Role Internal
+# -----------------------------------------------------------------------------
+db2_registry_secret: ibm-registry-secret
+db2_service_account: mydb2-sa
+db2_secret: mydb2-secret
+db2_id: mydb2
+db2_svc_ci: "{{ db2_id }}-ci"
+
+db2_storage_size: "10Gi" # 40Gi
+
+storage_class_matrix:
+  ibmcloud:
+    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
+    rwo: "ibmc-block-gold"      # ReadWriteOnce
+    rom: ""                     # ReadOnlyMany
+    rwop: ""                    # ReadWriteOncePod
+  redhat:
+    rwx: "ocs-storagecluster-cephfs"
+    rwx_nogid: "ocs-storagecluster-cephfs"
+    rwo: "ocs-storagecluster-ceph-rbd"
+    rom: ""
+    rwop: ""
+  aws:
+    rwx: "efs"
+    rwx_nogid: "efs"
+    rwo: "gp2"
+    rom: ""
+    rwop: ""
+  azure:
+    rwx: "azurefiles-premium"
+    rwx_nogid: "azurefiles-premium"
+    rwo: "managed-premium"
+    rom: ""
+    rwop: ""
+  techzone:
+    rwx: "managed-nfs-storage"
+    rwx_nogid: "managed-nfs-storage"
+    rwo: "managed-nfs-storage"
+    rom: "managed-nfs-storage"
+    rwop: "managed-nfs-storage"
+  ibm-spectrum:
+    rwx: "scale-cnsa"
+    rwx_nogid: "scale-cnsa"
+    rwo: "scale-cnsa"
+    rom: "scale-cnsa"
+    rwop: "scale-cnsa"

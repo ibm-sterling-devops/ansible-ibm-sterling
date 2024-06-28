@@ -1,0 +1,107 @@
+---
+- name: "Create Kubernetes Service {{ mq_svc_data }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: "{{ mq_svc_data }}"
+        namespace: "{{ mq_namespace }}"
+      spec:
+        selector:
+          app: "{{ mq_name }}"
+        type: ClusterIP
+        ports:
+          - protocol: TCP
+            port: 1414
+            targetPort: 1414
+
+- name: "Create Kubernetes Service {{ mq_svc_web }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: "{{ mq_svc_web }}"
+        namespace: "{{ mq_namespace }}"
+      spec:
+        selector:
+          app: "{{ mq_name }}"
+        type: ClusterIP
+        ports:
+          - protocol: TCP
+            port: 9443
+            targetPort: 9443
+
+- name: "Create Kubernetes Route {{ mq_route_web }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: "{{ mq_route_web }}"
+        namespace: "{{ mq_namespace }}"
+      spec:
+        tls:
+          insecureEdgeTerminationPolicy: Redirect
+          termination: passthrough
+        to:
+          kind: Service
+          name: "{{ mq_svc_web }}"
+        wildcardPolicy: None
+
+# Deploy MQ on Kubernetes
+# -----------------------------------------------------------------------------
+- name: Deploy MQ on Kubernetes
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: "{{ mq_name }}"
+        namespace: "{{ mq_namespace }}"
+      spec:
+        selector:
+          matchLabels:
+            app: "{{ mq_name }}"
+        serviceName: "{{ mq_name }}"
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: "{{ mq_name }}"
+          spec:
+            serviceAccount: "{{ mq_service_account }}"
+            containers:
+              - name: "{{ mq_name }}"
+                securityContext:
+                  privileged: true
+                image: icr.io/ibm-messaging/mq:{{ mq_version }}
+                env:
+                  - name: LICENSE
+                    value: accept
+                  - name: MQ_QMGR_NAME
+                    value: qmgr
+                ports:
+                  - containerPort: 1414
+                    name: mq
+                imagePullPolicy: IfNotPresent
+                volumeMounts:
+                  - name: mqvol
+                    mountPath: /var/mqm
+                imagePullSecrets:
+                  - name: mq_registry_secret
+        volumeClaimTemplates:
+          - metadata:
+              name: mqvol
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 20Gi
+              storageClassName: "{{ storage_class_matrix[mq_storage_class].rwo | default('') }}"

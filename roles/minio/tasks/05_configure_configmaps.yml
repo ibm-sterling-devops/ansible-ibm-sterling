@@ -1,0 +1,33 @@
+---
+# Create ConfigMap
+# -----------------------------------------------------------------------------
+- name: "Create ConfigMap minio-env"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+        name: minio-env
+        namespace: "{{ minio_namespace }}"
+        labels:
+          app: minio
+      data:
+        MINIO_ROOT_USER: "{{ minio_root_user }}"
+        MINIO_ROOT_PASSWORD: "{{ minio_root_password }}"
+
+# - name: "Create ConfigMap minio-custom-conf"
+#   kubernetes.core.k8s:
+#     state: present
+#     definition:
+#       kind: ConfigMap
+#       apiVersion: v1
+#       metadata:
+#         name: minio-custom-conf
+#         namespace: "{{ minio_namespace }}"
+#         labels:
+#           app: minio
+#       data:
+#         dummy.conf: |-
+#           dummy01=true
+#           dummy02=true

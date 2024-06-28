@@ -1,0 +1,69 @@
+---
+# Provide intelligent storage class selection to minimize required user knowledge
+
+# 1. Lookup storage class availabiity
+# -----------------------------------------------------------------------------
+- name: Lookup Storage classes
+  kubernetes.core.k8s_info:
+    #    api_version: storage.k8s.io/v1
+    kind: StorageClass
+  register: lookup_storageclasses
+
+- name: Create List of Storages
+  ansible.builtin.set_fact:
+    my_storage_list: "{{ lookup_storageclasses.resources | map(attribute='metadata.name') | list }}"
+
+# 2. Dynamic Provisioning
+# -----------------------------------------------------------------------------
+- name: Check for IBM Cloud StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "ibmcloud"
+  when:
+    - "'ibmc-file-gold' in my_storage_list"
+
+- name: Check for Redhat StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "redhat"
+  when:
+    - my_storage_class is not defined
+    - "'ocs-storagecluster-cephfs' in my_storage_list"
+
+- name: Check for AWS StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "aws"
+  when:
+    - my_storage_class is not defined
+    - "'gp2' in my_storage_list"
+
+- name: Check for Azure StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "azure"
+  when:
+    - my_storage_class is not defined
+    - "'azurefiles-premium' in my_storage_list"
+
+- name: Check for IBM Techzone StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "techzone"
+  when:
+    - my_storage_class is not defined
+    - "'managed-nfs-storage' in my_storage_list"
+
+- name: Check for IBM Spectrum Scale StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "ibm-spectrum"
+  when:
+    - my_storage_class is not defined
+    - "'scale-cnsa' in my_storage_list"
+
+# 2. Non-Dynamic Provisioning
+# -----------------------------------------------------------------------------
+# Using pre-created Persistent Volume
+# Create Persistent volume using NFS server
+# Using pre-created Persistent Volume Claim (PVC)
+# https://www.ibm.com/docs/en/connect-direct/6.3.0?topic=software-installing#concept_swd_dcn_lkb
+
+- name: Assert that storage class has been defined
+  ansible.builtin.assert:
+    that: my_storage_class is defined and my_storage_class != ""
+    fail_msg: "my_storage_class must be defined"

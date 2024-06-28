@@ -1,0 +1,137 @@
+---
+# Apply Deployment
+# -----------------------------------------------------------------------------
+- name: Apply Deployment OpenLDAP
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: minio
+        namespace: "{{ minio_namespace }}"
+        labels:
+          app: minio
+          app.kubernetes.io/name: minio
+      spec:
+        selector:
+          matchLabels:
+            app: minio
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: minio
+          spec:
+            serviceAccountName: minio-sa
+            containers:
+              - name: minio
+                image: "{{ minio_image }}"
+                args:
+                  - server
+                  - /data
+                  - --console-address
+                  - ":9001"
+                ports:
+                  - name: api-port
+                    containerPort: 9000
+                    protocol: TCP
+                  - name: console-port
+                    containerPort: 9001
+                    protocol: TCP
+                envFrom:
+                  - configMapRef:
+                      name: minio-env
+                  - secretRef:
+                      name: minio-secret
+                volumeMounts:
+                  - name: minio-data
+                    mountPath: /data
+                  # - name: custom-conf-data
+                  #   mountPath: /custom-conf/
+            volumes:
+              - name: minio-data
+                persistentVolumeClaim:
+                  claimName: minio-data-pvc
+              # - name: custom-ldif-files
+              #   configMap:
+              #     name: minio-custom-conf
+              #     defaultMode: 420
+
+# Create Service and Route
+# -----------------------------------------------------------------------------
+- name: Apply Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: minio-svc
+        namespace: "{{ minio_namespace }}"
+        labels:
+          app: minio
+      spec:
+        selector:
+          app: minio
+        ports:
+          - name: api-port
+            port: 9000
+            protocol: TCP
+            targetPort: 9000
+          - name: console-port
+            port: 9001
+            protocol: TCP
+            targetPort: 9001
+        type: ClusterIP
+
+- name: "Create Kubernetes Route"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: minio-api
+        namespace: "{{ minio_namespace }}"
+        labels:
+          app.kubernetes.io/name: minio
+          release: s0
+      spec:
+        to:
+          kind: Service
+          name: minio-svc
+        port:
+          targetPort: api-port
+        tls:
+          termination: edge
+        wildcardPolicy: None
+
+- name: "Create Kubernetes Route"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: minio-console
+        namespace: "{{ minio_namespace }}"
+        labels:
+          app.kubernetes.io/name: minio
+          release: s0
+      spec:
+        to:
+          kind: Service
+          name: minio-svc
+        port:
+          targetPort: console-port
+        tls:
+          termination: edge
+        wildcardPolicy: None
+
+- name: "MinIO Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "MinIO ..................................... Ready!"
+      - "MinIO Namespace ........................... {{ minio_namespace }}"
+      - "MinIO root user ........................... {{ minio_root_user }}"
+      - "MinIO root password ....................... {{ minio_root_password }}"

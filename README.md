@@ -85,9 +85,10 @@
 
 | Role name                     | Status      |           Description                                        |
 |-------------------------------|-------------|--------------------------------------------------------------|
-| cloudbeaver.yml               | Complete    | Deploy CloudBeaver CE to manage databases |
+| cloudbeaver.yml               | Complete    | Deploy CloudBeaver CE on OpenShift to manage databases |
 | db2_console                   | Development | Deploy DB2 Data Management Console |
-| openldap.yml                  | Complete    | Deploy OpenLDAP as LDAP Server |
+| openldap.yml                  | Complete    | Deploy OpenLDAP on OpenShift as LDAP Server |
+| phpldapadmin.yml              | Complete    | Deploy phpLDAPAdmin on OpenShift to manage OpenLDAP Server |
 
 
 

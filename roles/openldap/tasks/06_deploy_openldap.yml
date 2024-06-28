@@ -90,10 +90,10 @@
             targetPort: ldaps-port
         type: NodePort
 
-- name: "phpLDAPAdmin Summary:"
+- name: "OpenLDAP Summary:"
   ansible.builtin.debug:
     msg:
-      - "phpLDAPAdmin .............................. Ready!"
+      - "OpenLDAP .................................. Ready!"
       - "LDAP Admin user ........................... cn=admin,{{ ldp_base_dn }}"
       - "LDAP Admin password ....................... {{ ldp_admin_password }}"
       - "LDAP Bind password ........................ {{ ldp_bind_password }}"

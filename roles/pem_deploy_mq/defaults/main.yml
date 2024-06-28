@@ -1,0 +1,62 @@
+---
+pem_instanceid: "{{ lookup('env', 'PEM_INSTANCEID') }}"
+mq_namespace: "ibm-pem-{{ pem_instanceid }}-mq"
+mq_name: "{{ lookup('env', 'MQ_NAME') | default('mq', true) }}"
+
+mq_version: "{{ lookup('env', 'MQ_VERSION') | default('9.2.5.0-r3', true) }}"
+mq_admin_password: "{{ lookup('env', 'MQ_ADMIN_PASSWORD') | default('passw0rd', true) }}"
+mq_app_password: "{{ lookup('env', 'MQ_APP_PASSWORD') | default('passw0rd', true) }}"
+
+# Entitlement
+# -----------------------------------------------------------------------------
+entitled_registry: "cp.icr.io"
+entitled_registry_user: cp
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# Others
+# -----------------------------------------------------------------------------
+mq_registry_secret: mymq-ibm-registry-secret
+mq_service_account: mymq-sa
+mq_secret: mymq-secret
+mq_svc_data: "{{ mq_name }}-data"
+mq_svc_web: "{{ mq_name }}-web"
+mq_route_web: "{{ mq_name }}-web"
+
+
+storage_class_matrix:
+  ibmcloud:
+    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
+    rwo: "ibmc-block-gold"      # ReadWriteOnce
+    rom: ""                     # ReadOnlyMany
+    rwop: ""                    # ReadWriteOncePod
+  redhat:
+    rwx: "ocs-storagecluster-cephfs"
+    rwx_nogid: "ocs-storagecluster-cephfs"
+    rwo: "ocs-storagecluster-ceph-rbd"
+    rom: ""
+    rwop: ""
+  aws:
+    rwx: "efs"
+    rwx_nogid: "efs"
+    rwo: "gp2"
+    rom: ""
+    rwop: ""
+  azure:
+    rwx: "azurefiles-premium"
+    rwx_nogid: "azurefiles-premium"
+    rwo: "managed-premium"
+    rom: ""
+    rwop: ""
+  techzone:
+    rwx: "managed-nfs-storage"
+    rwx_nogid: "managed-nfs-storage"
+    rwo: "managed-nfs-storage"
+    rom: "managed-nfs-storage"
+    rwop: "managed-nfs-storage"
+  ibm-spectrum:
+    rwx: "scale-cnsa"
+    rwx_nogid: "scale-cnsa"
+    rwo: "scale-cnsa"
+    rom: "scale-cnsa"
+    rwop: "scale-cnsa"

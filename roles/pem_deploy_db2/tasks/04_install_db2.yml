@@ -1,0 +1,112 @@
+---
+- name: "Create Kubernetes Service {{ db2_svc_ci }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: "{{ db2_svc_ci }}"
+        namespace: "{{ db2_namespace }}"
+      spec:
+        type: ClusterIP
+        selector:
+          app: "{{ db2_id }}"
+        ports:
+          - name: "{{ db2_id }}-ci-srv"
+            protocol: TCP
+            port: 50000
+            targetPort: 50000
+          - name: "{{ db2_id }}-ci-srvs"
+            protocol: TCP
+            port: 50001
+            targetPort: 50001
+
+# Deploy DB2 on Kubernetes
+# -----------------------------------------------------------------------------
+- name: Deploy DB2 on Kubernetes
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: "{{ db2_id }}"
+        namespace: "{{ db2_namespace }}"
+      spec:
+        selector:
+          matchLabels:
+            app: "{{ db2_id }}"
+        serviceName: "{{ db2_id }}"
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: "{{ db2_id }}"
+              app-instance: "{{ db2_instance_name }}"
+          spec:
+            serviceAccount: "{{ db2_service_account }}"
+            containers:
+              - name: "{{ db2_id }}"
+                securityContext:
+                  privileged: true
+                image: "icr.io/db2_community/db2:{{ db2_version }}"
+                env:
+                  - name: DB2INST1_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: "{{ db2_secret }}"
+                        key: DB2INST1_PASSWORD
+                  - name: LICENSE
+                    value: accept
+                  - name: DB2INSTANCE
+                    value: "{{ db2_instance_name }}"
+                ports:
+                  - containerPort: 50000
+                    name: "{{ db2_id }}-srv"
+                  - containerPort: 50001
+                    name: "{{ db2_id }}-srvs"
+                imagePullPolicy: IfNotPresent
+                volumeMounts:
+                  - mountPath: /database
+                    name: db2vol
+                imagePullSecrets:
+                  - name: "{{ db2_registry_secret }}"
+        volumeClaimTemplates:
+          - metadata:
+              name: db2vol
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: "{{ db2_storage_size | default('40Gi') }}"
+              storageClassName: "{{ storage_class_matrix[db2_storage_class].rwo | default('') }}"
+
+- name: "Lookup DB2 Pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ db2_namespace }}"
+    label_selectors:
+      - app={{ db2_id }}
+      - app-instance={{ db2_instance_name }}
+    wait: true
+    wait_sleep: 30
+    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: db2_pod
+
+- name: Configure facts
+  ansible.builtin.set_fact:
+    db2_pod_name: "{{ db2_pod.resources[0].metadata.name }}"
+
+- name: "Pod Name"
+  ansible.builtin.debug:
+    msg:
+      - "Pod name ............................... {{ db2_pod_name }}"
+
+- name: "Wait : Give 1 minute to DB2 container to be ready"
+  ansible.builtin.pause:
+    minutes: 1

@@ -1,0 +1,40 @@
+---
+- name: Define Storage Class for OpenLDAP
+  ansible.builtin.set_fact:
+    minio_storageclass: "{{ storage_class_matrix[my_storage_class].rwx }}"
+
+# Create PVC
+# -----------------------------------------------------------------------------
+- name: Apply PVC minio-data-pvc
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: minio-data-pvc
+        namespace: "{{ minio_namespace }}"
+        labels:
+          app: minio
+          app.kubernetes.io/name: minio
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: "{{ minio_storageclass }}"
+        # volumeMode: Filesystem
+        resources:
+          requests:
+            storage: "{{ minio_storage_size }}"
+
+- name: Wait for PVC to be Bound minio-data-pvc
+  kubernetes.core.k8s_info:
+    kind: PersistentVolumeClaim
+    name: minio-data-pvc
+    namespace: "{{ minio_namespace }}"
+  register: pvc_info
+  until: pvc_info.resources[0].status.phase == 'Bound'
+  retries: 15  # Total retries will be 15 * 20s = 300s (5 minutes)
+  delay: 20     # Wait for 20 seconds between each retry
+
+- name: Debug PVC
+  ansible.builtin.debug:
+    msg: "PVC is ready"
