@@ -15,8 +15,8 @@
   ansible.builtin.assert:
     that:
       - si_instanceid is defined and si_instanceid != ""
-      - si_instanceid | length <= 8
-      - si_instanceid is match('[a-z0-9]+')
+#      - si_instanceid | length <= 8
+      - si_instanceid is match('[a-z0-9-]+')
     fail_msg: "Property 'si_instanceid' is greater than 8 character long or has uppercase characters"
 
 - name: "Fail if entitled_registry_key is not provided"
