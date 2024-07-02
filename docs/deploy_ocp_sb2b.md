@@ -84,8 +84,6 @@ export SI_VERSION=6.2.0.2
 ansible-playbook playbooks/deploy_sb2b.yml
 ```
 
-MainPage [README.md](../README.md)
-
 
 # Deploy Sterling B2Bi using prebuilt db.
 

@@ -22,7 +22,7 @@ nav:
       - "Deploy IBM Sterling B2B Integrator on Redhat OpenShift": deploy_ocp_sb2b.md
       - "Deploy IBM Sterling Control Center Monitor/Director on Redhat OpenShift": deploy_ocp_scc.md
       - "Deploy IBM Sterling External Authentication Server on Redhat OpenShift": deploy_ocp_seas.md
-      - "Deploy IBM Sterling Secure Proxy Server on Redhat OpenShift": deploy_ocp_sp.md
+      - "Deploy IBM Sterling Secure Proxy Server on Redhat OpenShift": deploy_ocp_ssp.md
   # - "Playbooks for Tools":
   #     - "Deploy CloudBeaver CE to manage databases": 
   #     - "Deploy OpenLDAP as LDAP Server": 
