@@ -12,9 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.1
 
+          # bash tools/site/copy-role-docs.sh
       - name: Install and Build
         run: |
-          bash tools/site/copy-role-docs.sh
           python -m pip install -q mkdocs
           mkdocs build --verbose --clean --strict
 
