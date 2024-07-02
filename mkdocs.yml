@@ -9,20 +9,20 @@ edit_uri: blob/main/docs/
 
 nav:
   - "Home": index.md
-  # - "Playbooks (Standard)":
-  #     - "Install IBM Connect:Direct 6.2.x": 
-  #     - "Install IBM Sterling B2B Integrator 6.1.2  - one node only": 
+  - "Playbooks (Standard)":
+    - "Install IBM Connect:Direct 6.2.x": setup_cd.md
+    - "Install IBM Sterling B2B Integrator 6.1.2  - one node only": setup_b2b.md
   #     - "Install IBM DB2 11.5.x and setup Sterling B2Bi Database": 
   #     - "Install Nginx as HTTP server for Repository|    
   - "Playbooks for RedHat OpenShift":
-      - "Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift": deploy_ocp_cd.md
-      - "Deploy IBM Connect:Direct WebServices on Redhat OpenShift": deploy_ocp_cdws.md
-      - "Deploy IBM Sterling Transformation Server on Redhat OpenShift": deploy_ocp_itx_rs.md
-      - "Deploy IBM Sterling Transformation Advanced on Redhat OpenShift": deploy_ocp_itxa.md
-      - "Deploy IBM Sterling B2B Integrator on Redhat OpenShift": deploy_ocp_sb2b.md
-      - "Deploy IBM Sterling Control Center Monitor/Director on Redhat OpenShift": deploy_ocp_scc.md
-      - "Deploy IBM Sterling External Authentication Server on Redhat OpenShift": deploy_ocp_seas.md
-      - "Deploy IBM Sterling Secure Proxy Server on Redhat OpenShift": deploy_ocp_ssp.md
+    - "Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift": deploy_ocp_cd.md
+    - "Deploy IBM Connect:Direct WebServices on Redhat OpenShift": deploy_ocp_cdws.md
+    - "Deploy IBM Sterling Transformation Server on Redhat OpenShift": deploy_ocp_itx_rs.md
+    - "Deploy IBM Sterling Transformation Advanced on Redhat OpenShift": deploy_ocp_itxa.md
+    - "Deploy IBM Sterling B2B Integrator on Redhat OpenShift": deploy_ocp_sb2b.md
+    - "Deploy IBM Sterling Control Center Monitor/Director on Redhat OpenShift": deploy_ocp_scc.md
+    - "Deploy IBM Sterling External Authentication Server on Redhat OpenShift": deploy_ocp_seas.md
+    - "Deploy IBM Sterling Secure Proxy Server on Redhat OpenShift": deploy_ocp_ssp.md
   # - "Playbooks for Tools":
   #     - "Deploy CloudBeaver CE to manage databases": 
   #     - "Deploy OpenLDAP as LDAP Server": 
@@ -31,6 +31,7 @@ nav:
   #     - "deploy_cd": roles/sb2bi_deploy.md
 # - "Roles": Utilities":
 #     - "cloudbeaver"": roles/cloudbeaver.md
+  - "Home": known_problems.md
 
 theme:
   name: readthedocs
