@@ -20,18 +20,19 @@ nav:
     - "Deploy IBM Sterling Transformation Server": deploy_ocp_itx_rs.md
     - "Deploy IBM Sterling Transformation Advanced": deploy_ocp_itxa.md
     - "Deploy IBM Sterling B2B Integrator": deploy_ocp_sb2b.md
-    - "Deploy IBM Sterling Control Center Monitor/Director": deploy_ocp_scc.md
-    - "Deploy IBM Sterling External Authentication Server": deploy_ocp_seas.md
-    - "Deploy IBM Sterling Secure Proxy Server": deploy_ocp_ssp.md
+    - "Deploy IBM Sterling Control Center Monitor/Director": playbooks/deploy_ocp_scc.md
+    - "Deploy IBM Sterling External Authentication Server": playbooks/deploy_ocp_seas.md
+    - "Deploy IBM Sterling Secure Proxy Server": playbooks/deploy_ocp_ssp.md
   # - "Playbooks for Tools":
   #     - "Deploy CloudBeaver CE to manage databases": 
   #     - "Deploy OpenLDAP as LDAP Server": 
-  # - "Roles:":
-  #     - "deploy_cd": roles/cd_deploy.md
-  #     - "deploy_cd": roles/sb2bi_deploy.md
+  - "Roles:":
+    - "deploy_cd": roles/cd_deploy.md
+    - "deploy_cd": roles/sb2bi_deploy.md
 # - "Roles": Utilities":
 #     - "cloudbeaver"": roles/cloudbeaver.md
-  - "Home": known_problems.md
+  - "Others": 
+    - "Known Problems": known_problems.md
 
 theme:
   name: readthedocs
