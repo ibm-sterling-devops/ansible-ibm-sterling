@@ -42,5 +42,3 @@ To run playbook the playbook
 ansible-playbook playbooks/dev_ssp.yml
 ```
 
-
-MainPage [README.md](../README.md)

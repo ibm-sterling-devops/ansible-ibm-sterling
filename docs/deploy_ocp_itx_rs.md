@@ -42,5 +42,3 @@ To run playbook the playbook
 ansible-playbook playbooks/deploy_itx_rs.yml
 ```
 
-
-MainPage [README.md](../README.md)

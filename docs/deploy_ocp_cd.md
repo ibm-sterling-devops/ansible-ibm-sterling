@@ -45,6 +45,3 @@ To run playbook the playbook
 ```bash 
 ansible-playbook playbooks/deploy_cd.yml
 ```
-
-
-MainPage [README.md](../README.md)

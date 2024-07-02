@@ -65,7 +65,5 @@ To run playbook the playbook
 ansible-playbook playbooks/deploy_scc.yml
 ```
 
-MainPage [README.md](../README.md)
-
 
 # Advanced options

@@ -42,5 +42,3 @@ To run playbook the playbook
 ansible-playbook playbooks/deploy_seas.yml
 ```
 
-
-MainPage [README.md](../README.md)
