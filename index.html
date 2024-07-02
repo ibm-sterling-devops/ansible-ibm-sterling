@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>IBM Sterling Devops Ansible</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> IBM Sterling Devops Ansible
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Playbooks (Standard)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="setup_cd/">Install IBM Connect:Direct 6.2.x</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="setup_b2b/">Install IBM Sterling B2B Integrator 6.1.2  - one node only</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Playbooks for RedHat OpenShift</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_cd/">Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_cdws/">Deploy IBM Connect:Direct WebServices on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_itx_rs/">Deploy IBM Sterling Transformation Server on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_itxa/">Deploy IBM Sterling Transformation Advanced on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_sb2b/">Deploy IBM Sterling B2B Integrator on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_scc/">Deploy IBM Sterling Control Center Monitor/Director on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_seas/">Deploy IBM Sterling External Authentication Server on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="deploy_ocp_ssp/">Deploy IBM Sterling Secure Proxy Server on Redhat OpenShift</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="known_problems/">Home</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">IBM Sterling Devops Ansible</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/index.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ibm-sterling-devops-ansible">IBM Sterling Devops Ansible<a class="headerlink" href="#ibm-sterling-devops-ansible" title="Permanent link"></a></h1>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
+<h1 id="run-a-playbook">Run a playbook<a class="headerlink" href="#run-a-playbook" title="Permanent link"></a></h1>
+<p>The collection includes a number of playbooks that string together multiple roles, you can directly invoke them after installing the collection:</p>
+<h1 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h1>
+<h2 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h2>
+<p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
+<p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
+<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
+</code></pre>
+<h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
+<p>Do a login in Openshift console and run the command:</p>
+<pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
+</code></pre>
+<h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
+<pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
+</code></pre>
+<p>Change directory</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+</code></pre>
+<h2 id="run-playbook-the-playbook">Run playbook the playbook<a class="headerlink" href="#run-playbook-the-playbook" title="Permanent link"></a></h2>
+<p>1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
+<pre><code class="language-bash">export SI_INSTANCEID=dev01
+</code></pre>
+<p>2) Provide de url domain SI_DOMAIN</p>
+<pre><code class="language-bash">export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
+</code></pre>
+<p>You can get this information from your OpenShift console url:</p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Sample URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IBM Cloud</td>
+<td>ocp01-8...74-0000.us-south.containers.appdomain.cloud</td>
+</tr>
+<tr>
+<td>IBM Techzone</td>
+<td>apps.34...6e.cloud.techzone.ibm.com</td>
+</tr>
+</tbody>
+</table>
+<p>3) (Optional) change your version: </p>
+<p>We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.</p>
+<pre><code class="language-bash">export SI_VERSION=6.2.0.2
+</code></pre>
+<p>4) To run playbook the playbook</p>
+<pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b.yml
+</code></pre>
+<h2 id="local-install-for-macos">Local Install for MacOS<a class="headerlink" href="#local-install-for-macos" title="Permanent link"></a></h2>
+<p>Using Brew to install</p>
+<pre><code class="language-bash">    brew install python3 pip3 ansible
+</code></pre>
+<h2 id="local-install-for-linux">Local Install for Linux<a class="headerlink" href="#local-install-for-linux" title="Permanent link"></a></h2>
+<h3 id="install-python-ansible">Install Python &amp; Ansible<a class="headerlink" href="#install-python-ansible" title="Permanent link"></a></h3>
+<p><a href="https://www.python.org/downloads/">Python 3.9</a> is recommended as it is the most widely used version of Python within our development team, but any in-support 3.x version of Python should work fine.</p>
+<pre><code class="language-bash">python3 --version
+python3 -m pip install ansible junit_xml xmljson jmespath kubernetes openshift
+ansible --version
+ansible-playbook --version
+</code></pre>
+<h2 id="local-install-for-ms-windows">Local Install for MS Windows<a class="headerlink" href="#local-install-for-ms-windows" title="Permanent link"></a></h2>
+<pre><code class="language-bash">
+</code></pre>
+<h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link"></a></h2>
+<p>This Ansible collection is developed by community, for any problem <a href="https://github.com/ibm-sterling-deops/ansible-ibm-sterling/issues">raise an issue directly in the GitHub repository</a>.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+      <span><a href="setup_cd/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.0
+Build Date UTC : 2024-07-02 21:52:28.397897+00:00
+-->

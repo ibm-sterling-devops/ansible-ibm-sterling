@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/deploy_ocp_sb2b/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Deploy IBM Sterling B2B Integrator on Redhat OpenShift - IBM Sterling Devops Ansible</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Deploy IBM Sterling B2B Integrator on Redhat OpenShift";
+        var mkdocs_page_input_path = "deploy_ocp_sb2b.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/deploy_ocp_sb2b/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> IBM Sterling Devops Ansible
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Playbooks (Standard)</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../setup_cd/">Install IBM Connect:Direct 6.2.x</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../setup_b2b/">Install IBM Sterling B2B Integrator 6.1.2  - one node only</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Playbooks for RedHat OpenShift</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_cd/">Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_cdws/">Deploy IBM Connect:Direct WebServices on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_itx_rs/">Deploy IBM Sterling Transformation Server on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_itxa/">Deploy IBM Sterling Transformation Advanced on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy IBM Sterling B2B Integrator on Redhat OpenShift</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#supported-versions">Supported versions</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_scc/">Deploy IBM Sterling Control Center Monitor/Director on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_seas/">Deploy IBM Sterling External Authentication Server on Redhat OpenShift</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_ssp/">Deploy IBM Sterling Secure Proxy Server on Redhat OpenShift</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../known_problems/">Home</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">IBM Sterling Devops Ansible</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Playbooks for RedHat OpenShift</li>
+      <li class="breadcrumb-item active">Deploy IBM Sterling B2B Integrator on Redhat OpenShift</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/deploy_ocp_sb2b.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="deploy-ibm-sterling-b2b-integrator-on-openshift-using-ansible-scripts">Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-ibm-sterling-b2b-integrator-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
+<h2 id="supported-versions">Supported versions<a class="headerlink" href="#supported-versions" title="Permanent link"></a></h2>
+<p>Playbook will run the last version of Sterling B2Bi, but take care of Kubernetes/Openshift version is supported</p>
+<table>
+<thead>
+<tr>
+<th>Sterling B2Bi (helm)</th>
+<th>Kubernetes</th>
+<th>OpenShift</th>
+<th>Helm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6.2.0.2 (3.0.4)</td>
+<td>&gt;= 1.27 and &lt;= 1.29</td>
+<td>&gt;= 4.14 and &lt;= 4.15</td>
+<td>&gt;= 3.14.x</td>
+</tr>
+<tr>
+<td>6.2.0.1 (3.0.1)</td>
+<td>&gt;= 1.26 and &lt;= 1.28</td>
+<td>&gt;= 4.13 and &lt;= 4.14</td>
+<td>&gt;= 3.13.x</td>
+</tr>
+<tr>
+<td>6.2.0.0 (3.0.0)</td>
+<td>&gt;= 1.25 and &lt;= 1.27</td>
+<td>&gt;= 4.12 and &lt;= 4.13</td>
+<td>&gt;= 3.12.x</td>
+</tr>
+</tbody>
+</table>
+<p>Check with</p>
+<pre><code class="language-bash">kubectl version
+</code></pre>
+<h1 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h1>
+<h2 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h2>
+<p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
+<p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
+<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
+</code></pre>
+<h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
+<p>Do a login in Openshift console and run the command:</p>
+<pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
+</code></pre>
+<h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
+<pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
+</code></pre>
+<p>Change directory</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+</code></pre>
+<h2 id="run-playbook-the-playbook">Run playbook the playbook<a class="headerlink" href="#run-playbook-the-playbook" title="Permanent link"></a></h2>
+<p>1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
+<pre><code class="language-bash">export SI_INSTANCEID=dev01
+</code></pre>
+<p>2) Provide de url domain SI_DOMAIN</p>
+<pre><code class="language-bash">export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
+</code></pre>
+<p>You can get this information from your OpenShift console url:</p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Sample URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IBM Cloud</td>
+<td>ocp01-8...74-0000.us-south.containers.appdomain.cloud</td>
+</tr>
+<tr>
+<td>IBM Techzone</td>
+<td>apps.34...6e.cloud.techzone.ibm.com</td>
+</tr>
+</tbody>
+</table>
+<p>3) (Optional) change your version: </p>
+<p>We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.</p>
+<pre><code class="language-bash">export SI_VERSION=6.2.0.2
+</code></pre>
+<p>4) To run playbook the playbook</p>
+<pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b.yml
+</code></pre>
+<h1 id="deploy-sterling-b2bi-using-prebuilt-db">Deploy Sterling B2Bi using prebuilt db.<a class="headerlink" href="#deploy-sterling-b2bi-using-prebuilt-db" title="Permanent link"></a></h1>
+<p>If your using SB2Bi for a prove of concept and get the environment provided in 10 minutes, i suggest to deploy using prebuilt db.</p>
+<p>** You need to have a backup from a previous install, we cannot provide because of copyright **.</p>
+<p>1) Define previous environment variables</p>
+<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
+export SI_INSTANCEID=dev01
+export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
+</code></pre>
+<p>2) Provide your Sterling B2BI database backup</p>
+<pre><code class="language-bash">export SI_PREBUILTDB_FILE=/tmp/B2BI_6202.tar.gz
+</code></pre>
+<p>3) disable database setup and upgrade</p>
+<pre><code class="language-bash">export SI_DATASETUP_ENABLED=false
+export SI_DATASETUP_UPGRADE=false
+</code></pre>
+<p>4) Run prebuilt playbook</p>
+<pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b_prebuiltdb.yml
+</code></pre>
+<h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td></td>
+<td>Y</td>
+<td>IBM Entitled Registry key</td>
+</tr>
+<tr>
+<td>SI_INSTANCEID</td>
+<td></td>
+<td>Y</td>
+<td>Used to define your environment</td>
+</tr>
+<tr>
+<td>SI_DOMAIN</td>
+<td></td>
+<td>Y</td>
+<td>Used to define your environment</td>
+</tr>
+<tr>
+<td>SI_LICENSETYPE</td>
+<td>no-prod</td>
+<td>N</td>
+<td>Specify the license edition as per license agreement. Valid value is <strong>prod</strong> or <strong>non-prod</strong> for Production and Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service</td>
+</tr>
+<tr>
+<td>SI_SYSTEM_PASSPHRASE</td>
+<td>passw0rd</td>
+<td>N</td>
+<td>Name of system passphrase secret if available</td>
+</tr>
+<tr>
+<td>SI_ADMIN_MAILADDR</td>
+<td>admin@company.com</td>
+<td>N</td>
+<td>Provide the admin email address</td>
+</tr>
+<tr>
+<td>SI_ADMIN_SMTPHOST</td>
+<td>smtp.company.com</td>
+<td>N</td>
+<td>Provide the SMTP host details</td>
+</tr>
+<tr>
+<td>SI_DBVENDOR</td>
+<td>DB2</td>
+<td>N</td>
+<td>Database vendor: DB2, Oracle, MSSQL</td>
+</tr>
+<tr>
+<td>SI_DBHOST</td>
+<td><from service></td>
+<td>N</td>
+<td>Database hostname/ip address</td>
+</tr>
+<tr>
+<td>SI_DBPORT</td>
+<td><from service></td>
+<td>N</td>
+<td>Database port</td>
+</tr>
+<tr>
+<td>SI_DBNAME</td>
+<td>B2BI</td>
+<td>N</td>
+<td>Database name</td>
+</tr>
+<tr>
+<td>SI_DBUSER</td>
+<td>db2inst1</td>
+<td>N</td>
+<td>Database user</td>
+</tr>
+<tr>
+<td>SI_DBPASSWORD</td>
+<td>passw0rd</td>
+<td>N</td>
+<td>Database user password</td>
+</tr>
+<tr>
+<td>SI_ORACLESERVICENAME</td>
+<td>false</td>
+<td>N</td>
+<td>Oracle service name, must be <strong>true</strong> when database is Oracle</td>
+</tr>
+<tr>
+<td>SI_DATASETUP_ENABLED</td>
+<td>true</td>
+<td>N</td>
+<td>Enable database setup job execution</td>
+</tr>
+<tr>
+<td>SI_DATASETUP_UPGRADE</td>
+<td>false</td>
+<td>N</td>
+<td>Upgrade an older release</td>
+</tr>
+<tr>
+<td>SI_JMS_USERNAME</td>
+<td></td>
+<td>N</td>
+<td>JMS Queue user</td>
+</tr>
+<tr>
+<td>SI_JMS_PASSWORD</td>
+<td>passw0rd</td>
+<td>N</td>
+<td>JMS Queue user password</td>
+</tr>
+<tr>
+<td>SI_JMS_KEYSTORE_PASSWORD</td>
+<td></td>
+<td>N</td>
+<td>JMS Queue keystore password</td>
+</tr>
+<tr>
+<td>SI_JMS_TRUSTSTORE_PASSWORD</td>
+<td></td>
+<td>N</td>
+<td>JMS Queue truststore password</td>
+</tr>
+<tr>
+<td>SI_LIBERTY_KEYSTORE_PASSWORD</td>
+<td>changeit</td>
+<td>N</td>
+<td>Liberty keystore password</td>
+</tr>
+<tr>
+<td>SI_SKIP_HELM</td>
+<td>false</td>
+<td>N</td>
+<td>Avoid to run helm, only generate values.yaml</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../deploy_ocp_itxa/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../deploy_ocp_scc/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
