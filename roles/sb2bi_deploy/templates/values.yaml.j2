@@ -122,8 +122,8 @@ ingress:
   port:
 
 dataSetup:
-  enabled: true
-  upgrade: false
+  enabled: {{ si_datasetup_enabled }}
+  upgrade: {{ si_datasetup_upgrade }}
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-dbsetup"
     tag: "{{ compatibility_matrix[ si_version ].dataSetup.image.tag | default('') }}"

@@ -1,0 +1,12 @@
+---
+- name: "Fail if db2_namespace is not provided"
+  ansible.builtin.assert:
+    that:
+      - db2_namespace is defined and db2_namespace != ""
+    fail_msg: "db2_namespace property is required"
+
+- name: "Fail if SI_PREBUILTDB_FILE is not provided"
+  ansible.builtin.assert:
+    that:
+      - si_prebuiltdb_file is defined and si_prebuiltdb_file != ""
+    fail_msg: "si_prebuiltdb_file property is required"

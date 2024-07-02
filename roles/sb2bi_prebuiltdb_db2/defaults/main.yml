@@ -1,0 +1,16 @@
+# Configure Db2 instance
+# -----------------------------------------------------------------------------------------------------------------
+si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
+
+si_prebuiltdb_file: "{{ lookup('env', 'SI_PREBUILTDB_FILE') }}"
+
+db2_namespace: "sterling-b2bi-{{ si_instanceid }}-db2"
+
+db2_instance_name: "db2inst1"
+db2_user: "db2inst1"
+db2_dbname: "B2BI"
+db2_container: "mydb2"
+
+# Others
+# -----------------------------------------------------------------------------
+my_workdir: /tmp

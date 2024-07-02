@@ -21,6 +21,9 @@ si_dbuser: "{{ lookup('env', 'SI_DBUSER') }}"
 si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD') }}"
 si_oracle_useservicename: "{{ lookup('env', 'SI_ORACLESERVICENAME', default('false')) }}"
 
+si_datasetup_enabled: "{{ lookup('env', 'SI_DATASETUP_ENABLED') | default('true', true) }}"
+si_datasetup_upgrade: "{{ lookup('env', 'SI_DATASETUP_UPGRADE') | default('false', true) }}"
+
 si_adminmailaddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
 si_adminsmtphost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
 

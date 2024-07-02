@@ -18,6 +18,7 @@ roles/ibm/cd-unix/dev
 roles/ibm/sb2bi/dev
 roles/ibm/seas/dev
 roles/ibm/ssp/dev
+roles/sb2bi_prebuiltdb_db2/files/*
 
 roles/ibm/sb2b/dev-*.yml
 roles/ibm/sb2b/edge-routes-*.txt
