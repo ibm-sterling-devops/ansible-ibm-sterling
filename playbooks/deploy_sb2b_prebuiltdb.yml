@@ -5,6 +5,6 @@
   any_errors_fatal: true
   roles:
     - sb2bi_deploy_db2
-    - sb2bi_setup_db2
+    - sb2bi_prebuiltdb_db2
     - sb2bi_deploy_mq
     - sb2bi_deploy
