@@ -15,7 +15,7 @@ nav:
   #     - "Install IBM DB2 11.5.x and setup Sterling B2Bi Database": 
   #     - "Install Nginx as HTTP server for Repository|    
   - "Playbooks for RedHat OpenShift":
-    - "Deploy IBM Connect:Direct 6.3.x on Redhat OpenShift": deploy_ocp_cd.md
+    - "Deploy IBM Connect:Direct 6.3.x": deploy_ocp_cd.md
     - "Deploy IBM Connect:Direct WebServices on Redhat OpenShift": deploy_ocp_cdws.md
     - "Deploy IBM Sterling Transformation Server on Redhat OpenShift": deploy_ocp_itx_rs.md
     - "Deploy IBM Sterling Transformation Advanced on Redhat OpenShift": deploy_ocp_itxa.md
