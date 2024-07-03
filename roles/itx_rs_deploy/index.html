@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cd_deploy/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/itx_rs_deploy/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>deploy_cd - IBM Sterling Devops Ansible</title>
+    <title>itx_rs_deploy - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "deploy_cd";
-        var mkdocs_page_input_path = "roles/cd_deploy.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/roles/cd_deploy/";
+        var mkdocs_page_name = "itx_rs_deploy";
+        var mkdocs_page_input_path = "roles/itx_rs_deploy.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/roles/itx_rs_deploy/";
       </script>
     
     <!--[if lt IE 9]>
@@ -73,13 +73,13 @@
               </ul>
               <p class="caption"><span class="caption-text">Roles:</span></p>
               <ul class="current">
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">deploy_cd</a>
-    <ul class="current">
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cd_deploy/">deploy_cd</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../cdws_deploy/">cdws_deploy</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../itx_rs_deploy/">itx_rs_deploy</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">itx_rs_deploy</a>
+    <ul class="current">
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../sb2bi_deploy/">sb2bi_deploy</a>
                   </li>
@@ -104,9 +104,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Roles:</li>
-      <li class="breadcrumb-item active">deploy_cd</li>
+      <li class="breadcrumb-item active">itx_rs_deploy</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/cd_deploy.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/itx_rs_deploy.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -114,7 +114,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-cd_deploy">Role cd_deploy<a class="headerlink" href="#role-cd_deploy" title="Permanent link"></a></h1>
+                <h1 id="role-itx-rs">Role ITX RS<a class="headerlink" href="#role-itx-rs" title="Permanent link"></a></h1>
+<pre><code class="language-bash">export ITX_RS_NAMESPACE=ibm-itx-rs-dev01
+
+ansible-playbook playbooks/deploy_itx_rs.yml
+</code></pre>
               
             </div>
           </div><footer>
@@ -143,10 +147,10 @@
         </span>
     
     
-      <span><a href="../../playbooks/deploy_ocp_ssp/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../cdws_deploy/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../cdws_deploy/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../sb2bi_deploy/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
