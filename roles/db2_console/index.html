@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy_db2/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/db2_console/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>sb2bi_deploy_db2 - IBM Sterling Devops Ansible</title>
+    <title>Role cloudbeaver - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "sb2bi_deploy_db2";
-        var mkdocs_page_input_path = "roles/sb2bi_deploy_db2.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/roles/sb2bi_deploy_db2/";
+        var mkdocs_page_name = "Role cloudbeaver";
+        var mkdocs_page_input_path = "roles/db2_console.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/roles/db2_console/";
       </script>
     
     <!--[if lt IE 9]>
@@ -84,7 +84,7 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Roles:</span></p>
-              <ul class="current">
+              <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../cd_deploy/">cd_deploy</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../cdws_deploy/">cdws_deploy</a>
@@ -103,11 +103,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../sb2bi_deploy/">sb2bi_deploy</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">sb2bi_deploy_db2</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../sb2bi_deploy_mq/">sb2bi_deploy_mq</a>
                   </li>
@@ -164,10 +160,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Roles:</li>
-      <li class="breadcrumb-item active">sb2bi_deploy_db2</li>
+      <li class="breadcrumb-item active">Role cloudbeaver</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/sb2bi_deploy_db2.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/db2_console.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -175,46 +170,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-sb2bi_deploy_db2">Role sb2bi_deploy_db2<a class="headerlink" href="#role-sb2bi_deploy_db2" title="Permanent link"></a></h1>
-<p>Deploy DB2 for Sterling B2B Integrator application</p>
+                <h1 id="role-cloudbeaver">Role cloudbeaver<a class="headerlink" href="#role-cloudbeaver" title="Permanent link"></a></h1>
+<p>Deploy DB2 console to manage databases inside containers</p>
 <h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
-<p>Environment variables for this role:</p>
-<table>
-<thead>
-<tr>
-<th>Environment Variable</th>
-<th>Default Value</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ENTITLED_REGISTRY_KEY</td>
-<td>N/A</td>
-<td>Yes</td>
-<td>Entitlement registry key</td>
-</tr>
-<tr>
-<td>SI_INSTANCEID</td>
-<td>N/A</td>
-<td>Yes</td>
-<td>Instance ID for Sterling B2B Integrator application</td>
-</tr>
-<tr>
-<td>DB2_PASSWORD</td>
-<td>passw0rd</td>
-<td>No</td>
-<td>DB2 db2inst1 password</td>
-</tr>
-<tr>
-<td>DB2_VERSION</td>
-<td>11.5.9.0</td>
-<td>No</td>
-<td>DB2 Version</td>
-</tr>
-</tbody>
-</table>
               
             </div>
           </div><footer>
@@ -243,10 +201,6 @@
         </span>
     
     
-      <span><a href="../sb2bi_deploy/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../sb2bi_deploy_mq/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

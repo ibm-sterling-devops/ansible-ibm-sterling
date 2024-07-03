@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_cdws/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_minio/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Deploy IBM Connect:Direct WebServices - IBM Sterling Devops Ansible</title>
+    <title>Deploy MinIO S3 storage - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Deploy IBM Connect:Direct WebServices";
-        var mkdocs_page_input_path = "playbooks/deploy_ocp_cdws.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/playbooks/deploy_ocp_cdws/";
+        var mkdocs_page_name = "Deploy MinIO S3 storage";
+        var mkdocs_page_input_path = "playbooks/tools_deploy_minio.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/playbooks/tools_deploy_minio/";
       </script>
     
     <!--[if lt IE 9]>
@@ -56,22 +56,10 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Playbooks: RedHat OpenShift</span></p>
-              <ul class="current">
+              <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_cd/">Deploy IBM Connect:Direct 6.3.x</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy IBM Connect:Direct WebServices</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#ibm-entitled-registry">IBM Entitled Registry</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#login-on-openshift">Login on OpenShift</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#exporting-variables">Exporting variables</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_cdws/">Deploy IBM Connect:Direct WebServices</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_itx_rs/">Deploy IBM Sterling Transformation Server (ITX RS)</a>
                   </li>
@@ -87,10 +75,20 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Playbooks: Tools</span></p>
-              <ul>
+              <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_cloudbeaver/">Deploy CloudBeaver CE to manage databases</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_minio/">Deploy MinIO S3 storage</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy MinIO S3 storage</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#login-on-openshift">Login on OpenShift</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#exporting-variables">Exporting variables</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_openldap/">Deploy OpenLDAP as LDAP Server</a>
                   </li>
@@ -172,10 +170,10 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Playbooks: RedHat OpenShift</li>
-      <li class="breadcrumb-item active">Deploy IBM Connect:Direct WebServices</li>
+          <li class="breadcrumb-item">Playbooks: Tools</li>
+      <li class="breadcrumb-item active">Deploy MinIO S3 storage</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/playbooks/deploy_ocp_cdws.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/playbooks/tools_deploy_minio.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -183,10 +181,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="deploy-ibm-sterling-connectdirect-webservice-on-openshift-using-ansible-scripts">Deploy IBM Sterling Connect:Direct WebService on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-ibm-sterling-connectdirect-webservice-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
-<h2 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h2>
-<p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
-<p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
+                <h1 id="deploy-minio-on-openshift-using-ansible-scripts">Deploy MinIO on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-minio-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
 <h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
 <p>Do a login in Openshift console and run the command:</p>
 <pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
@@ -199,14 +194,10 @@
 <pre><code class="language-bash">cd ansible-ibm-sterling
 
 export ANSIBLE_CONFIG=./ansible.cfg 
-
-export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
-
-export CDWS_NAMESPACE=sterling-cdws01
 </code></pre>
 <h2 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h2>
 <p>To run playbook the playbook</p>
-<pre><code class="language-bash">ansible-playbook playbooks/deploy_cdws.yml
+<pre><code class="language-bash">ansible-playbook playbooks/tools/minio.yml
 </code></pre>
               
             </div>
@@ -236,10 +227,10 @@ export CDWS_NAMESPACE=sterling-cdws01
         </span>
     
     
-      <span><a href="../deploy_ocp_cd/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../tools_deploy_cloudbeaver/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../deploy_ocp_itx_rs/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../tools_deploy_openldap/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
