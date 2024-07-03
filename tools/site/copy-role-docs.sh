@@ -13,4 +13,17 @@ function copyDoc() {
 copyDoc cd_deploy
 copyDoc cdws_deploy
 copyDoc itx_rs_deploy
+copyDoc itxa_deploy
 copyDoc sb2bi_deploy
+copyDoc sb2bi_deploy_db2
+copyDoc sb2bi_deploy_mq
+copyDoc sb2bi_setup_db2
+copyDoc scc_deploy
+copyDoc scc_deploy_db2
+copyDoc scc_deploy_mq
+copyDoc scc_setup_db2
+copyDoc seas_deploy
+copyDoc ssp_cm_deploy
+copyDoc ssp_config
+copyDoc ssp_deploy
+copyDoc ssp_ps_deploy
