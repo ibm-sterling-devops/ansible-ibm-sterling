@@ -6,12 +6,12 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/known_problems/</loc>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements/</loc>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/others/known_problems/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
