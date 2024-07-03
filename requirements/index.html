@@ -163,120 +163,108 @@
 <pre><code>sudo mv ./kubectl /usr/local/bin/kubectl
 </code></pre>
 <ol>
-<li>Test to ensure the version you installed is up-to-date:
-    <code>sh
-    kubectl version --client</code></li>
+<li>Test to ensure the version you installed is up-to-date:</li>
 </ol>
+<pre><code class="language-sh">kubectl version --client
+</code></pre>
 <h3 id="install-oc">Install oc<a class="headerlink" href="#install-oc" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Download the latest release:
-    <code>sh
-    curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz"</code></p>
-</li>
-<li>
-<p>Extract the tar file:
-    <code>sh
-    tar -xzvf openshift-client-linux.tar.gz</code></p>
-</li>
-<li>
-<p>Move the binaries to your PATH:
-    <code>sh
-    sudo mv oc kubectl /usr/local/bin/</code></p>
-</li>
-<li>
-<p>Test to ensure the version you installed is up-to-date:
-    <code>sh
-    oc version</code></p>
-</li>
+<li>Download the latest release:</li>
 </ol>
+<pre><code class="language-sh">curl -LO &quot;https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz&quot;
+</code></pre>
+<ol>
+<li>Extract the tar file:</li>
+</ol>
+<pre><code class="language-sh">tar -xzvf openshift-client-linux.tar.gz
+</code></pre>
+<ol>
+<li>Move the binaries to your PATH:</li>
+</ol>
+<pre><code class="language-sh">sudo mv oc kubectl /usr/local/bin/
+</code></pre>
+<ol>
+<li>Test to ensure the version you installed is up-to-date:</li>
+</ol>
+<pre><code class="language-sh">oc version
+</code></pre>
 <h3 id="install-git">Install git<a class="headerlink" href="#install-git" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Install git:
-    <code>sh
-    sudo yum update -y
-    sudo yum install git -y</code></p>
-</li>
-<li>
-<p>Verify the installation:
-    <code>sh
-    git --version</code></p>
-</li>
+<li>Install git:</li>
 </ol>
+<pre><code class="language-sh">sudo yum update -y
+sudo yum install git -y
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">git --version
+</code></pre>
 <h3 id="install-ansible">Install ansible<a class="headerlink" href="#install-ansible" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Install the dependencies:
-    <code>sh
-    sudo yum install epel-release -y
-    sudo yum update -y</code></p>
-</li>
-<li>
-<p>Install Ansible:
-    <code>sh
-    sudo yum install ansible -y</code></p>
-</li>
-<li>
-<p>Verify the installation:
-    <code>sh
-    ansible --version</code></p>
-</li>
+<li>Install the dependencies:</li>
 </ol>
+<pre><code class="language-sh">sudo yum install epel-release -y
+sudo yum update -y
+</code></pre>
+<ol>
+<li>Install Ansible:</li>
+</ol>
+<pre><code class="language-sh">sudo yum install ansible -y
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">ansible --version
+</code></pre>
 <h1 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link"></a></h1>
 <h3 id="install-kubectl_1">Install kubectl<a class="headerlink" href="#install-kubectl_1" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Install with Homebrew:
-    <code>sh
-    brew install kubectl</code></p>
-</li>
-<li>
-<p>Test to ensure the version you installed is up-to-date:
-    <code>sh
-    kubectl version --client</code></p>
-</li>
+<li>Install with Homebrew:</li>
 </ol>
+<pre><code class="language-sh">brew install kubectl
+</code></pre>
+<ol>
+<li>Test to ensure the version you installed is up-to-date:</li>
+</ol>
+<pre><code class="language-sh">kubectl version --client
+</code></pre>
 <h3 id="install-oc_1">Install oc<a class="headerlink" href="#install-oc_1" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Install with Homebrew:
-    <code>sh
-    brew install openshift-cli</code></p>
-</li>
-<li>
-<p>Test to ensure the version you installed is up-to-date:
-    <code>sh
-    oc version</code></p>
-</li>
+<li>Install with Homebrew:</li>
 </ol>
+<pre><code class="language-sh">brew install openshift-cli
+</code></pre>
+<ol>
+<li>Test to ensure the version you installed is up-to-date:</li>
+</ol>
+<pre><code class="language-sh">oc version
+</code></pre>
 <h3 id="install-git_1">Install git<a class="headerlink" href="#install-git_1" title="Permanent link"></a></h3>
 <ol>
-<li>Verify the installation:
-    <code>sh
-    git --version</code></li>
+<li>Verify the installation:</li>
 </ol>
+<pre><code class="language-sh">git --version
+</code></pre>
 <h3 id="install-ansible_1">Install ansible<a class="headerlink" href="#install-ansible_1" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Install Ansible with Homebrew:
-    <code>sh
-    brew install ansible</code></p>
-</li>
-<li>
-<p>Verify the installation:
-    <code>sh
-    ansible --version</code></p>
-</li>
+<li>Install Ansible with Homebrew:</li>
 </ol>
+<pre><code class="language-sh">brew install ansible
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">ansible --version
+</code></pre>
 <h2 id="windows-using-wsl">Windows (Using WSL)<a class="headerlink" href="#windows-using-wsl" title="Permanent link"></a></h2>
 <h3 id="install-wsl">Install WSL<a class="headerlink" href="#install-wsl" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Open PowerShell as Administrator and run:
-    <code>sh
-    wsl --install</code></p>
-</li>
+<li>Open PowerShell as Administrator and run:</li>
+</ol>
+<pre><code class="language-sh">wsl --install
+</code></pre>
+<ol>
 <li>
 <p>Restart your computer if prompted.</p>
 </li>
@@ -290,97 +278,88 @@
 <p>Open your installed Linux distribution.</p>
 </li>
 <li>
-<p>Update the package list and install necessary packages:
-    <code>sh
-    sudo apt-get update
-    sudo apt-get upgrade -y</code></p>
+<p>Update the package list and install necessary packages:</p>
 </li>
 </ol>
+<pre><code class="language-sh">sudo apt-get update
+sudo apt-get upgrade -y
+</code></pre>
 <h3 id="install-kubectl_2">Install kubectl<a class="headerlink" href="#install-kubectl_2" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Download the latest release:
-    <code>sh
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"</code></p>
-</li>
-<li>
-<p>Make the kubectl binary executable:
-    <code>sh
-    chmod +x ./kubectl</code></p>
-</li>
-<li>
-<p>Move the binary to your PATH:
-    <code>sh
-    sudo mv ./kubectl /usr/local/bin/kubectl</code></p>
-</li>
-<li>
-<p>Test to ensure the version you installed is up-to-date:
-    <code>sh
-    kubectl version --client</code></p>
-</li>
+<li>Download the latest release:</li>
 </ol>
+<pre><code class="language-sh">curl -LO &quot;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&quot;
+</code></pre>
+<ol>
+<li>Make the kubectl binary executable:</li>
+</ol>
+<pre><code class="language-sh">chmod +x ./kubectl
+</code></pre>
+<ol>
+<li>Move the binary to your PATH:</li>
+</ol>
+<pre><code class="language-sh">sudo mv ./kubectl /usr/local/bin/kubectl
+</code></pre>
+<ol>
+<li>Test to ensure the version you installed is up-to-date:</li>
+</ol>
+<pre><code class="language-sh">kubectl version --client
+</code></pre>
 <h3 id="install-oc_2">Install oc<a class="headerlink" href="#install-oc_2" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Download the latest release:
-    <code>sh
-    curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz"</code></p>
-</li>
-<li>
-<p>Extract the tar file:
-    <code>sh
-    tar -xzvf openshift-client-linux.tar.gz</code></p>
-</li>
-<li>
-<p>Move the binaries to your PATH:
-    <code>sh
-    sudo mv oc kubectl /usr/local/bin/</code></p>
-</li>
-<li>
-<p>Test to ensure the version you installed is up-to-date:
-    <code>sh
-    oc version</code></p>
-</li>
+<li>Download the latest release:</li>
 </ol>
+<pre><code class="language-sh">curl -LO &quot;https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz&quot;
+</code></pre>
+<ol>
+<li>Extract the tar file:</li>
+</ol>
+<pre><code class="language-sh">tar -xzvf openshift-client-linux.tar.gz
+</code></pre>
+<ol>
+<li>Move the binaries to your PATH:</li>
+</ol>
+<pre><code class="language-sh">sudo mv oc kubectl /usr/local/bin/
+</code></pre>
+<ol>
+<li>Test to ensure the version you installed is up-to-date:</li>
+</ol>
+<pre><code class="language-sh">oc version
+</code></pre>
 <h3 id="install-git_2">Install git<a class="headerlink" href="#install-git_2" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Install git:
-    <code>sh
-    sudo apt-get update
-    sudo apt-get install git -y</code></p>
-</li>
-<li>
-<p>Verify the installation:
-    <code>sh
-    git --version</code></p>
-</li>
+<li>Install git:</li>
 </ol>
+<pre><code class="language-sh">sudo apt-get update
+sudo apt-get install git -y
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">git --version
+</code></pre>
 <h3 id="install-ansible_2">Install ansible<a class="headerlink" href="#install-ansible_2" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Install the dependencies:
-    <code>sh
-    sudo apt-get update
-    sudo apt-get install software-properties-common -y</code></p>
-</li>
-<li>
-<p>Add the Ansible PPA:
-    <code>sh
-    sudo add-apt-repository --yes --update ppa:ansible/ansible</code></p>
-</li>
-<li>
-<p>Install Ansible:
-    <code>sh
-    sudo apt-get install ansible -y</code></p>
-</li>
-<li>
-<p>Verify the installation:
-    <code>sh
-    ansible --version</code>
-```</p>
-</li>
+<li>Install the dependencies:</li>
 </ol>
+<pre><code class="language-sh">sudo apt-get update
+sudo apt-get install software-properties-common -y
+</code></pre>
+<ol>
+<li>Add the Ansible PPA:</li>
+</ol>
+<pre><code class="language-sh">sudo add-apt-repository --yes --update ppa:ansible/ansible
+</code></pre>
+<ol>
+<li>Install Ansible:</li>
+</ol>
+<pre><code class="language-sh">sudo apt-get install ansible -y
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">ansible --version
+</code></pre>
 <p>This guide now includes instructions for using <code>yum</code> to install <code>kubectl</code>, <code>oc</code>, <code>git</code>, and <code>ansible</code> on Linux.</p>
               
             </div>
