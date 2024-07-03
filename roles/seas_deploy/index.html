@@ -102,6 +102,8 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">seas_deploy</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../ssp_cm_deploy/">ssp_cm_deploy</a>
@@ -143,20 +145,70 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-seas">Role SEAS<a class="headerlink" href="#role-seas" title="Permanent link"></a></h1>
-<p>SEAS_NAMESPACE</p>
-<p>SEAS_VERSION: 6.1.0.0.06</p>
-<p>SEAS_SYS_PASSPHRASE: 
-default value: Passw0rd@
-SEAS_ADMIN_PASSWORD
-default value: Passw0rd@
-SEAS_KEYSTORE_PASSPHRASE
-default value: Change1t@
-SEAS_TRUSTSTOREPASSWORD
-default value: Change1t@</p>
-<p>SEAS_LICENSETYPE:
- default value: non-prod</p>
-<p>suported values: prod or no-prod</p>
+                <h1 id="role-seas_deploy">Role seas_deploy<a class="headerlink" href="#role-seas_deploy" title="Permanent link"></a></h1>
+<p>Deploy Sterling External Authentication application</p>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>SEAS_NAMESPACE</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Namespace for SEAS application</td>
+</tr>
+<tr>
+<td>SEAS_VERSION</td>
+<td>6.1.0.0.06</td>
+<td>No</td>
+<td>Version of SEAS application</td>
+</tr>
+<tr>
+<td>SEAS_SYS_PASSPHRASE</td>
+<td>Passw0rd@</td>
+<td>No</td>
+<td>System passphrase for SEAS application</td>
+</tr>
+<tr>
+<td>SEAS_ADMIN_PASSWORD</td>
+<td>Passw0rd@</td>
+<td>No</td>
+<td>Admin password for SEAS application</td>
+</tr>
+<tr>
+<td>SEAS_KEYSTORE_PASSPHRASE</td>
+<td>Change1t@</td>
+<td>No</td>
+<td>Keystore passphrase for SEAS application</td>
+</tr>
+<tr>
+<td>SEAS_TRUSTSTOREPASSWORD</td>
+<td>Change1t@</td>
+<td>No</td>
+<td>Truststore passphrase for SEAS application</td>
+</tr>
+<tr>
+<td>SEAS_LICENSETYPE</td>
+<td>non-prod</td>
+<td>No</td>
+<td>License type for SEAS application (prod or non-prod)</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

@@ -86,6 +86,8 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">sb2bi_deploy</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
@@ -144,6 +146,153 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="role-sb2b_deploy">Role sb2b_deploy<a class="headerlink" href="#role-sb2b_deploy" title="Permanent link"></a></h1>
+<p>Deploy Sterling B2B Integrator</p>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td></td>
+<td>Yes</td>
+<td>IBM Entitled Registry key</td>
+</tr>
+<tr>
+<td>SI_INSTANCEID</td>
+<td></td>
+<td>Yes</td>
+<td>Used to define your environment</td>
+</tr>
+<tr>
+<td>SI_DOMAIN</td>
+<td></td>
+<td>Yes</td>
+<td>Used to define your environment</td>
+</tr>
+<tr>
+<td>SI_LICENSETYPE</td>
+<td>no-prod</td>
+<td>No</td>
+<td>Specify the license edition as per license agreement. Valid value is <strong>prod</strong> or <strong>non-prod</strong> for Production and Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service</td>
+</tr>
+<tr>
+<td>SI_SYSTEM_PASSPHRASE</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Name of system passphrase secret if available</td>
+</tr>
+<tr>
+<td>SI_ADMIN_MAILADDR</td>
+<td>admin@company.com</td>
+<td>No</td>
+<td>Provide the admin email address</td>
+</tr>
+<tr>
+<td>SI_ADMIN_SMTPHOST</td>
+<td>smtp.company.com</td>
+<td>No</td>
+<td>Provide the SMTP host details</td>
+</tr>
+<tr>
+<td>SI_DBVENDOR</td>
+<td>DB2</td>
+<td>No</td>
+<td>Database vendor: DB2, Oracle, MSSQL</td>
+</tr>
+<tr>
+<td>SI_DBHOST</td>
+<td><from service></td>
+<td>No</td>
+<td>Database hostname/ip address</td>
+</tr>
+<tr>
+<td>SI_DBPORT</td>
+<td><from service></td>
+<td>No</td>
+<td>Database port</td>
+</tr>
+<tr>
+<td>SI_DBNAME</td>
+<td>B2BI</td>
+<td>No</td>
+<td>Database name</td>
+</tr>
+<tr>
+<td>SI_DBUSER</td>
+<td>db2inst1</td>
+<td>No</td>
+<td>Database user</td>
+</tr>
+<tr>
+<td>SI_DBPASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Database user password</td>
+</tr>
+<tr>
+<td>SI_ORACLESERVICENAME</td>
+<td>false</td>
+<td>No</td>
+<td>Oracle service name, must be <strong>true</strong> when database is Oracle</td>
+</tr>
+<tr>
+<td>SI_DATASETUP_ENABLED</td>
+<td>true</td>
+<td>No</td>
+<td>Enable database setup job execution</td>
+</tr>
+<tr>
+<td>SI_DATASETUP_UPGRADE</td>
+<td>false</td>
+<td>No</td>
+<td>Upgrade an older release</td>
+</tr>
+<tr>
+<td>SI_JMS_USERNAME</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue user</td>
+</tr>
+<tr>
+<td>SI_JMS_PASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>JMS Queue user password</td>
+</tr>
+<tr>
+<td>SI_JMS_KEYSTORE_PASSWORD</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue keystore password</td>
+</tr>
+<tr>
+<td>SI_JMS_TRUSTSTORE_PASSWORD</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue truststore password</td>
+</tr>
+<tr>
+<td>SI_LIBERTY_KEYSTORE_PASSWORD</td>
+<td>changeit</td>
+<td>No</td>
+<td>Liberty keystore password</td>
+</tr>
+<tr>
+<td>SI_SKIP_HELM</td>
+<td>false</td>
+<td>No</td>
+<td>Avoid to run helm, only generate values.yaml</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

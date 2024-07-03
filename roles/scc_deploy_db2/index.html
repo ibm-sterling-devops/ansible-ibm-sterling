@@ -96,6 +96,8 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">scc_deploy_db2</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../scc_deploy_mq/">scc_deploy_mq</a>
@@ -143,7 +145,46 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-scc_deploy"># Role scc_deploy<a class="headerlink" href="#role-scc_deploy" title="Permanent link"></a></h1>
+                <h1 id="role-scc_deploy_db2">Role scc_deploy_db2<a class="headerlink" href="#role-scc_deploy_db2" title="Permanent link"></a></h1>
+<p>Deploy DB2 for Sterling Control Center</p>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>SCC_INSTANCEID</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Instance ID for Sterling Control Center application</td>
+</tr>
+<tr>
+<td>DB2_PASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>DB2 db2inst1 password</td>
+</tr>
+<tr>
+<td>DB2_VERSION</td>
+<td>11.5.9.0</td>
+<td>No</td>
+<td>DB2 Version</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

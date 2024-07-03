@@ -82,6 +82,8 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">itx_rs_deploy</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../itxa_deploy/">itxa_deploy</a>
@@ -143,11 +145,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-itx-rs">Role ITX RS<a class="headerlink" href="#role-itx-rs" title="Permanent link"></a></h1>
-<pre><code class="language-bash">export ITX_RS_NAMESPACE=ibm-itx-rs-dev01
-
-ansible-playbook playbooks/deploy_itx_rs.yml
-</code></pre>
+                <h1 id="role-itx_rs_deploy">Role itx_rs_deploy<a class="headerlink" href="#role-itx_rs_deploy" title="Permanent link"></a></h1>
+<p>Deploy DB2 for ITX RS application</p>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>ITX_RS_NAMESPACE</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Namespace for ITX application</td>
+</tr>
+<tr>
+<td>ITX_RS_INSTANCEID</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Instance ID for ITX application</td>
+</tr>
+<tr>
+<td>ITX_RS_VERSION</td>
+<td>10.1.2.0.20231130</td>
+<td>No</td>
+<td>Version of ITX application</td>
+</tr>
+<tr>
+<td>ITX_RS_SYS_PASSPHRASE</td>
+<td>Passw0rd@</td>
+<td>No</td>
+<td>System passphrase for ITX application</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

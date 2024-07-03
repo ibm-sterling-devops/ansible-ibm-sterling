@@ -90,6 +90,8 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">sb2bi_deploy_mq</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../sb2bi_setup_db2/">sb2bi_setup_db2</a>
@@ -143,7 +145,58 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-scc_deploy"># Role scc_deploy<a class="headerlink" href="#role-scc_deploy" title="Permanent link"></a></h1>
+                <h1 id="role-sb2bi_deploy_mq">Role sb2bi_deploy_mq<a class="headerlink" href="#role-sb2bi_deploy_mq" title="Permanent link"></a></h1>
+<p>Deploy MQ for Sterling B2Bi application</p>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>SI_INSTANCEID</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Instance ID for SB2Bi application</td>
+</tr>
+<tr>
+<td>MQ_NAME</td>
+<td>mq</td>
+<td>No</td>
+<td>Name for MQ</td>
+</tr>
+<tr>
+<td>MQ_VERSION</td>
+<td>9.2.5.0-r3</td>
+<td>No</td>
+<td>Version of MQ</td>
+</tr>
+<tr>
+<td>MQ_ADMIN_PASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Admin password for MQ</td>
+</tr>
+<tr>
+<td>MQ_APP_PASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Application password for MQ</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

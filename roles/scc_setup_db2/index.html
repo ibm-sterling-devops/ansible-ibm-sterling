@@ -101,22 +101,6 @@
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">scc_setup_db2</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#si_instanceid">si_instanceid</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#db2_namespace">db2_namespace</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#db2_instance_name">db2_instance_name</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#db2_username">db2_username</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#db2_dbname">db2_dbname</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#db2_container">db2_container</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#license">License</a>
     </li>
     </ul>
                   </li>
@@ -161,44 +145,35 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="sb2bi_setup_db2">sb2bi_setup_db2<a class="headerlink" href="#sb2bi_setup_db2" title="Permanent link"></a></h1>
-<p>This role will perform some initial setup on the Db2 instance that is needed to prepare it for use with the Sterling B2Bi.</p>
+                <h1 id="scc_setup_db2">scc_setup_db2<a class="headerlink" href="#scc_setup_db2" title="Permanent link"></a></h1>
+<p>This role will perform some initial setup on the Db2 instance that is needed to prepare it for use with the Sterling Control Center Monitor/Director.</p>
 <p>The role will copy a bash script (setupdb.sh) into the Db2 pod and execute it inside the container, this script will perform a number of configuration changes to the database like 'CREATE DATABASE, CREATE TABLESPACES, ...'.</p>
 <h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
-<h3 id="si_instanceid">si_instanceid<a class="headerlink" href="#si_instanceid" title="Permanent link"></a></h3>
-<p>The instance id of the Sterling B2Bi to execute the setup in.</p>
-<ul>
-<li><strong>Required</strong></li>
-<li>Environment Variable: <code>SI_INSTANCEID</code></li>
-<li>Default Value: None</li>
-</ul>
-<h3 id="db2_namespace">db2_namespace<a class="headerlink" href="#db2_namespace" title="Permanent link"></a></h3>
-<p>The namespace where the Db2 instance is running.</p>
-<ul>
-<li>Default Value: <code>sterling-b2bi-{{ si_instanceid }}-db2</code></li>
-</ul>
-<h3 id="db2_instance_name">db2_instance_name<a class="headerlink" href="#db2_instance_name" title="Permanent link"></a></h3>
-<p>The name of the db2 instance to execute the setup in.</p>
-<ul>
-<li>Default Value: <code>db2inst1</code></li>
-</ul>
-<h3 id="db2_username">db2_username<a class="headerlink" href="#db2_username" title="Permanent link"></a></h3>
-<p>The username that will be used to connect to the database specified by <code>db2_dbname</code>.</p>
-<ul>
-<li>Default Value: <code>db2inst1</code></li>
-</ul>
-<h3 id="db2_dbname">db2_dbname<a class="headerlink" href="#db2_dbname" title="Permanent link"></a></h3>
-<p>The name of the database in the instance to connect to when executing the setup script.</p>
-<ul>
-<li>Default Value: <code>B2BI</code></li>
-</ul>
-<h3 id="db2_container">db2_container<a class="headerlink" href="#db2_container" title="Permanent link"></a></h3>
-<p>The name of the container to connect to when executing the setup script.</p>
-<ul>
-<li>Default Value: <code>mydb2</code></li>
-</ul>
-<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link"></a></h2>
-<p>EPL-2.0</p>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>SCC_INSTANCEID</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Instance ID for Control Center application</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

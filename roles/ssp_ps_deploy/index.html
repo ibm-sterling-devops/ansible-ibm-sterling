@@ -110,6 +110,8 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">ssp_ps_deploy</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
+    </li>
     </ul>
                   </li>
               </ul>
@@ -143,12 +145,46 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-ssp-cm">Role SSP CM<a class="headerlink" href="#role-ssp-cm" title="Permanent link"></a></h1>
-<p>SSP_CM_NAMESPACE</p>
-<p>SSP_CM_VERSION: 6.1.0.0.06</p>
-<p>SSP_CM_LICENSETYPE:
- default value: non-prod</p>
-<p>suported values: prod or no-prod</p>
+                <h1 id="role-ssp_ps_deploy">Role ssp_ps_deploy<a class="headerlink" href="#role-ssp_ps_deploy" title="Permanent link"></a></h1>
+<p>Deploy Sterling Secure Proxy Perimeter Server application</p>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>SSP_INSTANCEID</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Instance ID for SSP application</td>
+</tr>
+<tr>
+<td>SSP_VERSION</td>
+<td>6.1.0.0.03plus</td>
+<td>No</td>
+<td>Version of SSP application</td>
+</tr>
+<tr>
+<td>SSP_LICENSETYPE</td>
+<td>non-prod</td>
+<td>No</td>
+<td>License type for SSP application (prod or non-prod)</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>
