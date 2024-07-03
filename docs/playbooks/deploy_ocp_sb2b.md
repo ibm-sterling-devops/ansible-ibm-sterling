@@ -56,20 +56,7 @@ cd ansible-ibm-sterling
 export SI_INSTANCEID=dev01
 ```
 
-2) Provide de url domain SI_DOMAIN
-
-```bash 
-export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
-```
-
-You can get this information from your OpenShift console url:
-
-| Environment  | Sample URL      |
-|--------------|-------------------------------------------------------|
-| IBM Cloud    | ocp01-8...74-0000.us-south.containers.appdomain.cloud |
-| IBM Techzone | apps.34...6e.cloud.techzone.ibm.com |
-
-3) (Optional) change your version: 
+2) (Optional) change your version: 
 
 We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.
 
@@ -77,7 +64,7 @@ We always run the last version of Sterling B2Bi, but you can choose to run a dif
 export SI_VERSION=6.2.0.2
 ```
 
-4) To run playbook the playbook
+3) To run playbook the playbook
 
 
 ```bash 
@@ -97,7 +84,6 @@ If your using SB2Bi for a prove of concept and get the environment provided in 1
 ```bash 
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 export SI_INSTANCEID=dev01
-export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 ```
 
 2) Provide your Sterling B2BI database backup

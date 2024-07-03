@@ -1,4 +1,16 @@
 ---
+- name: "Lookup Route from 'openshift-console' if provided"
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Route
+    name: "console"
+    namespace: "openshift-console"
+  register: oc_route_cout
+
+- name: Set Facts for JMS Configuration from mq_namespace
+  ansible.builtin.set_fact:
+    route_domain: "{{ oc_route_cout.resources[0].spec.host | regex_replace('.*console-openshift-console\\.', '') }}"
+
 - name: Define Sterling B2Bi helm chart values
   ansible.builtin.set_fact:
     si_helm_values:
@@ -10,15 +22,15 @@
       asi:
         ingress:
           internal:
-            host: "{{ si_asi_host }}"
+            host: "asi.{{ si_instanceid }}.{{ route_domain }}"
       ac:
         ingress:
           internal:
-            host: "{{ si_ac_host }}"
+            host: "ac.{{ si_instanceid }}.{{ route_domain }}"
       api:
         ingress:
           internal:
-            host: "{{ si_api_host }}"
+            host: "api.{{ si_instanceid }}.{{ route_domain }}"
       purge:
         schedule: "0 0 * * *"
 

@@ -4,18 +4,16 @@
     that:
       # Sterling B2B
       - lookup('env', 'SI_INSTANCEID') != ""
-      - lookup('env', 'SI_DOMAIN') != ""
       # IBM Registry
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
 
 # 1. Check for undefined properties that do not have a default
 # -----------------------------------------------------------------------------
-- name: "Fail si_instanceid is 'not provided' or 'over 8 characters' or 'has uppercase characters'"
+- name: "Fail si_instanceid is 'not provided' or 'has uppercase characters'"
   ansible.builtin.assert:
     that:
       - si_instanceid is defined and si_instanceid != ""
-#      - si_instanceid | length <= 8
       - si_instanceid is match('[a-z0-9-]+')
     fail_msg: "Property 'si_instanceid' is greater than 8 character long or has uppercase characters"
 
@@ -23,12 +21,6 @@
   ansible.builtin.assert:
     that: entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "entitled_registry_key property is required"
-
-- name: "Fail si_domain is 'not provided' "
-  ansible.builtin.assert:
-    that:
-      - si_domain is defined and si_domain != ""
-    fail_msg: "si_domain property is required"
 
 # Check Supported version
 # -----------------------------------------------------------------------------
