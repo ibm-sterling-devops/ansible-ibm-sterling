@@ -4,6 +4,6 @@ phpldapadmin_namespace: "{{ lookup('env', 'PHPLDAPADMIN_NAMESPACE') | default('s
 
 openldap_host: "openldap-svc.{{ openldap_namespace }}.svc.cluster.local"
 
-ldp_admin_password: "{{ openldap_admin_password | default('passw0rd') }}"
+ldp_admin_password: "{{ lookup('env', 'OPENLDAP_ADMIN_PASSW0RD') | default('passw0rd', true) }}"
 
-plwa_image: docker.io/osixia/phpldapadmin:latest
+phpldapadmin_image: docker.io/osixia/phpldapadmin:latest

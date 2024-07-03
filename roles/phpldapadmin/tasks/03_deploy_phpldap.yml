@@ -43,7 +43,7 @@
             serviceAccountName: phpldapadmin-sa
             containers:
               - name: phpldapadmin
-                image: "{{ plwa_image }}"
+                image: "{{ phpldapadmin_image }}"
                 ports:
                   - name: http
                     containerPort: 80

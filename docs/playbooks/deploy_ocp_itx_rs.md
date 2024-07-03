@@ -27,7 +27,7 @@ To run playbook the playbook
 ```bash 
 cd ansible-ibm-sterling
 
-export ANSIBLE_CONFIG=< FULL_PATH >/ansible.cfg 
+export ANSIBLE_CONFIG=./ansible.cfg 
 
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 

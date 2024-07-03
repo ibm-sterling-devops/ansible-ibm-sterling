@@ -120,7 +120,7 @@ ansible-playbook playbooks/deploy_sb2b_prebuiltdb.yml
 ```
 
 # Environment Variable
-  
+
 | Environment Variable         | Default Value     | Required | Description
 |------------------------------|-------------------| ---------|-------------------------------------|
 | ENTITLED_REGISTRY_KEY        |                   | Y        | IBM Entitled Registry key |
