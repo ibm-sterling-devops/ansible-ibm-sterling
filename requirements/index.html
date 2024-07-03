@@ -148,26 +148,24 @@
 <h1 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link"></a></h1>
 <h3 id="install-kubectl">Install kubectl<a class="headerlink" href="#install-kubectl" title="Permanent link"></a></h3>
 <ol>
-<li>
-<p>Download the latest release:</p>
-<p><code>sh
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"</code></p>
-</li>
-<li>
-<p>Make the kubectl binary executable:</p>
-<p><code>bash
-chmod +x ./kubectl</code></p>
-</li>
-<li>
-<p>Move the binary to your PATH:
+<li>Download the latest release:</li>
+</ol>
+<pre><code class="language-sh">curl -LO &quot;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&quot;
+</code></pre>
+<ol>
+<li>Make the kubectl binary executable:</li>
+</ol>
+<pre><code class="language-bash">chmod +x ./kubectl
+</code></pre>
+<ol>
+<li>Move the binary to your PATH:</li>
+</ol>
+<pre><code>sudo mv ./kubectl /usr/local/bin/kubectl
+</code></pre>
+<ol>
+<li>Test to ensure the version you installed is up-to-date:
     <code>sh
-    sudo mv ./kubectl /usr/local/bin/kubectl</code></p>
-</li>
-<li>
-<p>Test to ensure the version you installed is up-to-date:
-    <code>sh
-    kubectl version --client</code></p>
-</li>
+    kubectl version --client</code></li>
 </ol>
 <h3 id="install-oc">Install oc<a class="headerlink" href="#install-oc" title="Permanent link"></a></h3>
 <ol>
