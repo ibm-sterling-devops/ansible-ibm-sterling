@@ -1,5 +1,5 @@
 ---
-- name: Create setupdb script in local /tmp
+- name: Create restoredb script in local /tmp
   ansible.builtin.template:
     src: restoredb.sh.j2
     dest: "{{ my_workdir }}/restoredb.sh"
@@ -53,7 +53,7 @@
       - "Result (cout_k8s_cp) ........................ {{ cout_k8s_cp2 }} "
   when: cout_k8s_cp2.result.find('successfully copied') == -1
 
-- name: "Wait for setupdb.sh available"
+- name: "Wait for restoredb.sh available"
   ansible.builtin.pause:
     minutes: 1
 
@@ -65,7 +65,7 @@
     command: "su - {{ db2_user }} -c 'source /database/config/{{ db2_user }}/sqllib/db2profile && echo $PATH | tee setprofile.log' "
   register: cout_setprofile
 
-- name: Run setupdb to prepare Db2 for use with IBM Sterling
+- name: Run restoredb to prepare Db2 for use with IBM Sterling
   kubernetes.core.k8s_exec:
     namespace: "{{ db2_namespace }}"
     pod: "{{ db2_pod_name }}"
@@ -73,7 +73,7 @@
     command: "su - {{ db2_user }} -c 'pwd && ./restoredb.sh | tee restoredb.log' "
   register: cout_restoredb
 
-- name: "Database setup debug information"
+- name: "Database restoredb debug information"
   ansible.builtin.debug:
     msg:
       - "Result (stdout) ........................ {{ cout_restoredb.stdout }}"
@@ -81,6 +81,6 @@
 
 - name: "Failed to execute the script"
   ansible.builtin.fail:
-    msg: "Failed to execute the script setupdb.sh h on DB2 instance"
+    msg: "Failed to execute the script restoredb.sh h on DB2 instance"
   when:
     - cout_restoredb.rc != 0
