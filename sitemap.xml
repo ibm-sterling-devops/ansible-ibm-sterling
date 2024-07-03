@@ -6,11 +6,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/LICENSE/</loc>
-         <lastmod>2024-07-03</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/known_problems/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
@@ -96,12 +91,32 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy_db2/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy_mq/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_setup_db2/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy_db2/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy_mq/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -117,6 +132,11 @@
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_cm_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_config/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
