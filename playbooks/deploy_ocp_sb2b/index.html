@@ -231,33 +231,11 @@
 <p>1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
 <pre><code class="language-bash">export SI_INSTANCEID=dev01
 </code></pre>
-<p>2) Provide de url domain SI_DOMAIN</p>
-<pre><code class="language-bash">export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
-</code></pre>
-<p>You can get this information from your OpenShift console url:</p>
-<table>
-<thead>
-<tr>
-<th>Environment</th>
-<th>Sample URL</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>IBM Cloud</td>
-<td>ocp01-8...74-0000.us-south.containers.appdomain.cloud</td>
-</tr>
-<tr>
-<td>IBM Techzone</td>
-<td>apps.34...6e.cloud.techzone.ibm.com</td>
-</tr>
-</tbody>
-</table>
-<p>3) (Optional) change your version: </p>
+<p>2) (Optional) change your version: </p>
 <p>We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.</p>
 <pre><code class="language-bash">export SI_VERSION=6.2.0.2
 </code></pre>
-<p>4) To run playbook the playbook</p>
+<p>3) To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b.yml
 </code></pre>
 <h1 id="deploy-sterling-b2bi-using-prebuilt-db">Deploy Sterling B2Bi using prebuilt db.<a class="headerlink" href="#deploy-sterling-b2bi-using-prebuilt-db" title="Permanent link"></a></h1>
@@ -266,7 +244,6 @@
 <p>1) Define previous environment variables</p>
 <pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
 export SI_INSTANCEID=dev01
-export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 </code></pre>
 <p>2) Provide your Sterling B2BI database backup</p>
 <pre><code class="language-bash">export SI_PREBUILTDB_FILE=/tmp/B2BI_6202.tar.gz
