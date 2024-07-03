@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_setup_db2/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title># Role sb2b_deploy - IBM Sterling Devops Ansible</title>
+    <title>sb2bi_setup_db2 - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "# Role sb2b_deploy";
-        var mkdocs_page_input_path = "roles/sb2bi_deploy.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/roles/sb2bi_deploy/";
+        var mkdocs_page_name = "sb2bi_setup_db2";
+        var mkdocs_page_input_path = "roles/sb2bi_setup_db2.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/roles/sb2bi_setup_db2/";
       </script>
     
     <!--[if lt IE 9]>
@@ -116,9 +116,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active"># Role sb2b_deploy</li>
+      <li class="breadcrumb-item active">sb2bi_setup_db2</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/sb2bi_deploy.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/sb2bi_setup_db2.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -126,7 +126,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-sb2b_deploy"># Role sb2b_deploy<a class="headerlink" href="#role-sb2b_deploy" title="Permanent link"></a></h1>
+                <h1 id="sb2bi_setup_db2">sb2bi_setup_db2<a class="headerlink" href="#sb2bi_setup_db2" title="Permanent link"></a></h1>
+<p>This role will perform some initial setup on the Db2 instance that is needed to prepare it for use with the Sterling B2Bi.</p>
+<p>The role will copy a bash script (setupdb.sh) into the Db2 pod and execute it inside the container, this script will perform a number of configuration changes to the database like 'CREATE DATABASE, CREATE TABLESPACES, ...'.</p>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<h3 id="si_instanceid">si_instanceid<a class="headerlink" href="#si_instanceid" title="Permanent link"></a></h3>
+<p>The instance id of the Sterling B2Bi to execute the setup in.</p>
+<ul>
+<li><strong>Required</strong></li>
+<li>Environment Variable: <code>SI_INSTANCEID</code></li>
+<li>Default Value: None</li>
+</ul>
+<h3 id="db2_namespace">db2_namespace<a class="headerlink" href="#db2_namespace" title="Permanent link"></a></h3>
+<p>The namespace where the Db2 instance is running.</p>
+<ul>
+<li>Default Value: <code>sterling-b2bi-{{ si_instanceid }}-db2</code></li>
+</ul>
+<h3 id="db2_instance_name">db2_instance_name<a class="headerlink" href="#db2_instance_name" title="Permanent link"></a></h3>
+<p>The name of the db2 instance to execute the setup in.</p>
+<ul>
+<li>Default Value: <code>db2inst1</code></li>
+</ul>
+<h3 id="db2_username">db2_username<a class="headerlink" href="#db2_username" title="Permanent link"></a></h3>
+<p>The username that will be used to connect to the database specified by <code>db2_dbname</code>.</p>
+<ul>
+<li>Default Value: <code>db2inst1</code></li>
+</ul>
+<h3 id="db2_dbname">db2_dbname<a class="headerlink" href="#db2_dbname" title="Permanent link"></a></h3>
+<p>The name of the database in the instance to connect to when executing the setup script.</p>
+<ul>
+<li>Default Value: <code>B2BI</code></li>
+</ul>
+<h3 id="db2_container">db2_container<a class="headerlink" href="#db2_container" title="Permanent link"></a></h3>
+<p>The name of the container to connect to when executing the setup script.</p>
+<ul>
+<li>Default Value: <code>mydb2</code></li>
+</ul>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link"></a></h2>
+<p>EPL-2.0</p>
               
             </div>
           </div><footer>

@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/deploy_ocp_cdws/" />
-      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_cdws/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
     <title>Deploy IBM Connect:Direct WebServices - IBM Sterling Devops Ansible</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
-        <link href="../extra.css" rel="stylesheet" />
+        <link href="../../extra.css" rel="stylesheet" />
     
       <script>
         // Current page data
         var mkdocs_page_name = "Deploy IBM Connect:Direct WebServices";
-        var mkdocs_page_input_path = "deploy_ocp_cdws.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/deploy_ocp_cdws/";
+        var mkdocs_page_input_path = "playbooks/deploy_ocp_cdws.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/playbooks/deploy_ocp_cdws/";
       </script>
     
     <!--[if lt IE 9]>
-      <script src="../js/html5shiv.min.js"></script>
+      <script src="../../js/html5shiv.min.js"></script>
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
@@ -32,24 +32,27 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> IBM Sterling Devops Ansible
+          <a href="../.." class="icon icon-home"> IBM Sterling Devops Ansible
         </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
       <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
-                </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../requirements/">Requirements</a>
+                  </li>
               </ul>
               <p class="caption"><span class="caption-text">Playbooks: Standard</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../setup_cd/">Install IBM Connect:Direct 6.2.x</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../setup_b2b/">Install IBM Sterling B2B Integrator 6.1.2  - one node only</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../setup_b2b/">Install IBM Sterling B2B Integrator 6.1.2</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Playbooks: RedHat OpenShift</span></p>
@@ -70,33 +73,45 @@
     </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_itx_rs/">Deploy IBM Sterling Transformation Server</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_itx_rs/">Deploy IBM Sterling Transformation Server (ITX RS)</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_itxa/">Deploy IBM Sterling Transformation Advanced</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_itxa/">Deploy IBM Sterling Transformation Advanced (ITXA)</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_sb2b/">Deploy IBM Sterling B2B Integrator</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../playbooks/deploy_ocp_scc/">Deploy IBM Sterling Control Center Monitor/Director</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_scc/">Deploy IBM Sterling Control Center Monitor/Director (CCM/CCD)</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../playbooks/deploy_ocp_seas/">Deploy IBM Sterling External Authentication Server</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_seas/">Deploy IBM Sterling External Authentication Server (SEAS)</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../playbooks/deploy_ocp_ssp/">Deploy IBM Sterling Secure Proxy Server</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../deploy_ocp_ssp/">Deploy IBM Sterling Secure Proxy Server (SSP)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Roles:</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../roles/cd_deploy/">deploy_cd</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cd_deploy/">cd_deploy</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../roles/cdws_deploy/">cdws_deploy</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cdws_deploy/">cdws_deploy</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../roles/itx_rs_deploy/">itx_rs_deploy</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itx_rs_deploy/">itx_rs_deploy</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../roles/sb2bi_deploy/">sb2bi_deploy</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_deploy/">itxa_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy/">scc_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_setup_db2/">scc_setup_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/seas_deploy/">seas_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_cm_deploy/">ssp_cm_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_deploy/">ssp_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_ps_deploy/">ssp_ps_deploy</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Others</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../known_problems/">Known Problems</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../known_problems/">Known Problems</a>
                   </li>
               </ul>
       </div>
@@ -106,17 +121,17 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
       <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">IBM Sterling Devops Ansible</a>
+          <a href="../..">IBM Sterling Devops Ansible</a>
         
       </nav>
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Playbooks: RedHat OpenShift</li>
       <li class="breadcrumb-item active">Deploy IBM Connect:Direct WebServices</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/deploy_ocp_cdws.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/playbooks/deploy_ocp_cdws.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -184,11 +199,11 @@ export CDWS_NAMESPACE=sterling-cdws01
     
   </span>
 </div>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "..";</script>
-    <script src="../js/theme_extra.js"></script>
-    <script src="../js/theme.js"></script>
-      <script src="../search/main.js"></script>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
     <script>
         jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);

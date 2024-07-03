@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/known_problems/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Known Problems - IBM Sterling Devops Ansible</title>
+    <title>Requirements - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Known Problems";
-        var mkdocs_page_input_path = "known_problems.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/known_problems/";
+        var mkdocs_page_name = "Requirements";
+        var mkdocs_page_input_path = "requirements.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/requirements/";
       </script>
     
     <!--[if lt IE 9]>
@@ -42,10 +42,14 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Getting Started</span></p>
-              <ul>
+              <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../requirements/">Requirements</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Requirements</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    </ul>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Playbooks: Standard</span></p>
@@ -98,12 +102,8 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Others</span></p>
-              <ul class="current">
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Known Problems</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#connectdirect-versions-6300_ifix016-and-helm-version-131">Connect:Direct Versions: 6.3.0.0_ifix016 and Helm Version: 1.3.1</a>
-    </li>
-    </ul>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../known_problems/">Known Problems</a>
                   </li>
               </ul>
       </div>
@@ -120,10 +120,10 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Others</li>
-      <li class="breadcrumb-item active">Known Problems</li>
+          <li class="breadcrumb-item">Getting Started</li>
+      <li class="breadcrumb-item active">Requirements</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/known_problems.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/requirements.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -131,13 +131,77 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="known-problems">Known problems<a class="headerlink" href="#known-problems" title="Permanent link"></a></h1>
-<h2 id="connectdirect-versions-6300_ifix016-and-helm-version-131">Connect:Direct Versions: 6.3.0.0_ifix016 and Helm Version: 1.3.1<a class="headerlink" href="#connectdirect-versions-6300_ifix016-and-helm-version-131" title="Permanent link"></a></h2>
-<pre><code>  SPCLI&gt; SPCG760E rc=8 CMS KeyStore open exception - Invalid KeyStore Format..
-  [2024/03/18 17:30:42.46 ] | [ERROR] | Failure in generating self-signed certificate with RC=8. Line no: 221
+                <h1 id="ibm-sterling-devops-ansible">IBM Sterling Devops Ansible<a class="headerlink" href="#ibm-sterling-devops-ansible" title="Permanent link"></a></h1>
+<p>Ansible DevOps collection for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
+<h1 id="run-a-playbook">Run a playbook<a class="headerlink" href="#run-a-playbook" title="Permanent link"></a></h1>
+<p>The collection includes a number of playbooks that string together multiple roles, you can directly invoke them after installing the collection:</p>
+<h1 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h1>
+<h2 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h2>
+<p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
+<p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
+<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
 </code></pre>
-<p>In IBM Cloud, the StorageClass of the <strong>ReadWriteOnce</strong> type, which is requested in the values.yaml of the Helm chart, is <strong>ibmc-block-gold</strong>.</p>
-<p>But when using this storageClass I had permission problems. When changing to the <strong>ibmc-file-gold</strong> and/or <strong>ibmc-file-gold-gid</strong> storageClass, I had no problems running C:D in Container, both storageClasses are of the <strong>ReadWriteMany</strong> type.</p>
+<h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
+<p>Do a login in Openshift console and run the command:</p>
+<pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
+</code></pre>
+<h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
+<pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
+</code></pre>
+<p>Change directory</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+</code></pre>
+<h2 id="run-playbook-the-playbook">Run playbook the playbook<a class="headerlink" href="#run-playbook-the-playbook" title="Permanent link"></a></h2>
+<p>1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
+<pre><code class="language-bash">export SI_INSTANCEID=dev01
+</code></pre>
+<p>2) Provide de url domain SI_DOMAIN</p>
+<pre><code class="language-bash">export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
+</code></pre>
+<p>You can get this information from your OpenShift console url:</p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Sample URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IBM Cloud</td>
+<td>ocp01-8...74-0000.us-south.containers.appdomain.cloud</td>
+</tr>
+<tr>
+<td>IBM Techzone</td>
+<td>apps.34...6e.cloud.techzone.ibm.com</td>
+</tr>
+</tbody>
+</table>
+<p>3) (Optional) change your version: </p>
+<p>We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.</p>
+<pre><code class="language-bash">export SI_VERSION=6.2.0.2
+</code></pre>
+<p>4) To run playbook the playbook</p>
+<pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b.yml
+</code></pre>
+<h2 id="local-install-for-macos">Local Install for MacOS<a class="headerlink" href="#local-install-for-macos" title="Permanent link"></a></h2>
+<p>Using Brew to install</p>
+<pre><code class="language-bash">    brew install python3 pip3 ansible
+</code></pre>
+<h2 id="local-install-for-linux">Local Install for Linux<a class="headerlink" href="#local-install-for-linux" title="Permanent link"></a></h2>
+<h3 id="install-python-ansible">Install Python &amp; Ansible<a class="headerlink" href="#install-python-ansible" title="Permanent link"></a></h3>
+<p><a href="https://www.python.org/downloads/">Python 3.9</a> is recommended as it is the most widely used version of Python within our development team, but any in-support 3.x version of Python should work fine.</p>
+<pre><code class="language-bash">python3 --version
+python3 -m pip install ansible junit_xml xmljson jmespath kubernetes openshift
+ansible --version
+ansible-playbook --version
+</code></pre>
+<h2 id="local-install-for-ms-windows">Local Install for MS Windows<a class="headerlink" href="#local-install-for-ms-windows" title="Permanent link"></a></h2>
+<pre><code class="language-bash">
+</code></pre>
+<h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link"></a></h2>
+<p>This Ansible collection is developed by community, for any problem <a href="https://github.com/ibm-sterling-deops/ansible-ibm-sterling/issues">raise an issue directly in the GitHub repository</a>.</p>
               
             </div>
           </div><footer>
@@ -166,8 +230,10 @@
         </span>
     
     
-      <span><a href="../roles/ssp_ps_deploy/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../playbooks/setup_cd/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

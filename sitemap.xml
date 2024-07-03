@@ -6,27 +6,7 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/deploy_ocp_cd/</loc>
-         <lastmod>2024-07-03</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/deploy_ocp_cdws/</loc>
-         <lastmod>2024-07-03</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/deploy_ocp_itx_rs/</loc>
-         <lastmod>2024-07-03</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/deploy_ocp_itxa/</loc>
-         <lastmod>2024-07-03</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/deploy_ocp_sb2b/</loc>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/LICENSE/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -36,12 +16,32 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/setup_b2b/</loc>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/setup_cd/</loc>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_cd/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_cdws/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_itx_rs/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_itxa/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_sb2b/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -61,6 +61,16 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/setup_b2b/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/setup_cd/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cd_deploy/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
@@ -76,7 +86,47 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/itxa_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_setup_db2/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_setup_db2/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/seas_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_cm_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_deploy/</loc>
+         <lastmod>2024-07-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_ps_deploy/</loc>
          <lastmod>2024-07-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
