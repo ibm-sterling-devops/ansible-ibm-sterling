@@ -1,7 +1,30 @@
 IBM Sterling Devops Ansible
 ===============================================================================
 
-Ansible DevOps collection for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...
+IBM Sterling Devops Project is an open source project to deploy IBM Sterling Products and other resources directly from the command line.
+
+Developed in Ansible, it provides a collection of playbooks and roles that automated deploy for IBM Sterling B2Bi, IBM Connect:Direct, ... on Redhat OpenShift.
+
+
+### Install Sterling Products (standalone)
+
+* Install Connect:Direct (standalone)
+* Install Sterling B2B Integrator (standalone)
+
+
+### Deploy Sterling Products on Redhat OpenShift / Kubernetes
+
+* Deploy IBM Sterling Connect:Direct
+* Deploy IBM Sterling Connect:Direct Web Service
+* Deploy IBM Sterling Transformation Server
+* Deploy IBM Sterling Transformation Extender Advanced
+* Deploy IBM Sterling B2B Integrator
+* Deploy IBM Sterling Control Center Director/Monitor
+* Deploy IBM Sterling External Authentication Server
+* Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter)
+
+
+
 
 
 
