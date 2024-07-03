@@ -1,117 +1,218 @@
-IBM Sterling Devops Ansible
+Sure, here's the updated guide for installing `kubectl`, `oc`, `git`, and `ansible` on Linux using `yum`:
+
+Installation Guide for kubectl, oc, git, and ansible
 ===============================================================================
 
-Ansible DevOps collection for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...
+# Linux
 
+### Install kubectl
+1. Download the latest release:
+    ```sh
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    ```
 
+2. Make the kubectl binary executable:
+    ```sh
+    chmod +x ./kubectl
+    ```
 
+3. Move the binary to your PATH:
+    ```sh
+    sudo mv ./kubectl /usr/local/bin/kubectl
+    ```
 
-Usage
--------------------------------------------------------------------------------
+4. Test to ensure the version you installed is up-to-date:
+    ```sh
+    kubectl version --client
+    ```
 
-# Run a playbook
-The collection includes a number of playbooks that string together multiple roles, you can directly invoke them after installing the collection:
+### Install oc
+1. Download the latest release:
+    ```sh
+    curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz"
+    ```
 
+2. Extract the tar file:
+    ```sh
+    tar -xzvf openshift-client-linux.tar.gz
+    ```
 
-# Deploying Sterling B2B Integrator
+3. Move the binaries to your PATH:
+    ```sh
+    sudo mv oc kubectl /usr/local/bin/
+    ```
 
-## IBM Entitled Registry
+4. Test to ensure the version you installed is up-to-date:
+    ```sh
+    oc version
+    ```
 
-You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
+### Install git
+1. Install git:
+    ```sh
+    sudo yum update -y
+    sudo yum install git -y
+    ```
 
-Log in the [IBM Container software library](https://myibm.ibm.com/products-services/containerlibrary) with the IBMid and password that are associated with the entitled software. Click **Get entitlement key**. With key export variable
+2. Verify the installation:
+    ```sh
+    git --version
+    ```
 
-```bash 
-export ENTITLED_REGISTRY_KEY=<entitlement_key>
+### Install ansible
+1. Install the dependencies:
+    ```sh
+    sudo yum install epel-release -y
+    sudo yum update -y
+    ```
+
+2. Install Ansible:
+    ```sh
+    sudo yum install ansible -y
+    ```
+
+3. Verify the installation:
+    ```sh
+    ansible --version
+    ```
+
+# macOS
+
+### Install kubectl
+1. Install with Homebrew:
+    ```sh
+    brew install kubectl
+    ```
+
+2. Test to ensure the version you installed is up-to-date:
+    ```sh
+    kubectl version --client
+    ```
+
+### Install oc
+1. Install with Homebrew:
+    ```sh
+    brew install openshift-cli
+    ```
+
+2. Test to ensure the version you installed is up-to-date:
+    ```sh
+    oc version
+    ```
+
+### Install git
+1. Verify the installation:
+    ```sh
+    git --version
+    ```
+
+### Install ansible
+1. Install Ansible with Homebrew:
+    ```sh
+    brew install ansible
+    ```
+
+2. Verify the installation:
+    ```sh
+    ansible --version
+    ```
+
+## Windows (Using WSL)
+
+### Install WSL
+1. Open PowerShell as Administrator and run:
+    ```sh
+    wsl --install
+    ```
+
+2. Restart your computer if prompted.
+
+3. Install a Linux distribution from the Microsoft Store (e.g., Ubuntu).
+
+### Set up WSL
+1. Open your installed Linux distribution.
+
+2. Update the package list and install necessary packages:
+    ```sh
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    ```
+
+### Install kubectl
+1. Download the latest release:
+    ```sh
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    ```
+
+2. Make the kubectl binary executable:
+    ```sh
+    chmod +x ./kubectl
+    ```
+
+3. Move the binary to your PATH:
+    ```sh
+    sudo mv ./kubectl /usr/local/bin/kubectl
+    ```
+
+4. Test to ensure the version you installed is up-to-date:
+    ```sh
+    kubectl version --client
+    ```
+
+### Install oc
+1. Download the latest release:
+    ```sh
+    curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz"
+    ```
+
+2. Extract the tar file:
+    ```sh
+    tar -xzvf openshift-client-linux.tar.gz
+    ```
+
+3. Move the binaries to your PATH:
+    ```sh
+    sudo mv oc kubectl /usr/local/bin/
+    ```
+
+4. Test to ensure the version you installed is up-to-date:
+    ```sh
+    oc version
+    ```
+
+### Install git
+1. Install git:
+    ```sh
+    sudo apt-get update
+    sudo apt-get install git -y
+    ```
+
+2. Verify the installation:
+    ```sh
+    git --version
+    ```
+
+### Install ansible
+1. Install the dependencies:
+    ```sh
+    sudo apt-get update
+    sudo apt-get install software-properties-common -y
+    ```
+
+2. Add the Ansible PPA:
+    ```sh
+    sudo add-apt-repository --yes --update ppa:ansible/ansible
+    ```
+
+3. Install Ansible:
+    ```sh
+    sudo apt-get install ansible -y
+    ```
+
+4. Verify the installation:
+    ```sh
+    ansible --version
+    ```
 ```
 
-## Login on OpenShift
-
-Do a login in Openshift console and run the command:
-
-```bash 
-oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
-```
-
-## Cloning ansible-ibm-websphere from git
-
-```bash 
-git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
-```
-
-Change directory
-
-```bash 
-cd ansible-ibm-sterling
-```
-
-## Run playbook the playbook
-
-1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
-
-```bash 
-export SI_INSTANCEID=dev01
-```
-
-2) Provide de url domain SI_DOMAIN
-
-```bash 
-export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
-```
-
-You can get this information from your OpenShift console url:
-
-| Environment  | Sample URL      |
-|--------------|-------------------------------------------------------|
-| IBM Cloud    | ocp01-8...74-0000.us-south.containers.appdomain.cloud |
-| IBM Techzone | apps.34...6e.cloud.techzone.ibm.com |
-
-3) (Optional) change your version: 
-
-We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.
-
-```bash 
-export SI_VERSION=6.2.0.2
-```
-
-4) To run playbook the playbook
-
-
-```bash 
-ansible-playbook playbooks/deploy_sb2b.yml
-```
-
-
-Local Install for MacOS
--------------------------------------------------------------------------------
-
-Using Brew to install
-
-```bash
-    brew install python3 pip3 ansible
-```
-
-
-Local Install for Linux
--------------------------------------------------------------------------------
-### Install Python & Ansible
-[Python 3.9](https://www.python.org/downloads/) is recommended as it is the most widely used version of Python within our development team, but any in-support 3.x version of Python should work fine.
-
-```bash
-python3 --version
-python3 -m pip install ansible junit_xml xmljson jmespath kubernetes openshift
-ansible --version
-ansible-playbook --version
-```
-
-Local Install for MS Windows
--------------------------------------------------------------------------------
-
-```bash
-    
-```
-
-Support
--------------------------------------------------------------------------------
-This Ansible collection is developed by community, for any problem [raise an issue directly in the GitHub repository](https://github.com/ibm-sterling-deops/ansible-ibm-sterling/issues).
-
+This guide now includes instructions for using `yum` to install `kubectl`, `oc`, `git`, and `ansible` on Linux.
