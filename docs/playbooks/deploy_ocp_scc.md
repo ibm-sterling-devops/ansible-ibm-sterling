@@ -36,8 +36,6 @@ cd ansible-ibm-sterling
 export SCC_INSTANCEID=dev01
 
 export SCC_PRODUCTS=CCM,CCD
-
-export SCC_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
 ```
 
 where SCC_PRODUCTS is the product that you want to install
@@ -46,15 +44,6 @@ where SCC_PRODUCTS is the product that you want to install
 |---------|------------------------------|
 | CCD     | Sterling Control Center Director |
 | CCM     | Sterling Control Center Monitor  |
-
-
-where SCC_DOMAIN is the suffix for your environment
-
-| Environment  | Sample URL      |
-|--------------|-------------------------------------------------------|
-| IBM Cloud    | ocp01-8...74-0000.us-south.containers.appdomain.cloud |
-| IBM Techzone | apps.34...6e.cloud.techzone.ibm.com |
-
 
 
 ## Run the Plabook

@@ -14,7 +14,6 @@ Environment variables for this role:
 | ENTITLED_REGISTRY_KEY       | N/A                   | Yes      | Entitlement registry key                         |
 | SCC_INSTANCEID              | N/A                   | Yes      | Instance ID for SCC application                  |
 | SCC_PRODUCTS                | ''                    | Yes      | Products for SCC application (CCM,CCD; CCM; CCD) |
-| SCC_DOMAIN                  | N/A                   | Yes      | Domain for SCC application                       |
 | DB2_NAMESPACE               | N/A                   | No       | Namespace for DB2                                |
 | SCC_LICENSETYPE             | non-prod              | No       | License type for SCC application (prod or non-prod) |
 | SCC_SYSTEM_PASSPHRASE       | passw0rd              | No       | System passphrase for SCC application            |

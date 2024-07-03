@@ -5,7 +5,6 @@
       # Sterling B2B
       - lookup('env', 'SCC_INSTANCEID') != ""
       - lookup('env', 'SCC_PRODUCTS') != ""
-      - lookup('env', 'SCC_DOMAIN') != ""
       # IBM Registry
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
@@ -26,12 +25,6 @@
   ansible.builtin.assert:
     that: entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "entitled_registry_key property is required"
-
-- name: "Fail scc_domain is 'not provided' "
-  ansible.builtin.assert:
-    that:
-      - scc_domain is defined and scc_domain != ""
-    fail_msg: "scc_domain property is required"
 
 # 2. Lookup Namespace availabiity
 # -----------------------------------------------------------------------------

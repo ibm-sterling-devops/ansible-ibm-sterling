@@ -5,7 +5,6 @@ scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('', true) }}" # productEntitlement: "CCD,CCM"
 
-scc_domain: "{{ lookup('env', 'SCC_DOMAIN') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 
 scc_licensetype: "{{ lookup('env', ' SCC_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
