@@ -48,7 +48,7 @@ nav:
 # - "Roles": Utilities":
 #     - "cloudbeaver"": roles/cloudbeaver.md
   - "Others": 
-    - "Known Problems": known_problems.md
+    - "Known Problems": others/known_problems.md
 
 theme:
   name: readthedocs
