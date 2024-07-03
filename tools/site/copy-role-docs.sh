@@ -11,4 +11,6 @@ function copyDoc() {
 }
 
 copyDoc cd_deploy
+copyDoc cdws_deploy
+copyDoc itx_rs_deploy
 copyDoc sb2bi_deploy
