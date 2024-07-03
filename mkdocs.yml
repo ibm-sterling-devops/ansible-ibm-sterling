@@ -23,18 +23,23 @@ nav:
     - "Deploy IBM Sterling Control Center Monitor/Director (CCM/CCD)": playbooks/deploy_ocp_scc.md
     - "Deploy IBM Sterling External Authentication Server (SEAS)": playbooks/deploy_ocp_seas.md
     - "Deploy IBM Sterling Secure Proxy Server (SSP)": playbooks/deploy_ocp_ssp.md
-  # - "Playbooks: Tools":
-  #     - "Deploy CloudBeaver CE to manage databases": playbooks/tools/cloudbeaver.md
-  #     - "Deploy MinIO S3 storage": playbooks/tools/minio.md
-  #     - "Deploy OpenLDAP as LDAP Server": playbooks/tools/openldap.md
+  - "Playbooks: Tools":
+      - "Deploy CloudBeaver CE to manage databases": playbooks/tools_deploy_cloudbeaver.md
+      - "Deploy MinIO S3 storage": playbooks/tools_deploy_minio.md
+      - "Deploy OpenLDAP as LDAP Server": playbooks/tools_deploy_openldap.md
   - "Roles:":
     - "cd_deploy": roles/cd_deploy.md
     - "cdws_deploy": roles/cdws_deploy.md
     - "itx_rs_deploy": roles/itx_rs_deploy.md
     - "itxa_deploy": roles/itxa_deploy.md
+    - "itxa_deploy_db2": roles/itxa_deploy_db2.md
+    - "itxa_setup_db2": roles/itxa_setup_db2.md
+    - "pem_deploy_db2": roles/pem_deploy_db2.md
+    - "pem_deploy_mq": roles/pem_deploy_mq.md
     - "sb2bi_deploy": roles/sb2bi_deploy.md
     - "sb2bi_deploy_db2": roles/sb2bi_deploy_db2.md
     - "sb2bi_deploy_mq": roles/sb2bi_deploy_mq.md
+    - "sb2bi_prebuiltdb_db2": roles/sb2bi_prebuiltdb_db2.md
     - "sb2bi_setup_db2": roles/sb2bi_setup_db2.md
     - "scc_deploy": roles/scc_deploy.md
     - "scc_deploy_db2": roles/scc_deploy_db2.md
@@ -45,8 +50,11 @@ nav:
     - "ssp_config": roles/ssp_config.md
     - "ssp_deploy": roles/ssp_deploy.md
     - "ssp_ps_deploy": roles/ssp_ps_deploy.md
-# - "Roles": Utilities":
-#     - "cloudbeaver"": roles/cloudbeaver.md
+  - "Roles: Tools":
+    - "cloudbeaver": roles/cloudbeaver.md
+    - "minio": roles/minio.md
+    - "openldap": roles/openldap.md
+    - "phpldapadmin": roles/phpldapadmin.md
   - "Others": 
     - "Known Problems": others/known_problems.md
 
