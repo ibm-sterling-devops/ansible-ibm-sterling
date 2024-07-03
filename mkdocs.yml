@@ -12,8 +12,8 @@ nav:
     - "Home": index.md
     - "Requirements": requirements.md
   - "Playbooks: Standard":
-    - "Install IBM Connect:Direct 6.2.x": setup_cd.md
-    - "Install IBM Sterling B2B Integrator 6.1.2  - one node only": setup_b2b.md
+    - "Install IBM Connect:Direct 6.2.x": playbooks/setup_cd.md
+    - "Install IBM Sterling B2B Integrator 6.1.2  - one node only": playbooks/setup_b2b.md
   #     - "Install IBM DB2 11.5.x and setup Sterling B2Bi Database": 
   #     - "Install Nginx as HTTP server for Repository|    
   - "Playbooks: RedHat OpenShift":
@@ -29,10 +29,23 @@ nav:
   #     - "Deploy CloudBeaver CE to manage databases": 
   #     - "Deploy OpenLDAP as LDAP Server": 
   - "Roles:":
-    - "deploy_cd": roles/cd_deploy.md
-    - "cdws_deploy": roles/cdws_deploy.md
-    - "itx_rs_deploy": roles/itx_rs_deploy.md
-    - "sb2bi_deploy": roles/sb2bi_deploy.md
+    - "cd_deploy": roles/cd_deploy
+    - "cdws_deploy": roles/cdws_deploy
+    - "itx_rs_deploy": roles/itx_rs_deploy
+    - "itxa_deploy": roles/itxa_deploy
+    - "sb2bi_deploy": roles/sb2bi_deploy
+    - "sb2bi_deploy_db2": roles/sb2bi_deploy_db2
+    - "sb2bi_deploy_mq": roles/sb2bi_deploy_mq
+    - "sb2bi_setup_db2": roles/sb2bi_setup_db2
+    - "scc_deploy": roles/scc_deploy
+    - "scc_deploy_db2": roles/scc_deploy_db2
+    - "scc_deploy_mq": roles/scc_deploy_mq
+    - "scc_setup_db2": roles/scc_setup_db2
+    - "seas_deploy": roles/seas_deploy
+    - "ssp_cm_deploy": roles/ssp_cm_deploy
+    - "ssp_config": roles/ssp_config
+    - "ssp_deploy": roles/ssp_deploy
+    - "ssp_ps_deploy": roles/ssp_ps_deploy
 # - "Roles": Utilities":
 #     - "cloudbeaver"": roles/cloudbeaver.md
   - "Others": 
