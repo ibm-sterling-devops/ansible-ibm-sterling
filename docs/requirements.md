@@ -7,12 +7,14 @@ Installation Guide for kubectl, oc, git, and ansible
 
 ### Install kubectl
 1. Download the latest release:
+
     ```sh
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     ```
 
 2. Make the kubectl binary executable:
-    ```sh
+
+    ```bash
     chmod +x ./kubectl
     ```
 
