@@ -29,23 +29,23 @@ nav:
   #     - "Deploy CloudBeaver CE to manage databases": 
   #     - "Deploy OpenLDAP as LDAP Server": 
   - "Roles:":
-    - "cd_deploy": roles/cd_deploy
-    - "cdws_deploy": roles/cdws_deploy
-    - "itx_rs_deploy": roles/itx_rs_deploy
-    - "itxa_deploy": roles/itxa_deploy
-    - "sb2bi_deploy": roles/sb2bi_deploy
-    - "sb2bi_deploy_db2": roles/sb2bi_deploy_db2
-    - "sb2bi_deploy_mq": roles/sb2bi_deploy_mq
-    - "sb2bi_setup_db2": roles/sb2bi_setup_db2
-    - "scc_deploy": roles/scc_deploy
-    - "scc_deploy_db2": roles/scc_deploy_db2
-    - "scc_deploy_mq": roles/scc_deploy_mq
-    - "scc_setup_db2": roles/scc_setup_db2
-    - "seas_deploy": roles/seas_deploy
-    - "ssp_cm_deploy": roles/ssp_cm_deploy
-    - "ssp_config": roles/ssp_config
-    - "ssp_deploy": roles/ssp_deploy
-    - "ssp_ps_deploy": roles/ssp_ps_deploy
+    - "cd_deploy": roles/cd_deploy.md
+    - "cdws_deploy": roles/cdws_deploy.md
+    - "itx_rs_deploy": roles/itx_rs_deploy.md
+    - "itxa_deploy": roles/itxa_deploy.md
+    - "sb2bi_deploy": roles/sb2bi_deploy.md
+    - "sb2bi_deploy_db2": roles/sb2bi_deploy_db2.md
+    - "sb2bi_deploy_mq": roles/sb2bi_deploy_mq.md
+    - "sb2bi_setup_db2": roles/sb2bi_setup_db2.md
+    - "scc_deploy": roles/scc_deploy.md
+    - "scc_deploy_db2": roles/scc_deploy_db2.md
+    - "scc_deploy_mq": roles/scc_deploy_mq.md
+    - "scc_setup_db2": roles/scc_setup_db2.md
+    - "seas_deploy": roles/seas_deploy.md
+    - "ssp_cm_deploy": roles/ssp_cm_deploy.md
+    - "ssp_config": roles/ssp_config.md
+    - "ssp_deploy": roles/ssp_deploy.md
+    - "ssp_ps_deploy": roles/ssp_ps_deploy.md
 # - "Roles": Utilities":
 #     - "cloudbeaver"": roles/cloudbeaver.md
   - "Others": 
