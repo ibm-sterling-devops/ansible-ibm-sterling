@@ -121,28 +121,6 @@ ansible-playbook playbooks/deploy_sb2b_prebuiltdb.yml
 
 # Environment Variable
 
-| Environment Variable         | Default Value     | Required | Description
-|------------------------------|-------------------| ---------|-------------------------------------|
-| ENTITLED_REGISTRY_KEY        |                   | Y        | IBM Entitled Registry key |
-| SI_INSTANCEID                |                   | Y        | Used to define your environment |
-| SI_DOMAIN                    |                   | Y        | Used to define your environment |
-| SI_LICENSETYPE               | no-prod           | N        | Specify the license edition as per license agreement. Valid value is **prod** or **non-prod** for Production and Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service | 
-| SI_SYSTEM_PASSPHRASE         | passw0rd          | N        | Name of system passphrase secret if available |
-| SI_ADMIN_MAILADDR            | admin@company.com | N        | Provide the admin email address |
-| SI_ADMIN_SMTPHOST            | smtp.company.com  | N        | Provide the SMTP host details |
-| SI_DBVENDOR                  | DB2               | N        | Database vendor: DB2, Oracle, MSSQL           | 
-| SI_DBHOST                    | <from service>    | N        | Database hostname/ip address |
-| SI_DBPORT                    | <from service>    | N        | Database port |
-| SI_DBNAME                    | B2BI              | N        | Database name |
-| SI_DBUSER                    | db2inst1          | N        | Database user |
-| SI_DBPASSWORD                | passw0rd          | N        | Database user password |
-| SI_ORACLESERVICENAME         | false             | N        | Oracle service name, must be **true** when database is Oracle |
-| SI_DATASETUP_ENABLED         | true              | N        | Enable database setup job execution |
-| SI_DATASETUP_UPGRADE         | false             | N        | Upgrade an older release |
-| SI_JMS_USERNAME              |                   | N        | JMS Queue user |
-| SI_JMS_PASSWORD              | passw0rd          | N        | JMS Queue user password |
-| SI_JMS_KEYSTORE_PASSWORD     |                   | N        | JMS Queue keystore password |
-| SI_JMS_TRUSTSTORE_PASSWORD   |                   | N        | JMS Queue truststore password |
-| SI_LIBERTY_KEYSTORE_PASSWORD | changeit          | N        | Liberty keystore password |
-| SI_SKIP_HELM                 | false             | N        | Avoid to run helm, only generate values.yaml  |
+For all environment variables
 
+* Role [sb2bi_deploy](../roles/sb2bi_deploy)
