@@ -5,14 +5,15 @@ IBM Sterling Devops Project is an open source project to deploy IBM Sterling Pro
 
 Developed in Ansible, it provides a collection of playbooks and roles that automated deploy for IBM Sterling B2Bi, IBM Connect:Direct, ... on Redhat OpenShift.
 
+Current playbooks:
 
-### Install Sterling Products (standalone)
+**Install Sterling Products (standalone)**
 
 * Install Connect:Direct (standalone)
 * Install Sterling B2B Integrator (standalone)
 
 
-### Deploy Sterling Products on Redhat OpenShift / Kubernetes
+**Deploy Sterling Products on Redhat OpenShift / Kubernetes**
 
 * Deploy IBM Sterling Connect:Direct
 * Deploy IBM Sterling Connect:Direct Web Service
@@ -26,17 +27,15 @@ Developed in Ansible, it provides a collection of playbooks and roles that autom
 
 
 
-
-
-## Contributors
+**Contributors**
 
 See the list of [contributors](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/contributors) who participated in this project.
 
-## License
+**License**
 
 This project is licensed under the Eclipse Public License - v 2.0 - see the [LICENSE](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/LICENSE) file for details
 
-## Disclaimer
+**Disclaimer**
 
 This repository is a community-driven projects and is not officially supported or endorsed by IBM. While members of the community may include IBM employees, this project is independent of IBM's official support channels. Please note that any contributions, issues, or inquiries regarding this repository should be directed to the community maintainers and not to IBM's support teams. We appreciate your understanding and participation in this community-driven initiative.
 
