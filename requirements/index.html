@@ -47,8 +47,6 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Requirements</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
-    </li>
     </ul>
                   </li>
               </ul>
@@ -145,77 +143,247 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="ibm-sterling-devops-ansible">IBM Sterling Devops Ansible<a class="headerlink" href="#ibm-sterling-devops-ansible" title="Permanent link"></a></h1>
-<p>Ansible DevOps collection for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...</p>
-<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
-<h1 id="run-a-playbook">Run a playbook<a class="headerlink" href="#run-a-playbook" title="Permanent link"></a></h1>
-<p>The collection includes a number of playbooks that string together multiple roles, you can directly invoke them after installing the collection:</p>
-<h1 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h1>
-<h2 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h2>
-<p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
-<p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
-<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
-</code></pre>
-<h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
-<p>Do a login in Openshift console and run the command:</p>
-<pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
-</code></pre>
-<h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
-<pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
-</code></pre>
-<p>Change directory</p>
-<pre><code class="language-bash">cd ansible-ibm-sterling
-</code></pre>
-<h2 id="run-playbook-the-playbook">Run playbook the playbook<a class="headerlink" href="#run-playbook-the-playbook" title="Permanent link"></a></h2>
-<p>1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
-<pre><code class="language-bash">export SI_INSTANCEID=dev01
-</code></pre>
-<p>2) Provide de url domain SI_DOMAIN</p>
-<pre><code class="language-bash">export SI_DOMAIN=ocp01-8...74-0000.us-south.containers.appdomain.cloud
-</code></pre>
-<p>You can get this information from your OpenShift console url:</p>
-<table>
-<thead>
-<tr>
-<th>Environment</th>
-<th>Sample URL</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>IBM Cloud</td>
-<td>ocp01-8...74-0000.us-south.containers.appdomain.cloud</td>
-</tr>
-<tr>
-<td>IBM Techzone</td>
-<td>apps.34...6e.cloud.techzone.ibm.com</td>
-</tr>
-</tbody>
-</table>
-<p>3) (Optional) change your version: </p>
-<p>We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.</p>
-<pre><code class="language-bash">export SI_VERSION=6.2.0.2
-</code></pre>
-<p>4) To run playbook the playbook</p>
-<pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b.yml
-</code></pre>
-<h2 id="local-install-for-macos">Local Install for MacOS<a class="headerlink" href="#local-install-for-macos" title="Permanent link"></a></h2>
-<p>Using Brew to install</p>
-<pre><code class="language-bash">    brew install python3 pip3 ansible
-</code></pre>
-<h2 id="local-install-for-linux">Local Install for Linux<a class="headerlink" href="#local-install-for-linux" title="Permanent link"></a></h2>
-<h3 id="install-python-ansible">Install Python &amp; Ansible<a class="headerlink" href="#install-python-ansible" title="Permanent link"></a></h3>
-<p><a href="https://www.python.org/downloads/">Python 3.9</a> is recommended as it is the most widely used version of Python within our development team, but any in-support 3.x version of Python should work fine.</p>
-<pre><code class="language-bash">python3 --version
-python3 -m pip install ansible junit_xml xmljson jmespath kubernetes openshift
-ansible --version
-ansible-playbook --version
-</code></pre>
-<h2 id="local-install-for-ms-windows">Local Install for MS Windows<a class="headerlink" href="#local-install-for-ms-windows" title="Permanent link"></a></h2>
-<pre><code class="language-bash">
-</code></pre>
-<h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link"></a></h2>
-<p>This Ansible collection is developed by community, for any problem <a href="https://github.com/ibm-sterling-deops/ansible-ibm-sterling/issues">raise an issue directly in the GitHub repository</a>.</p>
+                <p>Sure, here's the updated guide for installing <code>kubectl</code>, <code>oc</code>, <code>git</code>, and <code>ansible</code> on Linux using <code>yum</code>:</p>
+<h1 id="installation-guide-for-kubectl-oc-git-and-ansible">Installation Guide for kubectl, oc, git, and ansible<a class="headerlink" href="#installation-guide-for-kubectl-oc-git-and-ansible" title="Permanent link"></a></h1>
+<h1 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link"></a></h1>
+<h3 id="install-kubectl">Install kubectl<a class="headerlink" href="#install-kubectl" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Download the latest release:
+    <code>sh
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"</code></p>
+</li>
+<li>
+<p>Make the kubectl binary executable:
+    <code>sh
+    chmod +x ./kubectl</code></p>
+</li>
+<li>
+<p>Move the binary to your PATH:
+    <code>sh
+    sudo mv ./kubectl /usr/local/bin/kubectl</code></p>
+</li>
+<li>
+<p>Test to ensure the version you installed is up-to-date:
+    <code>sh
+    kubectl version --client</code></p>
+</li>
+</ol>
+<h3 id="install-oc">Install oc<a class="headerlink" href="#install-oc" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Download the latest release:
+    <code>sh
+    curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz"</code></p>
+</li>
+<li>
+<p>Extract the tar file:
+    <code>sh
+    tar -xzvf openshift-client-linux.tar.gz</code></p>
+</li>
+<li>
+<p>Move the binaries to your PATH:
+    <code>sh
+    sudo mv oc kubectl /usr/local/bin/</code></p>
+</li>
+<li>
+<p>Test to ensure the version you installed is up-to-date:
+    <code>sh
+    oc version</code></p>
+</li>
+</ol>
+<h3 id="install-git">Install git<a class="headerlink" href="#install-git" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Install git:
+    <code>sh
+    sudo yum update -y
+    sudo yum install git -y</code></p>
+</li>
+<li>
+<p>Verify the installation:
+    <code>sh
+    git --version</code></p>
+</li>
+</ol>
+<h3 id="install-ansible">Install ansible<a class="headerlink" href="#install-ansible" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Install the dependencies:
+    <code>sh
+    sudo yum install epel-release -y
+    sudo yum update -y</code></p>
+</li>
+<li>
+<p>Install Ansible:
+    <code>sh
+    sudo yum install ansible -y</code></p>
+</li>
+<li>
+<p>Verify the installation:
+    <code>sh
+    ansible --version</code></p>
+</li>
+</ol>
+<h1 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link"></a></h1>
+<h3 id="install-kubectl_1">Install kubectl<a class="headerlink" href="#install-kubectl_1" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Install with Homebrew:
+    <code>sh
+    brew install kubectl</code></p>
+</li>
+<li>
+<p>Test to ensure the version you installed is up-to-date:
+    <code>sh
+    kubectl version --client</code></p>
+</li>
+</ol>
+<h3 id="install-oc_1">Install oc<a class="headerlink" href="#install-oc_1" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Install with Homebrew:
+    <code>sh
+    brew install openshift-cli</code></p>
+</li>
+<li>
+<p>Test to ensure the version you installed is up-to-date:
+    <code>sh
+    oc version</code></p>
+</li>
+</ol>
+<h3 id="install-git_1">Install git<a class="headerlink" href="#install-git_1" title="Permanent link"></a></h3>
+<ol>
+<li>Verify the installation:
+    <code>sh
+    git --version</code></li>
+</ol>
+<h3 id="install-ansible_1">Install ansible<a class="headerlink" href="#install-ansible_1" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Install Ansible with Homebrew:
+    <code>sh
+    brew install ansible</code></p>
+</li>
+<li>
+<p>Verify the installation:
+    <code>sh
+    ansible --version</code></p>
+</li>
+</ol>
+<h2 id="windows-using-wsl">Windows (Using WSL)<a class="headerlink" href="#windows-using-wsl" title="Permanent link"></a></h2>
+<h3 id="install-wsl">Install WSL<a class="headerlink" href="#install-wsl" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Open PowerShell as Administrator and run:
+    <code>sh
+    wsl --install</code></p>
+</li>
+<li>
+<p>Restart your computer if prompted.</p>
+</li>
+<li>
+<p>Install a Linux distribution from the Microsoft Store (e.g., Ubuntu).</p>
+</li>
+</ol>
+<h3 id="set-up-wsl">Set up WSL<a class="headerlink" href="#set-up-wsl" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Open your installed Linux distribution.</p>
+</li>
+<li>
+<p>Update the package list and install necessary packages:
+    <code>sh
+    sudo apt-get update
+    sudo apt-get upgrade -y</code></p>
+</li>
+</ol>
+<h3 id="install-kubectl_2">Install kubectl<a class="headerlink" href="#install-kubectl_2" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Download the latest release:
+    <code>sh
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"</code></p>
+</li>
+<li>
+<p>Make the kubectl binary executable:
+    <code>sh
+    chmod +x ./kubectl</code></p>
+</li>
+<li>
+<p>Move the binary to your PATH:
+    <code>sh
+    sudo mv ./kubectl /usr/local/bin/kubectl</code></p>
+</li>
+<li>
+<p>Test to ensure the version you installed is up-to-date:
+    <code>sh
+    kubectl version --client</code></p>
+</li>
+</ol>
+<h3 id="install-oc_2">Install oc<a class="headerlink" href="#install-oc_2" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Download the latest release:
+    <code>sh
+    curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz"</code></p>
+</li>
+<li>
+<p>Extract the tar file:
+    <code>sh
+    tar -xzvf openshift-client-linux.tar.gz</code></p>
+</li>
+<li>
+<p>Move the binaries to your PATH:
+    <code>sh
+    sudo mv oc kubectl /usr/local/bin/</code></p>
+</li>
+<li>
+<p>Test to ensure the version you installed is up-to-date:
+    <code>sh
+    oc version</code></p>
+</li>
+</ol>
+<h3 id="install-git_2">Install git<a class="headerlink" href="#install-git_2" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Install git:
+    <code>sh
+    sudo apt-get update
+    sudo apt-get install git -y</code></p>
+</li>
+<li>
+<p>Verify the installation:
+    <code>sh
+    git --version</code></p>
+</li>
+</ol>
+<h3 id="install-ansible_2">Install ansible<a class="headerlink" href="#install-ansible_2" title="Permanent link"></a></h3>
+<ol>
+<li>
+<p>Install the dependencies:
+    <code>sh
+    sudo apt-get update
+    sudo apt-get install software-properties-common -y</code></p>
+</li>
+<li>
+<p>Add the Ansible PPA:
+    <code>sh
+    sudo add-apt-repository --yes --update ppa:ansible/ansible</code></p>
+</li>
+<li>
+<p>Install Ansible:
+    <code>sh
+    sudo apt-get install ansible -y</code></p>
+</li>
+<li>
+<p>Verify the installation:
+    <code>sh
+    ansible --version</code>
+```</p>
+</li>
+</ol>
+<p>This guide now includes instructions for using <code>yum</code> to install <code>kubectl</code>, <code>oc</code>, <code>git</code>, and <code>ansible</code> on Linux.</p>
               
             </div>
           </div><footer>
