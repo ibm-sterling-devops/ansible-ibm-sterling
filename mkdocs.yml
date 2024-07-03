@@ -32,8 +32,8 @@ nav:
     - "cdws_deploy": roles/cdws_deploy.md
     - "itx_rs_deploy": roles/itx_rs_deploy.md
     - "itxa_deploy": roles/itxa_deploy.md
-    # - "sb2bi_deploy": roles/sb2bi_deploy.md
-    # - "sb2bi_deploy_db2": roles/sb2bi_deploy_db2.md
+    - "sb2bi_deploy": roles/sb2bi_deploy.md
+    - "sb2bi_deploy_db2": roles/sb2bi_deploy_db2.md
     # - "sb2bi_deploy_mq": roles/sb2bi_deploy_mq.md
     # - "sb2bi_setup_db2": roles/sb2bi_setup_db2.md
     - "scc_deploy": roles/scc_deploy.md

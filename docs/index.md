@@ -11,7 +11,7 @@ See the list of [contributors](https://github.com/ibm-sterling-devops/ansible-ib
 
 ## License
 
-This project is licensed under the Eclipse Public License - v 2.0 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the Eclipse Public License - v 2.0 - see the [LICENSE](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/LICENSE) file for details
 
 ## Disclaimer
 
