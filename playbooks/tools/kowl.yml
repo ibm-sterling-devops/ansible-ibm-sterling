@@ -1,0 +1,7 @@
+- name: Deploy Kowl on RedHat OpenShift
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - kowl

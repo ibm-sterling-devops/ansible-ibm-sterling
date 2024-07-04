@@ -1,0 +1,7 @@
+- name: Deploy Kafka on RedHat OpenShift
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - kafka

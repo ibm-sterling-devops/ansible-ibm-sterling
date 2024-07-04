@@ -1,0 +1,21 @@
+# 1. Configure Kafka
+# ---------------------------------------------------------------------------------------------------------------------
+- name: Configure Kafka variables
+  ansible.builtin.debug:
+    msg:
+      - "Kafka Provider .................. {{ kafka_provider }}"
+
+- name: Check if there are any cluster scope kafka already installed
+  ansible.builtin.include_tasks: "{{ kafka_provider }}/01_check_kafka_exists.yml"
+
+- name: Lookup Storage Classes
+  ansible.builtin.include_tasks: 02_lookup_storage_classes.yml
+
+- name: Define Storage Class for Data Persistence
+  ansible.builtin.include_tasks: "{{ kafka_provider }}/03_define_storage_classes.yml"
+
+- name: Run the install if there's no previous cluster scope kafka installed
+  ansible.builtin.include_tasks: "{{ kafka_provider }}/04_install_kafka.yml"
+
+- name: Create KafkaCfg for Sterling
+  ansible.builtin.include_tasks: "{{ kafka_provider }}/05_create_kafkacfg.yml"

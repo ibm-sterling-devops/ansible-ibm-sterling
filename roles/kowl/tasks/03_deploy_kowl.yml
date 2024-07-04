@@ -1,0 +1,105 @@
+---
+# Create ConfigMap
+# -----------------------------------------------------------------------------
+- name: "Create ConfigMap kowl-env"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+        name: kowl-env
+        namespace: "{{ kowl_namespace }}"
+        labels:
+          app: kowl
+      data:
+        KAFKA_BROKERS: "{{ kafka_brokers }}"
+
+# Apply Deployment
+# -----------------------------------------------------------------------------
+- name: Apply Deployment kowl
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: kowl
+        namespace: "{{ kowl_namespace }}"
+        labels:
+          app: kowl
+          app.kubernetes.io/name: kowl
+      spec:
+        selector:
+          matchLabels:
+            app: kowl
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: kowl
+          spec:
+            serviceAccountName: kowl-sa
+            containers:
+              - name: kowl
+                image: "{{ kowl_image }}"
+                ports:
+                  - name: http
+                    containerPort: 8080
+                    protocol: TCP
+                envFrom:
+                  - configMapRef:
+                      name: kowl-env
+                  - secretRef:
+                      name: kowl-secret
+
+# Create Service and Route
+# -----------------------------------------------------------------------------
+- name: Apply Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: kowl-svc
+        namespace: "{{ kowl_namespace }}"
+        labels:
+          app: kowl
+      spec:
+        selector:
+          app: kowl
+        ports:
+          - name: http
+            protocol: TCP
+            port: 8080
+            targetPort: 8080
+        type: ClusterIP
+
+- name: "Create Kubernetes Route"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: kowl
+        namespace: "{{ kowl_namespace }}"
+        labels:
+          app.kubernetes.io/name: kowl
+          release: s0
+      spec:
+        to:
+          kind: Service
+          name: kowl-svc
+        port:
+          targetPort: http
+        tls:
+          termination: edge
+        wildcardPolicy: None
+
+- name: "Kowl Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "Kowl .............................. Ready!"
+      - "Kafka user ........................... {{ kafka_user_name }}"
+      - "Kafka password ....................... passw0rd"
