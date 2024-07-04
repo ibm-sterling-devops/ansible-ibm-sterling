@@ -54,6 +54,8 @@ nav:
     - "ssp_ps_deploy": roles/ssp_ps_deploy.md
   - "Roles: Tools":
     - "cloudbeaver": roles/cloudbeaver.md
+    - "kafka": roles/kafka.md
+    - "kowl": roles/kowl.md
     - "minio": roles/minio.md
     - "openldap": roles/openldap.md
     - "phpldapadmin": roles/phpldapadmin.md
