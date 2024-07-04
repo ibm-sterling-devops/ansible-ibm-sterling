@@ -18,6 +18,8 @@ copyDoc itx_rs_deploy
 copyDoc itxa_deploy
 copyDoc itxa_deploy_db2
 copyDoc itxa_setup_db2
+copyDoc kafka
+copyDoc kowl
 copyDoc minio
 copyDoc openldap
 copyDoc pem_deploy_db2

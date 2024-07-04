@@ -25,6 +25,8 @@ nav:
     - "Deploy IBM Sterling Secure Proxy Server (SSP)": playbooks/deploy_ocp_ssp.md
   - "Playbooks: Tools":
       - "Deploy CloudBeaver CE to manage databases": playbooks/tools_deploy_cloudbeaver.md
+      - "Deploy Kafka": playbooks/tools_deploy_kafka.md
+      - "Deploy Kowl": playbooks/tools_deploy_kowl.md
       - "Deploy MinIO S3 storage": playbooks/tools_deploy_minio.md
       - "Deploy OpenLDAP as LDAP Server": playbooks/tools_deploy_openldap.md
   - "Roles:":
