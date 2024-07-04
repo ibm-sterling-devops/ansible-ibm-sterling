@@ -1,0 +1,9 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.include_tasks: 01_check_vars.yml
+
+- name: Create namespace and secrets
+  ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
+
+- name: Deploy Kowl
+  ansible.builtin.include_tasks: 03_deploy_kowl.yml

@@ -1,0 +1,21 @@
+galaxy_info:
+  author: Enio Basso (@ebasso)
+  description: |-
+    Many parts of this role was based from kafka role from ibm-mas project.
+    Thanks David Parker (@durera)
+
+  license: EPL-2.0
+
+  min_ansible_version: 2.10
+
+  platforms:
+    - name: GenericLinux
+      versions:
+        - all
+
+  galaxy_tags:
+    - ibm
+    - sterling
+    - devops
+    - amqstreams
+    - kafka

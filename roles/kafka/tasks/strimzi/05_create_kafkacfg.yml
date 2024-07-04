@@ -1,0 +1,24 @@
+---
+# 15. Create KafkaCfg for MAS (if si_instance_id & si_config_dir are set)
+# -----------------------------------------------------------------------------
+- name: Debug KafkaCfg creation properties
+  when:
+    - si_instance_id is defined
+    - si_instance_id != ""
+    - si_config_dir is defined
+    - si_config_dir != ""
+  debug:
+    msg:
+      - "SB2BI Instance ID .............. {{ si_instance_id }}"
+      - "SB2BI Config directory ......... {{ si_config_dir }}"
+
+- name: Save KafkaCfg to filesytem
+  when:
+    - si_instance_id is defined
+    - si_instance_id != ""
+    - si_config_dir is defined
+    - si_config_dir != ""
+  ansible.builtin.template:
+    src: "{{ kafka_provider }}/kafkacfg.yml.j2"
+    dest: "{{ si_config_dir }}/kafka-{{ kafka_cluster_name }}-{{ kafka_namespace }}.yml"
+    mode: "664"
