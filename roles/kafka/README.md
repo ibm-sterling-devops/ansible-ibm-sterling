@@ -17,7 +17,7 @@ This role provides support to install a Kafka Cluster using [Strimzi](https://st
 !!! tip
     The role will generate a yaml file containing the definition of a Secret and KafkaCfg resource that can be used to configure the deployed cluster as the SB2BI system Kafka.
 
-    This file can be directly applied using `oc apply -f $SI_CONFIG_DIR/kafkacfg-amqstreams-system.yaml` or used in conjunction with the [suite_config](suite_config.md) role.
+    This file can be directly applied using `oc apply -f $SI_CONFIG_DIR/kafkacfg-amqstreams-system.yaml` or used in conjunction with the role.
 
 Role Variables
 --------------
@@ -97,7 +97,7 @@ The instance ID of Maximo Application Suite that the KafkaCfg configuration will
 - Default Value: None
 
 ### si_config_dir
-Local directory to save the generated KafkaCfg resource definition.  This can be used to manually configure a SB2BI instance to connect to the Kafka cluster, or used as an input to the [suite_config](suite_config.md) role. If this or `si_instance_id` are not set then the role will not generate a KafkaCfg template.
+Local directory to save the generated KafkaCfg resource definition.  This can be used to manually configure a SB2BI instance to connect to the Kafka cluster, or used as an input to the role. If this or `si_instance_id` are not set then the role will not generate a KafkaCfg template.
 
 - Environment Variable: `SI_CONFIG_DIR`
 - Default Value: None
@@ -118,7 +118,7 @@ The instance ID of Maximo Application Suite that the KafkaCfg configuration will
 - Default Value: None
 
 ### si_config_dir
-Local directory to save the generated KafkaCfg resource definition.  This can be used to manually configure a SB2BI instance to connect to the Kafka cluster, or used as an input to the [suite_config](suite_config.md) role. If this or `si_instance_id` are not set then the role will not generate a KafkaCfg template.
+Local directory to save the generated KafkaCfg resource definition.  This can be used to manually configure a SB2BI instance to connect to the Kafka cluster, or used as an input to the role. If this or `si_instance_id` are not set then the role will not generate a KafkaCfg template.
 
 - Environment Variable: `SI_CONFIG_DIR`
 - Default Value: None
