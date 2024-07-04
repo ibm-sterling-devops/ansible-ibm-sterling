@@ -71,6 +71,16 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_kafka/</loc>
+         <lastmod>2024-07-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_kowl/</loc>
+         <lastmod>2024-07-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_minio/</loc>
          <lastmod>2024-07-04</lastmod>
          <changefreq>daily</changefreq>
@@ -117,6 +127,16 @@
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/itxa_setup_db2/</loc>
+         <lastmod>2024-07-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/kafka/</loc>
+         <lastmod>2024-07-04</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/kowl/</loc>
          <lastmod>2024-07-04</lastmod>
          <changefreq>daily</changefreq>
     </url>

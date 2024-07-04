@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_openldap/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_kafka/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Deploy OpenLDAP as LDAP Server - IBM Sterling Devops Ansible</title>
+    <title>Deploy Kafka - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Deploy OpenLDAP as LDAP Server";
-        var mkdocs_page_input_path = "playbooks/tools_deploy_openldap.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/playbooks/tools_deploy_openldap/";
+        var mkdocs_page_name = "Deploy Kafka";
+        var mkdocs_page_input_path = "playbooks/tools_deploy_kafka.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/playbooks/tools_deploy_kafka/";
       </script>
     
     <!--[if lt IE 9]>
@@ -78,13 +78,7 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_cloudbeaver/">Deploy CloudBeaver CE to manage databases</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_kafka/">Deploy Kafka</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_kowl/">Deploy Kowl</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_minio/">Deploy MinIO S3 storage</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy OpenLDAP as LDAP Server</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy Kafka</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#login-on-openshift">Login on OpenShift</a>
     </li>
@@ -95,6 +89,12 @@
     <li class="toctree-l2"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
     </li>
     </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_kowl/">Deploy Kowl</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_minio/">Deploy MinIO S3 storage</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_openldap/">Deploy OpenLDAP as LDAP Server</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Roles:</span></p>
@@ -175,9 +175,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Playbooks: Tools</li>
-      <li class="breadcrumb-item active">Deploy OpenLDAP as LDAP Server</li>
+      <li class="breadcrumb-item active">Deploy Kafka</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/playbooks/tools_deploy_openldap.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/playbooks/tools_deploy_kafka.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -185,7 +185,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="deploy-openldap-on-openshift-using-ansible-scripts">Deploy OpenLDAP on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-openldap-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
+                <h1 id="deploy-kafka-on-openshift-using-ansible-scripts">Deploy Kafka on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-kafka-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
+<p>Using Strimzi or Redhat operator</p>
 <h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
 <p>Do a login in Openshift console and run the command:</p>
 <pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
@@ -201,7 +202,7 @@ export ANSIBLE_CONFIG=./ansible.cfg
 </code></pre>
 <h2 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h2>
 <p>To run playbook the playbook</p>
-<pre><code class="language-bash">ansible-playbook playbooks/tools/openldap.yml
+<pre><code class="language-bash">ansible-playbook playbooks/tools/kafka.yml
 </code></pre>
               
             </div>
@@ -231,10 +232,10 @@ export ANSIBLE_CONFIG=./ansible.cfg
         </span>
     
     
-      <span><a href="../tools_deploy_minio/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../tools_deploy_cloudbeaver/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../../roles/cd_deploy/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../tools_deploy_kowl/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

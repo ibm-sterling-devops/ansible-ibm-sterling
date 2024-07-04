@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy_mq/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/kowl/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>scc_deploy_mq - IBM Sterling Devops Ansible</title>
+    <title>Role kowl - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "scc_deploy_mq";
-        var mkdocs_page_input_path = "roles/scc_deploy_mq.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/roles/scc_deploy_mq/";
+        var mkdocs_page_name = "Role kowl";
+        var mkdocs_page_input_path = "roles/kowl.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/roles/kowl/";
       </script>
     
     <!--[if lt IE 9]>
@@ -88,7 +88,7 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Roles:</span></p>
-              <ul class="current">
+              <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../cd_deploy/">cd_deploy</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../cdws_deploy/">cdws_deploy</a>
@@ -119,11 +119,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../scc_deploy_db2/">scc_deploy_db2</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">scc_deploy_mq</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../scc_deploy_mq/">scc_deploy_mq</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../scc_setup_db2/">scc_setup_db2</a>
                   </li>
@@ -168,10 +164,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Roles:</li>
-      <li class="breadcrumb-item active">scc_deploy_mq</li>
+      <li class="breadcrumb-item active">Role kowl</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/scc_deploy_mq.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/kowl.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -179,10 +174,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-scc_deploy_mq">Role scc_deploy_mq<a class="headerlink" href="#role-scc_deploy_mq" title="Permanent link"></a></h1>
-<p>Deploy MQ for Sterling Control Center application</p>
+                <h1 id="role-kowl">Role kowl<a class="headerlink" href="#role-kowl" title="Permanent link"></a></h1>
+<p>Deploy Kowl to inspect Kafka</p>
 <h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
-<p>Environment variables for this role:</p>
 <table>
 <thead>
 <tr>
@@ -194,40 +188,22 @@
 </thead>
 <tbody>
 <tr>
-<td>ENTITLED_REGISTRY_KEY</td>
-<td>N/A</td>
+<td>KAFKA_NAMESPACE</td>
+<td>sterling-kafka-strimzi</td>
 <td>Yes</td>
-<td>Entitlement registry key</td>
+<td>Namespace for Kafka</td>
 </tr>
 <tr>
-<td>SCC_INSTANCEID</td>
-<td>N/A</td>
+<td>KOWL_NAMESPACE</td>
+<td>sterling-phpldapadmin</td>
 <td>Yes</td>
-<td>Instance ID for Control Center application</td>
+<td>Namespace for Kowl</td>
 </tr>
 <tr>
-<td>MQ_NAME</td>
-<td>mq</td>
+<td>KAFKA_USER_NAME</td>
+<td>siuser</td>
 <td>No</td>
-<td>Name for MQ</td>
-</tr>
-<tr>
-<td>MQ_VERSION</td>
-<td>9.2.5.0-r3</td>
-<td>No</td>
-<td>Version of MQ</td>
-</tr>
-<tr>
-<td>MQ_ADMIN_PASSWORD</td>
-<td>passw0rd</td>
-<td>No</td>
-<td>Admin password for MQ</td>
-</tr>
-<tr>
-<td>MQ_APP_PASSWORD</td>
-<td>passw0rd</td>
-<td>No</td>
-<td>Application password for MQ</td>
+<td>User</td>
 </tr>
 </tbody>
 </table>
@@ -259,10 +235,6 @@
         </span>
     
     
-      <span><a href="../scc_deploy_db2/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../scc_setup_db2/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
