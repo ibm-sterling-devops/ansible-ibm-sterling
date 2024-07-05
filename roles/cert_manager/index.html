@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/seas_deploy/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cert_manager/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>seas_deploy - IBM Sterling Devops Ansible</title>
+    <title>cert_manager - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "seas_deploy";
-        var mkdocs_page_input_path = "roles/seas_deploy.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/roles/seas_deploy/";
+        var mkdocs_page_name = "cert_manager";
+        var mkdocs_page_input_path = "roles/cert_manager.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/roles/cert_manager/";
       </script>
     
     <!--[if lt IE 9]>
@@ -88,7 +88,7 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Roles:</span></p>
-              <ul class="current">
+              <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../cd_deploy/">cd_deploy</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../cdws_deploy/">cdws_deploy</a>
@@ -123,11 +123,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../scc_setup_db2/">scc_setup_db2</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">seas_deploy</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../seas_deploy/">seas_deploy</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../ssp_cm_deploy/">ssp_cm_deploy</a>
                   </li>
@@ -139,8 +135,36 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Roles: Tools</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../cert_manager/">cert_manager</a>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">cert_manager</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#red-hat-certificate-manager">Red Hat Certificate Manager</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#community-certificate-manager">Community Certificate Manager</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#role-variables">Role Variables</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cert_manager_action">cert_manager_action</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cert_manager_provider">cert_manager_provider</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example-playbook">Example Playbook</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#red-hat-certificate-manager_1">Red Hat Certificate Manager</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#community-certificate-manager_1">Community Certificate Manager</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#license">License</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../cloudbeaver/">cloudbeaver</a>
                   </li>
@@ -174,10 +198,10 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Roles:</li>
-      <li class="breadcrumb-item active">seas_deploy</li>
+          <li class="breadcrumb-item">Roles: Tools</li>
+      <li class="breadcrumb-item active">cert_manager</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/seas_deploy.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/roles/cert_manager.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -185,70 +209,54 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="role-seas_deploy">Role seas_deploy<a class="headerlink" href="#role-seas_deploy" title="Permanent link"></a></h1>
-<p>Deploy Sterling External Authentication application</p>
+                <h1 id="cert_manager">cert_manager<a class="headerlink" href="#cert_manager" title="Permanent link"></a></h1>
+<p>Deploy <strong>Red Hat Certificate Manager Operator</strong> into the target OCP cluster.</p>
+<p># DO NOT USE 'Community Certificate Manager', STILL NOT WORKING</p>
+<ul>
+<li>Red Hat Certificate Manager Operatos will be installed into the <code>cert-manager-operator</code> namespace and the Operand will be created in the <code>cert-manager</code> namespace.</li>
+<li>Community Certificate Manager Operatos will be installed into the <code>cert-manager-community-operator</code> namespace and the Operand will be created in the <code>cert-manager-community</code> namespace.</li>
+</ul>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link"></a></h2>
+<h3 id="red-hat-certificate-manager">Red Hat Certificate Manager<a class="headerlink" href="#red-hat-certificate-manager" title="Permanent link"></a></h3>
+<p>You must have already installed the <strong>Red Hat Operators</strong> CatalogSource.</p>
+<h3 id="community-certificate-manager">Community Certificate Manager<a class="headerlink" href="#community-certificate-manager" title="Permanent link"></a></h3>
+<p>You must have already installed the <strong>Community Operators</strong> CatalogSource.</p>
 <h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
-<p>Environment variables for this role:</p>
-<table>
-<thead>
-<tr>
-<th>Environment Variable</th>
-<th>Default Value</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ENTITLED_REGISTRY_KEY</td>
-<td>N/A</td>
-<td>Yes</td>
-<td>Entitlement registry key</td>
-</tr>
-<tr>
-<td>SEAS_NAMESPACE</td>
-<td>N/A</td>
-<td>Yes</td>
-<td>Namespace for SEAS application</td>
-</tr>
-<tr>
-<td>SEAS_VERSION</td>
-<td>6.1.0.0.06</td>
-<td>No</td>
-<td>Version of SEAS application</td>
-</tr>
-<tr>
-<td>SEAS_SYS_PASSPHRASE</td>
-<td>Passw0rd@</td>
-<td>No</td>
-<td>System passphrase for SEAS application</td>
-</tr>
-<tr>
-<td>SEAS_ADMIN_PASSWORD</td>
-<td>Passw0rd@</td>
-<td>No</td>
-<td>Admin password for SEAS application</td>
-</tr>
-<tr>
-<td>SEAS_KEYSTORE_PASSPHRASE</td>
-<td>Change1t@</td>
-<td>No</td>
-<td>Keystore passphrase for SEAS application</td>
-</tr>
-<tr>
-<td>SEAS_TRUSTSTOREPASSWORD</td>
-<td>Change1t@</td>
-<td>No</td>
-<td>Truststore passphrase for SEAS application</td>
-</tr>
-<tr>
-<td>SEAS_LICENSETYPE</td>
-<td>non-prod</td>
-<td>No</td>
-<td>License type for SEAS application (prod or non-prod)</td>
-</tr>
-</tbody>
-</table>
+<h3 id="cert_manager_action">cert_manager_action<a class="headerlink" href="#cert_manager_action" title="Permanent link"></a></h3>
+<p>Inform the role whether to perform an <code>install</code> or an <code>uninstall</code> the Certificate Manager service, action can also be set to <code>none</code> to instruct the role to take no action.</p>
+<ul>
+<li>Optional</li>
+<li>Environment Variable: <code>CERT_MANAGER_ACTION</code></li>
+<li>Default: <code>install</code></li>
+</ul>
+<h3 id="cert_manager_provider">cert_manager_provider<a class="headerlink" href="#cert_manager_provider" title="Permanent link"></a></h3>
+<p>Choose which flavour of Certificate Manager to install; Red Hat (<code>redhat</code>) or Community (<code>community</code>)</p>
+<ul>
+<li>Optional</li>
+<li>Environment Variable: <code>CERT_MANAGER_PROVIDER</code></li>
+<li>Default: <code>community</code></li>
+</ul>
+<p><strong>Note:</strong> Certificate Manager is a cluster-wide dependency, therefore be really careful when uninstalling it as this might be used by several applications and dependencies installed in the cluster.</p>
+<h2 id="example-playbook">Example Playbook<a class="headerlink" href="#example-playbook" title="Permanent link"></a></h2>
+<p>After installing the Ansible Collection you can include this role in your own custom playbooks.</p>
+<h3 id="red-hat-certificate-manager_1">Red Hat Certificate Manager<a class="headerlink" href="#red-hat-certificate-manager_1" title="Permanent link"></a></h3>
+<pre><code class="language-yaml">- hosts: localhost
+  vars:
+    - cert_manager_action: install
+    - cert_manager_provider: redhat
+  roles:
+    - cert_manager
+</code></pre>
+<h3 id="community-certificate-manager_1">Community Certificate Manager<a class="headerlink" href="#community-certificate-manager_1" title="Permanent link"></a></h3>
+<pre><code class="language-yaml">- hosts: localhost
+  vars:
+    - cert_manager_action: install
+    - cert_manager_provider: community
+  roles:
+    - cert_manager
+</code></pre>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link"></a></h2>
+<p>EPL-2.0</p>
               
             </div>
           </div><footer>
@@ -277,10 +285,10 @@
         </span>
     
     
-      <span><a href="../scc_setup_db2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../ssp_ps_deploy/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../ssp_cm_deploy/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../cloudbeaver/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
