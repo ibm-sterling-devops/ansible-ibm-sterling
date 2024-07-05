@@ -12,6 +12,7 @@ function copyDoc() {
 
 copyDoc cd_deploy
 copyDoc cdws_deploy
+copyDoc cert_manager
 copyDoc cloudbeaver
 copyDoc db2_console
 copyDoc itx_rs_deploy
