@@ -53,6 +53,7 @@ nav:
     - "ssp_deploy": roles/ssp_deploy.md
     - "ssp_ps_deploy": roles/ssp_ps_deploy.md
   - "Roles: Tools":
+    - "cert_manager": roles/cert_manager.md
     - "cloudbeaver": roles/cloudbeaver.md
     - "kafka": roles/kafka.md
     - "kowl": roles/kowl.md

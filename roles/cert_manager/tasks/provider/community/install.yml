@@ -1,0 +1,111 @@
+---
+# The following Community Certificate subscription/operator will be installed in the 'cert-manager-operator' namespace:
+# - cert-manager-operator-controller-manager
+#
+# The following Community Certificate deployment and pods will be installed in the 'cert-manager' namespace:
+# - cert-manager
+# - cert-manager-cainjector
+# - cert-manager-webhook
+
+# 4. Create Subscription
+# -----------------------------------------------------------------------------
+- name: "Install: Create Certificate Manager Subscription - {{ cert_manager_provider }}"
+  ansible.builtin.include_tasks: "tasks/common/create_subscription.yml"
+  vars:
+    subscription_namespace: "{{ cert_manager_operator_namespace }}"
+    package_name: "{{ cert_manager_package_name }}"
+    channel_name: "{{ cert_manager_channel }}"
+
+# # 5. Wait for Subscription to be processed
+# # -----------------------------------------------------------------------------
+# - name: "Install: Wait for cert-manager-operator-controller-manager to be ready (60s delay) - {{ cert_manager_provider }}"
+#   kubernetes.core.k8s_info:
+#     api_version: apps/v1
+#     name: cert-manager-operator-controller-manager
+#     namespace: "{{ cert_manager_operator_namespace }}"
+#     kind: Deployment
+#   register: certmanager_deployment
+#   until:
+#     - certmanager_deployment.resources is defined
+#     - certmanager_deployment.resources | length > 0
+#     - certmanager_deployment.resources[0].status is defined
+#     - certmanager_deployment.resources[0].status.replicas is defined
+#     - certmanager_deployment.resources[0].status.readyReplicas is defined
+#     - certmanager_deployment.resources[0].status.readyReplicas == certmanager_deployment.resources[0].status.replicas
+#   retries: 30 # Approximately 1/2 hour before we give up
+#   delay: 60 # 1 minute
+
+
+# 6. Create the CertManager instance
+# -----------------------------------------------------------------------------
+- name: "Install: Wait for CertManager Cluster Custom Resource to be created"
+  kubernetes.core.k8s_info:
+    api_version: operator.openshift.io/v1alpha1
+    name: cluster
+    kind: CertManager
+  register: certmanager_cluster_cr
+  until:
+    - certmanager_cluster_cr.resources is defined
+    - certmanager_cluster_cr.resources | length > 0
+  retries: 10 # Approximately 5 minutes before we give up
+  delay: 30 # 30 seconds
+
+- name: "Install: Lookup mas-rh-cert-manager-config configmap"
+  kubernetes.core.k8s_info:
+    api_version: v1
+    name: mas-rh-cert-manager-config
+    namespace: ibm-common-services
+    kind: ConfigMap
+  register: configmap_output
+
+- name: "Install: Set Certificate Manager Cluster Resource Namespace from ibm-ccp-config configmap data"
+  ansible.builtin.set_fact:
+    cert_manager_cluster_resource_namespace: "{{ configmap_output.resources[0].data.cert_manager_cluster_resource_namespace }}"
+  when: configmap_output.resources[0].data.cert_manager_cluster_resource_namespace is defined
+
+- name: "Install: Debug"
+  ansible.builtin.debug:
+    msg: "Certificate Manager Cluster Resource Namespace .............. {{ cert_manager_cluster_resource_namespace | default(cert_manager_namespace, true )}}"
+
+# The ClusterIssuer resource is cluster scoped. This means that when referencing a secret via the secretName field
+# secrets will be looked for in the Cluster Resource Namespace. By default, this namespace is cert-manager
+# however it can be changed via '--cluster-resource-namespace' on the cert-manager-controller
+- name: "Install: Patch CertManager CR to define Cluster Resource Namespace"
+  kubernetes.core.k8s:
+    merge_type: merge
+    definition: "{{ lookup('template', 'templates/redhat/cert-manager-cluster.yml.j2') }}"
+
+- name: "Install: Wait for cert-manager-operator to be up again (60s delay) - {{ cert_manager_provider }}"
+  kubernetes.core.k8s_info:
+    api_version: apps/v1
+    name: cert-manager-community
+    namespace: "{{ cert_manager_namespace }}"
+    kind: Deployment
+  register: certmanager_deployment
+  until:
+    - certmanager_deployment.resources is defined
+    - certmanager_deployment.resources | length > 0
+    - certmanager_deployment.resources[0].status is defined
+    - certmanager_deployment.resources[0].status.replicas is defined
+    - certmanager_deployment.resources[0].status.readyReplicas is defined
+    - certmanager_deployment.resources[0].status.readyReplicas == certmanager_deployment.resources[0].status.replicas
+  retries: 30 # Approximately 1/2 hour before we give up
+  delay: 60 # 1 minute
+
+- name: "Install: Wait for cert-manager-webhook deployment to be ready (60s delay) - {{ cert_manager_provider }}"
+  kubernetes.core.k8s_info:
+    api_version: apps/v1
+    name: cert-manager-webhook
+    namespace: "{{ cert_manager_namespace }}"
+    kind: Deployment
+  register: certmanager_webhook_deployment
+  until:
+    - certmanager_webhook_deployment.resources is defined
+    - certmanager_webhook_deployment.resources | length > 0
+    - certmanager_webhook_deployment.resources[0].status is defined
+    - certmanager_webhook_deployment.resources[0].status.replicas is defined
+    - certmanager_webhook_deployment.resources[0].status.readyReplicas is defined
+    - certmanager_webhook_deployment.resources[0].status.readyReplicas == certmanager_webhook_deployment.resources[0].status.replicas
+  retries: 60 # Approximately 1/2 hour before we give up
+  delay: 60 # 1 minute
+

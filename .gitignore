@@ -1,7 +1,7 @@
 *.DS_Store*
 .env
 .vscode
-result.txt
+result*.txt
 readme.txt
 
 hosts*
@@ -12,6 +12,8 @@ playbooks/my*
 playbooks/cleanup/dev*
 roles/dev*
 docs/dev*
+temporary
+temporary/*
 resultado.txt
 
 roles/ibm/cd-unix/dev
