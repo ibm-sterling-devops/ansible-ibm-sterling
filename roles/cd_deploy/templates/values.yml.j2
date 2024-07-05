@@ -60,7 +60,7 @@ pvClaim:
   selector:
     label: "intent"
     value: "cd-vol"
-  size: {{ cd_other_values.pvClaim.size | default('100Mi') }}
+  size: {{ cd_storage_capacity }}
 
 service:
   type: "LoadBalancer"
@@ -105,13 +105,13 @@ serviceAccount:
 
 resources:
   limits:
-    cpu: 500m
-    memory: 2000Mi
-    ephemeral-storage: "5Gi"
+    cpu: {{ cd_cpu_limits }}
+    memory: {{ cd_mem_limits }}
+    ephemeral-storage: "{{ cd_ephemeral_storage_limits }}"
   requests:
-    cpu: 500m
-    memory: 2000Mi
-    ephemeral-storage: "3Gi"
+    cpu: {{ cd_cpu_requests }}
+    memory: {{ cd_mem_requests }}
+    ephemeral-storage: "{{ cd_ephemeral_storage_requests }}"
 
 dashboard:
   enabled: {{ cd_other_values.dashboard.enabled | default('false') }}

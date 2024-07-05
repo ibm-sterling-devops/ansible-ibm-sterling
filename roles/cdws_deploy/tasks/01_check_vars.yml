@@ -2,8 +2,6 @@
 - name: Check for required environment variables
   ansible.builtin.assert:
     that:
-      # CONNECT:DIRECT
-      - lookup('env', 'CDWS_NAMESPACE') != ""
       # IBM
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"

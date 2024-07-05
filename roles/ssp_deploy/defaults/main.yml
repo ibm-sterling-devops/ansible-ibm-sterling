@@ -5,7 +5,7 @@ ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.03plus', true) }}"
-ssp_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+ssp_license_type: "{{ lookup('env', 'SSP_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 
 ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
 ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') | default('changeit', true) }}"
@@ -14,6 +14,20 @@ ssp_custom_keycert_passphrase: "{{ lookup('env', 'SSP_CUSTOM_KEYCERT_PASSPHRASE'
 
 ssp_timezone: "{{ lookup('env', ' SSP_TIMEZONE') | default('America/New_York', true) }}"
 # lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=8)
+
+# Storage configuration
+ssp_storage_class: "{{ lookup('env', 'SSP_STORAGE_CLASS') }}"
+ssp_storage_capacity: "{{ lookup('env', 'SSP_STORAGE_CAPACITY') | default('1Gi', True) }}"
+
+# CPU and memory limits configuration on the container
+ssp_cpu_limits: "{{ lookup('env', 'SSP_CPU_LIMITS') | default('1000m', true) }}"
+ssp_mem_limits: "{{ lookup('env', 'SSP_MEM_LIMITS') | default('3Gi', true) }}"
+ssp_ephemeral_storage_limits: "{{ lookup('env', 'SSP_EPHEMERAL_STORAGE_LIMITS') | default('6Gi', true) }}"
+
+# CPU and memory request configuration on the container
+ssp_cpu_requests: "{{ lookup('env', 'SSP_CPU_REQUESTS') | default('1000m', true) }}"
+ssp_mem_requests: "{{ lookup('env', 'SSP_MEM_REQUESTS') | default('3Gi', true) }}"
+ssp_ephemeral_storage_requests: "{{ lookup('env', 'SSP_EPHEMERAL_STORAGE_REQUESTS') | default('4Gi', true) }}"
 
 # Configure instance
 # -----------------------------------------------------------------------------

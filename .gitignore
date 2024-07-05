@@ -6,6 +6,8 @@ readme.txt
 
 hosts*
 
+*mongodb*
+
 environments/hosts*
 playbooks/dev*
 playbooks/my*

@@ -19,5 +19,5 @@ Environment variables for this role:
 | CD_APPUSER_PWD            | passw0rd                | No       | Password for C:D User                            |
 | CD_LOCALCERTPASSPHRASE    | changeit                | No       | Passphrase for local certificate                 |
 | CD_KEYSTOREPASSWORD       | changeit                | No       | Password for keystore                            |
-| CD_LICENSETYPE            | non-prod                | No       | License type for C:D (prod or non-prod)          |
+| CD_LICENSE_TYPE           | non-prod                | No       | License type for C:D (prod or non-prod)          |
 

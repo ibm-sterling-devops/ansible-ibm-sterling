@@ -46,7 +46,7 @@ persistentVolume:
   labelName: ""
   labelValue: ""
   storageClassName: "{{ storage_class_matrix[ ssp_cm_storage_class ].rwo }}"
-  size: 1Gi
+  size: {{ ssp_cm_storage_capacity }}
   accessMode: "ReadWriteOnce"    
 
 storageSecurity:
@@ -85,13 +85,13 @@ serviceAccount:
 
 resources:
   limits:
-    cpu: 1000m
-    memory: 2Gi
-    ephemeral-storage: "5Gi"
+    cpu: {{ ssp_cm_cpu_limits }}
+    memory: {{ ssp_cm_mem_limits }}
+    ephemeral-storage: {{ ssp_cm_ephemeral_storage_limits }}
   requests:
-    cpu: 1000m
-    memory: 2Gi
-    ephemeral-storage: "3Gi"
+    cpu: {{ ssp_cm_cpu_requests }}
+    memory: {{ ssp_cm_mem_requests }}
+    ephemeral-storage: {{ ssp_cm_ephemeral_storage_requests }}
 
 affinity:
   nodeAffinity:

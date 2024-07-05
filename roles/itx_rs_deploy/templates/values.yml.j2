@@ -80,16 +80,16 @@ redis:
 resources:
   enabled: true
   requests:
-    cpu: "1000m"
-    memory: "4Gi"
+    cpu: {{ itx_rs_cpu_requests }}
+    memory: {{ itx_rs_mem_requests }}
   limits:
-    cpu: "4000m"
-    memory: "16Gi"
+    cpu: {{ itx_rs_cpu_limits }}
+    memory: {{ itx_rs_mem_limits }}
   
 persistence:
   fsGroup: "1001"
   data:
-    capacity: "10Gi"
+    capacity: "{{ itx_rs_storage_capacity_data }}"
     accessMode: ReadWriteOnce
     useDynamicProvisioning: true
     storageClassName: "{{ storage_class_matrix[ itx_rs_storage_class ].rwo }}"
@@ -97,7 +97,7 @@ persistence:
       name: ""
       value: ""
   logs:
-    capacity: "10Gi"
+    capacity: "{{ itx_rs_storage_capacity_logs }}"
     accessMode: ReadWriteOnce
     useDynamicProvisioning: true
     storageClassName: "{{ storage_class_matrix[ itx_rs_storage_class ].rwo }}"

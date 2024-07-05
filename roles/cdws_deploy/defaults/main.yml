@@ -7,7 +7,19 @@ cdws_truststore_password: "{{ lookup('env', 'CDWS_TRUSTSTOREPASSWORD') | default
 cdws_keystore_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('changeit', true) }}"
 cdws_cacert_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('passw0rd', true) }}"
 
-cdws_license_type: "{{ lookup('env', 'CDWS_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+cdws_license_type: "{{ lookup('env', 'CDWS_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
+
+# Storage configuration
+cdws_storage_class: "{{ lookup('env', 'CDWS_STORAGE_CLASS') }}"
+cdws_storage_capacity: "{{ lookup('env', 'CDWS_STORAGE_CAPACITY') | default('500Mi', true) }}"
+
+# CPU and memory limits configuration on the container
+cdws_cpu_limits: "{{ lookup('env', 'CDWS_CPU_LIMITS') | default('3000m', true) }}"
+cdws_mem_limits: "{{ lookup('env', 'CDWS_MEM_LIMITS') | default('2Gi', true) }}"
+
+# CPU and memory request configuration on the container
+cdws_cpu_requests: "{{ lookup('env', 'CDWS_CPU_REQUESTS') | default('1500m', true) }}"
+cdws_mem_requests: "{{ lookup('env', 'CDWS_MEM_REQUESTS') | default('1Gi', true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------

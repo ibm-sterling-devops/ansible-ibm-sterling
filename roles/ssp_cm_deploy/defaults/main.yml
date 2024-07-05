@@ -18,6 +18,20 @@ ssp_cmservercert_password: "{{ lookup('env', 'SSP_CMSERVERCERT_PASSWORD') | defa
 ssp_webcert_password: "{{ lookup('env', 'SSP_WEBCERT_PASSWORD') | default('Passw0rd@', true) }}"
 ssp_exportcert_password: "{{ lookup('env', 'SSP_EXPORTEDCERT_PASSWORD') | default('Passw0rd@', true) }}"
 
+# Storage configuration
+ssp_cm_storage_class: "{{ lookup('env', 'SSP_CM_STORAGE_CLASS') }}"
+ssp_cm_storage_capacity: "{{ lookup('env', 'SSP_CM_STORAGE_CAPACITY') | default('1Gi', true) }}"
+
+# CPU and memory limits configuration on the container
+ssp_cm_cpu_limits: "{{ lookup('env', 'SSP_CM_CPU_LIMITS') | default('1000m', true) }}"
+ssp_cm_mem_limits: "{{ lookup('env', 'SSP_CM_MEM_LIMITS') | default('2Gi', true) }}"
+ssp_cm_ephemeral_storage_limits: "{{ lookup('env', 'SSP_CM_EPHEMERAL_STORAGE_LIMITS') | default('5Gi', true) }}"
+
+# CPU and memory request configuration on the container
+ssp_cm_cpu_requests: "{{ lookup('env', 'SSP_CM_CPU_REQUESTS') | default('1000m', true) }}"
+ssp_cm_mem_requests: "{{ lookup('env', 'SSP_CM_MEM_REQUESTS') | default('2Gi', true) }}"
+ssp_cm_ephemeral_storage_requests: "{{ lookup('env', 'SSP_CM_EPHEMERAL_STORAGE_REQUESTS') | default('3Gi', true) }}"
+
 # Entitlement
 # -----------------------------------------------------------------------------
 entitled_registry: "cp.icr.io"

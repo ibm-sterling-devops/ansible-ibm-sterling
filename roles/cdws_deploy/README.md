@@ -17,4 +17,4 @@ Environment variables for this role:
 | CDWS_TRUSTSTOREPASSWORD     | changeit               | No       | Password for truststore                          |
 | CDWS_KEYSTOREPASSWORD       | changeit               | No       | Password for keystore                            |
 | CDWS_CACERT_PASSWORD        | passw0rd               | No       | Password for CA certificate                      |
-| CDWS_LICENSETYPE            | non-prod               | No       | License type for C:D application (prod or non-prod) |
+| CDWS_LICENSE_TYPE           | non-prod               | No       | License type for C:D application (prod or non-prod) |

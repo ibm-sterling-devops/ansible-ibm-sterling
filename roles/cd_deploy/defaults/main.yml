@@ -9,7 +9,21 @@ cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) 
 cd_local_cert_passphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default('changeit', true) }}"
 cd_keystore_password: "{{ lookup('env', 'CD_KEYSTOREPASSWORD') | default('changeit', true) }}"
 
-cd_license_type: "{{ lookup('env', 'CD_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
+cd_license_type: "{{ lookup('env', 'CD_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
+
+# Storage configuration
+cd_storage_class: "{{ lookup('env', 'CD_STORAGE_CLASS') }}"
+cd_storage_capacity: "{{ lookup('env', 'CD_STORAGE_CAPACITY') | default('1Gi', true) }}"
+
+# CPU and memory limits configuration on the container
+cd_cpu_limits: "{{ lookup('env', 'CD_CPU_LIMITS') | default('500m', true) }}"
+cd_mem_limits: "{{ lookup('env', 'CD_MEM_LIMITS') | default('2000Mi', true) }}"
+cd_ephemeral_storage_limits: "{{ lookup('env', 'CD_EPHEMERAL_STORAGE_LIMITS') | default('5Gi', true) }}"
+
+# CPU and memory request configuration on the container
+cd_cpu_requests: "{{ lookup('env', 'CD_CPU_REQUESTS') | default('500m', true) }}"
+cd_mem_requests: "{{ lookup('env', 'CD_MEM_REQUESTS') | default('2000Mi', true) }}"
+cd_ephemeral_storage_requests: "{{ lookup('env', 'CD_EPHEMERAL_STORAGE_REQUESTS') | default('3Gi', true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------

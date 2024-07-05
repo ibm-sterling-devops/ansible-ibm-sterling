@@ -5,7 +5,6 @@
     state: absent
   with_items:
     - "{{ my_workdir }}/ibm-cdws-{{ compatibility_matrix[cdws_version].helm_version }}.tgz"
-    - "{{ my_workdir }}/mycdws_values.yml"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:

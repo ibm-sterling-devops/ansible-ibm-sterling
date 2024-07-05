@@ -69,13 +69,11 @@ defaultPodDisruptionBudget:
 
 resources:
   limits:
-    cpu: 3000m
-    memory: 2Gi
-    ephemeral-storage: "3Gi"
+    cpu: {{ cdws_cpu_limits }}
+    memory: {{ cdws_mem_limits }}
   requests:
-    cpu: 1500m
-    memory: 1Gi
-    ephemeral-storage: "2Gi"
+    cpu: {{ cdws_cpu_requests }}
+    memory: {{ cdws_mem_requests }}
 
 initResources:
   limits:
@@ -122,7 +120,7 @@ pvClaim:
   selector:
     label: "intent"
     value: "cdws-vol"
-  size: {{ cdws_other_values.pvClaim.size | default('100Mi') }} #500Mi
+  size: {{ cdws_storage_capacity }}
 
 persistentVolumeExtra:
   enabled: false
