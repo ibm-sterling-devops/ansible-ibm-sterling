@@ -28,7 +28,7 @@ nav:
       - "Deploy Kafka": playbooks/tools_deploy_kafka.md
       - "Deploy Kowl": playbooks/tools_deploy_kowl.md
       - "Deploy MinIO S3 storage": playbooks/tools_deploy_minio.md
-      - "Deploy MongoDB": playbooks/tools_deploy_mongodb.md
+      # - "Deploy MongoDB": playbooks/tools_deploy_mongodb.md
       - "Deploy OpenLDAP as LDAP Server": playbooks/tools_deploy_openldap.md
   - "Roles:":
     - "cd_deploy": roles/cd_deploy.md
