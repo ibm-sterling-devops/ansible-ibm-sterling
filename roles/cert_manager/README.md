@@ -2,7 +2,8 @@ cert_manager
 ===============================================================================
 Deploy **Red Hat Certificate Manager Operator** into the target OCP cluster.
 
- # DO NOT USE 'Community Certificate Manager', STILL NOT WORKING
+!!! tip
+    DO NOT USE 'Community Certificate Manager', STILL NOT WORKING
 
 - Red Hat Certificate Manager Operatos will be installed into the `cert-manager-operator` namespace and the Operand will be created in the `cert-manager` namespace.
 - Community Certificate Manager Operatos will be installed into the `cert-manager-community-operator` namespace and the Operand will be created in the `cert-manager-community` namespace.
