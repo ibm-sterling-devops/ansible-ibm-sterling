@@ -1,9 +1,9 @@
 ---
 - name: Check for required environment variables
-  ansible.builtin.include_tasks: 01_check_vars.yml
+  ansible.builtin.include_tasks: tasks/provider/standard/01_check_vars.yml
 
 - name: Create namespace and secrets
-  ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
+  ansible.builtin.include_tasks: tasks/provider/standard/02_create_namespace_secrets.yml
 
 # 2. Load default storage classes (if not provided by the user and not an update)
 # -----------------------------------------------------------------------------
@@ -11,10 +11,10 @@
   ansible.builtin.include_tasks: tasks/common/lookup_storage_classes.yml
 
 - name: Define Storage
-  ansible.builtin.include_tasks: 03_define_storage.yml
+  ansible.builtin.include_tasks: tasks/provider/standard/03_define_storage.yml
 
 - name: Configure ConfigMaps
-  ansible.builtin.include_tasks: 04_configure_configmaps.yml
+  ansible.builtin.include_tasks: tasks/provider/standard/04_configure_configmaps.yml
 
 - name: Deploy MinIO
-  ansible.builtin.include_tasks: 05_deploy_minio.yml
+  ansible.builtin.include_tasks: tasks/provider/standard/05_deploy_minio.yml
