@@ -24,7 +24,10 @@ oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:312
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 ```
 
-## Exporting variables
+
+## Deploy you Connect:Direct 
+
+#### Exporting variables
 
 To run playbook the playbook
 
@@ -33,15 +36,43 @@ cd ansible-ibm-sterling
 
 export ANSIBLE_CONFIG=./ansible.cfg 
 
-export ENTITLED_REGISTRY_KEY=<entitlement_key>
-export CD_NAMESPACE=sterling-cdnode01-dev
 export CD_NODENAME=CDNODE01
 ```
 
-## Run the Plabook
+#### Run the Plabook
 
 To run playbook the playbook
 
 ```bash 
 ansible-playbook playbooks/deploy_cd.yml
 ```
+
+check for **sterling-cdnode01-dev** namespace. The C:D node name will be **CDNODE01**
+
+
+## Sample 1: Change namespace and C:D node name
+
+#### Exporting variables
+
+To run playbook the playbook
+
+```bash 
+cd ansible-ibm-sterling
+
+export CD_NAMESPACE=sterling-cdcompany01-prod
+export CD_NODENAME=COMPANY01
+```
+
+#### Run the Plabook
+
+To run playbook the playbook
+
+```bash 
+ansible-playbook playbooks/deploy_cd.yml
+```
+
+# Environment Variable
+
+For all environment variables
+
+* Role [cd_deploy](../../roles/cd_deploy)

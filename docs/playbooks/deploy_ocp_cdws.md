@@ -42,3 +42,10 @@ To run playbook the playbook
 ansible-playbook playbooks/deploy_cdws.yml
 ```
 
+check for **sterling-cdws01** namespace in Kubernetes/Openshift console.
+
+# Environment Variable
+
+For all environment variables
+
+* Role [cd_deploy](../../roles/cdws_deploy)
