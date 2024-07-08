@@ -65,9 +65,21 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#exporting-variables">Exporting variables</a>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy-you-connectdirect">Deploy you Connect:Direct</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#exporting-variables">Exporting variables</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
+    <li class="toctree-l3"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sample-1-change-namespace-and-cd-node-name">Sample 1: Change namespace and C:D node name</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#exporting-variables_1">Exporting variables</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#run-the-plabook_1">Run the Plabook</a>
+    </li>
+        </ul>
     </li>
     </ul>
                   </li>
@@ -206,20 +218,37 @@
 <h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
 <pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 </code></pre>
-<h2 id="exporting-variables">Exporting variables<a class="headerlink" href="#exporting-variables" title="Permanent link"></a></h2>
+<h2 id="deploy-you-connectdirect">Deploy you Connect:Direct<a class="headerlink" href="#deploy-you-connectdirect" title="Permanent link"></a></h2>
+<h4 id="exporting-variables">Exporting variables<a class="headerlink" href="#exporting-variables" title="Permanent link"></a></h4>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">cd ansible-ibm-sterling
 
 export ANSIBLE_CONFIG=./ansible.cfg 
 
-export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
-export CD_NAMESPACE=sterling-cdnode01-dev
 export CD_NODENAME=CDNODE01
 </code></pre>
-<h2 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h2>
+<h4 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h4>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_cd.yml
 </code></pre>
+<p>check for <strong>sterling-cdnode01-dev</strong> namespace. The C:D node name will be <strong>CDNODE01</strong></p>
+<h2 id="sample-1-change-namespace-and-cd-node-name">Sample 1: Change namespace and C:D node name<a class="headerlink" href="#sample-1-change-namespace-and-cd-node-name" title="Permanent link"></a></h2>
+<h4 id="exporting-variables_1">Exporting variables<a class="headerlink" href="#exporting-variables_1" title="Permanent link"></a></h4>
+<p>To run playbook the playbook</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+
+export CD_NAMESPACE=sterling-cdcompany01-prod
+export CD_NODENAME=COMPANY01
+</code></pre>
+<h4 id="run-the-plabook_1">Run the Plabook<a class="headerlink" href="#run-the-plabook_1" title="Permanent link"></a></h4>
+<p>To run playbook the playbook</p>
+<pre><code class="language-bash">ansible-playbook playbooks/deploy_cd.yml
+</code></pre>
+<h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>
+<p>For all environment variables</p>
+<ul>
+<li>Role <a href="../../roles/cd_deploy">cd_deploy</a></li>
+</ul>
               
             </div>
           </div><footer>
