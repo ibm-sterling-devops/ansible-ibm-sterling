@@ -1,12 +1,14 @@
 ---
+# Currently supported providers are community
+minio_provider: "{{ lookup('env', 'MINIO_PROVIDER') | default('standard', true) }}"
+minio_action: "{{ lookup('env', 'MINIO_ACTION') | default('install', true) }}"
+
 minio_namespace: "{{ lookup('env', 'MINIO_NAMESPACE') | default('sterling-minio', true) }}"
 
 minio_root_user: "{{ lookup('env', 'MINIO_ROOT_USER') | default('root', true) }}"
 minio_root_password: "{{ lookup('env', 'MINIO_ROOT_PASSWORD') | default('passw0rd', true) }}"
-minio_storage_size: "{{ lookup('env', 'MINIO_STORAGE_SIZE') | default('100Mi', true) }}" # 10Gi
+minio_storage_size: "{{ lookup('env', 'MINIO_STORAGE_SIZE') | default('10Gi', true) }}"
 
-minio_image: quay.io/minio/minio:latest
-minio_pvc_name: minio-pvc-data
 
 storage_class_matrix:
   ibmcloud:

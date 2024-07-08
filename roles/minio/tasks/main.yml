@@ -1,18 +1,12 @@
 ---
-- name: Check for required environment variables
-  ansible.builtin.include_tasks: 01_check_vars.yml
+# 1. Check for undefined properties that do not have a default
+# -----------------------------------------------------------------------------
+- name: "Fail if minio_provider is not provided"
+  ansible.builtin.assert:
+    that: minio_provider is defined and minio_provider != ""
+    fail_msg: "minio_provider property is required"
 
-- name: Create namespace and secrets
-  ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
-
-- name: Define Storage
-  ansible.builtin.include_tasks: 03_define_storage.yml
-
-- name: Create Storage
-  ansible.builtin.include_tasks: 04_create_storage.yml
-
-- name: Configure ConfigMaps
-  ansible.builtin.include_tasks: 05_configure_configmaps.yml
-
-- name: Deploy MinIO
-  ansible.builtin.include_tasks: 06_deploy_minio.yml
+- name: Run the install / uninstall for specified provider
+  ansible.builtin.include_tasks: "tasks/provider/{{ minio_provider }}/{{ minio_action }}.yml"
+  when:
+    - minio_action != "none"

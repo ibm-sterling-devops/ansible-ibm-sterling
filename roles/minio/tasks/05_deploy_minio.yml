@@ -1,7 +1,7 @@
 ---
 # Apply Deployment
 # -----------------------------------------------------------------------------
-- name: Apply Deployment OpenLDAP
+- name: Apply Deployment MinIO
   kubernetes.core.k8s:
     state: present
     definition:
@@ -26,7 +26,7 @@
             serviceAccountName: minio-sa
             containers:
               - name: minio
-                image: "{{ minio_image }}"
+                image: "quay.io/minio/minio:latest"
                 args:
                   - server
                   - /data
