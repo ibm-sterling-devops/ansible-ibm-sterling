@@ -1,0 +1,116 @@
+---
+- name: "Create namespace for {{ operator_namespace }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: "{{ operator_namespace }}"
+        labels:
+          name: "{{ operator_namespace }}"
+          pod-security.kubernetes.io/enforce: restricted
+          pod-security.kubernetes.io/enforce-version: latest
+          pod-security.kubernetes.io/audit: restricted
+          pod-security.kubernetes.io/audit-version: latest
+          pod-security.kubernetes.io/warn: restricted
+          pod-security.kubernetes.io/warn-version: latest
+  register: cout
+  when: 
+    - not subscription_exists
+    - not operator_namespace_exists 
+
+
+# Create Subscription namespace
+# -----------------------------------------------------------------------------
+- name: Create Subscription
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: Subscription
+      metadata:
+        name: "{{ subscription_name }}"
+        namespace: "{{ subscription_namespace }}"
+      spec:
+        channel: "{{ subscription_channel }}"
+        installPlanApproval: Automatic
+        name: "{{ subscription_name }}"
+        source: "{{ catalog_source_name }}"
+        sourceNamespace: "{{ catalog_source_namespace }}"
+        startingCSV: minio-operator.v5.0.15
+  register: cout_subscription
+  when: 
+    - not subscription_exists
+    - not operator_namespace_exists 
+
+# # Create 
+# -----------------------------------------------------------------------------
+- name: Create Service console_v1_service.yaml
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/console_v1_service.yaml.j2') }}"
+
+- name: "Create Service operator_v1_service.yaml"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/operator_v1_service.yaml.j2') }}"
+
+- name: "Create Service sts_v1_service.yaml"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/sts_v1_service.yaml.j2') }}"
+
+- name: "Create ConfigMap console-env_v1_configmap.yaml"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/console-env_v1_configmap.yaml.j2') }}"
+
+- name: "Create Secret console-sa-secret_v1_secret.yaml"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/console-sa-secret_v1_secret.yaml.j2') }}"
+
+- name: "Create CustomResourceDefinition job.min.io_miniojobs.yaml.j2"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/job.min.io_miniojobs.yaml.j2') }}"
+
+- name: "Create CustomResourceDefinition minio.min.io_tenants.yaml"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/minio.min.io_tenants.yaml.j2') }}"
+
+- name: "Create CustomResourceDefinition sts.min.io_policybindings.yaml"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/sts.min.io_policybindings.yaml.j2') }}"
+
+- name: "Create ClusterServiceVersion minio-operator-rhmp.clusterserviceversion.yaml"
+  kubernetes.core.k8s:
+    apply: yes
+    definition: "{{ lookup('template', 'templates/minio/minio-operator-rhmp.clusterserviceversion.yaml.j2') }}"
+    # wait: yes
+    # wait_condition:
+    #   status: "True"
+    #   type: Available
+
+
+# - name: Create MinIO cluster
+#   kubernetes.core.k8s:
+#     state: present
+#     definition:
+#       apiVersion: minio.min.io/v2
+#       kind: Tenant
+#       metadata:
+#         name: minio-tenant
+#         namespace: sterling-minio
+#       spec:
+#         # Define your tenant specifications here
+#         credsSecret:
+#           name: minio-creds-secret
+#         pools:
+#           - servers: 4
+#             volumesPerServer: 4
+#             size: 10Gi
+#         mountPath: /export

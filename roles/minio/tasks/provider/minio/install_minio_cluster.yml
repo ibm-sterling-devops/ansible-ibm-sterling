@@ -1,0 +1,35 @@
+---
+- name: "Create namespace for {{ operator_namespace }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: sterling-minio
+        labels:
+          name: sterling-minio
+
+  register: cout
+
+
+- name: Create MinIO cluster
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: minio.min.io/v2
+      kind: Tenant
+      metadata:
+        name: minio-tenant
+        namespace: sterling-minio
+      spec:
+        # Define your tenant specifications here
+        credsSecret:
+          name: minio-creds-secret
+        pools:
+          - servers: 4
+            volumesPerServer: 4
+            size: 10Gi
+        mountPath: /export
+        buckets:
+          - name: sterling-b2b-docs

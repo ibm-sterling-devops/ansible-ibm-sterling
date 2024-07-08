@@ -6,6 +6,11 @@
     that: minio_provider is defined and minio_provider != ""
     fail_msg: "minio_provider property is required"
 
+- name: Configure MinIO variables
+  ansible.builtin.debug:
+    msg:
+      - "MinIO Provider .................. {{ minio_provider }}"
+
 - name: Run the install / uninstall for specified provider
   ansible.builtin.include_tasks: "tasks/provider/{{ minio_provider }}/{{ minio_action }}.yml"
   when:

@@ -1,0 +1,34 @@
+---
+# 1. Check for existing MinIO install
+# -----------------------------------------------------------------------------
+- name: Default Facts for MinIO
+  ansible.builtin.set_fact:
+    catalog_source_name: "certified-operators"
+    catalog_source_namespace: "openshift-marketplace"
+    operator_name: "minio-operator"
+    operator_namespace: "minio-operator"
+    subscription_name: minio-operator
+    subscription_namespace: minio-operator
+    subscription_channel: stable
+
+
+- name: "minio : install : Lookup existing minio install"
+  ansible.builtin.include_tasks: tasks/common/lookup_operator.yml
+
+- name: "minio : install : Install MinIO Operator"
+  ansible.builtin.include_tasks: tasks/provider/minio/install_minio_operator.yml
+  when: 
+    - not subscription_exists
+    - not operator_namespace_exists 
+
+- name: "minio : Install MinIO Cluster"
+  ansible.builtin.include_tasks: tasks/provider/minio/install_minio_cluster.yml
+
+# # 2. Load default storage classes (if not provided by the user and not an update)
+# # -----------------------------------------------------------------------------
+# - name: Lookup Storage Classes
+#   ansible.builtin.include_tasks: tasks/common/lookup_storage_classes.yml
+
+# - name: Define Storage Classes
+#   when: existing_mongo_storage_class is not defined
+#   include_tasks: tasks/provider/community/02_define_storage_classes.yml

@@ -1,0 +1,49 @@
+---
+- name: Check if specified operator is installed
+  kubernetes.core.k8s_info:
+    api_version: operators.coreos.com/v1alpha1
+    kind: CatalogSource
+    name: "{{ catalog_source_name }}"
+    namespace: "{{ catalog_source_namespace }}"
+  register: result_catalog_source
+  failed_when: false
+
+# - name: "Debug CatalogSource"
+#   ansible.builtin.debug:
+#     msg:
+#       - "Existing Catalog  ............... {{ result_catalog_source.resources[0] | default('Not Found', true) }}"
+
+- name: Check if namespace exists
+  kubernetes.core.k8s_info:
+    kind: Namespace
+    name: "{{ operator_namespace }}"
+  register: result_operator_namespace
+  failed_when: false
+
+- name: Check if specified operator is installed
+  kubernetes.core.k8s_info:
+    api_version: operators.coreos.com/v1alpha1
+    kind: Subscription
+    name: "{{ subscription_name }}"
+    namespace: "{{ subscription_namespace }}"
+  register: result_subscription
+  failed_when: false
+
+- name: Set facts 
+  ansible.builtin.set_fact:
+    catalog_source_exists: "{{ result_catalog_source.resources | length > 0 }}"
+    operator_namespace_exists: "{{ result_operator_namespace.resources | length > 0 }}"
+    subscription_exists: "{{ result_subscription.resources | length > 0 }}"
+
+- name: "Debug Namespace"
+  ansible.builtin.debug:
+    msg:
+      - "CatalogSource ................ {{ catalog_source_exists }}"
+      - "Operator Namespace ........... {{ operator_namespace_exists }}"
+      - "Subscription  ................ {{ subscription_exists }}"
+
+
+# - name: "Community: Check storage, version ..."
+#   when:
+#     - result_catalog_source.resources[0].spec.version is defined
+#     - result_catalog_source.resources[0] | length > 0

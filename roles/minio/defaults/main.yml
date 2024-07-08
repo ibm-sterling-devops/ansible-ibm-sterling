@@ -1,5 +1,5 @@
 ---
-# Currently supported providers are community
+# Currently supported providers are standard
 minio_provider: "{{ lookup('env', 'MINIO_PROVIDER') | default('standard', true) }}"
 minio_action: "{{ lookup('env', 'MINIO_ACTION') | default('install', true) }}"
 

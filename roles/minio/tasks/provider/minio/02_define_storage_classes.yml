@@ -1,0 +1,19 @@
+---
+# 1. Set Storage (Required)
+# -----------------------------------------------------------------------------
+- name: Default Storage if not set by user
+  ansible.builtin.set_fact:
+    minio_storage_class: "{{ storage_class_matrix[my_storage_class].rwo }}"
+  when: minio_storage_class is not defined or minio_storage_class == ""
+
+- name: Assert that storage class has been defined
+  ansible.builtin.assert:
+    that: minio_storage_class is defined and minio_storage_class != ""
+    fail_msg: "minio_storage_class must be defined"
+
+# 3. Debug storage class configuration
+# -----------------------------------------------------------------------------
+- name: "Debug MinIO storage classes configuration"
+  ansible.builtin.debug:
+    msg:
+      - "Storage class (minio) ...... {{ minio_storage_class }}"
