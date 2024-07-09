@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements-ubuntu/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Requirements - IBM Sterling Devops Ansible</title>
+    <title>Ubuntu Linux - IBM Sterling Devops Ansible</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Requirements";
-        var mkdocs_page_input_path = "requirements.md";
-        var mkdocs_page_url = "/ansible-ibm-sterling/requirements/";
+        var mkdocs_page_name = "Ubuntu Linux";
+        var mkdocs_page_input_path = "requirements-ubuntu.md";
+        var mkdocs_page_url = "/ansible-ibm-sterling/requirements-ubuntu/";
       </script>
     
     <!--[if lt IE 9]>
@@ -45,8 +45,18 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Requirements</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Requirements</a>
     <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../requirements-macos/">MacOS</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../requirements-rh/">Redhat Linux</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Ubuntu Linux</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../requirements-windows/">MS Windows</a>
+                </li>
     </ul>
                   </li>
               </ul>
@@ -173,9 +183,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Getting Started</li>
-      <li class="breadcrumb-item active">Requirements</li>
+          <li class="breadcrumb-item">Requirements</li>
+      <li class="breadcrumb-item active">Ubuntu Linux</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/requirements.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/blob/main/docs/requirements-ubuntu.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -183,31 +194,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <p>Sure, here's the updated guide for installing <code>kubectl</code>, <code>oc</code>, <code>git</code>, and <code>ansible</code> on Linux using <code>yum</code>:</p>
-<h1 id="installation-guide-for-kubectl-oc-git-and-ansible">Installation Guide for kubectl, oc, git, and ansible<a class="headerlink" href="#installation-guide-for-kubectl-oc-git-and-ansible" title="Permanent link"></a></h1>
+                <h1 id="installation-guide-for-kubectl-oc-git-helm-and-ansible-on-ubuntudebian">Installation Guide for kubectl, oc, git, helm and ansible on Ubuntu/Debian<a class="headerlink" href="#installation-guide-for-kubectl-oc-git-helm-and-ansible-on-ubuntudebian" title="Permanent link"></a></h1>
 <h1 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link"></a></h1>
-<h3 id="install-kubectl">Install kubectl<a class="headerlink" href="#install-kubectl" title="Permanent link"></a></h3>
-<ol>
-<li>Download the latest release:</li>
-</ol>
-<pre><code class="language-sh">curl -LO &quot;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&quot;
-</code></pre>
-<ol>
-<li>Make the kubectl binary executable:</li>
-</ol>
-<pre><code class="language-bash">chmod +x ./kubectl
-</code></pre>
-<ol>
-<li>Move the binary to your PATH:</li>
-</ol>
-<pre><code>sudo mv ./kubectl /usr/local/bin/kubectl
-</code></pre>
-<ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
-</ol>
-<pre><code class="language-sh">kubectl version --client
-</code></pre>
-<h3 id="install-oc">Install oc<a class="headerlink" href="#install-oc" title="Permanent link"></a></h3>
+<h3 id="install-kubectl-and-oc">Install kubectl and oc<a class="headerlink" href="#install-kubectl-and-oc" title="Permanent link"></a></h3>
 <ol>
 <li>Download the latest release:</li>
 </ol>
@@ -221,186 +210,51 @@
 <ol>
 <li>Move the binaries to your PATH:</li>
 </ol>
-<pre><code class="language-sh">sudo mv oc kubectl /usr/local/bin/
+<pre><code class="language-sh">chmod +x oc 
+chmod +x kubectl
+
+sudo mv oc kubectl /usr/local/bin/
 </code></pre>
 <ol>
 <li>Test to ensure the version you installed is up-to-date:</li>
 </ol>
 <pre><code class="language-sh">oc version
 </code></pre>
-<h3 id="install-git">Install git<a class="headerlink" href="#install-git" title="Permanent link"></a></h3>
+<h3 id="install-git-ansible-helm">Install git, ansible, helm<a class="headerlink" href="#install-git-ansible-helm" title="Permanent link"></a></h3>
 <ol>
-<li>Install git:</li>
+<li>Add the Helm dependencies:</li>
 </ol>
-<pre><code class="language-sh">sudo yum update -y
-sudo yum install git -y
+<pre><code class="language-sh">curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg &gt; /dev/null
+sudo apt-get install apt-transport-https --yes
+echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main&quot; | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+</code></pre>
+<ol>
+<li>Add the Ansible PPA dependencies:</li>
+</ol>
+<pre><code class="language-sh">sudo apt -y install software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+</code></pre>
+<ol>
+<li>Install packages</li>
+</ol>
+<pre><code class="language-sh">sudo apt -y update
+sudo apt -y install git ansible helm
 </code></pre>
 <ol>
 <li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">git --version
 </code></pre>
-<h3 id="install-ansible">Install ansible<a class="headerlink" href="#install-ansible" title="Permanent link"></a></h3>
-<ol>
-<li>Install the dependencies:</li>
-</ol>
-<pre><code class="language-sh">sudo yum install epel-release -y
-sudo yum update -y
-</code></pre>
-<ol>
-<li>Install Ansible:</li>
-</ol>
-<pre><code class="language-sh">sudo yum install ansible -y
-</code></pre>
 <ol>
 <li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">ansible --version
 </code></pre>
-<h1 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link"></a></h1>
-<h3 id="install-kubectl_1">Install kubectl<a class="headerlink" href="#install-kubectl_1" title="Permanent link"></a></h3>
-<ol>
-<li>Install with Homebrew:</li>
-</ol>
-<pre><code class="language-sh">brew install kubectl
-</code></pre>
-<ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
-</ol>
-<pre><code class="language-sh">kubectl version --client
-</code></pre>
-<h3 id="install-oc_1">Install oc<a class="headerlink" href="#install-oc_1" title="Permanent link"></a></h3>
-<ol>
-<li>Install with Homebrew:</li>
-</ol>
-<pre><code class="language-sh">brew install openshift-cli
-</code></pre>
-<ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
-</ol>
-<pre><code class="language-sh">oc version
-</code></pre>
-<h3 id="install-git_1">Install git<a class="headerlink" href="#install-git_1" title="Permanent link"></a></h3>
 <ol>
 <li>Verify the installation:</li>
 </ol>
-<pre><code class="language-sh">git --version
+<pre><code class="language-sh">helm --version
 </code></pre>
-<h3 id="install-ansible_1">Install ansible<a class="headerlink" href="#install-ansible_1" title="Permanent link"></a></h3>
-<ol>
-<li>Install Ansible with Homebrew:</li>
-</ol>
-<pre><code class="language-sh">brew install ansible
-</code></pre>
-<ol>
-<li>Verify the installation:</li>
-</ol>
-<pre><code class="language-sh">ansible --version
-</code></pre>
-<h2 id="windows-using-wsl">Windows (Using WSL)<a class="headerlink" href="#windows-using-wsl" title="Permanent link"></a></h2>
-<h3 id="install-wsl">Install WSL<a class="headerlink" href="#install-wsl" title="Permanent link"></a></h3>
-<ol>
-<li>Open PowerShell as Administrator and run:</li>
-</ol>
-<pre><code class="language-sh">wsl --install
-</code></pre>
-<ol>
-<li>
-<p>Restart your computer if prompted.</p>
-</li>
-<li>
-<p>Install a Linux distribution from the Microsoft Store (e.g., Ubuntu).</p>
-</li>
-</ol>
-<h3 id="set-up-wsl">Set up WSL<a class="headerlink" href="#set-up-wsl" title="Permanent link"></a></h3>
-<ol>
-<li>
-<p>Open your installed Linux distribution.</p>
-</li>
-<li>
-<p>Update the package list and install necessary packages:</p>
-</li>
-</ol>
-<pre><code class="language-sh">sudo apt-get update
-sudo apt-get upgrade -y
-</code></pre>
-<h3 id="install-kubectl_2">Install kubectl<a class="headerlink" href="#install-kubectl_2" title="Permanent link"></a></h3>
-<ol>
-<li>Download the latest release:</li>
-</ol>
-<pre><code class="language-sh">curl -LO &quot;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&quot;
-</code></pre>
-<ol>
-<li>Make the kubectl binary executable:</li>
-</ol>
-<pre><code class="language-sh">chmod +x ./kubectl
-</code></pre>
-<ol>
-<li>Move the binary to your PATH:</li>
-</ol>
-<pre><code class="language-sh">sudo mv ./kubectl /usr/local/bin/kubectl
-</code></pre>
-<ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
-</ol>
-<pre><code class="language-sh">kubectl version --client
-</code></pre>
-<h3 id="install-oc_2">Install oc<a class="headerlink" href="#install-oc_2" title="Permanent link"></a></h3>
-<ol>
-<li>Download the latest release:</li>
-</ol>
-<pre><code class="language-sh">curl -LO &quot;https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz&quot;
-</code></pre>
-<ol>
-<li>Extract the tar file:</li>
-</ol>
-<pre><code class="language-sh">tar -xzvf openshift-client-linux.tar.gz
-</code></pre>
-<ol>
-<li>Move the binaries to your PATH:</li>
-</ol>
-<pre><code class="language-sh">sudo mv oc kubectl /usr/local/bin/
-</code></pre>
-<ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
-</ol>
-<pre><code class="language-sh">oc version
-</code></pre>
-<h3 id="install-git_2">Install git<a class="headerlink" href="#install-git_2" title="Permanent link"></a></h3>
-<ol>
-<li>Install git:</li>
-</ol>
-<pre><code class="language-sh">sudo apt-get update
-sudo apt-get install git -y
-</code></pre>
-<ol>
-<li>Verify the installation:</li>
-</ol>
-<pre><code class="language-sh">git --version
-</code></pre>
-<h3 id="install-ansible_2">Install ansible<a class="headerlink" href="#install-ansible_2" title="Permanent link"></a></h3>
-<ol>
-<li>Install the dependencies:</li>
-</ol>
-<pre><code class="language-sh">sudo apt-get update
-sudo apt-get install software-properties-common -y
-</code></pre>
-<ol>
-<li>Add the Ansible PPA:</li>
-</ol>
-<pre><code class="language-sh">sudo add-apt-repository --yes --update ppa:ansible/ansible
-</code></pre>
-<ol>
-<li>Install Ansible:</li>
-</ol>
-<pre><code class="language-sh">sudo apt-get install ansible -y
-</code></pre>
-<ol>
-<li>Verify the installation:</li>
-</ol>
-<pre><code class="language-sh">ansible --version
-</code></pre>
-<p>This guide now includes instructions for using <code>yum</code> to install <code>kubectl</code>, <code>oc</code>, <code>git</code>, and <code>ansible</code> on Linux.</p>
               
             </div>
           </div><footer>
@@ -429,10 +283,10 @@ sudo apt-get install software-properties-common -y
         </span>
     
     
-      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../requirements-rh/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../playbooks/setup_cd/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../requirements-windows/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
