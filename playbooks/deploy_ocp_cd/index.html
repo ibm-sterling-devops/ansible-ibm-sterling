@@ -69,25 +69,29 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy IBM Connect:Direct 6.3.x</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#ibm-entitled-registry">IBM Entitled Registry</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#login-on-openshift">Login on OpenShift</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#deploy-you-connectdirect">Deploy you Connect:Direct</a>
+    <li class="toctree-l2"><a class="reference internal" href="#preparation">Preparation</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#exporting-variables">Exporting variables</a>
+    <li class="toctree-l3"><a class="reference internal" href="#1-ibm-entitled-registry">1. IBM Entitled Registry</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
+    <li class="toctree-l3"><a class="reference internal" href="#2-login-on-openshift">2. Login on OpenShift</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-cloning-ansible-ibm-websphere-from-git">3. Cloning ansible-ibm-websphere from git</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#sample-1-change-namespace-and-cd-node-name">Sample 1: Change namespace and C:D node name</a>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy-you-connectdirect">Deploy you Connect:Direct</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#exporting-variables_1">Exporting variables</a>
+    <li class="toctree-l3"><a class="reference internal" href="#1-exporting-variables">1. Exporting variables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#2-run-the-plabook">2. Run the Plabook</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#run-the-plabook_1">Run the Plabook</a>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#example-1-change-namespace-and-cd-node-name">Example 1: Change namespace and C:D node name</a>
     </li>
         </ul>
     </li>
@@ -216,20 +220,21 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="deploy-ibm-sterling-connectdirect-on-openshift-using-ansible-scripts">Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-ibm-sterling-connectdirect-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
-<h2 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h2>
+<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
+<h3 id="1-ibm-entitled-registry">1. IBM Entitled Registry<a class="headerlink" href="#1-ibm-entitled-registry" title="Permanent link"></a></h3>
 <p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
 <p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
 <pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
 </code></pre>
-<h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
+<h3 id="2-login-on-openshift">2. Login on OpenShift<a class="headerlink" href="#2-login-on-openshift" title="Permanent link"></a></h3>
 <p>Do a login in Openshift console and run the command:</p>
 <pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 </code></pre>
-<h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
+<h3 id="3-cloning-ansible-ibm-websphere-from-git">3. Cloning ansible-ibm-websphere from git<a class="headerlink" href="#3-cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h3>
 <pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 </code></pre>
 <h2 id="deploy-you-connectdirect">Deploy you Connect:Direct<a class="headerlink" href="#deploy-you-connectdirect" title="Permanent link"></a></h2>
-<h4 id="exporting-variables">Exporting variables<a class="headerlink" href="#exporting-variables" title="Permanent link"></a></h4>
+<h3 id="1-exporting-variables">1. Exporting variables<a class="headerlink" href="#1-exporting-variables" title="Permanent link"></a></h3>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">cd ansible-ibm-sterling
 
@@ -237,22 +242,20 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 export CD_NODENAME=CDNODE01
 </code></pre>
-<h4 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h4>
+<h4 id="2-run-the-plabook">2. Run the Plabook<a class="headerlink" href="#2-run-the-plabook" title="Permanent link"></a></h4>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_cd.yml
 </code></pre>
 <p>check for <strong>sterling-cdnode01-dev</strong> namespace. The C:D node name will be <strong>CDNODE01</strong></p>
-<h2 id="sample-1-change-namespace-and-cd-node-name">Sample 1: Change namespace and C:D node name<a class="headerlink" href="#sample-1-change-namespace-and-cd-node-name" title="Permanent link"></a></h2>
-<h4 id="exporting-variables_1">Exporting variables<a class="headerlink" href="#exporting-variables_1" title="Permanent link"></a></h4>
-<p>To run playbook the playbook</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link"></a></h2>
+<h3 id="example-1-change-namespace-and-cd-node-name">Example 1: Change namespace and C:D node name<a class="headerlink" href="#example-1-change-namespace-and-cd-node-name" title="Permanent link"></a></h3>
+<p>To change namespace/project and C:D node name</p>
 <pre><code class="language-bash">cd ansible-ibm-sterling
 
 export CD_NAMESPACE=sterling-cdcompany01-prod
 export CD_NODENAME=COMPANY01
-</code></pre>
-<h4 id="run-the-plabook_1">Run the Plabook<a class="headerlink" href="#run-the-plabook_1" title="Permanent link"></a></h4>
-<p>To run playbook the playbook</p>
-<pre><code class="language-bash">ansible-playbook playbooks/deploy_cd.yml
+
+ansible-playbook playbooks/deploy_cd.yml
 </code></pre>
 <h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>
 <p>For all environment variables</p>
