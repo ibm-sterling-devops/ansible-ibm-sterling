@@ -25,12 +25,14 @@ sudo mv oc kubectl /usr/local/bin/
 oc version
 ```
 
-### Install git, ansible, helm
+### Install git, ansible, helm, python3-pip, java (keytool)
 1. Install the dependencies:
 ```sh
 sudo yum -y install epel-release
 sudo yum -y update
-sudo yum -y install git ansible helm
+sudo yum -y install git ansible helm python3-pip java-17-openjdk-headless
+
+pip3 install kubernetes
 ```
 
 2. Verify the installation:
