@@ -1,4 +1,5 @@
-# Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts
+Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts
+---------------------------------------------------
 
 ## Supported versions
 
@@ -16,9 +17,9 @@ Check with
 kubectl version
 ```
 
-# Deploying Sterling B2B Integrator
+## Deploying Sterling B2B Integrator
 
-## IBM Entitled Registry
+### IBM Entitled Registry
 
 You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
 
@@ -28,7 +29,7 @@ Log in the [IBM Container software library](https://myibm.ibm.com/products-servi
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 ```
 
-## Login on OpenShift
+### Login on OpenShift
 
 Do a login in Openshift console and run the command:
 
@@ -36,7 +37,7 @@ Do a login in Openshift console and run the command:
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
-## Cloning ansible-ibm-websphere from git
+### Cloning ansible-ibm-websphere from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
@@ -48,7 +49,7 @@ Change directory
 cd ansible-ibm-sterling
 ```
 
-## Run playbook the playbook
+### Run playbook the playbook
 
 1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
 
@@ -72,7 +73,7 @@ ansible-playbook playbooks/deploy_sb2b.yml
 ```
 
 
-# Deploy Sterling B2Bi using prebuilt db.
+## Deploy Sterling B2Bi using prebuilt db.
 
 If your using SB2Bi for a prove of concept and get the environment provided in 10 minutes, i suggest to deploy using prebuilt db.
 
@@ -105,7 +106,7 @@ export SI_DATASETUP_UPGRADE=false
 ansible-playbook playbooks/deploy_sb2b_prebuiltdb.yml
 ```
 
-# Environment Variable
+## Environment Variable
 
 For all environment variables
 
