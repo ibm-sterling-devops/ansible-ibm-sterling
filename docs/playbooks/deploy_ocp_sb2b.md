@@ -1,7 +1,4 @@
-Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts
----------------------------------------------------
-
-## Supported versions
+# Deploy IBM Sterling B2B Integrator on OpenShift using Ansible Scripts
 
 Playbook will run the last version of Sterling B2Bi, but take care of Kubernetes/Openshift version is supported
 
