@@ -133,9 +133,9 @@ dataSetup:
     extraLabels: {}
 
 env:
-  tz: "{{ si_helm_values.env.tz | default('UTC') }}"
-  upgradeCompatibilityVerified: false
-  debugMode: false
+  tz: "{{ si_env_timezone }}"
+  upgradeCompatibilityVerified: {{ si_env_upgradecompatibilityverified }}
+  debugMode: {{ si_env_debugmode }}
   extraEnvs: []
 
 logs:

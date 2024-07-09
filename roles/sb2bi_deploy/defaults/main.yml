@@ -23,6 +23,9 @@ si_oracle_useservicename: "{{ lookup('env', 'SI_ORACLESERVICENAME', default('fal
 
 si_datasetup_enabled: "{{ lookup('env', 'SI_DATASETUP_ENABLED') | default('true', true) }}"
 si_datasetup_upgrade: "{{ lookup('env', 'SI_DATASETUP_UPGRADE') | default('false', true) }}"
+si_env_timezone: "{{ lookup('env', 'SI_ENV_TIMEZONE') | default('UTC', true) }}"
+si_env_upgradecompatibilityverified: "{{ lookup('env', 'SI_ENV_UPGRADE_COMPAT_VERIFIED') | default('false', true) }}"
+si_env_debugmode: "{{ lookup('env', 'SI_ENV_DEBUGMODE') | default('false', true) }}"
 
 si_adminmailaddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
 si_adminsmtphost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
