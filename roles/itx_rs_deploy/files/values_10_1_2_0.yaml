@@ -1,7 +1,7 @@
 ####################################################################
 # Licensed Materials Property of HCL
 # (c) Copyright HCL Technologies Ltd. 2020, 2023. All rights reserved.
-# 
+#
 # Trademark of HCL Technologies Limited
 ####################################################################
 
@@ -32,20 +32,20 @@ probes:
     enabled: true
     initialDelaySeconds: 5
     periodSeconds: 30
-    timeoutSeconds: 45	
+    timeoutSeconds: 45
   readiness:
     enabled: true
     initialDelaySeconds: 7
     periodSeconds: 60
-    timeoutSeconds: 45	
+    timeoutSeconds: 45
 
 map:
-  fileExtension: "lnx" 
+  fileExtension: "lnx"
   unloadTimeMinutes: 10
   maxThreads: 50
   syncTimeoutSeconds: 300
-  disableCaching: false 
-  allAttachments: false  
+  disableCaching: false
+  allAttachments: false
 
 # Logging settings. Value -1 for days means infinite time.
 log:
@@ -55,25 +55,25 @@ log:
     level: "all"
     days: -1
   serverLog:
-     # Supported levels are "none", "failures", "info" and "all". Default is "info".
-     level: "info"
-     days: -1
+    # Supported levels are "none", "failures", "info" and "all". Default is "info".
+    level: "info"
+    days: -1
   serviceLog:
-     # Supported levels are "none", "failures", "info" and "all". Default is "info".
-     level: "all"
-     days: -1
-     stdErr: true
+    # Supported levels are "none", "failures", "info" and "all". Default is "info".
+    level: "all"
+    days: -1
+    stdErr: true
   execLog:
-     level: "all"
-     fileCount: 5
-     fileSizeKiB: 100
-     stdErr: true
+    level: "all"
+    fileCount: 5
+    fileSizeKiB: 100
+    stdErr: true
   jniLog:
-     # Supported levels are "none", "failures", "info" and "all". Default is "none".
-     level: "none"
+    # Supported levels are "none", "failures", "info" and "all". Default is "none".
+    level: "none"
   cmgrLog:
-     # Supported levels are "none", "failures", "info" and "all". Default is "none".
-     level: "none"
+    # Supported levels are "none", "failures", "info" and "all". Default is "none".
+    level: "none"
 
 resourceRegistry:
   configFile: ""
@@ -94,7 +94,7 @@ resources:
   limits:
     cpu: "4000m"
     memory: "16Gi"
-  
+
 persistence:
   fsGroup: ""
   data:
@@ -129,7 +129,7 @@ service:
 route:
   enabled: true
   host: ""
-  
+
 autoscaling:
   enabled: false
   maxReplicas: 5

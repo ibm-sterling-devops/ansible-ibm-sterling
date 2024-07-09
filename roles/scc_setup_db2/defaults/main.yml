@@ -3,8 +3,7 @@
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
 scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('', true) }}" # productEntitlement: "CCD,CCM"
 
-
-scc_install_monitor: false 
+scc_install_monitor: false
 scc_install_director: false
 # Configure Db2 instance
 # -----------------------------------------------------------------------------
@@ -12,7 +11,6 @@ db2_namespace: "ibm-scc-{{ scc_instanceid }}-db2"
 db2_instance_name: "db2inst1"
 db2_user: "db2inst1"
 db2_container: "mydb2"
-
 
 # Role Internal
 # -----------------------------------------------------------------------------

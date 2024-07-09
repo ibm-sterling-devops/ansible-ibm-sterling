@@ -98,7 +98,7 @@
           termination: edge
         wildcardPolicy: None
 
-- name: "phpLDAPAdmin Summary:"
+- name: "PhpLDAPAdmin Summary:"
   ansible.builtin.debug:
     msg:
       - "phpLDAPAdmin .............................. Ready!"

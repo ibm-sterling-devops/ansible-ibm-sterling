@@ -83,7 +83,7 @@
 # -----------------------------------------------------------------------------
 - name: "Install {{ kafka_operator_name }} subscription"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: templates/strimzi/subscription.yml.j2
 
 # 7. Wait until the Kafka CRD is available
@@ -116,24 +116,24 @@
 # -----------------------------------------------------------------------------
 - name: "Create Kafka logging configmap"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: "templates/strimzi/logging-configmap.yml.j2"
 
 - name: "Create Kafka monitoring configmap"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: "templates/strimzi/metrics-configmap.yml.j2"
 
 - name: "Create Kafka PodMonitor custom resources"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: "templates/strimzi/podmonitor.yml.j2"
 
 # 10. Deploy the cluster
 # -----------------------------------------------------------------------------
 - name: "Create Kafka Cluster"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: "templates/strimzi/clusters/{{ kafka_cluster_size }}.yml.j2"
 
 # 11. Wait until the KafkaUser CRD is available
@@ -160,14 +160,14 @@
 # -----------------------------------------------------------------------------
 - name: "Create Kafka User"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: templates/strimzi/kafka-user.yml.j2
 
 # 13. Create Grafana dashboards for Kafka monitoring
 # -----------------------------------------------------------------------------
 - name: "Create Kafka monitoring dashboards"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: "{{ item }}"
   with_fileglob:
     - "templates/strimzi/dashboards/*.yml.j2"
@@ -175,7 +175,7 @@
 
 - name: "Create Kafka monitoring dashboards"
   kubernetes.core.k8s:
-    apply: yes
+    apply: true
     template: "{{ item }}"
   with_fileglob:
     - "templates/strimzi/dashboards-v5/*.yml.j2"

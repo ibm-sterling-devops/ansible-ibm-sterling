@@ -1,8 +1,6 @@
 Installation Guide for kubectl, oc, git, helm and ansible on Ubuntu/Debian
 ===============================================================================
 
-# Linux
-
 ### Install kubectl and oc
 1. Download the latest release:
 ```sh

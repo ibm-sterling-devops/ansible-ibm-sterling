@@ -72,7 +72,7 @@
 
 - name: "Install CCM ?"
   ansible.builtin.set_fact:
-    scc_install_ccm: true 
+    scc_install_ccm: true
     scc_install_ccd: false
     scc_install: "CCM"
   when:
