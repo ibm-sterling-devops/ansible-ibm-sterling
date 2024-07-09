@@ -77,15 +77,21 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy IBM Sterling B2B Integrator</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#preparation">Preparation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-ibm-entitled-registry">1. IBM Entitled Registry</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-login-on-openshift">2. Login on OpenShift</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-cloning-ansible-ibm-websphere-from-git">3. Cloning ansible-ibm-websphere from git</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-set-roles-path">4. Set roles path</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#ibm-entitled-registry">IBM Entitled Registry</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#login-on-openshift">Login on OpenShift</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#run-playbook-the-playbook">Run playbook the playbook</a>
+    <li class="toctree-l3"><a class="reference internal" href="#1-run-playbook-the-playbook">1. Run playbook the playbook</a>
     </li>
         </ul>
     </li>
@@ -244,23 +250,27 @@
 <p>Check with</p>
 <pre><code class="language-bash">kubectl version
 </code></pre>
-<h2 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h2>
-<h3 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h3>
+<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
+<h3 id="1-ibm-entitled-registry">1. IBM Entitled Registry<a class="headerlink" href="#1-ibm-entitled-registry" title="Permanent link"></a></h3>
 <p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
 <p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
 <pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
 </code></pre>
-<h3 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h3>
+<h3 id="2-login-on-openshift">2. Login on OpenShift<a class="headerlink" href="#2-login-on-openshift" title="Permanent link"></a></h3>
 <p>Do a login in Openshift console and run the command:</p>
 <pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 </code></pre>
-<h3 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h3>
+<h3 id="3-cloning-ansible-ibm-websphere-from-git">3. Cloning ansible-ibm-websphere from git<a class="headerlink" href="#3-cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h3>
 <pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 </code></pre>
-<p>Change directory</p>
+<h3 id="4-set-roles-path">4. Set roles path<a class="headerlink" href="#4-set-roles-path" title="Permanent link"></a></h3>
+<p>To run playbook the playbook</p>
 <pre><code class="language-bash">cd ansible-ibm-sterling
+
+export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
-<h3 id="run-playbook-the-playbook">Run playbook the playbook<a class="headerlink" href="#run-playbook-the-playbook" title="Permanent link"></a></h3>
+<h2 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h2>
+<h3 id="1-run-playbook-the-playbook">1. Run playbook the playbook<a class="headerlink" href="#1-run-playbook-the-playbook" title="Permanent link"></a></h3>
 <p>1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
 <pre><code class="language-bash">export SI_INSTANCEID=dev01
 </code></pre>
@@ -273,10 +283,12 @@
 </code></pre>
 <h2 id="deploy-sterling-b2bi-using-prebuilt-db">Deploy Sterling B2Bi using prebuilt db.<a class="headerlink" href="#deploy-sterling-b2bi-using-prebuilt-db" title="Permanent link"></a></h2>
 <p>If your using SB2Bi for a prove of concept and get the environment provided in 10 minutes, i suggest to deploy using prebuilt db.</p>
-<p>** You need to have a backup from a previous install, we cannot provide because of copyright **.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You need to have a backup from a previous install, we cannot provide because of copyright</p>
+</div>
 <p>1) Define previous environment variables</p>
-<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
-export SI_INSTANCEID=dev01
+<pre><code class="language-bash">export SI_INSTANCEID=dev01
 </code></pre>
 <p>2) Provide your Sterling B2BI database backup</p>
 <pre><code class="language-bash">export SI_PREBUILTDB_FILE=/tmp/B2BI_6202.tar.gz
