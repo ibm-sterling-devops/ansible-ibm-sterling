@@ -1,6 +1,8 @@
 # Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts
 
-## IBM Entitled Registry
+## Preparation
+
+### 1. IBM Entitled Registry
 
 You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
 
@@ -10,7 +12,7 @@ Log in the [IBM Container software library](https://myibm.ibm.com/products-servi
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 ```
 
-## Login on OpenShift
+### 2. Login on OpenShift
 
 Do a login in Openshift console and run the command:
 
@@ -18,7 +20,7 @@ Do a login in Openshift console and run the command:
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
-## Cloning ansible-ibm-websphere from git
+### 3. Cloning ansible-ibm-websphere from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
@@ -27,7 +29,7 @@ git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 
 ## Deploy you Connect:Direct 
 
-#### Exporting variables
+### 1. Exporting variables
 
 To run playbook the playbook
 
@@ -39,7 +41,7 @@ export ANSIBLE_CONFIG=./ansible.cfg
 export CD_NODENAME=CDNODE01
 ```
 
-#### Run the Plabook
+#### 2. Run the Plabook
 
 To run playbook the playbook
 
@@ -50,24 +52,18 @@ ansible-playbook playbooks/deploy_cd.yml
 check for **sterling-cdnode01-dev** namespace. The C:D node name will be **CDNODE01**
 
 
-## Sample 1: Change namespace and C:D node name
+## Examples
 
-#### Exporting variables
+### Example 1: Change namespace and C:D node name
 
-To run playbook the playbook
+To change namespace/project and C:D node name
 
 ```bash 
 cd ansible-ibm-sterling
 
 export CD_NAMESPACE=sterling-cdcompany01-prod
 export CD_NODENAME=COMPANY01
-```
 
-#### Run the Plabook
-
-To run playbook the playbook
-
-```bash 
 ansible-playbook playbooks/deploy_cd.yml
 ```
 
