@@ -107,7 +107,7 @@ function create_b2bi_db {
         exit 2
     fi
 
-cat << EOF > /tmp/create_b2bi_db2.sql
+cat << EOF > /tmp/restore_b2bi_db2.sql
 CREATE DATABASE {{ db2_dbname }} AUTOMATIC STORAGE YES USING CODESET UTF-8 TERRITORY US COLLATE USING IDENTITY PAGESIZE 4096 DFT_EXTENT_SZ 32;
 
 RESTORE DATABASE {{ db2_dbname }} from /tmp into {{ db2_dbname }} without prompting;
@@ -117,26 +117,26 @@ CONNECT RESET;
 EOF
 
     echo ""
-    if [ ! -f "/tmp/create_b2bi_db2.sql" ]; then
-        echo "create_b2bi_db: ERROR - Cannot generate create_b2bi_db2.sql "
+    if [ ! -f "/tmp/restore_b2bi_db2.sql" ]; then
+        echo "create_b2bi_db: ERROR - Cannot generate restore_b2bi_db2.sql "
         exit 1
     fi
     
-    echo "create_b2bi_db: File /tmp/create_b2bi_db2.sql created sucessfully "
+    echo "create_b2bi_db: File /tmp/restore_b2bi_db2.sql created sucessfully "
 
-    db2 -tvf /tmp/create_b2bi_db2.sql -z /tmp/create_b2bi_db2.sql.log 
+    db2 -tvf /tmp/restore_b2bi_db2.sql -z /tmp/restore_b2bi_db2.sql.log 
     db2_crdb=$?
 
     echo ""
     echo "create_b2bi_db: $db2_crdb"
     if [ $db2_crdb -ne 0 ]; then
-        echo "create_b2bi_db: ERROR - Failed to run 'db2 -tvf create_b2bi_db2.sql' "
+        echo "create_b2bi_db: ERROR - Failed to run 'db2 -tvf restore_b2bi_db2.sql' "
         exit 2
     fi
 
     
 
-    echo "create_b2bi_db: run 'db2 -tvf create_b2bi_db2.sql' sucessfully"
+    echo "create_b2bi_db: run 'db2 -tvf restore_b2bi_db2.sql' sucessfully"
 }
 
 function apply_settings {
@@ -223,4 +223,4 @@ echo "Applying settings to DB2"
 apply_settings
 echo ""
 
-echo "End of script setupdb.sh "
+echo "SUCCESS" > /database/config/{{ db2_user }}/RESTOREDB.OUT
