@@ -2,7 +2,7 @@
 
 ## Preparation
 
-**1. IBM Entitled Registry**
+### 1. IBM Entitled Registry
 
 You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
 
@@ -12,7 +12,7 @@ Log in the [IBM Container software library](https://myibm.ibm.com/products-servi
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 ```
 
-**2. Login on OpenShift**
+### 2. Login on OpenShift
 
 Do a login in Openshift console and run the command:
 
@@ -20,18 +20,13 @@ Do a login in Openshift console and run the command:
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
-**3. Cloning ansible-ibm-websphere from git**
+### 3. Cloning ansible-ibm-websphere from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 ```
 
-
-
-
-## Deploy you Connect:Direct 
-
-### 1. Exporting variables
+### 4. Set roles path
 
 To run playbook the playbook
 
@@ -39,7 +34,16 @@ To run playbook the playbook
 cd ansible-ibm-sterling
 
 export ANSIBLE_CONFIG=./ansible.cfg 
+```
 
+
+## Deploy you Connect:Direct 
+
+### 1. Define C:D node name
+
+To run change C:D node name
+
+```bash 
 export CD_NODENAME=CDNODE01
 ```
 
