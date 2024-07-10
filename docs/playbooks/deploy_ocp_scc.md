@@ -38,13 +38,16 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Deploying Sterling Control Center
 
-#### 1. Change 
-
-To run playbook the playbook
+1) First you need to provide SCC_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
 
 ```bash 
 export SCC_INSTANCEID=dev01
+```
 
+
+2) You must define which product to install
+
+```bash 
 export SCC_PRODUCTS=CCM,CCD
 ```
 
@@ -56,9 +59,7 @@ where SCC_PRODUCTS is the product that you want to install
 | CCM     | Sterling Control Center Monitor  |
 
 
-#### 2. Run the Plabook
-
-To run playbook the playbook
+3) To run the playbook
 
 ```bash 
 ansible-playbook playbooks/deploy_scc.yml

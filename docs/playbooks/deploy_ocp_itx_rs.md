@@ -39,17 +39,13 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Deploy ITX RS
 
-#### 1. Change namespace
-
-To change namespace
+1) Define namespace
 
 ```bash 
 export ITX_RS_NAMESPACE=ibm-itx-rs-dev01
 ```
 
-#### 2. Run the Plabook
-
-To run playbook the playbook
+2) To run the playbook
 
 ```bash 
 ansible-playbook playbooks/deploy_itx_rs.yml

@@ -39,17 +39,13 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Deploy you Connect:Direct 
 
-### 1. Define C:D node name
-
-To run change C:D node name
+1) Define C:D node name
 
 ```bash 
 export CD_NODENAME=CDNODE01
 ```
 
-#### 2. Run the Plabook
-
-To run playbook the playbook
+2) To run the playbook
 
 ```bash 
 ansible-playbook playbooks/deploy_cd.yml

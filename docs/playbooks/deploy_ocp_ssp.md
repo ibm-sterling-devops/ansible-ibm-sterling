@@ -36,19 +36,15 @@ cd ansible-ibm-sterling
 export ANSIBLE_CONFIG=./ansible.cfg 
 ```
 
-## Deploying Sterling Control Center
+## Deploying Sterling Secure Proxy
 
-#### 1. Change 
-
-Change SSP Instance ID
+1) First you need to provide SSP_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
 
 ```bash 
 export SSP_INSTANCEID=dev01
 ```
 
-## Run the Plabook
-
-To run playbook the playbook
+2) To run the playbook
 
 ```bash 
 ansible-playbook playbooks/dev_ssp.yml

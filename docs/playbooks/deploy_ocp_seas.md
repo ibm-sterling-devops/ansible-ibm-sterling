@@ -36,19 +36,15 @@ cd ansible-ibm-sterling
 export ANSIBLE_CONFIG=./ansible.cfg 
 ```
 
-## Deploying Sterling Control Center
+## Deploying Sterling External Authentication Server
 
-#### 1. Change 
-
-Change namespace
+1) Change namespace
 
 ```bash 
 export SEAS_NAMESPACE=sterling-seas-dev01
 ```
 
-## Run the Plabook
-
-To run playbook the playbook
+2) To run the playbook
 
 ```bash 
 ansible-playbook playbooks/deploy_seas.yml

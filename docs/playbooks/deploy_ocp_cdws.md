@@ -38,9 +38,7 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Deploy you Connect:Direct WebService
 
-### 1. Run the Plabook
-
-To run playbook the playbook
+1) To run the playbook
 
 ```bash 
 ansible-playbook playbooks/deploy_cdws.yml

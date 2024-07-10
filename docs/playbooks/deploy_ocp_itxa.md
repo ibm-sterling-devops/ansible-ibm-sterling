@@ -38,17 +38,13 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Deploy ITXA
 
-#### 1. Change ITX Instance ID
-
-To run playbook
+1) First you need to provide ITXA_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
 
 ```bash 
-export ITXA_INSTANCEID=dev09
+export ITXA_INSTANCEID=dev01
 ```
 
-#### 2. Run the Plabook
-
-To run playbook the playbook
+2) To run the playbook
 
 ```bash 
 ansible-playbook playbooks/deploy_itxa.yml
