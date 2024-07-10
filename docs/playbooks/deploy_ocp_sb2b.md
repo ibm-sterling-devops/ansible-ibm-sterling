@@ -52,8 +52,6 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Deploying Sterling B2B Integrator
 
-### 1. Run playbook the playbook
-
 1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
 
 ```bash 
