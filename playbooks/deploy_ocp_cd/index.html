@@ -82,14 +82,6 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy-you-connectdirect">Deploy you Connect:Direct</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-define-cd-node-name">1. Define C:D node name</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#2-run-the-plabook">2. Run the Plabook</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
         <ul>
@@ -242,12 +234,10 @@
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
 <h2 id="deploy-you-connectdirect">Deploy you Connect:Direct<a class="headerlink" href="#deploy-you-connectdirect" title="Permanent link"></a></h2>
-<h3 id="1-define-cd-node-name">1. Define C:D node name<a class="headerlink" href="#1-define-cd-node-name" title="Permanent link"></a></h3>
-<p>To run change C:D node name</p>
+<p>1) Define C:D node name</p>
 <pre><code class="language-bash">export CD_NODENAME=CDNODE01
 </code></pre>
-<h4 id="2-run-the-plabook">2. Run the Plabook<a class="headerlink" href="#2-run-the-plabook" title="Permanent link"></a></h4>
-<p>To run playbook the playbook</p>
+<p>2) To run the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_cd.yml
 </code></pre>
 <p>check for <strong>sterling-cdnode01-dev</strong> namespace. The C:D node name will be <strong>CDNODE01</strong></p>

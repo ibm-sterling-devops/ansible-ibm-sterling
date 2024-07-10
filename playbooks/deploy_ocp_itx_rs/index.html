@@ -86,12 +86,6 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy-itx-rs">Deploy ITX RS</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-change-namespace">1. Change namespace</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#2-run-the-plabook">2. Run the Plabook</a>
-    </li>
-        </ul>
     </li>
     </ul>
                   </li>
@@ -234,12 +228,10 @@
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
 <h2 id="deploy-itx-rs">Deploy ITX RS<a class="headerlink" href="#deploy-itx-rs" title="Permanent link"></a></h2>
-<h4 id="1-change-namespace">1. Change namespace<a class="headerlink" href="#1-change-namespace" title="Permanent link"></a></h4>
-<p>To change namespace</p>
+<p>1) Define namespace</p>
 <pre><code class="language-bash">export ITX_RS_NAMESPACE=ibm-itx-rs-dev01
 </code></pre>
-<h4 id="2-run-the-plabook">2. Run the Plabook<a class="headerlink" href="#2-run-the-plabook" title="Permanent link"></a></h4>
-<p>To run playbook the playbook</p>
+<p>2) To run the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_itx_rs.yml
 </code></pre>
 <h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>

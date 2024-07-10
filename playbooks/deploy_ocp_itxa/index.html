@@ -88,12 +88,6 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy-itxa">Deploy ITXA</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-change-itx-instance-id">1. Change ITX Instance ID</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#2-run-the-plabook">2. Run the Plabook</a>
-    </li>
-        </ul>
     </li>
     </ul>
                   </li>
@@ -234,12 +228,10 @@
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
 <h2 id="deploy-itxa">Deploy ITXA<a class="headerlink" href="#deploy-itxa" title="Permanent link"></a></h2>
-<h4 id="1-change-itx-instance-id">1. Change ITX Instance ID<a class="headerlink" href="#1-change-itx-instance-id" title="Permanent link"></a></h4>
-<p>To run playbook</p>
-<pre><code class="language-bash">export ITXA_INSTANCEID=dev09
+<p>1) First you need to provide ITXA_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
+<pre><code class="language-bash">export ITXA_INSTANCEID=dev01
 </code></pre>
-<h4 id="2-run-the-plabook">2. Run the Plabook<a class="headerlink" href="#2-run-the-plabook" title="Permanent link"></a></h4>
-<p>To run playbook the playbook</p>
+<p>2) To run the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_itxa.yml
 </code></pre>
 <h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>

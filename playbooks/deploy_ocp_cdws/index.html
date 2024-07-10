@@ -84,10 +84,6 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy-you-connectdirect-webservice">Deploy you Connect:Direct WebService</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-run-the-plabook">1. Run the Plabook</a>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
         <ul>
@@ -240,8 +236,7 @@
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
 <h2 id="deploy-you-connectdirect-webservice">Deploy you Connect:Direct WebService<a class="headerlink" href="#deploy-you-connectdirect-webservice" title="Permanent link"></a></h2>
-<h3 id="1-run-the-plabook">1. Run the Plabook<a class="headerlink" href="#1-run-the-plabook" title="Permanent link"></a></h3>
-<p>To run playbook the playbook</p>
+<p>1) To run the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_cdws.yml
 </code></pre>
 <p>check for <strong>sterling-cdws01</strong> namespace in Kubernetes/Openshift console.</p>

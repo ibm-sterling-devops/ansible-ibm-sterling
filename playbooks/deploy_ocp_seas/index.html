@@ -93,13 +93,7 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#deploying-sterling-control-center">Deploying Sterling Control Center</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-change">1. Change</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
+    <li class="toctree-l2"><a class="reference internal" href="#deploying-sterling-external-authentication-server">Deploying Sterling External Authentication Server</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#environment-variable">Environment Variable</a>
     </li>
@@ -235,13 +229,11 @@
 
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
-<h2 id="deploying-sterling-control-center">Deploying Sterling Control Center<a class="headerlink" href="#deploying-sterling-control-center" title="Permanent link"></a></h2>
-<h4 id="1-change">1. Change<a class="headerlink" href="#1-change" title="Permanent link"></a></h4>
-<p>Change namespace</p>
+<h2 id="deploying-sterling-external-authentication-server">Deploying Sterling External Authentication Server<a class="headerlink" href="#deploying-sterling-external-authentication-server" title="Permanent link"></a></h2>
+<p>1) Change namespace</p>
 <pre><code class="language-bash">export SEAS_NAMESPACE=sterling-seas-dev01
 </code></pre>
-<h2 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h2>
-<p>To run playbook the playbook</p>
+<p>2) To run the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_seas.yml
 </code></pre>
 <h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
