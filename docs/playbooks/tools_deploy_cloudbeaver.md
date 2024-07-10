@@ -1,6 +1,8 @@
 # Deploy Cloudbeaver on OpenShift using Ansible Scripts
 
-## Login on OpenShift
+## Preparation
+
+#### 1. Login on OpenShift
 
 Do a login in Openshift console and run the command:
 
@@ -8,13 +10,13 @@ Do a login in Openshift console and run the command:
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
-## Cloning ansible-ibm-websphere from git
+#### 2. Cloning ansible-ibm-websphere from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 ```
 
-## Exporting variables
+#### 3. Set roles path
 
 To run playbook the playbook
 
@@ -24,7 +26,9 @@ cd ansible-ibm-sterling
 export ANSIBLE_CONFIG=./ansible.cfg 
 ```
 
-## Run the Plabook
+## Deploy Cloud beaver 
+
+#### 1. Run the Playbook
 
 To run playbook the playbook
 
@@ -32,3 +36,8 @@ To run playbook the playbook
 ansible-playbook playbooks/tools/cloudbeaver.yml
 ```
 
+## Environment Variable
+
+For all environment variables
+
+* Role [cloudbeaver](../../roles/cloudbeaver)

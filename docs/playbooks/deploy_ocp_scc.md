@@ -1,8 +1,8 @@
 # Deploy IBM Sterling Control Center on OpenShift using Ansible Scripts
 
-# Deploying 
+## Preparation
 
-## IBM Entitled Registry
+### 1. IBM Entitled Registry
 
 You must have **kubectl**, **oc**, **git** and **ansible** installed in your machine
 
@@ -12,7 +12,7 @@ Log in the [IBM Container software library](https://myibm.ibm.com/products-servi
 export ENTITLED_REGISTRY_KEY=<entitlement_key>
 ```
 
-## Login on OpenShift
+### 2. Login on OpenShift
 
 Do a login in Openshift console and run the command:
 
@@ -20,19 +20,29 @@ Do a login in Openshift console and run the command:
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
-## Cloning ansible-ibm-websphere from git
+### 3. Cloning ansible-ibm-websphere from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 ```
 
-## Exporting variables
+### 4. Set roles path
 
 To run playbook the playbook
 
 ```bash 
 cd ansible-ibm-sterling
 
+export ANSIBLE_CONFIG=./ansible.cfg 
+```
+
+## Deploying Sterling Control Center
+
+#### 1. Change 
+
+To run playbook the playbook
+
+```bash 
 export SCC_INSTANCEID=dev01
 
 export SCC_PRODUCTS=CCM,CCD
@@ -46,7 +56,7 @@ where SCC_PRODUCTS is the product that you want to install
 | CCM     | Sterling Control Center Monitor  |
 
 
-## Run the Plabook
+#### 2. Run the Plabook
 
 To run playbook the playbook
 
@@ -54,5 +64,11 @@ To run playbook the playbook
 ansible-playbook playbooks/deploy_scc.yml
 ```
 
+## Environment Variable
 
-# Advanced options
+For all environment variables
+
+* Role [scc_deploy](../../roles/scc_deploy)
+* Role [scc_setup_db2](../../roles/scc_setup_db2)
+* Role [scc_deploy_db2](../../roles/scc_deploy_db2)
+* Role [scc_deploy_mq](../../roles/cc_deploy_mq)

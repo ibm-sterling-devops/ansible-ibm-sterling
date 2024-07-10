@@ -2,7 +2,10 @@
 
 Using Cert-Manager using Redhat operator
 
-## Login on OpenShift
+
+## Preparation
+
+#### 1. Login on OpenShift
 
 Do a login in Openshift console and run the command:
 
@@ -10,13 +13,13 @@ Do a login in Openshift console and run the command:
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
-## Cloning ansible-ibm-websphere from git
+#### 2. Cloning ansible-ibm-websphere from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 ```
 
-## Exporting variables
+#### 3. Set roles path
 
 To run playbook the playbook
 
@@ -26,7 +29,9 @@ cd ansible-ibm-sterling
 export ANSIBLE_CONFIG=./ansible.cfg 
 ```
 
-## Run the Plabook
+## Deploy Cert Manager
+
+#### Run the Plabook
 
 To run playbook the playbook
 
@@ -34,3 +39,9 @@ To run playbook the playbook
 ansible-playbook playbooks/tools/certmanager.yml
 ```
 
+
+## Environment Variable
+
+For all environment variables
+
+* Role [cert_manager](../../roles/cert_manager)

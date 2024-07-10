@@ -113,3 +113,8 @@ ansible-playbook playbooks/deploy_sb2b_prebuiltdb.yml
 For all environment variables
 
 * Role [sb2bi_deploy](../../roles/sb2bi_deploy)
+* Role [sb2bi_setup_db2](../../roles/sb2bi_setup_db2)
+* Role [sb2bi_deploy_db2](../../roles/sb2bi_deploy_db2)
+* Role [sb2bi_deploy_mq](../../roles/sb2bi_deploy_mq)
+
+* Role [sb2bi_prebuiltdb_db2](../../roles/sb2bi_prebuiltdb_db2)

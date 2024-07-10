@@ -38,13 +38,7 @@ export ANSIBLE_CONFIG=./ansible.cfg
 
 ## Deploy you Connect:Direct WebService
 
-### 1. Define Namespace
-
-```bash 
-export CDWS_NAMESPACE=sterling-cdws01
-```
-
-### 2. Run the Plabook
+### 1. Run the Plabook
 
 To run playbook the playbook
 
@@ -53,6 +47,21 @@ ansible-playbook playbooks/deploy_cdws.yml
 ```
 
 check for **sterling-cdws01** namespace in Kubernetes/Openshift console.
+
+## Examples
+
+### Example 1: Change namespace and C:D node name
+
+To change namespace/project and C:D node name
+
+```bash 
+cd ansible-ibm-sterling
+
+export CDWS_NAMESPACE=sterling-cdws01
+
+ansible-playbook playbooks/deploy_cd.yml
+```
+
 
 ## Environment Variable
 
