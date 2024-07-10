@@ -1,13 +1,13 @@
 ---
 - name: Define Facts
   ansible.builtin.set_fact:
-    config_name: "HTTP"
+    config_name: "MyFG"
     create_policy: "{{ ssp_config_http.create_policy }}"
     create_netmap: "{{ ssp_config_http.create_netmap }}"
     create_adapter: "{{ ssp_config_http.create_adapter }}"
     policy_xml: |
       <httpPolicyDef>
-        <name>http-policy-test</name>
+        <name>myfg-policy-test</name>
         <description><![CDATA[]]></description>
         <authenticationType>basic</authenticationType>
         <blockCommonExploits>true</blockCommonExploits>

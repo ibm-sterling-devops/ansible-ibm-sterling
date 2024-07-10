@@ -1,30 +1,35 @@
 ---
-- name: Check for required environment variables
-  ansible.builtin.include_tasks: 01_check_vars.yml
+- name: Lookup SSP CM URL from container
+  ansible.builtin.include_tasks: lookup_ssp_container.yml
+  when:
+    - ssp_instanceid is defined
+    - ssp_instanceid != ""
 
 - name: Create Session Token and SSP Engine
-  ansible.builtin.include_tasks: 02_create_session.yml
+  ansible.builtin.include_tasks: create_session.yml
 
 - name: Config Engine on SSP
   ansible.builtin.include_tasks: configure_engine.yml
-  when: ssp_config_engine
+  when: ssp_config_engine.enabled
 
 - name: Config Connect:Direct on SSP
   ansible.builtin.include_tasks: configure_cd.yml
-  when: ssp_config_cd
+  when: ssp_config_cd.enabled
 
 - name: Config FTP on SSP
   ansible.builtin.include_tasks: configure_ftp.yml
-  when: ssp_config_ftp
-
-- name: Config HTTP on SSP
-  ansible.builtin.include_tasks: configure_http.yml
-  when: ssp_config_http
-
-- name: Config MyFg on SSP
-  ansible.builtin.include_tasks: configure_myfg.yml
-  when: ssp_config_myfg
+  when: ssp_config_ftp.enabled
 
 - name: Config SFTP on SSP
   ansible.builtin.include_tasks: configure_sftp.yml
-  when: ssp_config_sftp
+  when: ssp_config_sftp.enabled
+
+- name: Config HTTP on SSP
+  ansible.builtin.include_tasks: configure_http.yml
+  when: ssp_config_http.enabled
+
+- name: Config MyFg on SSP
+  ansible.builtin.include_tasks: configure_myfg.yml
+  when: ssp_config_myfg.enabled
+
+

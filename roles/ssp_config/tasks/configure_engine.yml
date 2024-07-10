@@ -1,4 +1,30 @@
 ---
+- name: Define Facts
+  ansible.builtin.set_fact:
+    engine_xml: |
+      <engineDef>
+        <name>ssp-engine-01</name>
+        <description><![CDATA[SSP Engine automated]]></description>
+        <host>{{ ssp_engine_host }}</host>
+        <port>{{ ssp_engine_port }}</port>
+        <debugLogging>ERROR</debugLogging>
+        <localPSLogging>ERROR</localPSLogging>
+        <maverickLogging>ERROR</maverickLogging>
+        <userStore>defUserStore</userStore>
+        <blacklistUserIp></blacklistUserIp>
+        <blacklistUserId></blacklistUserId>
+        <properties>
+          <property>
+            <name>proxy.host.ip</name>
+            <value></value>
+          </property>
+          <property>
+            <name>ps.shutdown.timeout.secs</name>
+            <value>60</value>
+          </property>
+        </properties>
+      </engineDef>
+
 # Create Engine on SSP
 # -----------------------------------------------------------------------------------
 - name: Create Engine on SSP
@@ -8,33 +34,15 @@
     headers:
       X-Authentication: "{{ session_token }}"
       Content-Type: "application/xml"
-    body: |
-      <engineDef>
-        <certicomLogging>ERROR</certicomLogging>
-        <debugLogging>ERROR</debugLogging>
-        <description><![CDATA[{{ ssp_engine_description }}]]></description>
-        <enableAuditLogCMRouting>false</enableAuditLogCMRouting>
-        <host>{{ ssp_engine_host }}</host>
-        <localPSLogging>ERROR</localPSLogging>
-        <maverickLogging>ERROR</maverickLogging>
-        <name>{{ ssp_engine_name }}</name>
-        <port>65535</port>
-        <properties>
-          <property>
-            <name>proxy.host.name.or.ip</name>
-            <value>xx.xx.xx.xx</value>
-          </property>
-        </properties>
-        <status></status>
-        <userStore>defUserStore</userStore>
-      </engineDef>
+    body: "{{ engine_xml }}"
     status_code: 200
     validate_certs: false
     return_content: true
   register: response
+  # body: "{{ lookup('ansible.builtin.file','issue.json') }}"
 
-    # body: "{{ lookup('ansible.builtin.file','issue.json') }}"
-
-- name: Display response
+- name: Debug
   ansible.builtin.debug:
-    var: response
+    msg:
+      - "response.status ................. {{ response.status }}"
+      - "response.content ................. {{ response.content }}"

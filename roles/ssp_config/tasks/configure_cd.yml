@@ -1,95 +1,19 @@
 ---
-- name: Extract session token
+- name: Define Facts
   ansible.builtin.set_fact:
-    cd_policy_name: "exampleCdPolicy"
-    adapter_name: "exampleAdapter"
-    netmap_name: "exampleNetmap"
-
-# POST https://localhost:8443/sspcmrest/sspcm/rest/policy/createPolicy
-- name: Create CD Policy
-  ansible.builtin.uri:
-    url: https://{{ ssp_engine_url }}/sspcmrest/sspcm/rest/policy/createCdPolicy
-    method: POST
-    headers:
-      X-Authentication: "{{ session_token }}"
-      Content-Type: "application/xml"
-    body: |
-      <cdPolicy>
-        <name>{{ cd_policy_name }}</name>
-        <description><![CDATA[CD Policy Description]]></description>
-        <properties>
-          <property>
-            <name>exampleProperty</name>
-            <value>exampleValue</value>
-          </property>
-        </properties>
-      </cdPolicy>
-    status_code: 200
-    validate_certs: no
-  register: cd_policy_result
-
-# ---
-# - name: Create CD Policy
-#   hosts: localhost
-#   tasks:
-#     - name: Define the CD policy XML
-#       ansible.builtin.set_fact:
-#         cd_policy_xml: |
-#           <cdPolicyDef>
-#             <copyStepAllowed>true</copyStepAllowed>
-#             <eaCertValidation>false</eaCertValidation>
-#             <ipAddressCheck>true</ipAddressCheck>
-#             <name>CD_Policy_test</name>
-#             <protocol>cd</protocol>
-#             <protocolErrorAction>NONE</protocolErrorAction>
-#             <protocolValidationOn>true</protocolValidationOn>
-#             <runJobStepAllowed>true</runJobStepAllowed>
-#             <runTaskStepAllowed>true</runTaskStepAllowed>
-#             <status></status>
-#             <submitStepAllowed>true</submitStepAllowed>
-#             <userAuthentication>none</userAuthentication>
-#             <userMapping>noUserID</userMapping>
-#           </cdPolicyDef>
-
-#     - name: Validate CD Policy against XSD
-#       ansible.builtin.uri:
-#         url: http://your-ssp-host/validate-cd-policy
-#         method: POST
-#         body: "{{ cd_policy_xml }}"
-#         body_format: xml
-#         return_content: yes
-#       register: validate_cd_policy_result
-
-#     - name: Check CD Policy validation result
-#       ansible.builtin.fail:
-#         msg: "CD Policy validation failed."
-#       when: validate_cd_policy_result.status != 200
-
-#     - name: Create CD Policy
-#       ansible.builtin.uri:
-#         url: http://your-ssp-host/create-cd-policy
-#         method: POST
-#         body: "{{ cd_policy_xml }}"
-#         body_format: xml
-#         return_content: yes
-#       register: create_cd_policy_result
-
-#     - name: Check CD Policy creation result
-#       ansible.builtin.fail:
-#         msg: "CD Policy creation failed."
-#       when: create_cd_policy_result.status != 200
-
-- name: Create Netmap
-  ansible.builtin.uri:
-    url: https://{{ ssp_engine_url }}/sspcmrest/sspcm/rest/netmap/createNetmap
-    method: POST
-    headers:
-      X-Authentication: "{{ session_token }}"
-      Content-Type: "application/xml"
-    body: |
+    config_name: "C:D"
+    create_policy: "{{ ssp_config_cd.create_policy }}"
+    create_netmap: "{{ ssp_config_cd.create_netmap }}"
+    create_adapter: "{{ ssp_config_cd.create_adapter }}"
+    policy_xml: |
+        <cdPolicy>
+          <name>cd-policy-test</name>
+          <description><![CDATA[]]></description>
+        </cdPolicy>
+    netmap_xml: |
       <netmap>
-        <name>{{ netmap_name }}</name>
-        <description><![CDATA[Netmap Description]]></description>
+        <name>cd-netmap-01</name>
+        <description><![CDATA[CD Netmap 01]]></description>
         <entries>
           <entry>
             <source>source1</source>
@@ -101,90 +25,12 @@
           </entry>
         </entries>
       </netmap>
-    status_code: 200
-    validate_certs: no
-  register: netmap_result
-
-# ---
-# - name: Create CD Netmap
-#   hosts: localhost
-#   tasks:
-#     - name: Define the CD netmap XML
-#       ansible.builtin.set_fact:
-#         cd_netmap_xml: |
-#           <netmapDef>
-#             <description>Connect_Direct_Netmap</description>
-#             <inboundNodes>
-#               <inboundNodeDef>
-#                 <addresses>
-#                   <address>
-#                     <nodeName>ccenterdev03.irv.ustx.ibm.com</nodeName>
-#                     <host>ccenterdev03.irv.ustx.ibm.com</host>
-#                     <port>4163</port>
-#                   </address>
-#                 </addresses>
-#                 <description>ccenterdev03.irv.ustx.ibm.com</description>
-#                 <logLevel>NONE</logLevel>
-#                 <name>ccenterdev03.irv.ustx.ibm.com</name>
-#                 <outboundACLNodes>
-#                   <outboundACLNode>ccenterdev03.irv.ustx.ibm.com</outboundACLNode>
-#                 </outboundACLNodes>
-#                 <peerAddressPattern>ccenterdev03.irv.ustx.ibm.com</peerAddressPattern>
-#                 <policyId>CD_Policy_test</policyId>
-#                 <port>4163</port>
-#                 <routingName>ccenterdev03.irv.ustx.ibm.com</routingName>
-#                 <secureConnection>false</secureConnection>
-#                 <serverAddress>ccenterdev03.irv.ustx.ibm.com</serverAddress>
-#                 <tcpTimeout>90</tcpTimeout>
-#               </inboundNodeDef>
-#             </inboundNodes>
-#             <name>CD_Netmap_test</name>
-#             <outboundACLRequired>false</outboundACLRequired>
-#             <protocol>cd</protocol>
-#             <status></status>
-#           </netmapDef>
-
-#     - name: Validate CD Netmap against XSD
-#       ansible.builtin.uri:
-#         url: http://your-ssp-host/validate-cd-netmap
-#         method: POST
-#         body: "{{ cd_netmap_xml }}"
-#         body_format: xml
-#         return_content: yes
-#       register: validate_cd_netmap_result
-
-#     - name: Check CD Netmap validation result
-#       ansible.builtin.fail:
-#         msg: "CD Netmap validation failed."
-#       when: validate_cd_netmap_result.status != 200
-
-#     - name: Create CD Netmap
-#       ansible.builtin.uri:
-#         url: http://your-ssp-host/create-cd-netmap
-#         method: POST
-#         body: "{{ cd_netmap_xml }}"
-#         body_format: xml
-#         return_content: yes
-#       register: create_cd_netmap_result
-
-#     - name: Check CD Netmap creation result
-#       fail:
-#         msg: "CD Netmap creation failed."
-#       when: create_cd_netmap_result.status != 200
-
-- name: Create Adapter
-  ansible.builtin.uri:
-    url: https://localhost:8443/sspcmrest/sspcm/rest/adapter/createAdapter
-    method: POST
-    headers:
-      X-Authentication: "{{ session_token }}"
-      Content-Type: "application/xml"
-    body: |
+    adapter_xml: |
       <adapter>
-        <name>{{ adapter_name }}</name>
+        <name>cd-adapter-11364</name>
         <type>exampleType</type>
-        <host>{{ engine_host }}</host>
-        <port>12345</port>
+        <host>{{ ssp_engine_host }}</host>
+        <port>11364</port>
         <properties>
           <property>
             <name>adapterProperty</name>
@@ -192,80 +38,101 @@
           </property>
         </properties>
       </adapter>
+
+# POST https://localhost:8443/sspcmrest/sspcm/rest/policy/createPolicy
+- name: Create Policy {{ config_name }}
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: "{{ policy_xml }}"
     status_code: 200
-    validate_certs: no
+    validate_certs: false
+  when: create_policy
+  register: policy_result
+
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "policy_result.status ................. {{ policy_result.status }}"
+      - "policy_result.content ................. {{ policy_result.content }}"
+
+- name: Create Netmap {{ config_name }}
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/netmap/createNetmap
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: "{{ netmap_xml }}"
+    status_code: 200
+    validate_certs: false
+  when: create_netmap
+  register: netmap_result
+
+- name: Create Adapter {{ config_name }}
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/adapter/createAdapter
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: "{{ adapter_xml }}"
+    status_code: 200
+    validate_certs: false
+  when: create_adapter
   register: adapter_result
 
+# --------------------------------------------
+# <netmapDef>
+#   <description>Connect_Direct_Netmap</description>
+#   <inboundNodes>
+#     <inboundNodeDef>
+#       <addresses>
+#         <address>
+#           <nodeName>ccenterdev03.irv.ustx.ibm.com</nodeName>
+#           <host>ccenterdev03.irv.ustx.ibm.com</host>
+#           <port>4163</port>
+#         </address>
+#       </addresses>
+#       <description>ccenterdev03.irv.ustx.ibm.com</description>
+#       <logLevel>NONE</logLevel>
+#       <name>ccenterdev03.irv.ustx.ibm.com</name>
+#       <outboundACLNodes>
+#         <outboundACLNode>ccenterdev03.irv.ustx.ibm.com</outboundACLNode>
+#       </outboundACLNodes>
+#       <peerAddressPattern>ccenterdev03.irv.ustx.ibm.com</peerAddressPattern>
+#       <policyId>CD_Policy_test</policyId>
+#       <port>4163</port>
+#       <routingName>ccenterdev03.irv.ustx.ibm.com</routingName>
+#       <secureConnection>false</secureConnection>
+#       <serverAddress>ccenterdev03.irv.ustx.ibm.com</serverAddress>
+#       <tcpTimeout>90</tcpTimeout>
+#     </inboundNodeDef>
+#   </inboundNodes>
+#   <name>CD_Netmap_test</name>
+#   <outboundACLRequired>false</outboundACLRequired>
+#   <protocol>cd</protocol>
+#   <status></status>
+# </netmapDef>
 
-# ---
-# - name: Create CD Adapter
-#   hosts: localhost
-#   tasks:
-#     - name: Define the CD adapter XML
-#       set_fact:
-#         cd_adapter_xml: |
-#           <cdAdapterDef>
-#             <encryptionLevel>false</encryptionLevel>
-#             <engines></engines>
-#             <faspPortrange>1000-2000</faspPortrange>
-#             <listenPort>25000</listenPort>
-#             <logLevel>DEBUG</logLevel>
-#             <maxSessions>20</maxSessions>
-#             <name>CD_Adapter_test</name>
-#             <netmap>CD_Netmap_test</netmap>
-#             <netmapKey>ccenterdev03.irv.ustx.ibm.com</netmapKey>
-#             <properties></properties>
-#             <protocol>cd</protocol>
-#             <sessionTimeout>90</sessionTimeout>
-#             <standardRoute>ccenterdev03.irv.ustx.ibm.com</standardRoute>
-#             <status></status>
-#             <urlRoutingType>standardRouting</urlRoutingType>
-#           </cdAdapterDef>
-
-#     - name: Validate CD Adapter against XSD
-#       uri:
-#         url: http://your-ssp-host/validate-cd-adapter
-#         method: POST
-#         body: "{{ cd_adapter_xml }}"
-#         body_format: xml
-#         return_content: yes
-#       register: validate_cd_adapter_result
-
-#     - name: Check CD Adapter validation result
-#       fail:
-#         msg: "CD Adapter validation failed."
-#       when: validate_cd_adapter_result.status != 200
-
-#     - name: Create CD Adapter
-#       uri:
-#         url: http://your-ssp-host/create-cd-adapter
-#         method: POST
-#         body: "{{ cd_adapter_xml }}"
-#         body_format: xml
-#         return_content: yes
-#       register: create_cd_adapter_result
-
-#     - name: Check CD Adapter creation result
-#       fail:
-#         msg: "CD Adapter creation failed."
-#       when: create_cd_adapter_result.status != 200
-
-- name: Display engine creation result
-  ansible.builtin.debug:
-    var: engine_result
-
-- name: Display HTTP policy creation result
-  ansible.builtin.debug:
-    var: policy_result
-
-- name: Display CD policy creation result
-  ansible.builtin.debug:
-    var: cd_policy_result
-
-- name: Display adapter creation result
-  ansible.builtin.debug:
-    var: adapter_result
-
-- name: Display netmap creation result
-  ansible.builtin.debug:
-    var: netmap_result
+# --------------------------------------------
+# <cdAdapterDef>
+#   <encryptionLevel>false</encryptionLevel>
+#   <engines></engines>
+#   <faspPortrange>1000-2000</faspPortrange>
+#   <listenPort>25000</listenPort>
+#   <logLevel>DEBUG</logLevel>
+#   <maxSessions>20</maxSessions>
+#   <name>CD_Adapter_test</name>
+#   <netmap>CD_Netmap_test</netmap>
+#   <netmapKey>ccenterdev03.irv.ustx.ibm.com</netmapKey>
+#   <properties></properties>
+#   <protocol>cd</protocol>
+#   <sessionTimeout>90</sessionTimeout>
+#   <standardRoute>ccenterdev03.irv.ustx.ibm.com</standardRoute>
+#   <status></status>
+#   <urlRoutingType>standardRouting</urlRoutingType>
+# </cdAdapterDef>
