@@ -96,13 +96,23 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy OpenLDAP as LDAP Server</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#login-on-openshift">Login on OpenShift</a>
+    <li class="toctree-l2"><a class="reference internal" href="#preparation">Preparation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-login-on-openshift">1. Login on OpenShift</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git</a>
+    <li class="toctree-l3"><a class="reference internal" href="#2-cloning-ansible-ibm-websphere-from-git">2. Cloning ansible-ibm-websphere from git</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#exporting-variables">Exporting variables</a>
+    <li class="toctree-l3"><a class="reference internal" href="#3-set-roles-path">3. Set roles path</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy-cloud-beaver">Deploy Cloud beaver</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-run-the-playbook">1. Run the Playbook</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#environment-variable">Environment Variable</a>
     </li>
     </ul>
                   </li>
@@ -202,23 +212,31 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="deploy-openldap-on-openshift-using-ansible-scripts">Deploy OpenLDAP on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-openldap-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
-<h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
+<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
+<h4 id="1-login-on-openshift">1. Login on OpenShift<a class="headerlink" href="#1-login-on-openshift" title="Permanent link"></a></h4>
 <p>Do a login in Openshift console and run the command:</p>
 <pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 </code></pre>
-<h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
+<h4 id="2-cloning-ansible-ibm-websphere-from-git">2. Cloning ansible-ibm-websphere from git<a class="headerlink" href="#2-cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h4>
 <pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 </code></pre>
-<h2 id="exporting-variables">Exporting variables<a class="headerlink" href="#exporting-variables" title="Permanent link"></a></h2>
+<h4 id="3-set-roles-path">3. Set roles path<a class="headerlink" href="#3-set-roles-path" title="Permanent link"></a></h4>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">cd ansible-ibm-sterling
 
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
-<h2 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h2>
+<h2 id="deploy-cloud-beaver">Deploy Cloud beaver<a class="headerlink" href="#deploy-cloud-beaver" title="Permanent link"></a></h2>
+<h4 id="1-run-the-playbook">1. Run the Playbook<a class="headerlink" href="#1-run-the-playbook" title="Permanent link"></a></h4>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/tools/openldap.yml
 </code></pre>
+<h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
+<p>For all environment variables</p>
+<ul>
+<li>Role <a href="../../roles/openldap">openldap</a></li>
+<li>Role <a href="../../roles/phpldapadmin">phpldapadmin</a></li>
+</ul>
               
             </div>
           </div><footer>

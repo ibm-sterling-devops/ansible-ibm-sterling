@@ -75,15 +75,25 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Deploy IBM Sterling Transformation Advanced (ITXA)</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#ibm-entitled-registry">IBM Entitled Registry</a>
+    <li class="toctree-l2"><a class="reference internal" href="#preparation">Preparation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-ibm-entitled-registry">1. IBM Entitled Registry</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#login-on-openshift">Login on OpenShift</a>
+    <li class="toctree-l3"><a class="reference internal" href="#2-login-on-openshift">2. Login on OpenShift</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git</a>
+    <li class="toctree-l3"><a class="reference internal" href="#3-cloning-ansible-ibm-websphere-from-git">3. Cloning ansible-ibm-websphere from git</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#exporting-variables">Exporting variables</a>
+    <li class="toctree-l3"><a class="reference internal" href="#4-set-roles-path">4. Set roles path</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#run-the-plabook">Run the Plabook</a>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploy-itxa">Deploy ITXA</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-change-itx-instance-id">1. Change ITX Instance ID</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-run-the-plabook">2. Run the Plabook</a>
+    </li>
+        </ul>
     </li>
     </ul>
                   </li>
@@ -204,30 +214,41 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="deploy-ibm-sterling-transformation-server-on-openshift-using-ansible-scripts">Deploy IBM Sterling Transformation Server on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-ibm-sterling-transformation-server-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
-<h2 id="ibm-entitled-registry">IBM Entitled Registry<a class="headerlink" href="#ibm-entitled-registry" title="Permanent link"></a></h2>
+<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
+<h3 id="1-ibm-entitled-registry">1. IBM Entitled Registry<a class="headerlink" href="#1-ibm-entitled-registry" title="Permanent link"></a></h3>
 <p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
 <p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
-<h2 id="login-on-openshift">Login on OpenShift<a class="headerlink" href="#login-on-openshift" title="Permanent link"></a></h2>
+<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
+</code></pre>
+<h3 id="2-login-on-openshift">2. Login on OpenShift<a class="headerlink" href="#2-login-on-openshift" title="Permanent link"></a></h3>
 <p>Do a login in Openshift console and run the command:</p>
 <pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 </code></pre>
-<h2 id="cloning-ansible-ibm-websphere-from-git">Cloning ansible-ibm-websphere from git<a class="headerlink" href="#cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h2>
+<h3 id="3-cloning-ansible-ibm-websphere-from-git">3. Cloning ansible-ibm-websphere from git<a class="headerlink" href="#3-cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h3>
 <pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
 </code></pre>
-<h2 id="exporting-variables">Exporting variables<a class="headerlink" href="#exporting-variables" title="Permanent link"></a></h2>
+<h3 id="4-set-roles-path">4. Set roles path<a class="headerlink" href="#4-set-roles-path" title="Permanent link"></a></h3>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">cd ansible-ibm-sterling
 
 export ANSIBLE_CONFIG=./ansible.cfg 
-
-export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
-
-export ITXA_INSTANCEID=dev09
 </code></pre>
-<h2 id="run-the-plabook">Run the Plabook<a class="headerlink" href="#run-the-plabook" title="Permanent link"></a></h2>
+<h2 id="deploy-itxa">Deploy ITXA<a class="headerlink" href="#deploy-itxa" title="Permanent link"></a></h2>
+<h4 id="1-change-itx-instance-id">1. Change ITX Instance ID<a class="headerlink" href="#1-change-itx-instance-id" title="Permanent link"></a></h4>
+<p>To run playbook</p>
+<pre><code class="language-bash">export ITXA_INSTANCEID=dev09
+</code></pre>
+<h4 id="2-run-the-plabook">2. Run the Plabook<a class="headerlink" href="#2-run-the-plabook" title="Permanent link"></a></h4>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_itxa.yml
 </code></pre>
+<h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>
+<p>For all environment variables</p>
+<ul>
+<li>Role <a href="../../roles/itxa_deploy">itxa_deploy</a></li>
+<li>Role <a href="../../roles/itxa_setup_db2">itxa_setup_db2</a></li>
+<li>Role <a href="../../roles/itxa_deploy_db2">itxa_deploy_db2</a></li>
+</ul>
               
             </div>
           </div><footer>

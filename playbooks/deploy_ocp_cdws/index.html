@@ -85,9 +85,13 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deploy-you-connectdirect-webservice">Deploy you Connect:Direct WebService</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-define-namespace">1. Define Namespace</a>
+    <li class="toctree-l3"><a class="reference internal" href="#1-run-the-plabook">1. Run the Plabook</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#2-run-the-plabook">2. Run the Plabook</a>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#example-1-change-namespace-and-cd-node-name">Example 1: Change namespace and C:D node name</a>
     </li>
         </ul>
     </li>
@@ -236,14 +240,20 @@
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
 <h2 id="deploy-you-connectdirect-webservice">Deploy you Connect:Direct WebService<a class="headerlink" href="#deploy-you-connectdirect-webservice" title="Permanent link"></a></h2>
-<h3 id="1-define-namespace">1. Define Namespace<a class="headerlink" href="#1-define-namespace" title="Permanent link"></a></h3>
-<pre><code class="language-bash">export CDWS_NAMESPACE=sterling-cdws01
-</code></pre>
-<h3 id="2-run-the-plabook">2. Run the Plabook<a class="headerlink" href="#2-run-the-plabook" title="Permanent link"></a></h3>
+<h3 id="1-run-the-plabook">1. Run the Plabook<a class="headerlink" href="#1-run-the-plabook" title="Permanent link"></a></h3>
 <p>To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_cdws.yml
 </code></pre>
 <p>check for <strong>sterling-cdws01</strong> namespace in Kubernetes/Openshift console.</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link"></a></h2>
+<h3 id="example-1-change-namespace-and-cd-node-name">Example 1: Change namespace and C:D node name<a class="headerlink" href="#example-1-change-namespace-and-cd-node-name" title="Permanent link"></a></h3>
+<p>To change namespace/project and C:D node name</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+
+export CDWS_NAMESPACE=sterling-cdws01
+
+ansible-playbook playbooks/deploy_cd.yml
+</code></pre>
 <h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
 <p>For all environment variables</p>
 <ul>
