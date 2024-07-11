@@ -1,6 +1,7 @@
 ---
 # Get values from Environment Variables
 # -----------------------------------------------------------------------------
+si_action: "{{ lookup('env', 'SI_ACTION') | default('install', true) }}"
 si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
 
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
@@ -21,12 +22,6 @@ si_dbuser: "{{ lookup('env', 'SI_DBUSER') }}"
 si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD') }}"
 si_oracle_useservicename: "{{ lookup('env', 'SI_ORACLESERVICENAME', default('false')) }}"
 
-si_datasetup_enabled: "{{ lookup('env', 'SI_DATASETUP_ENABLED') | default('true', true) }}"
-si_datasetup_upgrade: "{{ lookup('env', 'SI_DATASETUP_UPGRADE') | default('false', true) }}"
-si_env_timezone: "{{ lookup('env', 'SI_ENV_TIMEZONE') | default('UTC', true) }}"
-si_env_upgradecompatibilityverified: "{{ lookup('env', 'SI_ENV_UPGRADE_COMPAT_VERIFIED') | default('false', true) }}"
-si_env_debugmode: "{{ lookup('env', 'SI_ENV_DEBUGMODE') | default('false', true) }}"
-
 si_adminmailaddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
 si_adminsmtphost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
 
@@ -36,6 +31,26 @@ si_jmskeystorepassword: "{{ lookup('env', 'SI_JMS_KEYSTORE_PASSWORD') }}"
 si_jmstruststorepassword: "{{ lookup('env', 'SI_JMS_TRUSTSTORE_PASSWORD') }}"
 
 si_libertykeystorepassword: "{{ lookup('env', 'SI_LIBERTY_KEYSTORE_PASSWORD') | default('changeit', true) }}"
+
+si_actions_defaults:
+  install:
+    datasetup_enabled: "true"
+    datasetup_upgrade: "false"
+    env_upgradecompatibilityverified: "false"
+  upgrade:
+    datasetup_enabled: "true"
+    datasetup_upgrade: "true"
+    env_upgradecompatibilityverified: "true"
+  prebuiltdb:
+    datasetup_enabled: "false"
+    datasetup_upgrade: "false"
+    env_upgradecompatibilityverified: "false"
+
+si_datasetup_enabled: "{{ lookup('env', 'SI_DATASETUP_ENABLED') | default(si_actions_defaults[si_action].datasetup_enabled, true) }}"
+si_datasetup_upgrade: "{{ lookup('env', 'SI_DATASETUP_UPGRADE') | default(si_actions_defaults[si_action].datasetup_upgrade, true) }}"
+si_env_timezone: "{{ lookup('env', 'SI_ENV_TIMEZONE') | default('UTC', true) }}"
+si_env_upgradecompatibilityverified: "{{ lookup('env', 'SI_ENV_UPGRADE_COMPAT_VERIFIED') | default(si_actions_defaults[si_action].env_upgradecompatibilityverified, true) }}"
+si_env_debugmode: "{{ lookup('env', 'SI_ENV_DEBUGMODE') | default('false', true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------
