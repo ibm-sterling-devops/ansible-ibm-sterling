@@ -4,7 +4,7 @@
 # --set option provided by helm cli.
 
 # Change license to true to indicate that you have read and agree to license agreements
-# Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N:  L-MTAE-C5RR2U)
+# Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-FYHF-K7J2TN)
 license: false
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
@@ -27,16 +27,16 @@ replicaCount: 1
 # Specify the respective Docker Image details for IBMCCS
 image:
   # Specify the repository name alongwith image name
-  repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.2"
+  repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
   # Specify the tag name for the image in double quotes 
-  tag: "6.3.0.2_ifix009"
+  tag: "6.3.0.3_ifix009"
   # Specify the image pull secret for the service, if the image is in private registry 
   # protected with password
   imageSecrets: ""
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
-    value: "sha256:4eb05a380464dc720ddd920012850020d2a4bdccb9d334db878526f9b8eabd93"
+    value: "sha256:b76b562df54ee4cb9ac297fa0eecd6b3bdd656058a1a6daf7bb6da7e50d1a991"
   # Specify respective pull policy to used to override default `IfNotPresent` policy 
   pullPolicy: Always
 

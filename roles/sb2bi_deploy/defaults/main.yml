@@ -200,7 +200,7 @@ compatibility_matrix:
 # -----------------------------------------------------------------------------
 storage_class_matrix:
   ibmcloud:
-    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx: "ibmc-file-gold"   # ReadWriteMany - ibmc-file-gold-gid not supported in multizone
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
     rwo: "ibmc-block-gold"      # ReadWriteOnce
     rom: "ibmc-file-gold-gid"       # ReadOnlyMany  #FIXME need to define this value

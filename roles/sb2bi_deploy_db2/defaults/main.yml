@@ -6,6 +6,8 @@ db2_namespace: "sterling-b2bi-{{ si_instanceid }}-db2"
 db2_password: "{{ lookup('env', 'DB2_PASSWORD') | default('passw0rd', true) }}"
 db2_version: "{{ lookup('env', 'DB2_VERSION') | default('11.5.9.0', true) }}"
 
+db2_storage_capacity: "{{ lookup('env', 'DB2_STORAGE_CAPACITY') | default('40Gi', true) }}"
+
 db2_instance_name: "db2inst1"
 db2_user: "db2inst1"
 db2_dbname: "B2BI"
@@ -29,7 +31,7 @@ db2_storage_size: "10Gi" # 40Gi
 
 storage_class_matrix:
   ibmcloud:
-    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx: "ibmc-file-gold"   # ReadWriteMany - ibmc-file-gold-gid is not supported in multizone
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
     rwo: "ibmc-block-gold"      # ReadWriteOnce
     rom: ""                     # ReadOnlyMany

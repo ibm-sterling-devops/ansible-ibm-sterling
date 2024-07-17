@@ -85,6 +85,22 @@
                     value: accept
                   - name: DB2INSTANCE
                     value: "{{ db2_instance_name }}"
+                  - name: SAMPLEDB
+                    value: "false"
+                  - name: ENABLE_ORACLE_COMPATIBILITY
+                    value: "false"
+                  - name: UPDATEAVAIL
+                    value: "NO"
+                  - name: TO_CREATE_SAMPLEDB
+                    value: "false"
+                  - name: REPODB
+                    value: "false"
+                  - name: IS_OSXFS
+                    value: "false"
+                  - name: PERSISTENT_HOME
+                    value: "true"
+                  - name: HADR_ENABLED
+                    value: "false"
                 ports:
                   - containerPort: 50000
                     name: "{{ db2_id }}-srv"
@@ -104,8 +120,8 @@
                 - ReadWriteOnce
               resources:
                 requests:
-                  storage: "{{ db2_storage_size | default('40Gi') }}"
-              storageClassName: "{{ storage_class_matrix[db2_storage_class].rwo | default('') }}"
+                  storage: "{{ db2_storage_capacity }}"
+              storageClassName: "{{ storage_class_matrix[db2_storage_class].rwo }}"
 
 - name: "Lookup DB2 Pod"
   kubernetes.core.k8s_info:
