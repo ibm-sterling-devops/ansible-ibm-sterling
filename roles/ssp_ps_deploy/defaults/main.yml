@@ -1,7 +1,7 @@
 ---
 ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
 
-ssp_ps_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.03plus', true) }}"
+ssp_ps_version: "{{ lookup('env', 'SSP_VERSION') | default('6.1.0.0.04', true) }}"
 
 ssp_ps_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
