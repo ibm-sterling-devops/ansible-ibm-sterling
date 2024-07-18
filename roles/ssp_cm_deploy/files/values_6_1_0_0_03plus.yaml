@@ -5,11 +5,11 @@
 
 # Change license to true to indicate that you have read and agree to license agreements
 # Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-NKDT-7M46YH)
-license: false
+license: true
 
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: prod
+licenseType: "non-prod"
 
 # This name will be appended to release name to form the name of the resources created by this chart
 nameOverride: ""
@@ -24,13 +24,13 @@ image:
   # Specify the repository name along with image name
   repository: "cp.icr.io/cp/ibm-ssp-cm/ssp-cm-docker-image"
   # Specify the tag name for the image  
-  tag: "6.1.0.0.04"
+  tag: "6.1.0.0.03plus"
   # Specify the image pull secret for the service, if the image is in private registry 
-  imageSecrets: ""
+  imageSecrets: "ibm-registry-secret"
   # Enable true/false to use image digest
   digest:
-    enabled: true
-    value: sha256:d9964e14352c595dc599edffb2f7d4d91eec3a2ef1f8e336c044db99a30bbbe9
+    enabled: false
+    value: sha256:0a9f0c942e1c37a927abec0c139d36ecdc80f5e6f8ba23a5966f567369e8d418
   # Specify respective pull policy to used to override default `IfNotPresent` policy  
   pullPolicy: IfNotPresent
 
@@ -39,9 +39,9 @@ image:
 cmArgs:
    # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy CM first.
    # Set the value "false" to Import Key Cert Exported from Secure Proxy Engine if you have installed Secure Proxy Engine first.
-  keyCertExport: true
+  keyCertExport: false
   # Set the certificate alias value. 
-  keyCertAliasName: "keycert"
+  keyCertAliasName: "ssp-engine-keycert"
   # JVM max heap size - don't set more than container limit resource memory. 
   maxHeapSize: "2048m"
   # Enable/Disable host name verification
@@ -64,11 +64,11 @@ persistentVolume:
   # Specify the existing PV claim name to be used for deployment
   existingClaimName: ""
   # Specify this to use selector label name for PV-PVC bind
-  labelName: "app.kubernetes.io/name"
+  labelName: ""
   # Specify this to use selector label value for PV-PVC bind
-  labelValue: "ibm-ssp-cm-pv"
+  labelValue: ""
   # Specify this to set storage class name
-  storageClassName: "manual"
+  storageClassName: "ibmc-file-gold"
   # Specify this to set PVC size
   size: 2Gi
   # Specify this to set access mode
@@ -115,9 +115,9 @@ service:
 # Specify the Secret configuration for Configuration Manager
 secret:
   # Secret name for PassPhase and Password
-  secretName: ""
+  secretName: "ibm-ssp-cm-secret"
   # Secret name for the imported Key Certificate from Engine - Use this if you are installing Configuration Manager after Engine otherwise it's not needed. 
-  keyCertSecretName: ""
+  keyCertSecretName: "ssp-engine-keycert"
 
 # Specify the service account details
 serviceAccount:
@@ -182,7 +182,7 @@ readinessProbe:
 
 # Set this to true create route in OpenShift cluster
 route:
-  enabled: false
+  enabled: true
   
 # Set this to true to create Monitoring Dashboard for IBMCCS
 dashboard:
