@@ -4,43 +4,37 @@ Installation Guide for kubectl, oc, git, helm and ansible on MacOS
 ### Install kubectl
 1. Install with Homebrew:
 ```sh
-brew install kubectl
+brew install kubectl git openshift-cli ansible
 ```
 
-2. Test to ensure the version you installed is up-to-date:
-```sh
-kubectl version --client
-```
+### Verify
 
-### Install git
-1. Install with Homebrew:
-```sh
-brew install git
-```
-
-2. Verify the installation:
+1. Verify the installation:
 ```sh
 git --version
 ```
 
-### Install oc
-1. Install with Homebrew:
-```sh
-brew install openshift-cli
-```
-
-2. Test to ensure the version you installed is up-to-date:
+2. Verify the installation:
 ```sh
 oc version
 ```
 
-### Install ansible
-1. Install Ansible with Homebrew:
+3. Verify the installation:
 ```sh
-brew install ansible
+kubectl version
 ```
 
-2. Verify the installation:
+4. Verify the installation:
 ```sh
 ansible --version
+```
+
+5. Verify the installation:
+```sh
+helm --version
+```
+
+6. Verify the installation:
+```sh
+keytool
 ```

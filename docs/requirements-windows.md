@@ -7,72 +7,99 @@ Installation Guide for kubectl, oc, git, helm and ansible on MS Windows using WS
 wsl --install
 ```
 
-2. Restart your computer if prompted.
+WSL will install a Ubuntu Linux distribution.
 
-3. Install a Linux distribution from the Microsoft Store (e.g., Ubuntu).
+2. Restart your computer if prompted.
 
 ### Set up WSL
 
-1. Open your installed Linux distribution.
+1. Open WSL application, and provide default user and password
 
-### Install kubectl and oc
-1. Download the latest release:
+```sh
+Ubuntu is already installed.
+Starting Ubuntu...
+...
+Enter new UNIX username: demo
+New password:
+Retype new password:
+passwd: password updated successfully
+```
+
+### Install Packages
+
+1. Update and install packages
+
+```sh
+sudo apt -y update
+sudo apt -y upgrade
+```
+
+2. Install packages
+
+```sh
+sudo apt -y install ansible git openjdk-17-jre-headless python3-pip python3-kubernetes python3-requests python3-yaml
+```
+
+3. Install kubectl and oc
+
 ```sh
 curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz"
-```
 
-2. Extract the tar file:
-```sh
 tar -xzvf openshift-client-linux.tar.gz
-```
 
-3. Move the binaries to your PATH:
-```sh
 chmod +x oc 
 chmod +x kubectl
 
 sudo mv oc kubectl /usr/local/bin/
 ```
+4. Install ansible kubernetes.core 
 
-4. Test to ensure the version you installed is up-to-date:
 ```sh
-oc version
+ansible-galaxy collection install kubernetes.core
 ```
 
-### Install git, ansible, helm
 
+### Install git, ansible, helm
 
 1. Add the Helm dependencies:
 
 ```sh
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
-sudo apt-get install apt-transport-https --yes
+sudo apt install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+
+sudo apt update
+sudo apt install helm
 ```
 
-2. Add the Ansible PPA dependencies:
-```sh
-sudo apt -y install software-properties-common
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-```
+### Verify
 
-3. Install packages
-```sh
-sudo apt -y update
-sudo apt -y install git ansible helm
-```
-
-4. Verify the installation:
+1. Verify the installation:
 ```sh
 git --version
 ```
 
-5. Verify the installation:
+2. Verify the installation:
+```sh
+oc version
+```
+
+3. Verify the installation:
+```sh
+kubectl version
+```
+
+4. Verify the installation:
 ```sh
 ansible --version
 ```
 
-6. Verify the installation:
+5. Verify the installation:
 ```sh
 helm --version
+```
+
+6. Verify the installation:
+```sh
+keytool
 ```

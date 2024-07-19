@@ -20,23 +20,14 @@ chmod +x kubectl
 sudo mv oc kubectl /usr/local/bin/
 ```
 
-4. Test to ensure the version you installed is up-to-date:
-```sh
-oc version
-```
-
 ### Install helm
 
 1. Download the latest release:
+
 ```sh
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 $ chmod 700 get_helm.sh
 $ ./get_helm.sh
-```
-
-2. Verify the installation:
-```sh
-helm --version
 ```
 
 ### Install git, ansible, , python3-pip, java (keytool)
@@ -55,12 +46,35 @@ pip3.11 install kubernetes requests
 ansible-galaxy collection install kubernetes.core
 ```
 
+
+### Verify
+
+1. Verify the installation:
+```sh
+git --version
+```
+
+2. Verify the installation:
+```sh
+oc version
+```
+
 3. Verify the installation:
 ```sh
-ansible --version
+kubectl version
 ```
 
 4. Verify the installation:
 ```sh
+ansible --version
+```
+
+5. Verify the installation:
+```sh
 helm --version
+```
+
+6. Verify the installation:
+```sh
+keytool
 ```
