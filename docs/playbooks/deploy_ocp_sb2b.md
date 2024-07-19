@@ -2,11 +2,11 @@
 
 Playbook will run the last version of Sterling B2Bi, but take care of Kubernetes/Openshift version is supported
 
-| Sterling B2Bi (helm) | Kubernetes          | OpenShift           | Helm      |
-|----------------------|---------------------|---------------------|-----------|
-| 6.2.0.2 (3.0.4)      | >= 1.27 and <= 1.29 | >= 4.14 and <= 4.15 | >= 3.14.x |
-| 6.2.0.1 (3.0.1)      | >= 1.26 and <= 1.28 | >= 4.13 and <= 4.14 | >= 3.13.x |
-| 6.2.0.0 (3.0.0)      | >= 1.25 and <= 1.27 | >= 4.12 and <= 4.13 | >= 3.12.x |
+| Sterling B2Bi | helm-chart | Kubernetes          | OpenShift           | Helm      |
+|---------------|------------|---------------------|---------------------|-----------|
+| 6.2.0.2       | 3.0.4      | >= 1.27 and <= 1.29 | >= 4.14 and <= 4.15 | >= 3.14.x |
+| 6.2.0.1       | 3.0.1      | >= 1.26 and <= 1.28 | >= 4.13 and <= 4.14 | >= 3.13.x |
+| 6.2.0.0       | 3.0.0      | >= 1.25 and <= 1.27 | >= 4.12 and <= 4.13 | >= 3.12.x |
 
 Check with
 

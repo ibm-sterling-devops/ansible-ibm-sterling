@@ -1,5 +1,18 @@
 # Deploy IBM Sterling External Authentication Server on OpenShift using Ansible Scripts
 
+Playbook will run the last version of SEAS, but take care of Kubernetes/Openshift version is supported
+
+| SEAS       | helm-chart | Kubernetes          | OpenShift           | Helm      |
+|------------|------------|---------------------|---------------------|-----------|
+| 6.1.0.0.07 | 1.3.8      | >=1.26.0            | >= 4.13             | --        |
+| 6.1.0.0.06 | 1.3.7      | >=1.19.0            | --                  | --        |
+
+Check with
+
+```bash 
+kubectl version
+```
+
 ## Preparation
 
 ### 1. IBM Entitled Registry
