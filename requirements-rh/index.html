@@ -53,7 +53,9 @@
     <ul class="current">
     <li class="toctree-l3"><a class="reference internal" href="#install-kubectl-and-oc">Install kubectl and oc</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#install-git-ansible-helm-python3-pip-java-keytool">Install git, ansible, helm, python3-pip, java (keytool)</a>
+    <li class="toctree-l3"><a class="reference internal" href="#install-helm">Install helm</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#install-git-ansible-python3-pip-java-keytool">Install git, ansible, , python3-pip, java (keytool)</a>
     </li>
     </ul>
                 </li>
@@ -223,20 +225,33 @@ sudo mv oc kubectl /usr/local/bin/
 </ol>
 <pre><code class="language-sh">oc version
 </code></pre>
-<h3 id="install-git-ansible-helm-python3-pip-java-keytool">Install git, ansible, helm, python3-pip, java (keytool)<a class="headerlink" href="#install-git-ansible-helm-python3-pip-java-keytool" title="Permanent link"></a></h3>
+<h3 id="install-helm">Install helm<a class="headerlink" href="#install-helm" title="Permanent link"></a></h3>
+<ol>
+<li>Download the latest release:</li>
+</ol>
+<pre><code class="language-sh">curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">helm --version
+</code></pre>
+<h3 id="install-git-ansible-python3-pip-java-keytool">Install git, ansible, , python3-pip, java (keytool)<a class="headerlink" href="#install-git-ansible-python3-pip-java-keytool" title="Permanent link"></a></h3>
 <ol>
 <li>Install the dependencies:</li>
 </ol>
 <pre><code class="language-sh">sudo yum -y install epel-release
 sudo yum -y update
-sudo yum -y install git ansible helm python3-pip java-17-openjdk-headless
+sudo yum -y install git ansible python3-pip java-17-openjdk-headless
 
-pip3 install kubernetes
+pip3.11 install kubernetes requests
 </code></pre>
 <ol>
-<li>Verify the installation:</li>
+<li>Install kubernetes.core module</li>
 </ol>
-<pre><code class="language-sh">git --version
+<pre><code class="language-sh">ansible-galaxy collection install kubernetes.core
 </code></pre>
 <ol>
 <li>Verify the installation:</li>

@@ -210,6 +210,37 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="deploy-ibm-sterling-external-authentication-server-on-openshift-using-ansible-scripts">Deploy IBM Sterling External Authentication Server on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-ibm-sterling-external-authentication-server-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
+<p>Playbook will run the last version of SEAS, but take care of Kubernetes/Openshift version is supported</p>
+<table>
+<thead>
+<tr>
+<th>SEAS</th>
+<th>helm-chart</th>
+<th>Kubernetes</th>
+<th>OpenShift</th>
+<th>Helm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6.1.0.0.07</td>
+<td>1.3.8</td>
+<td>&gt;=1.26.0</td>
+<td>&gt;= 4.13</td>
+<td>--</td>
+</tr>
+<tr>
+<td>6.1.0.0.06</td>
+<td>1.3.7</td>
+<td>&gt;=1.19.0</td>
+<td>--</td>
+<td>--</td>
+</tr>
+</tbody>
+</table>
+<p>Check with</p>
+<pre><code class="language-bash">kubectl version
+</code></pre>
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
 <h3 id="1-ibm-entitled-registry">1. IBM Entitled Registry<a class="headerlink" href="#1-ibm-entitled-registry" title="Permanent link"></a></h3>
 <p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
