@@ -51,11 +51,7 @@
     <ul class="current">
     <li class="toctree-l3"><a class="reference internal" href="#install-kubectl">Install kubectl</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#install-git">Install git</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#install-oc">Install oc</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#install-ansible">Install ansible</a>
+    <li class="toctree-l3"><a class="reference internal" href="#verify">Verify</a>
     </li>
     </ul>
                 </li>
@@ -207,45 +203,38 @@
 <ol>
 <li>Install with Homebrew:</li>
 </ol>
-<pre><code class="language-sh">brew install kubectl
+<pre><code class="language-sh">brew install kubectl git openshift-cli ansible
 </code></pre>
-<ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
-</ol>
-<pre><code class="language-sh">kubectl version --client
-</code></pre>
-<h3 id="install-git">Install git<a class="headerlink" href="#install-git" title="Permanent link"></a></h3>
-<ol>
-<li>Install with Homebrew:</li>
-</ol>
-<pre><code class="language-sh">brew install git
-</code></pre>
+<h3 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link"></a></h3>
 <ol>
 <li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">git --version
 </code></pre>
-<h3 id="install-oc">Install oc<a class="headerlink" href="#install-oc" title="Permanent link"></a></h3>
 <ol>
-<li>Install with Homebrew:</li>
-</ol>
-<pre><code class="language-sh">brew install openshift-cli
-</code></pre>
-<ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
+<li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">oc version
 </code></pre>
-<h3 id="install-ansible">Install ansible<a class="headerlink" href="#install-ansible" title="Permanent link"></a></h3>
 <ol>
-<li>Install Ansible with Homebrew:</li>
+<li>Verify the installation:</li>
 </ol>
-<pre><code class="language-sh">brew install ansible
+<pre><code class="language-sh">kubectl version
 </code></pre>
 <ol>
 <li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">ansible --version
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">helm --version
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">keytool
 </code></pre>
               
             </div>

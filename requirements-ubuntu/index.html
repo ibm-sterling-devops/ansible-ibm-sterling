@@ -53,9 +53,11 @@
                 </li>
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Ubuntu Linux</a>
     <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#install-kubectl-and-oc">Install kubectl and oc</a>
+    <li class="toctree-l3"><a class="reference internal" href="#install-packages">Install Packages</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#install-git-ansible-helm">Install git, ansible, helm</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#verify">Verify</a>
     </li>
     </ul>
                 </li>
@@ -199,54 +201,61 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="installation-guide-for-kubectl-oc-git-helm-and-ansible-on-ubuntudebian">Installation Guide for kubectl, oc, git, helm and ansible on Ubuntu/Debian<a class="headerlink" href="#installation-guide-for-kubectl-oc-git-helm-and-ansible-on-ubuntudebian" title="Permanent link"></a></h1>
-<h3 id="install-kubectl-and-oc">Install kubectl and oc<a class="headerlink" href="#install-kubectl-and-oc" title="Permanent link"></a></h3>
+<h3 id="install-packages">Install Packages<a class="headerlink" href="#install-packages" title="Permanent link"></a></h3>
 <ol>
-<li>Download the latest release:</li>
+<li>Update and install packages</li>
+</ol>
+<pre><code class="language-sh">sudo apt -y update
+sudo apt -y upgrade
+</code></pre>
+<ol>
+<li>Install packages</li>
+</ol>
+<pre><code class="language-sh">sudo apt -y install ansible git openjdk-17-jre-headless python3-pip python3-kubernetes python3-requests python3-yaml
+</code></pre>
+<ol>
+<li>Install kubectl and oc</li>
 </ol>
 <pre><code class="language-sh">curl -LO &quot;https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz&quot;
-</code></pre>
-<ol>
-<li>Extract the tar file:</li>
-</ol>
-<pre><code class="language-sh">tar -xzvf openshift-client-linux.tar.gz
-</code></pre>
-<ol>
-<li>Move the binaries to your PATH:</li>
-</ol>
-<pre><code class="language-sh">chmod +x oc 
+
+tar -xzvf openshift-client-linux.tar.gz
+
+chmod +x oc 
 chmod +x kubectl
 
 sudo mv oc kubectl /usr/local/bin/
 </code></pre>
 <ol>
-<li>Test to ensure the version you installed is up-to-date:</li>
+<li>Install ansible kubernetes.core </li>
 </ol>
-<pre><code class="language-sh">oc version
+<pre><code class="language-sh">ansible-galaxy collection install kubernetes.core
 </code></pre>
 <h3 id="install-git-ansible-helm">Install git, ansible, helm<a class="headerlink" href="#install-git-ansible-helm" title="Permanent link"></a></h3>
 <ol>
 <li>Add the Helm dependencies:</li>
 </ol>
 <pre><code class="language-sh">curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg &gt; /dev/null
-sudo apt-get install apt-transport-https --yes
+sudo apt install apt-transport-https --yes
 echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main&quot; | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+
+sudo apt update
+sudo apt install helm
 </code></pre>
-<ol>
-<li>Add the Ansible PPA dependencies:</li>
-</ol>
-<pre><code class="language-sh">sudo apt -y install software-properties-common
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-</code></pre>
-<ol>
-<li>Install packages</li>
-</ol>
-<pre><code class="language-sh">sudo apt -y update
-sudo apt -y install git ansible helm
-</code></pre>
+<h3 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link"></a></h3>
 <ol>
 <li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">git --version
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">oc version
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">kubectl version
 </code></pre>
 <ol>
 <li>Verify the installation:</li>
@@ -257,6 +266,11 @@ sudo apt -y install git ansible helm
 <li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">helm --version
+</code></pre>
+<ol>
+<li>Verify the installation:</li>
+</ol>
+<pre><code class="language-sh">keytool
 </code></pre>
               
             </div>
