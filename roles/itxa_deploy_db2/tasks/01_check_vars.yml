@@ -1,11 +1,10 @@
 ---
-# -----------------------------------------------------------------------------
-- name: Check for required environment variables
-  ansible.builtin.assert:
-    that:
-      - lookup('env', 'ITXA_INSTANCEID') != ""
-      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
-    fail_msg: "One or more required environment variables are not defined"
+# - name: Check for required environment variables
+#   ansible.builtin.assert:
+#     that:
+#       - lookup('env', 'ITXA_INSTANCEID') != ""
+#       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+#     fail_msg: "One or more required environment variables are not defined"
 
 # -----------------------------------------------------------------------------
 - name: "Fail if required properties have not been provided"
