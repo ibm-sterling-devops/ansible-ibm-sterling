@@ -2,12 +2,9 @@
 - name: Check for required environment variables
   ansible.builtin.assert:
     that:
-      # DB2 Database
       - lookup('env', 'ITXA_INSTANCEID') != ""
-      # IBM
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
-
 
 # 1. Fail if required parameters are not set
 # -----------------------------------------------------------------------------
