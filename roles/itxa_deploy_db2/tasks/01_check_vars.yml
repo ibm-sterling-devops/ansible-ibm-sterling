@@ -1,4 +1,5 @@
 ---
+# -----------------------------------------------------------------------------
 - name: Check for required environment variables
   ansible.builtin.assert:
     that:
@@ -6,7 +7,6 @@
       - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
     fail_msg: "One or more required environment variables are not defined"
 
-# 1. Fail if required parameters are not set
 # -----------------------------------------------------------------------------
 - name: "Fail if required properties have not been provided"
   ansible.builtin.assert:
