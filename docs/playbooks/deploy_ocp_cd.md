@@ -1,5 +1,21 @@
 # Deploy IBM Sterling Connect:Direct on OpenShift using Ansible Scripts
 
+>=1.24.0 <1.30.0
+
+Playbook will run the last version of Connect:Direct, but take care of Kubernetes/Openshift version is supported
+
+| Connect:Direct  | helm-chart | Kubernetes          | OpenShift           | Helm      |
+|-----------------|------------|---------------------|---------------------|-----------|
+| 6.3.0.3_ifix012 | 1.3.10     | >=1.24.0 <1.30.0    | >= 4.11 and <= 4.16 | >= 3.14.x |
+| 6.3.0.3_ifix009 | 1.3.9      |                     |                     |           |
+| 6.3.0.3_ifix003 | 1.3.8      |                     |                     |           |
+
+Check with
+
+```bash 
+kubectl version
+```
+
 ## Preparation
 
 ### 1. IBM Entitled Registry
