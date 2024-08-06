@@ -19,19 +19,19 @@ nav:
       - "Install IBM Connect:Direct 6.2.x": playbooks/setup_cd.md
       - "Install IBM Sterling B2B Integrator 6.1.2": playbooks/setup_b2b.md
   - "Playbooks: RedHat OpenShift":
-      - "Deploy IBM Connect:Direct 6.3.x": playbooks/deploy_ocp_cd.md
-      - "Deploy IBM Connect:Direct WebServices": playbooks/deploy_ocp_cdws.md
-      - "Deploy IBM Sterling Transformation Server (ITX RS)": playbooks/deploy_ocp_itx_rs.md
-      - "Deploy IBM Sterling Transformation Advanced (ITXA)": playbooks/deploy_ocp_itxa.md
-      - "Deploy IBM Sterling B2B Integrator": playbooks/deploy_ocp_sb2b.md
-      - "Deploy IBM Sterling Control Center Monitor/Director (CCM/CCD)": playbooks/deploy_ocp_scc.md
-      - "Deploy IBM Sterling External Authentication Server (SEAS)": playbooks/deploy_ocp_seas.md
-      - "Deploy IBM Sterling Secure Proxy Server (SSP)": playbooks/deploy_ocp_ssp.md
+      - "IBM Connect:Direct 6.x": playbooks/deploy_ocp_cd.md
+      - "IBM Connect:Direct WebServices": playbooks/deploy_ocp_cdws.md
+      - "IBM Sterling Transformation Server (ITX RS)": playbooks/deploy_ocp_itx_rs.md
+      - "IBM Sterling Transformation Advanced (ITXA)": playbooks/deploy_ocp_itxa.md
+      - "IBM Sterling B2B Integrator": playbooks/deploy_ocp_sb2b.md
+      - "IBM Sterling Control Center Monitor/Director (CCM/CCD)": playbooks/deploy_ocp_scc.md
+      - "IBM Sterling External Authentication Server (SEAS)": playbooks/deploy_ocp_seas.md
+      - "IBM Sterling Secure Proxy Server (SSP)": playbooks/deploy_ocp_ssp.md
   - "Playbooks: Tools":
-      - "Deploy CloudBeaver CE": playbooks/tools_deploy_cloudbeaver.md
-      - "Deploy Kafka": playbooks/tools_deploy_kafka.md
-      - "Deploy Kowl": playbooks/tools_deploy_kowl.md
-      - "Deploy MinIO S3 storage": playbooks/tools_deploy_minio.md
+      - "CloudBeaver CE": playbooks/tools_deploy_cloudbeaver.md
+      - "Kafka": playbooks/tools_deploy_kafka.md
+      - "Kowl": playbooks/tools_deploy_kowl.md
+      - "MinIO S3 storage": playbooks/tools_deploy_minio.md
       # - "Deploy MongoDB": playbooks/tools_deploy_mongodb.md
       - "Deploy OpenLDAP as LDAP Server": playbooks/tools_deploy_openldap.md
   - "Roles:":
