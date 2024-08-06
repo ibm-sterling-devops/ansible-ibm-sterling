@@ -1,5 +1,19 @@
 # Deploy IBM Sterling Connect:Direct WebService on OpenShift using Ansible Scripts
 
+Playbook will run the last version of Connect:Direct WebService, but take care of Kubernetes/Openshift version is supported
+
+| Connect:Direct  | helm-chart | Kubernetes          | OpenShift           | Helm      |
+|-----------------|------------|---------------------|---------------------|-----------|
+| 6.3.0.9_ifix000 | 1.0.2      | >=1.27.0 <1.30.0    | >= 4.14 and <= 4.16 | >= 3.14.x |
+| 6.3.0.8_ifix000 | 1.0.1      | >=1.27.0 <1.29.0    | >= 4.14 and <= 4.15 | >= 3.14.x |
+| 6.3.0.7_ifix000 | 1.0.0      | >=1.26.0 <1.29.0    | >= 4.13 and <= 4.15 | >= 3.14.x |
+
+Check with
+
+```bash 
+kubectl version
+```
+
 ## Preparation
 
 ### 1. IBM Entitled Registry
