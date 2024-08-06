@@ -10,7 +10,7 @@
 
 # Optionally provide a config object as well:
 #
-# - name: "install : Create Grafana v5 Subscription"
+# - name: "Install : Create Grafana v5 Subscription"
 #   include_tasks: "{{ role_path }}/../../common_tasks/create_subscription.yml"
 #   vars:
 #     package_name: grafana-operator
@@ -23,7 +23,6 @@
 #         - name: "DASHBOARD_NAMESPACES_ALL"
 #           value: "true"
 
-
 # 1. Validate inputs
 # -----------------------------------------------------------------------------
 - name: "Create_subscription: Assert that PackageManifest exists"
@@ -32,7 +31,6 @@
       - package_name is defined and package_name != ""
       - subscription_namespace is defined and subscription_namespace != ""
     fail_msg: "Unable to create subscription: package_name and subscription_namespace variables must both be set"
-
 
 # 2. Lookup Required Subscription Information
 # -----------------------------------------------------------------------------
@@ -64,15 +62,13 @@
   ansible.builtin.set_fact:
     channel_name: "{{ _default_channel }}"
 
-
 # 3. Determine whether a new OperatorGroup must be created
 # -----------------------------------------------------------------------------
-- name: "Create_subscription: Check if operator group is present in {{ subscription_namespace }} namespace"
+- name: "Create_subscription: Check if operator group is present in namespace {{ subscription_namespace }}"
   kubernetes.core.k8s_info:
     namespace: "{{ subscription_namespace }}"
     kind: OperatorGroup
   register: _og_info
-
 
 # 4. Create Subscription
 # -----------------------------------------------------------------------------
@@ -88,12 +84,11 @@
       - "Channel ................................. {{ channel_name }}"
       - "Configuration ........................... {{ subscription_config | default('<undefined>', True) }}"
 
-- name: "Create_subscription: Create {{ package_name }} subscription in {{ subscription_namespace }}"
+- name: "Create_subscription: Create subscription {{ package_name }}"
   kubernetes.core.k8s:
     template: "templates/common/subscription.yml.j2"
-    wait: yes
+    wait: true
     wait_timeout: 120
-
 
 # 5. Wait for InstallPlan to complete
 # -----------------------------------------------------------------------------

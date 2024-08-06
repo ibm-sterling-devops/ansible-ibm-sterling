@@ -11,14 +11,14 @@
   register: __cmd_installed
 
 - name: Start IBM Sterling B2B
-  ansible.builtin.command:
-    chdir={{ __si_install_path }}/bin
+  ansible.builtin.command: chdir={{ __si_install_path }}/bin
     {{ __si_install_path }}/bin/hardstop.sh
   environment:
     LANG: "en_US"
   register: cout
   when: __cmd_installed.stat.exists
-
+  changed_when: true
+#
 # - name: "Start IBM Connect:Direct"
 #  become_user: "{{ __cd_user }}"
 #  #environment:

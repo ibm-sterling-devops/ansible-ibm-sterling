@@ -5,9 +5,9 @@
     state: present
 
 - name: Disable SELinux
-  selinux:
+  ansible.posix.selinux:
     state: disabled
-  ignore_errors: true
+  failed_when: false
   notify: reboot
 
 - name: Define limits.conf

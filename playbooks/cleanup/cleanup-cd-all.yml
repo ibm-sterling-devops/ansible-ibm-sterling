@@ -14,7 +14,7 @@
 #      register:      cout
 #      #with_items:
 #      #- "{{ __ibm_dir }}/Connections"
-#      ignore_errors: true
+#      failed_when: false
 
     - name: "Cleanup All directories"
       ansible.builtin.file:
@@ -24,7 +24,7 @@
         - /opt/IBM/Binaries
         - /opt/IBM/cdunix
         - /opt/IBM/workdir
-      ignore_errors: true
+      failed_when: false
 
     - name: Delete cd user
       ansible.builtin.user:
@@ -36,4 +36,3 @@
       ansible.builtin.group:
         name: "{{ __cd_group }}"
         state: absent
-

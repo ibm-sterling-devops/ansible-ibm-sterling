@@ -75,7 +75,7 @@
           uid: ldapbind02
           uidnumber: 1005
           userpassword: {{ ldp_bind_password }}
-         
+
           dn: cn=cdadmin01,ou=users,{{ ldp_base_dn }}
           cn: cdadmin01
           gidnumber: 500

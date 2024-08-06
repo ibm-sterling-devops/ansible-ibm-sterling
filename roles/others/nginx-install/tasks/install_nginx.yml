@@ -1,16 +1,11 @@
 - name: Install Nginx HTTP Server
-  package:
+  ansible.builtin.package:
     name: nginx
-    state: latest
-    allow_downgrade: true
-
-# - name: Apply nginx.conf
-#  template:
-#    src: "{{ __nginx_conf_template }}"
-#    dest: "{{ __nginx_conf_location }}"
+    # state: latest
+    # allow_downgrade: true
 
 - name: Start Nginx service
-  service:
+  ansible.builtin.service:
     name: nginx
     state: started
     enabled: true

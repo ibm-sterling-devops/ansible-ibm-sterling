@@ -54,6 +54,7 @@
   ansible.builtin.command:
     cmd: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ si_namespace }} s0 {{ my_helmfile }}"
   when: not si_skip_helm
+  register: helm_cout
 # --wait
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html

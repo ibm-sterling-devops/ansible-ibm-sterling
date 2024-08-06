@@ -10,7 +10,7 @@
       - jdbc_file is defined and jdbc_file != ''
       - sdk_installer is defined and sdk_installer != ''
     fail_msg: "One or more required variables are not defined"
-#- debug: var=ansible_default_ipv4.address
-#- debug: var=__si_initialPort
-#- debug: var=__si_apiGatewayPort
-#- debug: var=__si_restHttpGatewayPort
+# - debug: var=ansible_default_ipv4.address
+# - debug: var=__si_initialPort
+# - debug: var=__si_apiGatewayPort
+# - debug: var=__si_restHttpGatewayPort

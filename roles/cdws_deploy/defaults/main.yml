@@ -35,7 +35,7 @@ cdws_nodename: localhost
 cdws_registry_secret: ibm-registry-secret
 cdws_secret: cdws-secret
 cdws_deploy_cert_secret: mycdws-cert-secret
-cdws_cert_crt: "{{ my_workdir }}/cdwscert.crt"  # CD install script only support extensions .crt, .pem and .cer
+cdws_cert_crt: "{{ my_workdir }}/cdwscert.crt" # CD install script only support extensions .crt, .pem and .cer
 cdws_cert_key: "{{ my_workdir }}/cdwskey.pem"
 cdws_cert_pem: "{{ my_workdir }}/cdwscert.pem"
 cdws_use_dynamic_provisioning: false
@@ -67,17 +67,16 @@ compatibility_matrix:
     image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.3_certified_container_6.3.0.7"
     image_tag: "6.3.0.7_ifix000"
 
-
 # Storage Class Matrix
 # in ibmcloud.rwo: In IBM Cloud, the ReadWriteOnce storage class is 'ibmc-block-gold' but Connect:Direct not worked with it.
 # -----------------------------------------------------------------------------
 storage_class_matrix:
   ibmcloud:
-    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx: "ibmc-file-gold-gid" # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-block-gold"       # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with C:D
-    rom: ""                     # ReadOnlyMany
-    rwop: ""                    # ReadWriteOncePod
+    rwo: "ibmc-block-gold" # ReadWriteOnce  # The correct value is ibmc-block-gold but Connect:Direct not worked with C:D
+    rom: "" # ReadOnlyMany
+    rwop: "" # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"
     rwx_nogid: "ocs-storagecluster-cephfs"

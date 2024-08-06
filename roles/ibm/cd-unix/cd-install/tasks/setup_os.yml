@@ -5,7 +5,7 @@
     state: present
 
 - name: Install OS Packages - Yum
-  ansible.builtin.yum:
+  ansible.builtin.package:
     name: ["glibc.x86_64", "libgcc.x86_64", "libstdc++.x86_64"]
     state: present
   when:
@@ -25,7 +25,7 @@
 
 - name: "Create directories"
   ansible.builtin.file:
-    path: "{{ item.directory  }}"
+    path: "{{ item.directory }}"
     state: directory
     owner: "{{ __cd_user }}"
     group: "{{ __cd_group }}"
@@ -41,15 +41,5 @@
     limit_item: "{{ item.limit_item }}"
     value: "{{ item.value }}"
   with_items:
-    - {
-        domain: "{{ __cd_user }}",
-        limit_type: "soft",
-        limit_item: "nofile",
-        value: "60000",
-      }
-    - {
-        domain: "{{ __cd_user }} ",
-        limit_type: "hard",
-        limit_item: "nofile",
-        value: "80000",
-      }
+    - { domain: "{{ __cd_user }}", limit_type: "soft", limit_item: "nofile", value: "60000" }
+    - { domain: "{{ __cd_user }}", limit_type: "hard", limit_item: "nofile", value: "80000" }

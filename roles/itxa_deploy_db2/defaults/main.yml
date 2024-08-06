@@ -29,11 +29,11 @@ db2_storage_size: "10Gi" # 40Gi
 
 storage_class_matrix:
   ibmcloud:
-    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx: "ibmc-file-gold-gid" # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-block-gold"      # ReadWriteOnce
-    rom: ""                     # ReadOnlyMany
-    rwop: ""                    # ReadWriteOncePod
+    rwo: "ibmc-block-gold" # ReadWriteOnce
+    rom: "" # ReadOnlyMany
+    rwop: "" # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"
     rwx_nogid: "ocs-storagecluster-cephfs"

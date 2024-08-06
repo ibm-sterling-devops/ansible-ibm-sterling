@@ -9,14 +9,13 @@ minio_root_user: "{{ lookup('env', 'MINIO_ROOT_USER') | default('root', true) }}
 minio_root_password: "{{ lookup('env', 'MINIO_ROOT_PASSWORD') | default('passw0rd', true) }}"
 minio_storage_size: "{{ lookup('env', 'MINIO_STORAGE_SIZE') | default('10Gi', true) }}"
 
-
 storage_class_matrix:
   ibmcloud:
-    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx: "ibmc-file-gold-gid" # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-block-gold"      # ReadWriteOnce
-    rom: ""                     # ReadOnlyMany
-    rwop: ""                    # ReadWriteOncePod
+    rwo: "ibmc-block-gold" # ReadWriteOnce
+    rom: "" # ReadOnlyMany
+    rwop: "" # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"
     rwx_nogid: "ocs-storagecluster-cephfs"

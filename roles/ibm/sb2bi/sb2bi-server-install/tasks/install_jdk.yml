@@ -1,12 +1,12 @@
 ---
-- name: "Create {{ __sdk_repository }} directory"
+- name: "Create directory {{ __sdk_repository }}"
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
   with_items:
     - "{{ __sdk_repository }}"
 
-- name: "Unarchive {{ sdk_package }} installation Packages to the {{ __sdk_repository }}"
+- name: "Unarchive installation Packages {{ sdk_package }}"
   ansible.builtin.unarchive:
     src: "{{ __extraction_folder }}/{{ sdk_package }}"
     dest: "{{ __sdk_repository }}"
@@ -16,14 +16,14 @@
 
 - name: "Install IBM JDK"
   ansible.builtin.command: chdir={{ __sdk_repository }}
-    ./{{__sdk_installer}} -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR={{ __sdk_install_path }} -i silent
+    ./{{ __sdk_installer }} -DLICENSE_ACCEPTED=TRUE -DUSER_INSTALL_DIR={{ __sdk_install_path }} -i silent
   environment:
     IATEMPDIR: "{{ __extraction_folder }}"
     LANG: "en_US.UTF-8"
   register: __sdk_install
   until: __sdk_install.rc == 0
 
-- name: Clean up {{ __sdk_repository }} folder(s)
+- name: Clean up folder {{ __sdk_repository }}
   ansible.builtin.file:
     path: "{{ __sdk_repository }}"
     state: absent

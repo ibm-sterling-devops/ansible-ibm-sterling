@@ -1,9 +1,8 @@
-# check_vars.yml
 ---
-- name: db2_repository_url should be defined
-  assert:
+- name: Check_vars - db2_repository_url should be defined
+  ansible.builtin.assert:
     that:
-    - db2_repository_url is defined and db2_repository_url != ''
-    - db2_package_name is defined and db2_package_name != ''
-    - db2_version is defined and db2_version != ''
+      - db2_repository_url is defined and db2_repository_url != ''
+      - db2_package_name is defined and db2_package_name != ''
+      - db2_version is defined and db2_version != ''
     fail_msg: "One or more required variables are not defined"

@@ -1,7 +1,6 @@
-# check_openshift.yml
 ---
 - name: "Check required variables"
-  assert:
+  ansible.builtin.assert:
     that:
       - repository_url is defined and repository_url != ''
       - sb2bi_package is defined and sb2bi_package != ''

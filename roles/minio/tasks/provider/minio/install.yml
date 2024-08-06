@@ -11,19 +11,17 @@
     subscription_namespace: minio-operator
     subscription_channel: stable
 
-
-- name: "minio : install : Lookup existing minio install"
+- name: "Minio : install : Lookup existing minio install"
   ansible.builtin.include_tasks: tasks/common/lookup_operator.yml
 
-- name: "minio : install : Install MinIO Operator"
+- name: "Minio : install : Install MinIO Operator"
   ansible.builtin.include_tasks: tasks/provider/minio/install_minio_operator.yml
-  when: 
+  when:
     - not subscription_exists
-    - not operator_namespace_exists 
+    - not operator_namespace_exists
 
-- name: "minio : Install MinIO Cluster"
+- name: "Minio : Install MinIO Cluster"
   ansible.builtin.include_tasks: tasks/provider/minio/install_minio_cluster.yml
-
 # # 2. Load default storage classes (if not provided by the user and not an update)
 # # -----------------------------------------------------------------------------
 # - name: Lookup Storage Classes

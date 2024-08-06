@@ -1,7 +1,7 @@
 ---
 # Setup Nginx
-# 
-# 
+#
+#
 # We use an Nginx HTTP server to download files
 # ansible-playbook -i environments/examples/cd-servers.dev.sample -u root playbooks/setup-nginx.yml
 #

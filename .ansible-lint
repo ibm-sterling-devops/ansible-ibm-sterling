@@ -9,6 +9,18 @@ exclude_paths:
     - README.md
     - LICENSE
     - roles/*/files/values*.yaml
+    - roles/mongodb
+    - roles/kafka
+    - playbooks/dev*
+# need to change roles and playbooks. After need to test
+    - roles/ibm
+    - playbooks/setup-cd.yml 
+    - playbooks/setup-db2.yml
+    - playbooks/setup-nginx.yml
+    - playbooks/setup-sb2b.yml
+    - playbooks/cleanup/cleanup-db2-all.yml
+    - roles/sb2bi_deploy/tasks/07_install_si.yml
+
 
 skip_list:
     - var-naming[no-role-prefix]

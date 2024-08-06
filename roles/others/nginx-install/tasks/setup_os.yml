@@ -2,6 +2,9 @@
   ansible.builtin.template:
     src: "{{ __nginx_repo_template }}"
     dest: "{{ __nginx_repo_location }}"
+    owner: root
+    group: root
+    mode: '0644'
   vars:
     dist: "centos"
     version: "{{ ansible_distribution_major_version }}"
@@ -12,6 +15,9 @@
   ansible.builtin.template:
     src: "{{ __nginx_repo_template }}"
     dest: "{{ __nginx_repo_location }}"
+    owner: root
+    group: root
+    mode: '0644'
   vars:
     dist: "rhel"
     version: "{{ ansible_distribution_major_version }}"

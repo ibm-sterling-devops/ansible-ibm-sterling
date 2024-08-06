@@ -25,7 +25,7 @@
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
 
 - name: Run Helm install command
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0

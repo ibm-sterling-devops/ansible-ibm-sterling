@@ -6,9 +6,10 @@
   hosts: sb2bi_servers
   become: true
   tasks:
-    - name: KillAll Java
+    - name: Killall Java
       ansible.builtin.command: killall -9 java
-      ignore_errors: true
+      failed_when: false
+      changed_when: true
 
     - name: "Cleanup All directories"
       ansible.builtin.file:

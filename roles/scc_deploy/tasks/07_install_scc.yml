@@ -37,11 +37,13 @@
 - name: Debug
   ansible.builtin.debug:
     msg: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ scc_namespace }} s0 {{ my_helmfile }}"
+  changed_when: true
 
 - name: Run Helm install command
   ansible.builtin.command:
     cmd: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ scc_namespace }} s0 {{ my_helmfile }}"
-  # --wait 
+  changed_when: true
+  # --wait
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Deploy Connect:Direct chart from local path

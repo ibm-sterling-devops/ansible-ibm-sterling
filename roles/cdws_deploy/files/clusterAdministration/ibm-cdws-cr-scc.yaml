@@ -8,11 +8,11 @@ metadata:
     app.kubernetes.io/managed-by: "ibm-cdws"
     app.kubernetes.io/name: "ibm-cdws"
 rules:
-- apiGroups:
-  - security.openshift.io
-  resourceNames:
-  - ibm-cdws-scc
-  resources:
-  - securitycontextconstraints
-  verbs:
-  - use
+  - apiGroups:
+      - security.openshift.io
+    resourceNames:
+      - ibm-cdws-scc
+    resources:
+      - securitycontextconstraints
+    verbs:
+      - use

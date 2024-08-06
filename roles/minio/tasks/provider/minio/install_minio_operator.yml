@@ -16,10 +16,9 @@
           pod-security.kubernetes.io/warn: restricted
           pod-security.kubernetes.io/warn-version: latest
   register: cout
-  when: 
+  when:
     - not subscription_exists
-    - not operator_namespace_exists 
-
+    - not operator_namespace_exists
 
 # Create Subscription namespace
 # -----------------------------------------------------------------------------
@@ -40,11 +39,11 @@
         sourceNamespace: "{{ catalog_source_namespace }}"
         startingCSV: minio-operator.v5.0.15
   register: cout_subscription
-  when: 
+  when:
     - not subscription_exists
-    - not operator_namespace_exists 
+    - not operator_namespace_exists
 
-# # Create 
+# # Create
 # -----------------------------------------------------------------------------
 - name: Create Service console_v1_service.yaml
   kubernetes.core.k8s:
@@ -94,8 +93,6 @@
     # wait_condition:
     #   status: "True"
     #   type: Available
-
-
 # - name: Create MinIO cluster
 #   kubernetes.core.k8s:
 #     state: present

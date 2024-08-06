@@ -18,7 +18,7 @@
     sdk_installer: ibm-java-sdk-8.0-6.20-x86_64-archive.bin
     # si_b2bapi_package: b2biAPIs_60010000.jar
 
-    ###### Sterling Integrator Variables
+    # ##### Sterling Integrator Variables
     # main.feature,filegateway.feature,fips.feature,as2.feature,financial.feature,ebics.feature,meigIntegration.feature
     # si_features:      'main.feature,filegateway.feature'
     si_hostname: 192.168.10.10
@@ -33,14 +33,14 @@
     #
     # Create schema automatically, unless you are installing successive nodes in a clustered B2Bi.
     # If installing second or successive nodes in a B2Bi cluster, this MUST be set to false.
-    #dbcreateSchema: 'true'
+    # dbcreateSchema: 'true'
     #
-    #db_vendor: DB2
-    #db_user: db2inst1
-    #db_password: password
-    #db_host: localhost
-    #db_port: '50000'
-    #db_database: B2BI
+    # db_vendor: DB2
+    # db_user: db2inst1
+    # db_password: password
+    # db_host: localhost
+    # db_port: '50000'
+    # db_database: B2BI
 
   roles:
     - roles/ibm/sb2bi/sb2bi-server-install

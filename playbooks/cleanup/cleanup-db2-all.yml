@@ -8,7 +8,7 @@
   tasks:
     - name: Stop db2fmcd
       ansible.builtin.command: /opt/ibm/db2/V11.5/bin/db2fmcd -d
-      ignore_errors: true
+      failed_when: false
 
     - name: Stop DB2Inst1
       ansible.builtin.shell: "db2stop force"
@@ -22,7 +22,7 @@
         LD_LIBRARY_PATH: "/home/db2inst1/sqllib/lib64:/home/db2inst1/sqllib/lib64/gskit:/home/db2inst1/sqllib/lib32"
         IBM_DB_INCLUDE: "/home/db2inst1/sqllib/include"
         PATH: "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/db2inst1/sqllib/bin:/home/db2inst1/sqllib/adm:/home/db2inst1/sqllib/misc:/home/db2inst1/sqllib/gskit/bin:/home/db2inst1/.local/bin:/home/db2inst1/bin"
-      ignore_errors: true
+      failed_when: false
 
     - name: Delete cd user
       ansible.builtin.user:
@@ -33,7 +33,7 @@
         - dasusr1
         - db2fenc1
         - db2inst1
-      ignore_errors: true
+      failed_when: false
 
     - name: Delete cd group
       ansible.builtin.group:
@@ -43,7 +43,7 @@
         - dasadm1
         - db2fgrp1
         - db2grp1
-      ignore_errors: true
+      failed_when: false
 
     - name: "Cleanup All directories"
       ansible.builtin.file:
@@ -56,4 +56,4 @@
         - /home/dasusr1
         - /home/db2fenc1
         - /home/db2inst1
-      ignore_errors: true
+      failed_when: false

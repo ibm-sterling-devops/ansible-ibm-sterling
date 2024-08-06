@@ -1,20 +1,20 @@
 ---
-- name:          Check Vars
-  include_tasks: check_vars.yml
+- name: Check Vars
+  ansible.builtin.include_tasks: check_vars.yml
 
-- name:          Define Vars
-  include_tasks: define_vars.yml
+- name: Define Vars
+  ansible.builtin.include_tasks: define_vars.yml
 
-- name:          Setup OS
-  include_tasks: setup_os.yml
+- name: Setup OS
+  ansible.builtin.include_tasks: setup_os.yml
 
-- name:          Download and Extract Packages
-  include_tasks: download_pkgs.yml
+- name: Download and Extract Packages
+  ansible.builtin.include_tasks: download_pkgs.yml
 
-- name:          Install DB2
-  include_tasks: install_db2.yml
+- name: Install DB2
+  ansible.builtin.include_tasks: install_db2.yml
 
-- name:          Clean up installation folder(s)
-  file:
-    path:        "{{ __extraction_folder }}"
-    state:       absent
+- name: Clean up installation folder(s)
+  ansible.builtin.file:
+    path: "{{ __extraction_folder }}"
+    state: absent

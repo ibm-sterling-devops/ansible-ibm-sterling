@@ -2,9 +2,10 @@
 - name: Create SSL certificates and combine files
   ansible.builtin.shell: openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -sha256  -subj "{{ __ssl_root_ca }}"  -keyout {{ __key_file }}  -out {{ __crt_file }} -batch && cat {{ __crt_file }} {{ __key_file }} > {{ __combined_file }}
 # -config {{ __cnf_location }}
+  changed_when: true
 
 - name: "Install IBM Connect:Direct -- This takes a while ..."
-  ansible.builtin.shell: "./cdinstall_a --installCmd \"install\" --cpioFile \"{{ __extraction_folder }}/cdunix\" --installDir \"{{ __cdunix_install_path }}\" --localNodeName \"{{ __cd_nodename }}\" --acquireHostnameOrIP \"{{ __cd_acquireHostnameOrIP }}\" --trace y --agentPort {{ __cd_agentport }} --serverPort {{ __cd_serverport }} --clientPort {{ __cd_clientport }} --localCertFile \"{{ __combined_file }}\" --localCertPassphrase {{ __cd_localCertPassphrase }} --adminUserid {{ __cd_user }} --keystorePassword {{ __cd_keystorePassword }} --ignoreExistingInstallDir \"y\" "
+  ansible.builtin.shell: './cdinstall_a --installCmd "install" --cpioFile "{{ __extraction_folder }}/cdunix" --installDir "{{ __cdunix_install_path }}" --localNodeName "{{ __cd_nodename }}" --acquireHostnameOrIP "{{ __cd_acquireHostnameOrIP }}" --trace y --agentPort {{ __cd_agentport }} --serverPort {{ __cd_serverport }} --clientPort {{ __cd_clientport }} --localCertFile "{{ __combined_file }}" --localCertPassphrase {{ __cd_localCertPassphrase }} --adminUserid {{ __cd_user }} --keystorePassword {{ __cd_keystorePassword }} --ignoreExistingInstallDir "y" '
   args:
     chdir: "{{ __extraction_folder }}"
     creates: "{{ __cd_install_path }}/ndm/cfg/{{ __cd_nodename }}/initparm.cfg"
@@ -14,20 +15,20 @@
   register: cout
 
 - name: Debug C:D install output
-  ansible.builtin.debug: 
+  ansible.builtin.debug:
     var: cout
 
 - name: Copy files cdaiLog.txt and exitStatusFile.txt
-  ansible.builtin.copy: 
-    remote_src: True 
-    src:  "{{ __extraction_folder }}/{{ item }}"
+  ansible.builtin.copy:
+    remote_src: True
+    src: "{{ __extraction_folder }}/{{ item }}"
     dest: "{{ __workdir_folder }}/{{ item }}"
-  with_items: 
+  with_items:
     - cdaiLog.txt
     - exitStatusFile.txt
   failed_when: false
-
-#- name:                  Clean up installation folder(s)
+#
+# - name:                  Clean up installation folder(s)
 #  file:
 #    path:                "{{ __extraction_folder }}"
 #    state:               absent

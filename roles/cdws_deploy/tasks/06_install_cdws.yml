@@ -24,7 +24,7 @@
       - "helm install --timeout {{ cdws_helm.timeout }} -f {{ cdws_helm.values_yaml }} -n {{ cdws_namespace }} {{ cdws_helm.release }} {{ my_helmfile }}"
 
 - name: Run Helm install command
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "helm install --timeout {{ cdws_helm.timeout }} -f {{ cdws_helm.values_yaml }} -n {{ cdws_namespace }} {{ cdws_helm.release }} {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0

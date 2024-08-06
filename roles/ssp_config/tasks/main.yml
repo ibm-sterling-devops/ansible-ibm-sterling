@@ -31,5 +31,3 @@
 - name: Config MyFg on SSP
   ansible.builtin.include_tasks: configure_myfg.yml
   when: ssp_config_myfg.enabled
-
-

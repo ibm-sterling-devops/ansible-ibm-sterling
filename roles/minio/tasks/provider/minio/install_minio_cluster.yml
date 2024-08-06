@@ -12,7 +12,6 @@
 
   register: cout
 
-
 - name: Create MinIO cluster
   kubernetes.core.k8s:
     state: present

@@ -3,9 +3,10 @@
     path: "{{ __si_repository }}"
     state: directory
 
+# using jar to avoid Unzip problem
 - name: "Extract IBM Sterling B2B Package"
   ansible.builtin.command: chdir={{ __si_repository }}
-    {{__sdk_install_path }}/bin/jar xf {{ __extraction_folder }}/{{ sb2bi_package }}
+    {{ __sdk_install_path }}/bin/jar xf {{ __extraction_folder }}/{{ sb2bi_package }}
   register: __sb2b_extract_pkgs
   until: __sb2b_extract_pkgs.rc == 0
 

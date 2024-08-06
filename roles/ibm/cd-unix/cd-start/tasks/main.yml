@@ -12,7 +12,7 @@
 
 - name: "Start IBM Connect:Direct"
   become_user: "{{ __cd_user }}"
-  #environment:
+  # environment:
   #  NDMAPICFG:   "{{ __cd_install_path }}/ndm/cfg/cliapi/ndmapi.cfg""
   #  PATH:        ""
   ansible.builtin.shell: "{{ __cd_install_path }}/ndm/bin/cdpmgr -i {{ __cd_install_path }}/ndm/cfg/__cd_nodename/initparm.cfg"

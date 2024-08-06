@@ -35,7 +35,6 @@
   retries: 30 # Approximately 1/2 hour before we give up
   delay: 60 # 1 minute
 
-
 # 6. Create the CertManager instance
 # -----------------------------------------------------------------------------
 - name: "Install: Wait for CertManager Cluster Custom Resource to be created"
@@ -65,7 +64,7 @@
 
 - name: "Install: Debug"
   ansible.builtin.debug:
-    msg: "Certificate Manager Cluster Resource Namespace .............. {{ cert_manager_cluster_resource_namespace | default(cert_manager_namespace, true )}}"
+    msg: "Certificate Manager Cluster Resource Namespace .............. {{ cert_manager_cluster_resource_namespace | default(cert_manager_namespace, true) }}"
 
 # The ClusterIssuer resource is cluster scoped. This means that when referencing a secret via the secretName field
 # secrets will be looked for in the Cluster Resource Namespace. By default, this namespace is cert-manager
@@ -108,4 +107,3 @@
     - certmanager_webhook_deployment.resources[0].status.readyReplicas == certmanager_webhook_deployment.resources[0].status.replicas
   retries: 60 # Approximately 1/2 hour before we give up
   delay: 60 # 1 minute
-

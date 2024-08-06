@@ -6,7 +6,6 @@
 #       - lookup('env', 'KAFKA_NAMESPACE') != ""
 #     fail_msg: "One or more required environment variables are not defined"
 
-
 # 1. Fail if required parameters are not set
 # -----------------------------------------------------------------------------
 - name: "Fail if required properties have not been provided"

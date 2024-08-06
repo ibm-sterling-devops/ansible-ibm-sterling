@@ -44,11 +44,11 @@ compatibility_matrix:
 # -----------------------------------------------------------------------------
 storage_class_matrix:
   ibmcloud:
-    rwx: "ibmc-file-gold-gid"   # ReadWriteMany
+    rwx: "ibmc-file-gold-gid" # ReadWriteMany
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
-    rwo: "ibmc-file-gold"       # ReadWriteOnce
-    rom: ""                     # ReadOnlyMany
-    rwop: ""                    # ReadWriteOncePod
+    rwo: "ibmc-file-gold" # ReadWriteOnce
+    rom: "" # ReadOnlyMany
+    rwop: "" # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"
     rwx_nogid: "ocs-storagecluster-cephfs"
