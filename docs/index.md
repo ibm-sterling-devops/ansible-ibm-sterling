@@ -5,7 +5,7 @@ IBM Sterling Devops Project is an open source project to deploy IBM Sterling Pro
 
 Developed in Ansible, it provides a collection of playbooks and roles that automated deploy for IBM Sterling B2Bi, IBM Connect:Direct, ... on Redhat OpenShift.
 
-GitHub Repository: [(https://github.com/ibm-sterling-devops/ansible-ibm-sterling/)]
+GitHub Repository: [https://github.com/ibm-sterling-devops/ansible-ibm-sterling/](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/)
 
 
 Current playbooks:
