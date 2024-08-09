@@ -1,5 +1,15 @@
 # Deploy IBM Sterling Control Center on OpenShift using Ansible Scripts
 
+Playbook will run the last version of Sterling Control Center, but take care of Kubernetes/Openshift version is supported
+
+| Sterling Control Center   | helm-chart | Kubernetes          | OpenShift           | Helm      |
+|---------------------------|------------|---------------------|---------------------|-----------|
+| 6.3.1.0_iFix02_2024-07-31 | 3.1.4      | >=1.27.0            | >= 4.14             | >= 3.14.x |
+| 6.3.1.0_iFix02_2024-05-28 | 3.1.3      | >=1.23.0            | >= 4.12             | >= 3.14.x |
+| 6.3.1.0_2024-04-30        | 3.1.2      | >=1.23.0            | >= 4.12             | >= 3.14.x |
+
+Check with
+
 ## Preparation
 
 ### 1. IBM Entitled Registry

@@ -1,7 +1,7 @@
 # Environment variables
 # -----------------------------------------------------------------------------------------------------------------
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
-scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('', true) }}" # productEntitlement: "CCD,CCM"
+scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('CCM', true) }}" # productEntitlement: "CCD,CCM"
 
 scc_install_monitor: false
 scc_install_director: false
