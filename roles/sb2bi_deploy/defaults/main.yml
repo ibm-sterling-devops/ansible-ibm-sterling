@@ -203,7 +203,7 @@ storage_class_matrix:
     rwx: "ibmc-file-gold"   # ReadWriteMany - ibmc-file-gold-gid not supported in multizone
     rwx_nogid: "ibmc-file-gold" # ReadWriteMany no GID
     rwo: "ibmc-block-gold"      # ReadWriteOnce
-    rom: "ibmc-file-gold-gid"       # ReadOnlyMany  #FIXME need to define this value
+    rom: "ibmc-file-gold"       # ReadOnlyMany  #FIXME need to define this value
     rwop: ""                    # ReadWriteOncePod
   redhat:
     rwx: "ocs-storagecluster-cephfs"
