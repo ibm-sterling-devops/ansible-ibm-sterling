@@ -1,4 +1,4 @@
-# Deploy IBM Sterling Transformation Server on OpenShift using Ansible Scripts
+# Deploy IBM Sterling Transformation Extender on OpenShift using Ansible Scripts
 
 ## Preparation
 

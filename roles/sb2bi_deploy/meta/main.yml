@@ -1,0 +1,23 @@
+galaxy_info:
+  author: Enio Basso (@ebasso)
+  description: Deploy IBM Sterling B2B Integrator / Sterling Filegateway on Kubernetes, Redhat OpenShift
+  company: IBM
+  role_name: sb2bi_deploy
+  namespace: ibm_sterling_devops
+
+  license: EPL-2.0
+
+  min_ansible_version: "2.10"
+
+  platforms:
+    - name: GenericLinux
+      versions:
+        - all
+
+  galaxy_tags:
+    - ibm
+    - sterling
+    - devops
+    - b2bi
+    - sfg
+    - filegateway
