@@ -79,8 +79,8 @@ appResourcesPVC:
   enabled: false     # must be false if resourcesInit is true
   storageClassName: "{{ storage_class_matrix[ si_storage_class ].rom | default('') }}"
   selector:
-    label: "intent"
-    value: "resources"
+    label: ""
+    value: ""
   accessMode: ReadOnlyMany
   size: {{ si_helm_values.appResourcesPVC.size | default('1Gi') }}
   preDefinedResourcePVCName: 
@@ -89,8 +89,8 @@ appResourcesPVC:
 appLogsPVC:
   storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
   selector:
-    label: "intent"
-    value: "logs"
+    label: ""
+    value: ""
   accessMode: ReadWriteMany
   size: {{ si_helm_values.appLogsPVC.size | default('1Gi') }}
   preDefinedLogsPVCName: 
@@ -99,8 +99,8 @@ appDocumentsPVC:
   enabled: {{ si_helm_values.global.appDocumentsPVC.enabled | default('false') }}
   storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
   selector:
-    label: "intent"
-    value: "documents"
+    label: ""
+    value: ""
   accessMode: ReadWriteMany
   size: {{ si_helm_values.appDocumentsPVC.size | default('1Gi') }}
   enableVolumeClaimPerPod: false

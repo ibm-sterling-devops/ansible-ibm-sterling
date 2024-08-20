@@ -1,6 +1,6 @@
 galaxy_info:
   author: Enio Basso (@ebasso)
-  description: Modify IBM DB2 configuration for compatability with IBM Sterling B2B
+  description: Setup database for IBM Sterling B2B on IBM DB2
   company: IBM
   role_name: sb2bi_setup_db2
   namespace: ibm_sterling_devops
