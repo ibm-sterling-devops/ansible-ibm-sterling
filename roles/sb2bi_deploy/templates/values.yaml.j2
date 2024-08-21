@@ -240,7 +240,7 @@ setupCfg:
   dbData: {{ si_dbname }}
   dbDrivers: {{ si_dbdrivers }}
   dbCreateSchema: {{ si_helm_values.setupCfg.dbCreateSchema | default('true') }}
-  oracleUseServiceName: {{ si_oracle_useservicename | default('false') }}
+  oracleUseServiceName: {{ si_oracle_useservicename }}
   usessl:  {{ si_helm_values.setupCfg.usessl | default('false') }}
   
   dbSecret: {{ si_db_secret }}
