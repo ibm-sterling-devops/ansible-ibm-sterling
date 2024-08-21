@@ -20,7 +20,7 @@ si_dbport: "{{ lookup('env', 'SI_DBPORT') }}"
 si_dbname: "{{ lookup('env', 'SI_DBNAME') }}"
 si_dbuser: "{{ lookup('env', 'SI_DBUSER') }}"
 si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD') }}"
-si_oracle_useservicename: "{{ lookup('env', 'SI_ORACLESERVICENAME', default('false')) }}"
+si_oracle_useservicename: "{{ lookup('env', 'SI_ORACLESERVICENAME') | default('false') }}"
 
 si_adminmailaddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
 si_adminsmtphost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
