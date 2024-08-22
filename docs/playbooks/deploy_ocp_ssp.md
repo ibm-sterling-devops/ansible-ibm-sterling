@@ -61,7 +61,7 @@ export SSP_INSTANCEID=dev01
 2) To run the playbook
 
 ```bash 
-ansible-playbook playbooks/dev_ssp.yml
+ansible-playbook playbooks/deploy_ssp.yml
 ```
 
 ## Environment Variable

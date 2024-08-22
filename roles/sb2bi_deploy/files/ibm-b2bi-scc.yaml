@@ -1,9 +1,9 @@
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
-metadata: 
+metadata:
   name: ibm-b2bi-scc
   labels:
-   app: "ibm-b2bi-scc"
+    app: "ibm-b2bi-scc"
 allowHostDirVolumePlugin: false
 allowHostIPC: false
 allowHostNetwork: false
@@ -12,7 +12,7 @@ allowHostPorts: false
 privileged: false
 allowPrivilegeEscalation: false
 allowPrivilegedContainer: false
-allowedCapabilities: 
+allowedCapabilities:
 allowedFlexVolumes: []
 allowedUnsafeSysctls: []
 defaultAddCapabilities: []
@@ -22,29 +22,16 @@ forbiddenSysctls:
 fsGroup:
   type: MustRunAs
   ranges:
-  - min: 1
-    max: 4294967294
+    - min: 1
+      max: 4294967294
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
-- MKNOD
-- AUDIT_WRITE
-- KILL
-- NET_BIND_SERVICE
-- NET_RAW
-- FOWNER
-- FSETID
-- SYS_CHROOT
-- SETFCAP
-- SETPCAP
-- CHOWN
-- SETGID
-- SETUID
-- DAC_OVERRIDE
+  - ALL
 runAsUser:
   type: MustRunAsRange
 # This can be customized for your host machine
 seLinuxContext:
-  type: RunAsAny
+  type: MustRunAs
 # seLinuxOptions:
 #   level:
 #   user:
@@ -53,15 +40,15 @@ seLinuxContext:
 supplementalGroups:
   type: MustRunAs
   ranges:
-  - min: 1
-    max: 4294967294
+    - min: 1
+      max: 4294967294
 # This can be customized for your host machine
 volumes:
-- configMap
-- downwardAPI
-- emptyDir
-- persistentVolumeClaim
-- projected
-- secret
-- nfs
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+  - nfs
 priority: 0

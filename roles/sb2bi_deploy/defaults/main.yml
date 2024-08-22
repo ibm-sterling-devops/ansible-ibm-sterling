@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 si_action: "{{ lookup('env', 'SI_ACTION') | default('install', true) }}"
 si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"
@@ -52,11 +53,8 @@ si_env_timezone: "{{ lookup('env', 'SI_ENV_TIMEZONE') | default('UTC', true) }}"
 si_env_upgradecompatibilityverified: "{{ lookup('env', 'SI_ENV_UPGRADE_COMPAT_VERIFIED') | default(si_actions_defaults[si_action].env_upgradecompatibilityverified, true) }}"
 si_env_debugmode: "{{ lookup('env', 'SI_ENV_DEBUGMODE') | default('false', true) }}"
 
-# Entitlement
-# -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+si_itx_rs_enabled: "{{ lookup('env', 'SI_ITX_RS_ENABLED') | default('false', true) }}"
+si_itxa_enabled: "{{ lookup('env', 'SI_ITXA_ENABLED') | default('false', true) }}"
 
 # Defaults for B2Bi instances.
 # -----------------------------------------------------------------------------
@@ -70,6 +68,8 @@ si_system_passphrase_secret: si-system-passphrase-secret
 si_db_secret: si-db-secret
 si_jms_secret: si-jms-secret
 si_liberty_secret: si-liberty-secret
+si_itx_rs_secret: si-itx-rs-secret
+si_itxa_secret: si-itxa-secret
 
 db2_namespace: ""
 db2_secret: mydb2-secret
@@ -111,8 +111,9 @@ compatibility_matrix:
           repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
           tag: "10.0.1.9-x86_64"
         resourcesInit:
-          repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
-          tag: "10.0.1.9-x86_64"
+          image:
+            repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
+            tag: "10.0.1.9-x86_64"
     test:
       image:
         tag: '1.1.65'
@@ -147,8 +148,9 @@ compatibility_matrix:
           repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
           tag: "10.0.1.8-x86_64"
         resourcesInit:
-          repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
-          tag: "10.0.1.8-x86_64"
+          image:
+            repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
+            tag: "10.0.1.8-x86_64"
     test:
       image:
         tag: '1.1.65'
@@ -183,8 +185,9 @@ compatibility_matrix:
           repository: "cp.icr.io/cp/ibm-itxa-runtime"
           tag: "10.0.1.8"
         resourcesInit:
-          repository: "cp.icr.io/cp/ibm-itxa-resources"
-          tag: "10.0.1.8"
+          image:
+            repository: "cp.icr.io/cp/ibm-itxa-resources"
+            tag: "10.0.1.8"
     test:
       image:
         tag: '1.1.62'

@@ -57,17 +57,6 @@
   register: helm_cout
 # --wait
 
-# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
-# - name: Deploy Connect:Direct chart from local path
-#   kubernetes.core.helm:
-#     name: "{{ si_helm_release }}"
-#     chart_ref: "{{ my_workdir }}/ibm-connect-direct/"
-#     release_namespace: "{{ si_namespace }}"
-#     wait: True
-#     timeout: "{{ si_helm_timeout }}"
-#     values_files:
-#       - "{{ my_workdir }}/myb2bi_values.yml"
-
 - name: "IBM Sterling B2Bi Summary:"
   ansible.builtin.debug:
     msg:

@@ -15,11 +15,6 @@
   until: download_cout is succeeded
   retries: 3
 
-# - name: "Extract Helm chart"
-#   ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}.tgz -C {{ my_workdir }}"
-#   register: untar_cout
-#   changed_when: ( untar_cout.rc == 0)
-
 # TODO: migrate from Shell to module kubernetes.core.k8s
 #
 # Creating a Role Based Access Control (RBAC)
@@ -29,26 +24,89 @@
     state: present
     definition: "{{ lookup('template', 'templates/default_sa_rbac.yml.j2') }}"
 
-# # Creating a Custom PodSecurityPolicy - Removed in Kubernetes v1.25
-# # -----------------------------------------------------------------------------
-# - name: "Creating a Custom PodSecurityPolicy"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_podsecplcy.yml.j2') }}"
+# Check for Kubernetes Resources and APIs
+# -----------------------------------------------------------------------------
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cl_info
 
-# - name: "Creating a Custom Role and Role Binding for the custom PodSecurityPolicy"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_podsecplcy_rbac.yml.j2') }}"
+- name: Check for SecurityContextConstraints Resource
+  ansible.builtin.set_fact:
+    scc_resource: false
+    scc_apiversion: false
+    psp_resource: false
+    psp_apiversion: false
 
-# # Creating a Custom SecurityContextConstraints definition - Removed in Kubernetes v1.25
-# # -----------------------------------------------------------------------------
-# - name: "Creating a Custom SecurityContextConstraints"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_secctxtcons.yml.j2') }}"
+- name: Check for SecurityContextConstraints Resource
+  ansible.builtin.set_fact:
+    scc_resource: true
+  when: "'security.openshift.io/v1' in k8s_cl_info.apis"
 
-# - name: "Creating a Custom Role and Role Binding for the custom PodSecurityPolicy"
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('template', 'templates/custom_podsecplcy_rbac.yml.j2') }}"
+- name: Check if SecurityContextConstraints API version
+  ansible.builtin.set_fact:
+    scc_apiversion: true
+  when:
+    - scc_resource
+    - "'SecurityContextConstraints' in k8s_cl_info.apis['security.openshift.io/v1']"
+
+- name: Check for PodSecurityPolicy Resource
+  ansible.builtin.set_fact:
+    psp_resource: true
+  when: "'policy/v1beta1' in k8s_cl_info.apis"
+
+- name: Check if PodSecurityPolicy API version
+  ansible.builtin.set_fact:
+    psp_apiversion: true
+  when:
+    - psp_resource
+    - "'PodSecurityPolicy' in k8s_cl_info.apis['policy/v1beta1']"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug Apply Pod Security
+  ansible.builtin.debug:
+    msg:
+      - "scc_resource ................. {{ scc_resource }}"
+      - "scc_apiversion ............... {{ scc_apiversion }}"
+      - "psp_resource ................. {{ psp_apiversion }}"
+      - "psp_apiversion ............... {{ psp_apiversion }}"
+
+# Creating Pod Security Policy for Kubernetes Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Security Context Constraints
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/ibm-b2bi-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion
+
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/ibm-b2bi-cr-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion
+
+- name: Adding all namespace users to SCC...
+  kubernetes.core.k8s:
+    state: present
+    template: 'ibm-b2bi-rb-scc.yaml.j2'
+  when: scc_resource and scc_apiversion
+
+# Creating security context constraints for OpenShift Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Pod Security Policy
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/ibm-b2bi-psp.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion
+
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/ibm-b2bi-cr.yaml') | from_yaml }}"
+  when: psp_resource and psp_apiversion
+
+- name: Adding a RoleBinding for all namespace users to the PSP...
+  kubernetes.core.k8s:
+    state: present
+    template: 'ibm-b2bi-rb.yaml.j2'
+  when: psp_resource and psp_apiversion

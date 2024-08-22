@@ -70,6 +70,7 @@ resourcesInit:
     digest:
     pullPolicy: "IfNotPresent"
   command:
+# "chmod 777 /ibm/trace"
 
 persistence:
   enabled: true
@@ -113,7 +114,7 @@ security:
   fsGroup:
   fsGroupChangePolicy: "OnRootMismatch"
   runAsUser:
-  runAsGroup: 
+  runAsGroup:
 
 ingress:
   enabled: true
@@ -149,35 +150,32 @@ integrations:
     isEnabled: {{ si_helm_values.integrations.seasIntegration.isEnabled | default('false') }}
     seasVersion: "{{ compatibility_matrix[ si_version ].integrations.seasIntegration.seasVersion | default('q.0') }}"
   itxIntegration:
-{% if (si_helm_values.integrations.itxIntegration is not defined) or (si_helm_values.integrations.itxIntegration.enabled is not defined) or (si_helm_values.integrations.itxIntegration.enabled == "false") %}
-    enabled: false
-{% else %}
-    enabled: true
+    enabled: {{ si_itx_rs_enabled }}
     dataSetup:
       enabled: true
     image:
       repository: "cp.icr.io/cp/ibm-itx-rs"
-      tag: "{{ compatibility_matrix[ si_version ].integrations.itxIntegration.image.tag | default('') }}"
+      tag: "{{ compatibility_matrix[ si_version ].integrations.itxIntegration.image.tag }}"
       digest:
       pullPolicy: IfNotPresent
       pullSecret: "{{ si_registry_secret }}"
     dataPVC:
       name: itxdata
       useDynamicProvisioning: true  
-      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
+      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx }}"
       selector:
-        label: "intent"
-        value: "itxdata"
+        label: ""
+        value: ""
       accessMode: ReadWriteMany
       size: 100Mi
       preDefinedDataPVCName:
     logsPVC:
       name: itxlogs
       useDynamicProvisioning: true
-      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx | default('') }}"
+      storageClassName: "{{ storage_class_matrix[ si_storage_class ].rwx }}"
       selector:
-        label: "intent"
-        value: "itxlogs"
+        label: ""
+        value: ""
       accessMode: ReadWriteMany
       size: 100Mi
       preDefinedLogsPVCName:
@@ -187,12 +185,8 @@ integrations:
         level: "none"
       cmgrLog:
         level: "none"
-{% endif %}
   itxaIntegration:
-{% if (si_helm_values.integrations.itxaIntegration is not defined) or (si_helm_values.integrations.itxaIntegration.enabled is not defined) or (si_helm_values.integrations.itxaIntegration.enabled == "false") %}
-    enabled: false
-{% else %}
-    enabled: true
+    enabled:  {{ si_itxa_enabled }}
     dataSetup:
       enabled: true
     image:
@@ -201,7 +195,7 @@ integrations:
       digest:
       pullPolicy: IfNotPresent
       pullSecret: "{{ si_registry_secret }}"
-    appSecret: "{{ si_itxa_secret | default('itxa-oracle-secrets') }}"
+    appSecret: "{{ si_itxa_secret }}"
     secureDBConnection:
       enabled: false
       dbservercertsecretname: ""
@@ -209,18 +203,17 @@ integrations:
       claims:
         name: itxa-logs-pvc
     sso:
-      host: "speui.apps.openshift.in.dev"
+      host: ""
       port: 443
       ssl:
         enabled: true
     resourcesInit:
       enabled: true
       image:
-        repository: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.repository }}"
+        repository: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.repository  }}"
         tag: "{{ compatibility_matrix[ si_version ].integrations.itxaIntegration.resourcesInit.image.tag }}"
         digest:
         pullPolicy: "IfNotPresent"
-{% endif %}
 
 setupCfg:
   upgrade: false
@@ -1068,10 +1061,7 @@ purge:
     preferredDuringSchedulingIgnoredDuringExecution: []
 
 documentService:
-{% if (si_helm_values.documentService is not defined) or (si_helm_values.documentService.enabled is not defined) or (si_helm_values.documentService.enabled == "false") %}
   enabled: false
-{% else %}
-  enabled: true
   sslEnabled: true
   useGrpc: true
   readBufferSize: 32768
@@ -1114,4 +1104,3 @@ documentService:
     keepAlive: 300000
     retryCount: 2
     disableContentCompression: true
-{% endif %}
