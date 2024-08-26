@@ -15,6 +15,8 @@ ssp_custom_keycert_passphrase: "{{ lookup('env', 'SSP_CUSTOM_KEYCERT_PASSPHRASE'
 ssp_timezone: "{{ lookup('env', ' SSP_TIMEZONE') | default('America/New_York', true) }}"
 # lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=8)
 
+ssp_skip_helm: "{{ lookup('env', 'SSP_SKIP_HELM') | default(false, true) }}"
+
 # Storage configuration
 ssp_storage_class: "{{ lookup('env', 'SSP_STORAGE_CLASS') }}"
 ssp_storage_capacity: "{{ lookup('env', 'SSP_STORAGE_CAPACITY') | default('1Gi', True) }}"
