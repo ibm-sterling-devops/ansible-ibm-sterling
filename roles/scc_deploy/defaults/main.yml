@@ -18,6 +18,8 @@ scc_truststore_password: "{{ lookup('env', ' SCC_TRUSTSTORE_PASSWORD') | default
 scc_keystore_password: "{{ lookup('env', ' SCC_KEYSTORE_PASSWORD') | default('changeit', true) }}"
 scc_userkey: "{{ lookup('env', ' SCC_EMAIL_PASSWORD') | default('passw0rd', true) }}"
 
+scc_skip_helm: "{{ lookup('env', 'SCC_SKIP_HELM') | default(false, true) }}"
+
 scc_dbvendor: "{{ lookup('env', ' SCC_DBVENDOR') }}"
 scc_dbhost: "{{ lookup('env', ' SCC_DBHOST') }}"
 scc_dbport: "{{ lookup('env', ' SCC_DBPORT') }}"

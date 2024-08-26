@@ -43,6 +43,7 @@
   ansible.builtin.command:
     cmd: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ scc_namespace }} s0 {{ my_helmfile }}"
   changed_when: true
+  when: not scc_skip_helm
   # --wait
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
@@ -61,5 +62,6 @@
     msg:
       - "IBM Sterling Control Center status .............................. Ready!"
       - "IBM Sterling Control Center namespace ........................... {{ scc_namespace }}"
+      - "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ scc_namespace }} s0 {{ my_helmfile }}"
       # - "Pod name ............................................ {{ scc_pod_name }}"
       # - "For username and password check secret .............. {{ scc_secret }}'"

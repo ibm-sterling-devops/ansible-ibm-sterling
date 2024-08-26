@@ -91,32 +91,35 @@ service2:
   
   # Expose adapter ports in range format if we are not using Less Secure Perimeter Server.
   # nodePortRange - it will assign to service if you have selected service type as NodePort.  
-  portRanges: 
-    - name: ftp-adapter
-      portRange: 30101-30110
-      nodePortRange: 30101-30110
-    - name: sftp-adapter
-      portRange: 30201-30210
-      nodePortRange: 30201-30210
-    - name: cd-adapter
-      portRange: 30301-30310
-      nodePortRange: 30301-30310
-    - name: http-adapter
-      portRange: 30401-30410
-      nodePortRange: 30401-30410
+  portRanges: []
+    #- name: ftp-adapter
+     # portRange: 30101-30110
+     # nodePortRange: 30101-30110
+    #- name: sftp-adapter
+     # portRange: 30201-30210
+     # nodePortRange: 30201-30210
       
   # Expose adapter ports one by one if we are not using Less Secure Perimeter Server.
   # nodePort - it will assign to service if you have selected service type as NodePort. 
-  ports: []
-    #- name: adapter1
-     # port: 30110
-     # nodePort: 30110
-    #- name: adapter2
-     # port: 30111 
-     # nodePort: 30111
-    #- name: adapter3
-     # port: 30112    
-     # nodePort: 30112     
+  ports:
+    - name: ftp-adapter-01
+      port: 30110
+      nodePort: 30110
+    - name: sftp-adapter-01
+      port: 30120
+      nodePort: 30120
+    - name: cd-adapter-01
+      port: 30130
+      nodePort: 30130
+    - name: sfg-adapter-01 # myfilegateway
+      port: 30140
+      nodePort: 30140
+    - name: myfg-adapter-01 # myfg 2.0
+      port: 30141
+      nodePort: 30141
+    - name: restapi-adapter-01
+      port: 30142
+      nodePort: 30142
 
 secret:
   secretName: "{{ ssp_secret }}"
@@ -242,6 +245,18 @@ networkPolicy:
       port: 63366
     - protocol: TCP
       port: 30800
+    - protocol: TCP
+      port: 30110
+    - protocol: TCP
+      port: 30120
+    - protocol: TCP
+      port: 30130
+    - protocol: TCP
+      port: 30140
+    - protocol: TCP
+      port: 30141
+    - protocol: TCP
+      port: 30142
       
   # apply egress rule.
   egress:
@@ -249,5 +264,15 @@ networkPolicy:
     ports:
     - protocol: TCP
       port: 30800
-      
-    
+    - protocol: TCP
+      port: 30110
+    - protocol: TCP
+      port: 30120
+    - protocol: TCP
+      port: 30130
+    - protocol: TCP
+      port: 30140
+    - protocol: TCP
+      port: 30141
+    - protocol: TCP
+      port: 30142

@@ -29,6 +29,7 @@
     cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_namespace }} s0 {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
+  when: not ssp_skip_helm
 
 # # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Deploy SEAS chart from local path
@@ -69,3 +70,4 @@
       - "SSP namespace ...................................... {{ ssp_namespace }}"
       - "Pod name ........................................... {{ ssp_pod_name }}"
       - "For username and password check secret ............. {{ ssp_secret }}'"
+      - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_namespace }} s0 {{ my_helmfile }}"

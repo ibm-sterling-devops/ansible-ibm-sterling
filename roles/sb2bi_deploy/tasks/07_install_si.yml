@@ -62,5 +62,6 @@
     msg:
       - "IBM Sterling B2Bi status .............................. Ready!"
       - "IBM Sterling B2Bi namespace ........................... {{ si_namespace }}"
+      - "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ si_namespace }} s0 {{ my_helmfile }}"
       # - "Pod name ............................................ {{ si_pod_name }}"
       # - "For username and password check secret .............. {{ si_secret }}'"
