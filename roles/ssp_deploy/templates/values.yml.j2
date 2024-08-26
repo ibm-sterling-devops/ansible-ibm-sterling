@@ -91,13 +91,19 @@ service2:
   
   # Expose adapter ports in range format if we are not using Less Secure Perimeter Server.
   # nodePortRange - it will assign to service if you have selected service type as NodePort.  
-  portRanges: []
-    #- name: ftp-adapter
-     # portRange: 30101-30110
-     # nodePortRange: 30101-30110
-    #- name: sftp-adapter
-     # portRange: 30201-30210
-     # nodePortRange: 30201-30210
+  portRanges: 
+    - name: ftp-adapter
+      portRange: 30101-30110
+      nodePortRange: 30101-30110
+    - name: sftp-adapter
+      portRange: 30201-30210
+      nodePortRange: 30201-30210
+    - name: cd-adapter
+      portRange: 30301-30310
+      nodePortRange: 30301-30310
+    - name: http-adapter
+      portRange: 30401-30410
+      nodePortRange: 30401-30410
       
   # Expose adapter ports one by one if we are not using Less Secure Perimeter Server.
   # nodePort - it will assign to service if you have selected service type as NodePort. 
