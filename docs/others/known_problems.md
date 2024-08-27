@@ -15,7 +15,7 @@ mkdir: cannot create directory '/ibm/trace/logs': Permission denied
 chown: cannot access '/ibm/trace/logs/dbSetup': No such file or directory
 ```
 
-This error occurs because the ibmc-file-gold StorageClass requires the container to run as root.
+This error occurs because the ibmc-file-gold StorageClass requires the container to **run as root**.
 
 If you need to deploy Sterling B2Bi in a multizone RHOCP, you can adjust the scripts to use ibmc-file-gold by modifying the file:
 
@@ -49,7 +49,7 @@ spec:
         claimName: s0-b2bi-logs
 ```
 
-After ac, api and asi pods become ready, you delete this pod.
+Don't forget to change namespace. After ac, api and asi pods become ready, you delete this pod.
 
 
 ## Connect:Direct Versions: 6.3.0.0_ifix016 and Helm Version: 1.3.1
