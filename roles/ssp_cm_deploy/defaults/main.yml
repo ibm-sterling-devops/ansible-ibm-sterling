@@ -102,3 +102,9 @@ storage_class_matrix:
     rwo: "scale-cnsa"
     rom: "scale-cnsa"
     rwop: "scale-cnsa"
+  nfs:
+    rwx: "nfs"
+    rwx_nogid: "nfs"
+    rwo: "nfs"
+    rom: "nfs"
+    rwop: "nfs"
