@@ -59,6 +59,11 @@
 - name: StorageClass provided by user
   ansible.builtin.set_fact:
     my_storage_class: "{{ ssp_storage_class }}"
+    storage_class_matrix:
+      "{{ ssp_storage_class }}":
+        rwx: "{{ ssp_storage_class }}"
+        rwx_nogid: "{{ ssp_storage_class }}"
+        rwo: "{{ ssp_storage_class }}"
   when:
     - my_storage_class is not defined
     - ssp_storage_class is defined
