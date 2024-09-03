@@ -22,6 +22,7 @@
     cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_cm_namespace }} s0 {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
+  when: not ssp_skip_helm
 
 # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Run Helm from local path
@@ -38,6 +39,7 @@
 - name: "Wait : Give 1 minute to container to be ready"
   ansible.builtin.pause:
     minutes: 1
+  when: not ssp_cm_skip_helm
 
 - name: "Lookup SSP CM Pod"
   kubernetes.core.k8s_info:
@@ -52,10 +54,12 @@
       type: Ready
       status: "True"
   register: ssp_cm_pod
+  when: not ssp_cm_skip_helm
 
 - name: Configure facts
   ansible.builtin.set_fact:
     ssp_cm_pod_name: "{{ ssp_cm_pod.resources[0].metadata.name }}"
+  when: not ssp_cm_skip_helm
 
 - name: "IBM Sterling SSP CM Summary:"
   ansible.builtin.debug:

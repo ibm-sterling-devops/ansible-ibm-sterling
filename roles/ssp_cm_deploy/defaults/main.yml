@@ -18,6 +18,8 @@ ssp_cmservercert_password: "{{ lookup('env', 'SSP_CMSERVERCERT_PASSWORD') | defa
 ssp_webcert_password: "{{ lookup('env', 'SSP_WEBCERT_PASSWORD') | default('Passw0rd@', true) }}"
 ssp_exportcert_password: "{{ lookup('env', 'SSP_EXPORTEDCERT_PASSWORD') | default('Passw0rd@', true) }}"
 
+ssp_cm_skip_helm: "{{ lookup('env', 'SSP_SKIP_HELM') | default(false, true) }}"
+
 # Storage configuration
 ssp_cm_storage_class: "{{ lookup('env', 'SSP_CM_STORAGE_CLASS') }}"
 ssp_cm_storage_capacity: "{{ lookup('env', 'SSP_CM_STORAGE_CAPACITY') | default('1Gi', true) }}"
