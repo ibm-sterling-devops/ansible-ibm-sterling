@@ -13,6 +13,7 @@
 
 - name: "Copy Certificates from SSP CM"
   ansible.builtin.include_tasks: 05_copy_certificates.yml
+  when: not ssp_skip_helm
 
 - name: Install SSP using Helm Chart
   ansible.builtin.include_tasks: 06_install_ssp.yml
