@@ -56,6 +56,13 @@
     - my_storage_class is not defined
     - "'scale-cnsa' in my_storage_list"
 
+- name: StorageClass provided by user
+  ansible.builtin.set_fact:
+    my_storage_class: "{{ ssp_storage_class }}"
+  when:
+    - my_storage_class is not defined
+    - ssp_storage_class is defined
+
 # 2. Non-Dynamic Provisioning
 # -----------------------------------------------------------------------------
 - name: Assert that storage class has been defined
