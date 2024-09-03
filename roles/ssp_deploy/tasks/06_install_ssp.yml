@@ -71,6 +71,5 @@
     msg:
       - "IBM Sterling SSP status ............................ Ready!"
       - "SSP namespace ...................................... {{ ssp_namespace }}"
-      - "Pod name ........................................... {{ ssp_pod_name }}"
       - "For username and password check secret ............. {{ ssp_secret }}'"
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_namespace }} s0 {{ my_helmfile }}"
