@@ -1,6 +1,9 @@
 ---
+cd_action: "{{ lookup('env', 'CD_ACTION') | default('install', true) }}"
+
 cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev', true) }}"
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true) }}" # Specify the node of C:D application
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.3_ifix012', true) }}"
 
@@ -10,9 +13,22 @@ cd_local_cert_passphrase: "{{ lookup('env', 'CD_LOCALCERTPASSPHRASE') | default(
 cd_keystore_password: "{{ lookup('env', 'CD_KEYSTOREPASSWORD') | default('changeit', true) }}"
 
 cd_license_type: "{{ lookup('env', 'CD_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
+cd_env_timezone: "{{ lookup('env', 'CD_ENV_TIMEZONE') | default('UTC', true) }}"
+
+cd_skip_helm: "{{ lookup('env', 'CD_SKIP_HELM') | default(false, true) }}"
+
+cd_actions_defaults:
+  install:
+    upgradecompcheck: "false"
+  upgrade:
+    upgradecompcheck: "true"
+
+cd_upgradecompcheck: "{{ cd_actions_defaults[cd_action].upgradecompcheck }}"
 
 # Storage configuration
-cd_storage_class: "{{ lookup('env', 'CD_STORAGE_CLASS') }}"
+my_predefined_pvc: "{{ lookup('env', 'CD_EXISTING_CLAIMNAME') | default('', true) }}"
+my_storage_class: "{{ lookup('env', 'CD_STORAGE_CLASS') | default('', true) }}"
+
 cd_storage_capacity: "{{ lookup('env', 'CD_STORAGE_CAPACITY') | default('1Gi', true) }}"
 
 # CPU and memory limits configuration on the container
@@ -25,29 +41,19 @@ cd_cpu_requests: "{{ lookup('env', 'CD_CPU_REQUESTS') | default('500m', true) }}
 cd_mem_requests: "{{ lookup('env', 'CD_MEM_REQUESTS') | default('2000Mi', true) }}"
 cd_ephemeral_storage_requests: "{{ lookup('env', 'CD_EPHEMERAL_STORAGE_REQUESTS') | default('3Gi', true) }}"
 
-# Entitlement
-# -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 
 cd_deploy_sum_enabled: 1 # sumEnabled value could either 0 or 1 to disable/enable Standard User Mode (SUM)  feature
-cd_deploy_registry_secret: mycd-ibm-registry-secret
-cd_deploy_secret: mycd-secret
-cd_deploy_cert_secret: mycd-cert-secret
+cd_deploy_registry_secret: ibm-registry-secret
+cd_deploy_secret: cd-secret
+cd_deploy_cert_secret: cd-cert-secret
 cd_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support extensions .crt, .pem and .cer
 cd_cert_key: "{{ my_workdir }}/cdkey.pem"
 cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
 cd_use_dynamic_provisioning: false
-
-# Helm Variables
-# -----------------------------------------------------------------------------
-cd_helm:
-  chart: "{{ my_workdir }}/ibm-connect-direct/"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:

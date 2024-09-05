@@ -77,7 +77,7 @@ db2_id: mydb2
 # -----------------------------------------------------------------------------
 compatibility_matrix:
   6.3.1.0_iFix02_2024-08-26:
-    helm_version: "3.1.5"
+    helm_version: "3.1.6"
     image_tag: "6.3.1.0_iFix02_2024-08-26"
     copy_dbdriver_repository: "cp.icr.io/cp/ibm-scc/ibmscc_dbdrivers"
     copy_dbdriver_tag: "2024"

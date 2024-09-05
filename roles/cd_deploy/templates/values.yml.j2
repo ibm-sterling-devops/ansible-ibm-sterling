@@ -1,7 +1,7 @@
 license: true
 licenseType: "{{ cd_license_type }}"
 env:
-  timezone: "UTC"
+  timezone: "{{ cd_env_timezone }}"
   extraEnvs: []
 
 extraLabels: {}
@@ -19,7 +19,7 @@ image:
 
 nameOverride: ""
 
-upgradeCompCheck: {{ cd_other_values.upgradeCompCheck | default('false') }}
+upgradeCompCheck: {{ cd_upgradecompcheck }}
 
 extraVolumeMounts: []
 
@@ -51,15 +51,15 @@ storageSecurity:
 
 persistence:
   enabled: true
-  useDynamicProvisioning: {{ cd_other_values.persistence.useDynamicProvisioning }}
+  useDynamicProvisioning: {{ cd_use_dynamic_provisioning }}
 
 pvClaim:
-  existingClaimName: "{{ cd_other_values.pvClaim.existingClaimName | default('') }}"
+  existingClaimName: "{{ cd_existing_claimname }}"
   storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwo }}"  
   accessMode: "ReadWriteOnce"
   selector:
-    label: "intent"
-    value: "cd-vol"
+    label: ""
+    value: ""
   size: {{ cd_storage_capacity }}
 
 service:

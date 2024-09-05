@@ -1,10 +1,4 @@
 ---
-- name: Define C:D helm chart values
-  ansible.builtin.set_fact:
-    cd_other_values:
-      persistence:
-        useDynamicProvisioning: "{{ 'true' if (cd_use_dynamic_provisioning) else 'false' }}"
-
 - name: "Set fact helm file"
   ansible.builtin.set_fact:
     my_helmfile: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
@@ -16,12 +10,9 @@
     dest: "{{ my_valuesfile }}"
     mode: "0640"
 
-- name: Debug
+- name: "Helm Install command:"
   ansible.builtin.debug:
     msg:
-      - "Image Repository ................. {{ compatibility_matrix[cd_version].image_repository }}"
-      - "Image Tag        ................. {{ compatibility_matrix[cd_version].image_tag }}"
-      - "cd_other_values  ................. {{ cd_other_values }}"
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
 
 - name: Run Helm install command
@@ -29,16 +20,7 @@
     cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
-
-# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
-# - name: Deploy Connect:Direct chart from local path
-#   kubernetes.core.helm:
-#     name: "{{ cd_helm_release }}"
-#     chart_ref: "{{ cd_helm.chart }}"
-#     release_namespace: "{{ cd_namespace }}"
-#     wait: True
-#     timeout: "{{ cd_helm.timeout }}"
-#     values_files: "{{ cd_helm.values }}"
+  when: not cd_skip_helm
 
 - name: "Lookup Connect:Direct Pod"
   kubernetes.core.k8s_info:
@@ -53,15 +35,19 @@
       type: Ready
       status: "True"
   register: cd_pod
+  when: not cd_skip_helm
 
 - name: Configure facts
   ansible.builtin.set_fact:
     cd_pod_name: "{{ cd_pod.resources[0].metadata.name }}"
+  when: not cd_skip_helm
 
 - name: "IBM Sterling Connect:Direct Summary:"
   ansible.builtin.debug:
     msg:
       - "IBM Sterling Connect:Direct status .................. Ready!"
       - "Connect:Direct namespace ............................ {{ cd_namespace }}"
-      - "Pod name ............................................ {{ cd_pod_name }}"
+      - "Pod name ............................................ {{ cd_pod_name | default('') }}"
       - "For username and password check secret .............. {{ cd_deploy_secret }}'"
+      - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
+

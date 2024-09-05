@@ -79,4 +79,4 @@ ansible-playbook playbooks/deploy_cd.yml
 
 For all environment variables
 
-* Role [cd_deploy](../../roles/cdws_deploy)
+* Role [cdws_deploy](../../roles/cdws_deploy)
