@@ -53,7 +53,6 @@ cd_deploy_cert_secret: cd-cert-secret
 cd_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support extensions .crt, .pem and .cer
 cd_cert_key: "{{ my_workdir }}/cdkey.pem"
 cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
-cd_use_dynamic_provisioning: false
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
