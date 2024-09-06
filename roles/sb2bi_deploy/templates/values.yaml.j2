@@ -335,7 +335,12 @@ asi:
         targetPort: ops
         nodePort: 30008
         protocol: TCP
-    extraPorts: []
+    extraPorts: 
+      - name: maptest-http
+        port: 35038
+        targetPort: 35038
+        nodePort: 30038
+        protocol: TCP
       #-name: http-1
       # port: 46000
       # targetPort: http
@@ -376,19 +381,19 @@ asi:
     annotations: {}
       
   livenessProbe:
-    initialDelaySeconds: 60
+    initialDelaySeconds: 900
     timeoutSeconds: 30
     periodSeconds: 60
 
   readinessProbe:
-    initialDelaySeconds: 30
+    initialDelaySeconds: 600
     timeoutSeconds: 5
     periodSeconds: 60
     command:
     arg: []
      
   startupProbe:
-    initialDelaySeconds: 300
+    initialDelaySeconds: 600
     timeoutSeconds: 30
     periodSeconds: 60
     failureThreshold: 6
@@ -428,24 +433,16 @@ asi:
 
   extraPVCs: []
 
-
   extraInitContainers: []
-    #- name: wait-for-postgresql
-    #  image: "\{\{ .Values.init.image.repository \}\}:\{\{ .Values.init.image. \}\}"
-    #  imagePullPolicy: \{\{ .Values.init.image.pullPolicy \}\}
-    #  command:
-    #  shareVolume: false
-    #  localMountPath: 
-    #  appMountPath:
 
   resources: 
     limits:
-      cpu: 4000m
-      memory: 8Gi
+      cpu: 8000m
+      memory: 12Gi
       ephemeral-storage: "4Gi"
     requests:
-      cpu: 2000m
-      memory: 4Gi
+      cpu: 4000m
+      memory: 8Gi
       ephemeral-storage: "2Gi"
 
   autoscaling:
