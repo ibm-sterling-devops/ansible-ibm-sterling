@@ -1,5 +1,5 @@
 ---
-- name: "Set fact helm file"
+- name: Set fact helm file
   ansible.builtin.set_fact:
     my_helmfile: "{{ my_workdir }}/ibm-connect-direct-{{ compatibility_matrix[cd_version].helm_version }}.tgz"
     my_valuesfile: "{{ my_workdir }}/mycd_values-{{ my_serial }}.yml"
@@ -10,7 +10,7 @@
     dest: "{{ my_valuesfile }}"
     mode: "0640"
 
-- name: "Helm Install command:"
+- name: Helm Install command
   ansible.builtin.debug:
     msg:
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
@@ -42,7 +42,7 @@
     cd_pod_name: "{{ cd_pod.resources[0].metadata.name }}"
   when: not cd_skip_helm
 
-- name: "IBM Sterling Connect:Direct Summary:"
+- name: IBM Sterling Connect:Direct Summary
   ansible.builtin.debug:
     msg:
       - "IBM Sterling Connect:Direct status .................. Ready!"
@@ -50,4 +50,3 @@
       - "Pod name ............................................ {{ cd_pod_name | default('') }}"
       - "For username and password check secret .............. {{ cd_deploy_secret }}'"
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
-

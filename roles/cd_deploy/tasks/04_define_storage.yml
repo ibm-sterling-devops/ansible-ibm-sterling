@@ -37,11 +37,6 @@
   when:
     - my_predefined_pvc == ''
 
-- name: "Debug 1"
-  ansible.builtin.debug:
-    msg:
-      - "storage_class_matrix ............................ {{ storage_class_matrix }}"
-
 # 3. Custom StorageClass
 # -----------------------------------------------------------------------------
 - name: Check for Custom StorageClass
@@ -60,11 +55,6 @@
     - my_storage_class != ''
     - my_storage_class != 'pre-created-pvc'
     - my_storage_class in my_storage_list 
-    
-- name: "Debug 2"
-  ansible.builtin.debug:
-    msg:
-      - "storage_class_matrix ............................ {{ storage_class_matrix }}"
 
 # 4. Dynamic Provisioning
 # -----------------------------------------------------------------------------
