@@ -41,7 +41,7 @@
 # -----------------------------------------------------------------------------
 - name: Check for Custom StorageClass
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "true"
+    my_use_dynamic_provisioning: "true"
     storage_class_matrix:
       custom-sc:
         rwx: "{{ my_storage_class }}"
@@ -54,21 +54,21 @@
     - my_predefined_pvc == ''
     - my_storage_class != ''
     - my_storage_class != 'pre-created-pvc'
-    - my_storage_class in my_storage_list 
+    - my_storage_class in my_storage_list
 
 # 4. Dynamic Provisioning
 # -----------------------------------------------------------------------------
 - name: Check for IBM Cloud StorageClass
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "true"
+    my_use_dynamic_provisioning: "true"
     my_storage_class: "ibmcloud"
   when:
     - my_storage_class == ''
     - "'ibmc-file-gold' in my_storage_list"
-    
+
 - name: Check for Redhat StorageClass
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "true"
+    my_use_dynamic_provisioning: "true"
     my_storage_class: "redhat"
   when:
     - my_storage_class == ''
@@ -76,7 +76,7 @@
 
 - name: Check for AWS StorageClass
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "true"
+    my_use_dynamic_provisioning: "true"
     my_storage_class: "aws"
   when:
     - my_storage_class == ''
@@ -84,7 +84,7 @@
 
 - name: Check for Azure StorageClass
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "true"
+    my_use_dynamic_provisioning: "true"
     my_storage_class: "azure"
   when:
     - my_storage_class == ''
@@ -92,7 +92,7 @@
 
 - name: Check for IBM Techzone StorageClass
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "true"
+    my_use_dynamic_provisioning: "true"
     my_storage_class: "techzone"
   when:
     - my_storage_class == ''
@@ -100,7 +100,7 @@
 
 - name: Check for IBM Spectrum Scale StorageClass
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "true"
+    my_use_dynamic_provisioning: "true"
     my_storage_class: "ibm-spectrum"
   when:
     - my_storage_class == ''
@@ -115,7 +115,7 @@
   ansible.builtin.set_fact:
     cd_use_dynamic_provisioning: "{{ my_use_dynamic_provisioning }}"
     cd_storage_class: "{{ my_storage_class }}"
-    cd_existing_claimname:  "{{ my_predefined_pvc }}"
+    cd_existing_claimname: "{{ my_predefined_pvc }}"
 
 - name: "Storage Definition:"
   ansible.builtin.debug:
