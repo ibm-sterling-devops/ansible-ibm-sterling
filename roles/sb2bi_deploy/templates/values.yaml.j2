@@ -10,49 +10,11 @@ global:
   networkPolicies:
     ingress:
       enabled: true
-      customPolicies:
-      #- name:
-      #  fromSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450  
-      
+      customPolicies:     
+ 
     egress:
       enabled: true
       customPolicies:
-      #- name:
-      #  toSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450
 
 arch:
   amd64: "2 - No Preference"
@@ -352,7 +314,7 @@ asi:
     annotations: {}  
   
   backendService:
-    type: LoadBalancer
+    type: NodePort
     sessionAffinity: None
     sessionAffinityConfig:
       timeoutSeconds: 10800
@@ -370,11 +332,6 @@ asi:
         targetPortRange: 30301-30310
         nodePortRange: 30301-30310
         protocol: TCP
-      #- name: adapters
-      #  portRange: 30301-30400
-      #  targetPortRange: 30301-30400
-      #  nodePortRange: 30301-30400
-      #  protocol: TCP
     loadBalancerIP:  
     loadBalancerSourceRanges: []
       #- "143.231.0.0/16"
@@ -534,6 +491,12 @@ asi:
   networkPolicies:
     ingress:
       customPolicies:
+        - name: np-ingress-allow-asi-adapters
+          ports:
+{% for port in range(30301, 30311) %}
+            - protocol: TCP
+              port: {{ port }}
+{% endfor %}
       #- name:
       #  fromSelectors:
       #  - namespaceSelector:
@@ -770,25 +733,12 @@ ac:
   networkPolicies:
     ingress:
       customPolicies:
-      #- name:
-      #  fromSelectors:
-      #  - namespaceSelector:
-      #      matchLabels:
-      #        name: my-source-namespace
-      #    podSelector:
-      #      matchLabels:
-      #        app.kubernetes.io/name: my-consumer-pod
-      #  - podSelector:
-      #      matchLabels:
-      #        role: frontend
-      #  - ipBlock:
-      #      cidr: <IP Address>/<block size>
-      #      except:
-      #      - <IP Address>/<block size>
-      #  ports:
-      #   - protocol: TCP
-      #     port: 8443
-      #     endPort: 8450        
+        - name: np-ingress-allow-ac-adapters
+          ports:
+{% for port in range(30501, 30601) %}
+            - protocol: TCP
+              port: {{ port }}
+{% endfor %}
     egress:
       customPolicies:
       #- name:
