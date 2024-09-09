@@ -13,7 +13,7 @@
 - name: Debug
   ansible.builtin.debug:
     msg:
-      - "Image Repository ................. {{ compatibility_matrix[ssp_cm_version].image_repository }}"
+      - "Image Repository ................. cp.icr.io/cp/ibm-ssp-cm/ssp-cm-docker-image"
       - "Image Tag        ................. {{ compatibility_matrix[ssp_cm_version].image_tag }}"
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_cm_namespace }} s0 {{ my_helmfile }}"
 
@@ -22,7 +22,7 @@
     cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_cm_namespace }} s0 {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
-  when: not ssp_skip_helm
+  when: not ssp_cm_skip_helm
 
 # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
 # - name: Run Helm from local path

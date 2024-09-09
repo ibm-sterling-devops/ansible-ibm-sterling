@@ -19,7 +19,7 @@
 - name: Debug
   ansible.builtin.debug:
     msg:
-      - "Image Repository ................. {{ compatibility_matrix[ssp_version].image_repository }}"
+      - "Image Repository ................. cp.icr.io/cp/ibm-ssp-engine/ssp-engine-docker-image"
       - "Image Tag        ................. {{ compatibility_matrix[ssp_version].image_tag }}"
       - "ssp_other_values  ................. {{ ssp_other_values }}"
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ ssp_namespace }} s0 {{ my_helmfile }}"

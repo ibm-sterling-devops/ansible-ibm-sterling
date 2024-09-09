@@ -1,4 +1,11 @@
 ---
+# curl POST 'https://..../sspcmrest/sspcm/rest/api/engine' 
+#  --data-raw '{
+# "name":"ssp-engine-01",
+# "host":"172.30.100.147",
+# "description":"","port":63366,
+# "localBindAddress":"","debugLogging":"ERROR","localPSLogging":"ERROR","maverickLogging":"ERROR","userStore":"defUserStore","blacklistUserIp":"","blacklistUserId":"","enableAuditLogRouting":false,"properties":[{"name":"ps.shutdown.timeout.secs","value":"60"},{"name":"proxy.host.ip","value":""}]}' 
+#
 - name: Define Facts
   ansible.builtin.set_fact:
     engine_xml: |
