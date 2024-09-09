@@ -10,6 +10,22 @@
           <name>cd-policy-test</name>
           <description><![CDATA[]]></description>
         </cdPolicy>
+    policy_json: |
+      {
+        "policyName": "cd-policy",
+        "description": "",
+        "protocolErrorAction": "NONE",
+        "userAuthentication": "none",
+        "eaCertValidation": false,
+        "userMapping": "noUserID",
+        "type": "Connect Direct",
+        "ipAddressCheck": false,
+        "runJobStepAllowed": true,
+        "runTaskStepAllowed": true,
+        "copyStepAllowed": true,
+        "submitStepAllowed": true,
+        "protocol": "cd"
+      }
     netmap_xml: |
       <netmap>
         <name>cd-netmap-01</name>
@@ -39,15 +55,30 @@
         </properties>
       </adapter>
 
-# POST https://localhost:8443/sspcmrest/sspcm/rest/policy/createPolicy
-- name: Create Policy {{ config_name }}
+# # POST https://localhost:8443/sspcmrest/sspcm/rest/policy/createPolicy
+# - name: Create Policy {{ config_name }}
+#   ansible.builtin.uri:
+#     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
+#     method: POST
+#     headers:
+#       X-Authentication: "{{ session_token }}"
+#       Content-Type: "application/xml"
+#     body: "{{ policy_xml }}"
+#     status_code: 200
+#     validate_certs: false
+#   when: create_policy
+#   register: policy_result
+
+- name: Create Policy Json {{ config_name }}
   ansible.builtin.uri:
-    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/policy
     method: POST
     headers:
       X-Authentication: "{{ session_token }}"
-      Content-Type: "application/xml"
-    body: "{{ policy_xml }}"
+      Accept: "application/json, text/plain, */*"
+      Content-Type: "application/json"
+    body: "{{ policy_json }}"
+    body_format: json
     status_code: 200
     validate_certs: false
   when: create_policy
@@ -57,7 +88,6 @@
   ansible.builtin.debug:
     msg:
       - "policy_result.status ................. {{ policy_result.status }}"
-      - "policy_result.content ................. {{ policy_result.content }}"
 
 - name: Create Netmap {{ config_name }}
   ansible.builtin.uri:
@@ -85,54 +115,3 @@
   when: create_adapter
   register: adapter_result
 
-# --------------------------------------------
-# <netmapDef>
-#   <description>Connect_Direct_Netmap</description>
-#   <inboundNodes>
-#     <inboundNodeDef>
-#       <addresses>
-#         <address>
-#           <nodeName>ccenterdev03.irv.ustx.ibm.com</nodeName>
-#           <host>ccenterdev03.irv.ustx.ibm.com</host>
-#           <port>4163</port>
-#         </address>
-#       </addresses>
-#       <description>ccenterdev03.irv.ustx.ibm.com</description>
-#       <logLevel>NONE</logLevel>
-#       <name>ccenterdev03.irv.ustx.ibm.com</name>
-#       <outboundACLNodes>
-#         <outboundACLNode>ccenterdev03.irv.ustx.ibm.com</outboundACLNode>
-#       </outboundACLNodes>
-#       <peerAddressPattern>ccenterdev03.irv.ustx.ibm.com</peerAddressPattern>
-#       <policyId>CD_Policy_test</policyId>
-#       <port>4163</port>
-#       <routingName>ccenterdev03.irv.ustx.ibm.com</routingName>
-#       <secureConnection>false</secureConnection>
-#       <serverAddress>ccenterdev03.irv.ustx.ibm.com</serverAddress>
-#       <tcpTimeout>90</tcpTimeout>
-#     </inboundNodeDef>
-#   </inboundNodes>
-#   <name>CD_Netmap_test</name>
-#   <outboundACLRequired>false</outboundACLRequired>
-#   <protocol>cd</protocol>
-#   <status></status>
-# </netmapDef>
-
-# --------------------------------------------
-# <cdAdapterDef>
-#   <encryptionLevel>false</encryptionLevel>
-#   <engines></engines>
-#   <faspPortrange>1000-2000</faspPortrange>
-#   <listenPort>25000</listenPort>
-#   <logLevel>DEBUG</logLevel>
-#   <maxSessions>20</maxSessions>
-#   <name>CD_Adapter_test</name>
-#   <netmap>CD_Netmap_test</netmap>
-#   <netmapKey>ccenterdev03.irv.ustx.ibm.com</netmapKey>
-#   <properties></properties>
-#   <protocol>cd</protocol>
-#   <sessionTimeout>90</sessionTimeout>
-#   <standardRoute>ccenterdev03.irv.ustx.ibm.com</standardRoute>
-#   <status></status>
-#   <urlRoutingType>standardRouting</urlRoutingType>
-# </cdAdapterDef>

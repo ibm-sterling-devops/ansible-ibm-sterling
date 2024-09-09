@@ -16,25 +16,25 @@ ssp_config_engine:
   enabled: false
 
 ssp_config_cd:
-  enabled: false
+  enabled: true
   create_policy: true
   create_netmap: false
   create_adapter: false
 
 ssp_config_ftp:
-  enabled: true
+  enabled: false
   create_policy: true
   create_netmap: false
   create_adapter: false
 
 ssp_config_sftp:
-  enabled: true
+  enabled: false
   create_policy: true
   create_netmap: false
   create_adapter: false
 
 ssp_config_http:
-  enabled: true
+  enabled: false
   create_policy: true
   create_netmap: false
   create_adapter: false
