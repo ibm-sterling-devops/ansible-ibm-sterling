@@ -10,11 +10,11 @@
     status_code: 200
     validate_certs: false
     return_content: true
-  register: response
+  register: session_rsp
 
 - name: Get XML content
   ansible.builtin.set_fact:
-    xml_string: "{{ response.content }}"
+    xml_string: "{{ session_rsp.content }}"
 
 - name: Extract session token
   ansible.builtin.set_fact:

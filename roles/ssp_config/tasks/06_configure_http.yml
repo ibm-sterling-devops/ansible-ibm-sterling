@@ -1,0 +1,73 @@
+---
+- name: Define Facts
+  ansible.builtin.set_fact:
+    policy_json: |
+      {
+        "policyName": "http-passthru-policy",
+        "description": "HTTP Pass-Through policy",
+        "userAuthentication": "none",
+        "eaAuthProfile": "",
+        "userMapping": "passthru",
+        "protocol": "http",
+        "preferredAuthentication": "password",
+        "eaKeyAuthProfile": "",
+        "keyauthReqdBeforePwdauth": false
+      }
+    netmap_json: |
+      {
+        "name": "http-passthru-nm",
+        "description": "HTTP Pass-Through netmap",
+        "protocol": "http"
+      }
+    adapter_json: |
+      {
+        "name": "sfg-adapter-01",
+        "listenPort": "30140",
+        "netmap": "http-passthru-nm",
+            "engineName": "ssp-engine-01",
+      }
+
+- name: Create Policy Json HTTP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/policy
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Accept: "application/json, text/plain, */*"
+      Content-Type: "application/json"
+    body: "{{ policy_json }}"
+    body_format: json
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.http.policy
+  register: http_plc_cout
+
+# - name: Create Netmap HTTP
+#   ansible.builtin.uri:
+#     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/netmap
+#     method: POST
+#     headers:
+#       X-Authentication: "{{ session_token }}"
+#       Accept: "application/json, text/plain, */*"
+#       Content-Type: "application/json"
+#     body: "{{ netmap_json }}"
+#     body_format: json
+#     status_code: 200
+#     validate_certs: false
+#   when: ssp_cfg.http.netmap
+#   register: http_np_cout
+
+# - name: Create Adapter HTTP
+#   ansible.builtin.uri:
+#     url: https://{{ ssp_cm_url }}sspcmrest/sspcm/rest/api/adapter
+#     method: POST
+#     headers:
+#       X-Authentication: "{{ session_token }}"
+#       Accept: "application/json, text/plain, */*"
+#       Content-Type: "application/json"
+#     body: "{{ adapter_json }}"
+#     body_format: json
+#     status_code: 200
+#     validate_certs: false
+#   when: ssp_cfg.http.adapter
+#   register: http_adp_cout

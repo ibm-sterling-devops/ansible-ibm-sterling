@@ -1,9 +1,9 @@
 ---
-ssp_cm_url: "{{ lookup('env', 'SSP_CM_URL') | default('localhost:8443', true) }}"
-ssp_engine_host: "{{ lookup('env', 'SSP_ENGINE_HOST') | default('10.0.0.1', true) }}"
+ssp_cm_url: "{{ lookup('env', 'SSP_CM_URL') }}"
+ssp_engine_host: "{{ lookup('env', 'SSP_ENGINE_HOST') }}"
 ssp_engine_port: "{{ lookup('env', 'SSP_ENGINE_PORT') | default('63366', true) }}"
 
-ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
+ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') | default('dev01', true) }}"
 ssp_admin_user: "{{ lookup('env', 'SSP_ADMIN_USER') | default('admin', true) }}"
 ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Passw0rd@', true) }}"
 
@@ -12,35 +12,21 @@ ssp_service: "s0-ibm-ssp-engine"
 ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
 ssp_cm_route: "s0-ibm-ssp-cm"
 
-ssp_config_engine:
-  enabled: false
-
-ssp_config_cd:
-  enabled: true
-  create_policy: true
-  create_netmap: false
-  create_adapter: false
-
-ssp_config_ftp:
-  enabled: false
-  create_policy: true
-  create_netmap: false
-  create_adapter: false
-
-ssp_config_sftp:
-  enabled: false
-  create_policy: true
-  create_netmap: false
-  create_adapter: false
-
-ssp_config_http:
-  enabled: false
-  create_policy: true
-  create_netmap: false
-  create_adapter: false
-
-ssp_config_myfg:
-  enabled: false
-  create_policy: false
-  create_netmap: false
-  create_adapter: false
+ssp_cfg:
+  engine:
+    enabled: false
+  cd:
+    enabled: true
+    policy: true
+    netmap: true
+    adapter: true
+  sftp:
+    enabled: true
+    policy: false
+    netmap: false
+    adapter: false
+  http:
+    enabled: true
+    policy: false
+    netmap: false
+    adapter: false

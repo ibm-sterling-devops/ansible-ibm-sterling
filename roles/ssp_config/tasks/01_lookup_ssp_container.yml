@@ -1,10 +1,4 @@
 ---
-- name: Check for required environment variables
-  ansible.builtin.assert:
-    that:
-      - lookup('env', 'SSP_INSTANCEID') != ""
-    fail_msg: "One or more required environment variables are not defined"
-
 # 1. Check for undefined properties that do not have a default
 # -----------------------------------------------------------------------------
 - name: "Fail if ssp_namespace is not provided"
@@ -17,6 +11,10 @@
     that: ssp_cm_namespace is defined and ssp_cm_namespace != ""
     fail_msg: "ssp_cm_namespace property is required"
 
+- name: Debug
+  ansible.builtin.debug:
+    var: ssp_engine_host
+
 # 2. Lookup Service from SSP Namespace"
 # -----------------------------------------------------------------------------
 - name: "Lookup Service from SSP Namespace"
@@ -27,11 +25,14 @@
     name: "{{ ssp_service }}"
     namespace: "{{ ssp_namespace }}"
   register: ssp_svc_cout
+  when:
+    - ssp_engine_host == ""
 
 - name: Set Facts for SSP Engine
   ansible.builtin.set_fact:
     ssp_engine_host: "{{ ssp_svc_cout.resources[0].spec.clusterIP }}"
   when:
+    - ssp_engine_host == ""
     - ssp_svc_cout is defined and ssp_svc_cout != ""
 
 # 3. Lookup Routefrom SSPcm Namespace"
@@ -43,17 +44,23 @@
     kind: Route
     name: "{{ ssp_cm_route }}"
     namespace: "{{ ssp_cm_namespace }}"
-  register: ssp_cm_svc_cout
+  register: ssp_cm_route_cout
+  when:
+    - ssp_cm_url == ""
 
 - name: Debug
   ansible.builtin.debug:
-    var: ssp_cm_svc_cout
+    var: ssp_cm_route_cout
+  when:
+    - ssp_cm_url == ""
+    - ssp_cm_route_cout is defined and ssp_cm_route_cout != ""
 
 - name: Set Facts for SSP CM URL
   ansible.builtin.set_fact:
-    ssp_cm_url: "{{ ssp_cm_svc_cout.resources[0].spec.host }}"
+    ssp_cm_url: "{{ ssp_cm_route_cout.resources[0].spec.host }}"
   when:
-    - ssp_cm_svc_cout is defined and ssp_cm_svc_cout != ""
+    - ssp_cm_url == ""
+    - ssp_cm_route_cout is defined and ssp_cm_route_cout != ""
 
 # 4. Print Debug information
 # -----------------------------------------------------------------------------

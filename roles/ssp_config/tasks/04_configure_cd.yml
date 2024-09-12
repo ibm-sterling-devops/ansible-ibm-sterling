@@ -1,0 +1,205 @@
+---
+- name: Define Facts
+  ansible.builtin.set_fact:
+    policy_json1: |
+      {
+        "policyName":"cd-passthru-policy",
+        "description":"CD Pass-Through policy"
+        "protocolErrorAction": "NONE",
+        "userAuthentication": "none",
+        "eaCertValidation": false,
+        "userMapping": "noUserID",
+        "type": "Connect Direct",
+        "ipAddressCheck": false,
+        "runJobStepAllowed": true,
+        "runTaskStepAllowed": true,
+        "copyStepAllowed": true,
+        "submitStepAllowed": true,
+        "protocol": "cd"
+      }
+    policy_xml: |
+      <policy>
+        <policyName>cd-passthru-policy</policyName>
+        <description>CD Pass-Through policy</description>
+        <protocolErrorAction>NONE</protocolErrorAction>
+        <userAuthentication>none</userAuthentication>
+        <eaCertValidation>false</eaCertValidation>
+        <userMapping>noUserID</userMapping>
+        <type>Connect Direct</type>
+        <ipAddressCheck>false</ipAddressCheck>
+        <runJobStepAllowed>true</runJobStepAllowed>
+        <runTaskStepAllowed>true</runTaskStepAllowed>
+        <copyStepAllowed>true</copyStepAllowed>
+        <submitStepAllowed>true</submitStepAllowed>
+        <protocol>cd</protocol>
+      </policy>
+    netmap_json: |
+      {
+        "name": "cd-passthru-nm",
+        "description": "C:D Pass-Through netmap",
+        "inboundNodesList": [
+          {
+            "name": "CDNODE01",
+            "description": "",
+            "logLevel": "ERROR",
+            "secureConnection": false,
+            "altDestinationsLists": [],
+            "destinationServiceName": "",
+            "outboundACLNodes": [],
+            "peerAddressPattern": "s0-ibm-connect-direct.sterling-cdnode01-dev.svc.cluster.local",
+            "policyId": "cd-passthru-policy",
+            "port": "1364",
+            "routingName": "",
+            "routingNode": "",
+            "serverAddress": "s0-ibm-connect-direct.sterling-cdnode01-dev.svc.cluster.local",
+            "socksProxyServerPassword": "",
+            "socksProxyServerUserId": "",
+            "tcpTimeout": "-1",
+            "ipCheckLists": []
+          }
+        ],
+        "outboundACLRequired": false,
+        "protocol": "cd"
+      }
+    adapter_json: |
+      {
+        "name": "cd-adapter-01",
+        "description": "",
+        "listenPort": "30130",
+        "netmap": "cd-passthru-nm",
+        "urlRoutingType": "pnodeSpecifiedRouting",
+        "encryptionLevel": false,
+        "engines": [
+          {
+            "engineName": "ssp-engine-01",
+            "psInName": "local",
+            "psOutName": "local",
+            "eaPSName": "local",
+            "eaServerName": "",
+            "icapPSName": "local",
+            "icapServerName": "",
+            "startupMode": "auto"
+          }
+        ],
+        "faspPortrange": "",
+        "maxSessions": "20",
+        "icapScanOption": "NONE",
+        "logLevel": "ERROR",
+        "pingResponse": "",
+        "properties": [],
+        "protocol": "cd",
+        "psOutPortrange": "",
+        "sessionTimeout": "90",
+        "standardRoute": null,
+        "netmapKey": null
+      }
+
+- name: Create Policy Json C:D
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/policy
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Accept: "application/json, text/plain, */*"
+      Content-Type: "application/json"
+    body: "{{ policy_json }}"
+    body_format: json
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.cd.policy
+  register: cd_plc_cout
+
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "cd_plc_cout.status ................. {{ cd_plc_cout.status }}"
+
+- name: Create Netmap C:D
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/netmap
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Accept: "application/json, text/plain, */*"
+      Content-Type: "application/json"
+    body: "{{ netmap_json }}"
+    body_format: json
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.cd.netmap
+  register: cd_np_cout
+# {
+#     "httpCode": "201",
+#     "httpStatus": "CREATED",
+#     "message": "Netmap named cd-passthru-nm created successfully."
+# }
+
+- name: Create Adapter C:D
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}sspcmrest/sspcm/rest/api/adapter
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Accept: "application/json, text/plain, */*"
+      Content-Type: "application/json"
+    body: "{{ adapter_json }}"
+    body_format: json
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.cd.adapter
+  register: cd_adp_cout
+
+# - name: Define Facts
+#   ansible.builtin.set_fact:
+#     config_name: "C:D"
+#     create_policy: "{{ ssp_config_cd.create_policy }}"
+#     create_netmap: "{{ ssp_config_cd.create_netmap }}"
+#     create_adapter: "{{ ssp_config_cd.create_adapter }}"
+#     netmap_xml: |
+#       <netmap>
+#         <name>cd-netmap-01</name>
+#         <description><![CDATA[CD Netmap 01]]></description>
+#         <entries>
+#           <entry>
+#             <source>source1</source>
+#             <destination>destination1</destination>
+#           </entry>
+#           <entry>
+#             <source>source2</source>
+#             <destination>destination2</destination>
+#           </entry>
+#         </entries>
+#       </netmap>
+#     adapter_xml: |
+#       <adapter>
+#         <name>cd-adapter-11364</name>
+#         <type>exampleType</type>
+#         <host>{{ ssp_engine_host }}</host>
+#         <port>11364</port>
+#         <properties>
+#           <property>
+#             <name>adapterProperty</name>
+#             <value>adapterValue</value>
+#           </property>
+#         </properties>
+#       </adapter>
+#     policy_xml: |
+#         <cdPolicy>
+#           <name>cd-policy-test</name>
+#           <description><![CDATA[]]></description>
+#         </cdPolicy>
+#
+# # POST https://localhost:8443/sspcmrest/sspcm/rest/policy/createPolicy
+# - name: Create Policy C:D
+#   ansible.builtin.uri:
+#     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
+#     method: POST
+#     headers:
+#       X-Authentication: "{{ session_token }}"
+#       Content-Type: "application/xml"
+#     body: "{{ policy_xml }}"
+#     status_code: 200
+#     validate_certs: false
+#   when: ssp_cfg.cd.policy
+#   register: cd_plc_cout
+

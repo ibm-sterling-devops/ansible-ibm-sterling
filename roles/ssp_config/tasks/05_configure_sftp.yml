@@ -1,0 +1,73 @@
+---
+- name: Define Facts
+  ansible.builtin.set_fact:
+    policy_json: |
+      {
+        "policyName": "sftp-passthru-policy",
+        "description": "SFTP Pass-Through policy",
+        "userAuthentication": "none",
+        "eaAuthProfile": "",
+        "userMapping": "passthru",
+        "protocol": "sftp",
+        "preferredAuthentication": "password",
+        "eaKeyAuthProfile": "",
+        "keyauthReqdBeforePwdauth": false
+      }
+    netmap_json: |
+      {
+        "name": "sftp-passthru-nm",
+        "description": "SFTP Pass-Through netmap",
+        "protocol": "sftp"
+      }
+    adapter_json: |
+      {
+        "name": "sftp-adapter-01",
+        "listenPort": "30120",
+        "netmap": "sftp-passthru-nm",
+            "engineName": "ssp-engine-01",
+      }
+
+- name: Create Policy Json SFTP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/policy
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Accept: "application/json, text/plain, */*"
+      Content-Type: "application/json"
+    body: "{{ policy_json }}"
+    body_format: json
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.sftp.policy
+  register: sftp_plc_cout
+
+# - name: Create Netmap SFTP
+#   ansible.builtin.uri:
+#     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/netmap
+#     method: POST
+#     headers:
+#       X-Authentication: "{{ session_token }}"
+#       Accept: "application/json, text/plain, */*"
+#       Content-Type: "application/json"
+#     body: "{{ netmap_json }}"
+#     body_format: json
+#     status_code: 200
+#     validate_certs: false
+#   when: ssp_cfg.sftp.netmap
+#   register: sftp_np_cout
+
+# - name: Create Adapter SFTP
+#   ansible.builtin.uri:
+#     url: https://{{ ssp_cm_url }}sspcmrest/sspcm/rest/api/adapter
+#     method: POST
+#     headers:
+#       X-Authentication: "{{ session_token }}"
+#       Accept: "application/json, text/plain, */*"
+#       Content-Type: "application/json"
+#     body: "{{ adapter_json }}"
+#     body_format: json
+#     status_code: 200
+#     validate_certs: false
+#   when: ssp_cfg.sftp.adapter
+#   register: sftp_adp_cout
