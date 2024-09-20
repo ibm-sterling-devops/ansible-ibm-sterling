@@ -6,7 +6,7 @@ timezone: "UTC"
 
 # Specify the respective Docker Image details for IBMCCS
 image:
-  repository: "cp.icr.io/cp/ibm-ssp-ps/ssp-ps-docker-image"
+  repository: "{{ ssp_ps_image_repository }}"
   tag: "{{ compatibility_matrix[ssp_ps_version].image_tag }}"
   imageSecrets: "{{ ssp_ps_registry_secret }}"
   digest:
