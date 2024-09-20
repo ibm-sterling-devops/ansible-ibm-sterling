@@ -119,53 +119,6 @@
                   <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_openldap/">Deploy OpenLDAP as LDAP Server</a>
                   </li>
               </ul>
-              <p class="caption"><span class="caption-text">Roles:</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cd_deploy/">cd_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cdws_deploy/">cdws_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itx_rs_deploy/">itx_rs_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_deploy/">itxa_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_deploy_db2/">itxa_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_setup_db2/">itxa_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/pem_deploy_db2/">pem_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/pem_deploy_mq/">pem_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy/">sb2bi_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_mq/">sb2bi_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_prebuiltdb_db2/">sb2bi_prebuiltdb_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_setup_db2/">sb2bi_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy/">scc_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_db2/">scc_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_mq/">scc_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_setup_db2/">scc_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/seas_deploy/">seas_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_cm_deploy/">ssp_cm_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_config/">ssp_config</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_deploy/">ssp_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_ps_deploy/">ssp_ps_deploy</a>
-                  </li>
-              </ul>
               <p class="caption"><span class="caption-text">Roles: Tools</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/cert_manager/">cert_manager</a>
@@ -181,6 +134,29 @@
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/openldap/">openldap</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/phpldapadmin/">phpldapadmin</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Roles:</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_mq/">sb2bi_deploy_mq</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_prebuiltdb_db2/">sb2bi_prebuiltdb_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_setup_db2/">sb2bi_setup_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_db2/">scc_deploy_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_mq/">scc_deploy_mq</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_setup_db2/">scc_setup_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_cm_deploy/">ssp_cm_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_config/">ssp_config</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_ps_deploy/">ssp_ps_deploy</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Others</span></p>
@@ -291,9 +267,122 @@ ansible-playbook playbooks/deploy_cd.yml
 </code></pre>
 <h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>
 <p>For all environment variables</p>
-<ul>
-<li>Role <a href="../../roles/cd_deploy">cd_deploy</a></li>
-</ul>
+<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>-</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>CD_NAMESPACE</td>
+<td>sterling-cdnode01-dev</td>
+<td>No</td>
+<td>Namespace for C:D application</td>
+</tr>
+<tr>
+<td>CD_NODENAME</td>
+<td>CDNODE01</td>
+<td>No</td>
+<td>Specify the nodename of C:D</td>
+</tr>
+<tr>
+<td>CD_VERSION</td>
+<td>6.3.0.3_ifix003</td>
+<td>No</td>
+<td>Version of C:D container to deploy</td>
+</tr>
+<tr>
+<td>CD_ADMINPASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Password for C:D Admin</td>
+</tr>
+<tr>
+<td>CD_APPUSER_PWD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Password for C:D User</td>
+</tr>
+<tr>
+<td>CD_LOCALCERTPASSPHRASE</td>
+<td>changeit</td>
+<td>No</td>
+<td>Passphrase for local certificate</td>
+</tr>
+<tr>
+<td>CD_KEYSTOREPASSWORD</td>
+<td>changeit</td>
+<td>No</td>
+<td>Password for keystore</td>
+</tr>
+<tr>
+<td>CD_LICENSE_TYPE</td>
+<td>non-prod</td>
+<td>No</td>
+<td>License type for C:D (prod or non-prod)</td>
+</tr>
+<tr>
+<td>CD_STORAGE_CLASS</td>
+<td>-</td>
+<td>No</td>
+<td>Storage class to be used for the container</td>
+</tr>
+<tr>
+<td>CD_STORAGE_CAPACITY</td>
+<td>1Gi</td>
+<td>No</td>
+<td>Storage capacity to be allocated to the container</td>
+</tr>
+<tr>
+<td>CD_CPU_LIMITS</td>
+<td>500m</td>
+<td>No</td>
+<td>CPU limit for the container</td>
+</tr>
+<tr>
+<td>CD_MEM_LIMITS</td>
+<td>2000Mi</td>
+<td>No</td>
+<td>Memory limit for the container</td>
+</tr>
+<tr>
+<td>CD_EPHEMERAL_STORAGE_LIMITS</td>
+<td>5Gi</td>
+<td>No</td>
+<td>Ephemeral storage limit for the container</td>
+</tr>
+<tr>
+<td>CD_CPU_REQUESTS</td>
+<td>500m</td>
+<td>No</td>
+<td>CPU request for the container</td>
+</tr>
+<tr>
+<td>CD_MEM_REQUESTS</td>
+<td>2000Mi</td>
+<td>No</td>
+<td>Memory request for the container</td>
+</tr>
+<tr>
+<td>CD_EPHEMERAL_STORAGE_REQUESTS</td>
+<td>3Gi</td>
+<td>No</td>
+<td>Ephemeral storage request for the container</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

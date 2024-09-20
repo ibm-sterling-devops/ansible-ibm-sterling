@@ -113,53 +113,6 @@
                   <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_openldap/">Deploy OpenLDAP as LDAP Server</a>
                   </li>
               </ul>
-              <p class="caption"><span class="caption-text">Roles:</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cd_deploy/">cd_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cdws_deploy/">cdws_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itx_rs_deploy/">itx_rs_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_deploy/">itxa_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_deploy_db2/">itxa_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_setup_db2/">itxa_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/pem_deploy_db2/">pem_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/pem_deploy_mq/">pem_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy/">sb2bi_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_mq/">sb2bi_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_prebuiltdb_db2/">sb2bi_prebuiltdb_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_setup_db2/">sb2bi_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy/">scc_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_db2/">scc_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_mq/">scc_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_setup_db2/">scc_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/seas_deploy/">seas_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_cm_deploy/">ssp_cm_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_config/">ssp_config</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_deploy/">ssp_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_ps_deploy/">ssp_ps_deploy</a>
-                  </li>
-              </ul>
               <p class="caption"><span class="caption-text">Roles: Tools</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/cert_manager/">cert_manager</a>
@@ -175,6 +128,29 @@
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/openldap/">openldap</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/phpldapadmin/">phpldapadmin</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Roles:</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_mq/">sb2bi_deploy_mq</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_prebuiltdb_db2/">sb2bi_prebuiltdb_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_setup_db2/">sb2bi_setup_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_db2/">scc_deploy_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_mq/">scc_deploy_mq</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_setup_db2/">scc_setup_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_cm_deploy/">ssp_cm_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_config/">ssp_config</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_ps_deploy/">ssp_ps_deploy</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Others</span></p>
@@ -235,12 +211,55 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_itxa.yml
 </code></pre>
 <h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>
-<p>For all environment variables</p>
-<ul>
-<li>Role <a href="../../roles/itxa_deploy">itxa_deploy</a></li>
-<li>Role <a href="../../roles/itxa_setup_db2">itxa_setup_db2</a></li>
-<li>Role <a href="../../roles/itxa_deploy_db2">itxa_deploy_db2</a></li>
-</ul>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Entitlement registry key</td>
+</tr>
+<tr>
+<td>ITXA_INSTANCEID</td>
+<td>N/A</td>
+<td>Yes</td>
+<td>Instance ID for ITXA application</td>
+</tr>
+<tr>
+<td>ITXA_VERSION</td>
+<td>10.0.1.9-x86_64</td>
+<td>No</td>
+<td>Version of ITXA application</td>
+</tr>
+<tr>
+<td>ITXA_ADMIN_PASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Admin password for ITXA application</td>
+</tr>
+<tr>
+<td>ITXA_TLS_KEYSTORE_PASSWORD</td>
+<td>changeit</td>
+<td>No</td>
+<td>TLS keystore password for ITXA application</td>
+</tr>
+<tr>
+<td>ITXA_LICENSETYPE</td>
+<td>non-prod</td>
+<td>No</td>
+<td>License type for ITXA application (prod or non-prod)</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div><footer>

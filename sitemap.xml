@@ -141,14 +141,6 @@
          <lastmod>2024-09-20</lastmod>
     </url>
     <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/pem_deploy_db2/</loc>
-         <lastmod>2024-09-20</lastmod>
-    </url>
-    <url>
-         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/pem_deploy_mq/</loc>
-         <lastmod>2024-09-20</lastmod>
-    </url>
-    <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/phpldapadmin/</loc>
          <lastmod>2024-09-20</lastmod>
     </url>

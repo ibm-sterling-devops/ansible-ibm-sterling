@@ -117,53 +117,6 @@
                   <li class="toctree-l1"><a class="reference internal" href="../tools_deploy_openldap/">Deploy OpenLDAP as LDAP Server</a>
                   </li>
               </ul>
-              <p class="caption"><span class="caption-text">Roles:</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cd_deploy/">cd_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/cdws_deploy/">cdws_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itx_rs_deploy/">itx_rs_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_deploy/">itxa_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_deploy_db2/">itxa_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/itxa_setup_db2/">itxa_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/pem_deploy_db2/">pem_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/pem_deploy_mq/">pem_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy/">sb2bi_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_mq/">sb2bi_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_prebuiltdb_db2/">sb2bi_prebuiltdb_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_setup_db2/">sb2bi_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy/">scc_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_db2/">scc_deploy_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_mq/">scc_deploy_mq</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_setup_db2/">scc_setup_db2</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/seas_deploy/">seas_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_cm_deploy/">ssp_cm_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_config/">ssp_config</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_deploy/">ssp_deploy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_ps_deploy/">ssp_ps_deploy</a>
-                  </li>
-              </ul>
               <p class="caption"><span class="caption-text">Roles: Tools</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/cert_manager/">cert_manager</a>
@@ -179,6 +132,29 @@
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/openldap/">openldap</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../roles/phpldapadmin/">phpldapadmin</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Roles:</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_db2/">sb2bi_deploy_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_deploy_mq/">sb2bi_deploy_mq</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_prebuiltdb_db2/">sb2bi_prebuiltdb_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/sb2bi_setup_db2/">sb2bi_setup_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_db2/">scc_deploy_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_deploy_mq/">scc_deploy_mq</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/scc_setup_db2/">scc_setup_db2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_cm_deploy/">ssp_cm_deploy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_config/">ssp_config</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../roles/ssp_ps_deploy/">ssp_ps_deploy</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Others</span></p>
@@ -307,9 +283,147 @@ export SI_DATASETUP_UPGRADE=false
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b_prebuiltdb.yml
 </code></pre>
 <h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
+<table>
+<thead>
+<tr>
+<th>Environment Variable</th>
+<th>Default Value</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td></td>
+<td>Yes</td>
+<td>IBM Entitled Registry key</td>
+</tr>
+<tr>
+<td>SI_INSTANCEID</td>
+<td></td>
+<td>Yes</td>
+<td>Used to define your environment</td>
+</tr>
+<tr>
+<td>SI_LICENSETYPE</td>
+<td>no-prod</td>
+<td>No</td>
+<td>Specify the license edition as per license agreement. Valid value is <strong>prod</strong> or <strong>non-prod</strong> for Production and Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service</td>
+</tr>
+<tr>
+<td>SI_SYSTEM_PASSPHRASE</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Name of system passphrase secret if available</td>
+</tr>
+<tr>
+<td>SI_ADMIN_MAILADDR</td>
+<td>admin@company.com</td>
+<td>No</td>
+<td>Provide the admin email address</td>
+</tr>
+<tr>
+<td>SI_ADMIN_SMTPHOST</td>
+<td>smtp.company.com</td>
+<td>No</td>
+<td>Provide the SMTP host details</td>
+</tr>
+<tr>
+<td>SI_DBVENDOR</td>
+<td>DB2</td>
+<td>No</td>
+<td>Database vendor: DB2, Oracle, MSSQL</td>
+</tr>
+<tr>
+<td>SI_DBHOST</td>
+<td><from service></td>
+<td>No</td>
+<td>Database hostname/ip address</td>
+</tr>
+<tr>
+<td>SI_DBPORT</td>
+<td><from service></td>
+<td>No</td>
+<td>Database port</td>
+</tr>
+<tr>
+<td>SI_DBNAME</td>
+<td>B2BI</td>
+<td>No</td>
+<td>Database name</td>
+</tr>
+<tr>
+<td>SI_DBUSER</td>
+<td>db2inst1</td>
+<td>No</td>
+<td>Database user</td>
+</tr>
+<tr>
+<td>SI_DBPASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>Database user password</td>
+</tr>
+<tr>
+<td>SI_ORACLESERVICENAME</td>
+<td>false</td>
+<td>No</td>
+<td>Oracle service name, must be <strong>true</strong> when database is Oracle</td>
+</tr>
+<tr>
+<td>SI_DATASETUP_ENABLED</td>
+<td>true</td>
+<td>No</td>
+<td>Enable database setup job execution</td>
+</tr>
+<tr>
+<td>SI_DATASETUP_UPGRADE</td>
+<td>false</td>
+<td>No</td>
+<td>Upgrade an older release</td>
+</tr>
+<tr>
+<td>SI_JMS_USERNAME</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue user</td>
+</tr>
+<tr>
+<td>SI_JMS_PASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>JMS Queue user password</td>
+</tr>
+<tr>
+<td>SI_JMS_KEYSTORE_PASSWORD</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue keystore password</td>
+</tr>
+<tr>
+<td>SI_JMS_TRUSTSTORE_PASSWORD</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue truststore password</td>
+</tr>
+<tr>
+<td>SI_LIBERTY_KEYSTORE_PASSWORD</td>
+<td>changeit</td>
+<td>No</td>
+<td>Liberty keystore password</td>
+</tr>
+<tr>
+<td>SI_SKIP_HELM</td>
+<td>false</td>
+<td>No</td>
+<td>Avoid to run helm, only generate values.yaml</td>
+</tr>
+</tbody>
+</table>
 <p>For all environment variables</p>
 <ul>
-<li>Role <a href="../../roles/sb2bi_deploy">sb2bi_deploy</a></li>
 <li>Role <a href="../../roles/sb2bi_setup_db2">sb2bi_setup_db2</a></li>
 <li>Role <a href="../../roles/sb2bi_deploy_db2">sb2bi_deploy_db2</a></li>
 <li>
