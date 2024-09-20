@@ -52,8 +52,14 @@ ansible-playbook playbooks/deploy_itxa.yml
 
 # Environment Variable
 
-For all environment variables
+Environment variables for this role:
 
-* Role [itxa_deploy](../../roles/itxa_deploy)
-* Role [itxa_setup_db2](../../roles/itxa_setup_db2)
-* Role [itxa_deploy_db2](../../roles/itxa_deploy_db2)
+| Environment Variable          | Default Value        | Required | Description                                      |
+|-------------------------------|----------------------|----------|--------------------------------------------------|
+| ENTITLED_REGISTRY_KEY         | N/A                  | Yes      | Entitlement registry key                         |
+| ITXA_INSTANCEID               | N/A                  | Yes      | Instance ID for ITXA application                 |
+| ITXA_VERSION                  | 10.0.1.9-x86_64      | No       | Version of ITXA application                      |
+| ITXA_ADMIN_PASSWORD           | passw0rd             | No       | Admin password for ITXA application              |
+| ITXA_TLS_KEYSTORE_PASSWORD    | changeit             | No       | TLS keystore password for ITXA application       |
+| ITXA_LICENSETYPE              | non-prod             | No       | License type for ITXA application (prod or non-prod) |
+

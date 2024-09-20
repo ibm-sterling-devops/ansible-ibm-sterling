@@ -23,8 +23,8 @@ copyDoc kafka
 copyDoc kowl
 copyDoc minio
 copyDoc openldap
-copyDoc pem_deploy_db2
-copyDoc pem_deploy_mq
+# copyDoc pem_deploy_db2
+# copyDoc pem_deploy_mq
 copyDoc phpldapadmin
 copyDoc sb2bi_deploy
 copyDoc sb2bi_deploy_db2

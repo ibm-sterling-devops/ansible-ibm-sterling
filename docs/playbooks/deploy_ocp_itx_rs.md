@@ -53,6 +53,12 @@ ansible-playbook playbooks/deploy_itx_rs.yml
 
 # Environment Variable
 
-For all environment variables
+Environment variables for this role:
 
-* Role [itx_rs_deploy](../../roles/itx_rs_deploy)
+| Environment Variable        | Default Value          | Required | Description                                      |
+|-----------------------------|------------------------|----------|--------------------------------------------------|
+| ENTITLED_REGISTRY_KEY       | N/A                    | Yes      | Entitlement registry key                         |
+| ITX_RS_NAMESPACE            | N/A                    | Yes      | Namespace for ITX application                    |
+| ITX_RS_INSTANCEID           | N/A                    | Yes      | Instance ID for ITX application                  |
+| ITX_RS_VERSION              | 10.1.2.0.20231130      | No       | Version of ITX application                       |
+| ITX_RS_SYS_PASSPHRASE       | Passw0rd@              | No       | System passphrase for ITX application            |
