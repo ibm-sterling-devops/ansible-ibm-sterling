@@ -18,14 +18,14 @@ Current playbooks:
 
 **Deploy Sterling Products on Redhat OpenShift / Kubernetes**
 
-* Deploy [IBM Sterling Connect:Direct](playbooks/deploy_ocp_cd.md)
-* Deploy IBM Sterling Connect:Direct Web Service
-* Deploy IBM Sterling Transformation Server
-* Deploy IBM Sterling Transformation Extender Advanced
-* Deploy IBM Sterling B2B Integrator
-* Deploy IBM Sterling Control Center Director/Monitor
-* Deploy IBM Sterling External Authentication Server
-* Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter)
+* [Deploy IBM Sterling Connect:Direct](playbooks/deploy_ocp_cd.md)
+* [Deploy IBM Sterling Connect:Direct Web Service](playbooks/deploy_ocp_cdws.md)
+* [Deploy IBM Sterling Transformation Server](playbooks/deploy_ocp_itx_rs.md)
+* [Deploy IBM Sterling Transformation Extender Advanced](playbooks/deploy_ocp_itxa.md)
+* [Deploy IBM Sterling B2B Integrator](playbooks/deploy_ocp_sb2b.md)
+* [Deploy IBM Sterling Control Center Director/Monitor](playbooks/deploy_ocp_scc.md)
+* [Deploy IBM Sterling External Authentication Server](playbooks/deploy_ocp_seas.md)
+* [Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter)](playbooks/deploy_ocp_ssp.md)
 
 
 
