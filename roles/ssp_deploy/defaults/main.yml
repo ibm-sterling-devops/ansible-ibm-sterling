@@ -8,6 +8,7 @@ ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0', true) }}"
 ssp_license_type: "{{ lookup('env', 'SSP_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 
 ssp_image_repository: "{{ lookup('env', 'SSP_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-engine/ssp-engine-docker-image', true) }}"
+ssp_skip_image_secret: "{{ lookup('env', 'SSP_SKIP_IMAGE_SECRET') | default(false, true) }}"
 
 ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
 ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') | default('changeit', true) }}"

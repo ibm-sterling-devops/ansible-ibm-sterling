@@ -6,6 +6,7 @@ ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0', true) }}"
 ssp_cm_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
 ssp_cm_image_repository: "{{ lookup('env', 'SSP_CM_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-cm/ssp-cm-docker-image', true) }}"
+ssp_cm_skip_image_secret: "{{ lookup('env', 'SSP_CM_SKIP_IMAGE_SECRET') | default(false, true) }}"
 
 ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
 ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Passw0rd@', true) }}"

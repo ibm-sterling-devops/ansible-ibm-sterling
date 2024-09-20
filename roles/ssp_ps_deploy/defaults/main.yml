@@ -6,6 +6,7 @@ ssp_ps_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0', true) }}"
 ssp_ps_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
 ssp_ps_image_repository: "{{ lookup('env', 'SSP_PS_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-ps/ssp-ps-docker-image', true) }}"
+ssp_ps_skip_image_secret: "{{ lookup('env', 'SSP_PS_SKIP_IMAGE_SECRET') | default(false, true) }}"
 
 # Entitlement
 # -----------------------------------------------------------------------------
