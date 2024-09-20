@@ -8,8 +8,7 @@ repo_url: https://github.com/ibm-sterling-devops/ansible-ibm-sterling
 edit_uri: blob/main/docs/
 
 nav:
-  - "Getting Started":
-      - "Home": index.md
+  - "Getting Started": index.md
   - "Requirements":
       - "MacOS": requirements-macos.md
       - "Redhat Linux": requirements-rh.md
@@ -34,9 +33,10 @@ nav:
       - "MinIO S3 storage": playbooks/tools_deploy_minio.md
       # - "Deploy MongoDB": playbooks/tools_deploy_mongodb.md
       - "Deploy OpenLDAP as LDAP Server": playbooks/tools_deploy_openldap.md
+  - "All Roles": all_roles.md
   - "Others":
       - "Known Problems": others/known_problems.md
-      - "Roles:": all_roles.md
+
 
 theme:
   name: readthedocs
