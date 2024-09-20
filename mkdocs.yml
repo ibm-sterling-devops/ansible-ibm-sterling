@@ -10,14 +10,11 @@ edit_uri: blob/main/docs/
 nav:
   - "Getting Started":
       - "Home": index.md
-      - "Requirements":
-          - "MacOS": requirements-macos.md
-          - "Redhat Linux": requirements-rh.md
-          - "Ubuntu Linux": requirements-ubuntu.md
-          - "MS Windows": requirements-windows.md
-  - "Playbooks: Standard":
-      - "Install IBM Connect:Direct 6.2.x": playbooks/setup_cd.md
-      - "Install IBM Sterling B2B Integrator 6.1.2": playbooks/setup_b2b.md
+  - "Requirements":
+      - "MacOS": requirements-macos.md
+      - "Redhat Linux": requirements-rh.md
+      - "Ubuntu Linux": requirements-ubuntu.md
+      - "MS Windows": requirements-windows.md
   - "Playbooks: RedHat OpenShift":
       - "IBM Connect:Direct 6.x": playbooks/deploy_ocp_cd.md
       - "IBM Connect:Direct WebServices": playbooks/deploy_ocp_cdws.md
@@ -27,6 +24,9 @@ nav:
       - "IBM Sterling Control Center Monitor/Director (CCM/CCD)": playbooks/deploy_ocp_scc.md
       - "IBM Sterling External Authentication Server (SEAS)": playbooks/deploy_ocp_seas.md
       - "IBM Sterling Secure Proxy Server (SSP)": playbooks/deploy_ocp_ssp.md
+  - "Playbooks: Standard":
+      - "Install IBM Connect:Direct 6.2.x": playbooks/setup_cd.md
+      - "Install IBM Sterling B2B Integrator 6.1.2": playbooks/setup_b2b.md
   - "Playbooks: Tools":
       - "CloudBeaver CE": playbooks/tools_deploy_cloudbeaver.md
       - "Kafka": playbooks/tools_deploy_kafka.md

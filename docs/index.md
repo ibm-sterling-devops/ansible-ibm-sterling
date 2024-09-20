@@ -18,7 +18,7 @@ Current playbooks:
 
 **Deploy Sterling Products on Redhat OpenShift / Kubernetes**
 
-* Deploy IBM Sterling Connect:Direct
+* Deploy [IBM Sterling Connect:Direct](playbooks/deploy_ocp_cd.md)
 * Deploy IBM Sterling Connect:Direct Web Service
 * Deploy IBM Sterling Transformation Server
 * Deploy IBM Sterling Transformation Extender Advanced
