@@ -8,11 +8,12 @@ repo_url: https://github.com/ibm-sterling-devops/ansible-ibm-sterling
 edit_uri: blob/main/docs/
 
 nav:
-  - "Getting Started": index.md
-  - "MacOS": requirements-macos.md
-  - "Redhat Linux": requirements-rh.md
-  - "Ubuntu Linux": requirements-ubuntu.md
-  - "MS Windows": requirements-windows.md
+  - "Home":
+    - "Getting Started": index.md
+    - "MacOS": requirements-macos.md
+    - "Redhat Linux": requirements-rh.md
+    - "Ubuntu Linux": requirements-ubuntu.md
+    - "MS Windows": requirements-windows.md
   - "Playbooks: RedHat OpenShift":
       - "Connect:Direct 6.x": playbooks/deploy_ocp_cd.md
       - "Connect:Direct WebServices": playbooks/deploy_ocp_cdws.md
