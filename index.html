@@ -1125,22 +1125,24 @@
 <p>IBM Sterling Devops Project is an open source project to deploy IBM Sterling Products and other resources directly from the command line.</p>
 <p>Developed in Ansible, it provides a collection of playbooks and roles that automated deploy for IBM Sterling B2Bi, IBM Connect:Direct, ... on Redhat OpenShift.</p>
 <p>GitHub Repository: <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/">https://github.com/ibm-sterling-devops/ansible-ibm-sterling/</a></p>
+<p><strong>Requirements</strong></p>
+<p>To use ansible scripts you must have ansible, kubectl, oc, git, helm installed. See requirements on navigation.</p>
 <p>Current playbooks:</p>
-<p><strong>Install Sterling Products (standalone)</strong></p>
-<ul>
-<li>Install Connect:Direct (standalone)</li>
-<li>Install Sterling B2B Integrator (standalone)</li>
-</ul>
 <p><strong>Deploy Sterling Products on Redhat OpenShift / Kubernetes</strong></p>
 <ul>
 <li><a href="playbooks/deploy_ocp_cd/">Deploy IBM Sterling Connect:Direct</a></li>
 <li><a href="playbooks/deploy_ocp_cdws/">Deploy IBM Sterling Connect:Direct Web Service</a></li>
-<li><a href="playbooks/deploy_ocp_itx_rs/">Deploy IBM Sterling Transformation Server</a></li>
-<li><a href="playbooks/deploy_ocp_itxa/">Deploy IBM Sterling Transformation Extender Advanced</a></li>
 <li><a href="playbooks/deploy_ocp_sb2b/">Deploy IBM Sterling B2B Integrator</a></li>
 <li><a href="playbooks/deploy_ocp_scc/">Deploy IBM Sterling Control Center Director/Monitor</a></li>
 <li><a href="playbooks/deploy_ocp_seas/">Deploy IBM Sterling External Authentication Server</a></li>
 <li><a href="playbooks/deploy_ocp_ssp/">Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter)</a></li>
+<li><a href="playbooks/deploy_ocp_itx_rs/">Deploy IBM Sterling Transformation Server</a></li>
+<li><a href="playbooks/deploy_ocp_itxa/">Deploy IBM Sterling Transformation Extender Advanced</a></li>
+</ul>
+<p><strong>Install Sterling Products (standalone)</strong></p>
+<ul>
+<li>Install Connect:Direct (standalone)</li>
+<li>Install Sterling B2B Integrator (standalone)</li>
 </ul>
 <p><strong>Contributors</strong></p>
 <p>See the list of <a href="https://github.com/ibm-sterling-devops/ansible-ibm-sterling/contributors">contributors</a> who participated in this project.</p>
