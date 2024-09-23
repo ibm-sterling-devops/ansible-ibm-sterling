@@ -45,6 +45,7 @@ theme:
     - navigation.instant
     - navigation.instant.progress
     - navigation.tabs
+    - navigation.expand
   highlightjs: true
   hljs_languages:
     - yaml
