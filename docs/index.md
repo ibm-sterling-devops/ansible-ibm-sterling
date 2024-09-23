@@ -7,26 +7,27 @@ Developed in Ansible, it provides a collection of playbooks and roles that autom
 
 GitHub Repository: [https://github.com/ibm-sterling-devops/ansible-ibm-sterling/](https://github.com/ibm-sterling-devops/ansible-ibm-sterling/)
 
+**Requirements**
+
+To use ansible scripts you must have ansible, kubectl, oc, git, helm installed. See requirements on navigation.
 
 Current playbooks:
-
-**Install Sterling Products (standalone)**
-
-* Install Connect:Direct (standalone)
-* Install Sterling B2B Integrator (standalone)
-
 
 **Deploy Sterling Products on Redhat OpenShift / Kubernetes**
 
 * [Deploy IBM Sterling Connect:Direct](playbooks/deploy_ocp_cd.md)
 * [Deploy IBM Sterling Connect:Direct Web Service](playbooks/deploy_ocp_cdws.md)
-* [Deploy IBM Sterling Transformation Server](playbooks/deploy_ocp_itx_rs.md)
-* [Deploy IBM Sterling Transformation Extender Advanced](playbooks/deploy_ocp_itxa.md)
 * [Deploy IBM Sterling B2B Integrator](playbooks/deploy_ocp_sb2b.md)
 * [Deploy IBM Sterling Control Center Director/Monitor](playbooks/deploy_ocp_scc.md)
 * [Deploy IBM Sterling External Authentication Server](playbooks/deploy_ocp_seas.md)
 * [Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter)](playbooks/deploy_ocp_ssp.md)
+* [Deploy IBM Sterling Transformation Server](playbooks/deploy_ocp_itx_rs.md)
+* [Deploy IBM Sterling Transformation Extender Advanced](playbooks/deploy_ocp_itxa.md)
 
+**Install Sterling Products (standalone)**
+
+* Install Connect:Direct (standalone)
+* Install Sterling B2B Integrator (standalone)
 
 
 
