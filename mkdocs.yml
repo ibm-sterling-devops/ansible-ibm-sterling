@@ -10,20 +10,21 @@ edit_uri: blob/main/docs/
 nav:
   - "Home":
     - "Getting Started": index.md
-    - "MacOS": requirements-macos.md
-    - "Redhat Linux": requirements-rh.md
-    - "Ubuntu Linux": requirements-ubuntu.md
-    - "MS Windows": requirements-windows.md
-  - "Playbooks: RedHat OpenShift":
+    - "Requirements":
+      - "MacOS": requirements-macos.md
+      - "Redhat Linux": requirements-rh.md
+      - "Ubuntu Linux": requirements-ubuntu.md
+      - "MS Windows": requirements-windows.md
+  - "Deploy on RedHat OpenShift":
       - "Connect:Direct 6.x": playbooks/deploy_ocp_cd.md
       - "Connect:Direct WebServices": playbooks/deploy_ocp_cdws.md
-      - "IBM Sterling Transformation Server (ITX RS)": playbooks/deploy_ocp_itx_rs.md
-      - "IBM Sterling Transformation Advanced (ITXA)": playbooks/deploy_ocp_itxa.md
       - "Sterling B2B Integrator": playbooks/deploy_ocp_sb2b.md
       - "Sterling Control Center Monitor/Director (CCM/CCD)": playbooks/deploy_ocp_scc.md
-      - "Sterling External Authentication Server (SEAS)": playbooks/deploy_ocp_seas.md
       - "Sterling Secure Proxy Server (SSP)": playbooks/deploy_ocp_ssp.md
-  - "Playbooks: Standard":
+      - "Sterling External Authentication Server (SEAS)": playbooks/deploy_ocp_seas.md
+      - "IBM Sterling Transformation Server (ITX RS)": playbooks/deploy_ocp_itx_rs.md
+      - "IBM Sterling Transformation Advanced (ITXA)": playbooks/deploy_ocp_itxa.md
+  - "Standard Install":
       - "Install IBM Connect:Direct 6.2.x": playbooks/setup_cd.md
       - "Install IBM Sterling B2B Integrator 6.1.2": playbooks/setup_b2b.md
   - "Tools":
@@ -35,7 +36,7 @@ nav:
       - "Deploy OpenLDAP as LDAP Server": playbooks/tools_deploy_openldap.md
   - "All Roles": all_roles.md
   - "Others":
-      - "Known Problems": others/known_problems.md
+    - "Known Problems": others/known_problems.md
 
 
 theme:
@@ -44,7 +45,6 @@ theme:
     - navigation.instant
     - navigation.instant.progress
     - navigation.tabs
-    - navigation.expand
   highlightjs: true
   hljs_languages:
     - yaml
