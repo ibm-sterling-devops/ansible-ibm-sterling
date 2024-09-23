@@ -51,6 +51,7 @@ theme:
   highlightjs: true
   hljs_languages:
     - yaml
+    - bash
   prev_next_buttons_location: none
 extra_css:
   - extra.css
