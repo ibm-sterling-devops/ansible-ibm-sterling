@@ -5,8 +5,6 @@ Playbook will run the last version of SEAS, but take care of Kubernetes/Openshif
 | SSP            | OpenShift           | Kubernetes          | helm-chart | Helm      |
 |----------------|---------------------|---------------------|------------|-----------|
 | 6.2.0.0        | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.4.0      | --        |
-| 6.1.0.0.04     | >= 4.13             | >=1.26.0            | 1.3.6      | --        |
-| 6.1.0.0.03plus | --                  | >=1.19.0            | 1.3.5      | --        |
 
 Check with
 

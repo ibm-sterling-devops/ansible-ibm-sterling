@@ -96,7 +96,7 @@ resources:
 
 affinity:
   nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: []
+    requiredDuringSchedulingIgnoredDuringExecution: {{ compatibility_matrix[ssp_cm_version].affinity_default }}
   #    nodeSelectorTerms:
   #    - matchExpressions:
   #      - key: kubernetes.io/e2e-az-name

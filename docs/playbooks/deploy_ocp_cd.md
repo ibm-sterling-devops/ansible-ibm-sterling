@@ -2,11 +2,11 @@
 
 Playbook will run the last version of Connect:Direct, but take care of Kubernetes/Openshift version is supported
 
-| Connect:Direct  | helm-chart | Kubernetes          | OpenShift           | Helm      |
-|-----------------|------------|---------------------|---------------------|-----------|
-| 6.3.0.3_ifix012 | 1.3.10     | >=1.24.0 <1.30.0    | >= 4.11 and <= 4.16 | >= 3.14.x |
-| 6.3.0.3_ifix009 | 1.3.9      |                     |                     |           |
-| 6.3.0.3_ifix003 | 1.3.8      |                     |                     |           |
+| Connect:Direct  | OpenShift           | Kubernetes          | helm-chart | Helm      |
+|-----------------|---------------------|---------------------|------------|-----------|
+| 6.3.0.3_ifix014 | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.11     | >= 3.14.x |
+| 6.3.0.3_ifix012 | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.10     | >= 3.14.x |
+| 6.3.0.3_ifix009 |                     |                     | 1.3.9      |           |
 
 Check with
 
@@ -99,7 +99,7 @@ Environment variables for this role:
 | ENTITLED_REGISTRY_KEY         | -                     | Yes      | Entitlement registry key                         |
 | CD_NAMESPACE                  | sterling-cdnode01-dev | No       | Namespace for C:D application                    |
 | CD_NODENAME                   | CDNODE01              | No       | Specify the nodename of C:D                      |
-| CD_VERSION                    | 6.3.0.3_ifix003       | No       | Version of C:D container to deploy               |
+| CD_VERSION                    | 6.3.0.3_ifix014       | No       | Version of C:D container to deploy               |
 | CD_ADMINPASSWORD              | passw0rd              | No       | Password for C:D Admin                           |
 | CD_APPUSER_PWD                | passw0rd              | No       | Password for C:D User                            |
 | CD_LOCALCERTPASSPHRASE        | changeit              | No       | Passphrase for local certificate                 |

@@ -136,6 +136,7 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution: []
     preferredDuringSchedulingIgnoredDuringExecution: []
 
+# startup, liveness and Probeness details for the health of pods
 startupProbe:
   initialDelaySeconds: 30
   timeoutSeconds: 5
@@ -151,8 +152,9 @@ readinessProbe:
   timeoutSeconds: 5
   periodSeconds: 10
 
+# Set this field to create route in OpenShift cluster
 route:
-  enabled: true
+  enabled: false
 
 ldap:
   enabled: {{ cd_other_values.ldap.enabled | default('false') }}
@@ -172,5 +174,7 @@ ldap:
   clientKey: "{{ cd_other_values.ldap.clientKey | default('false') }}"
 {% endif %}
 
+# Integrated File Agent Configuration
 cdfa:
+  # Set its value to "y" to enable file agent service in container
   fileAgentEnable: "n"

@@ -147,8 +147,11 @@ resources:
     ephemeral-storage: {{ ssp_ephemeral_storage_requests }}
 
 affinity:
+  # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
+  # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+  # architecture preference specified in 'arch'
   nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution: {}
+    requiredDuringSchedulingIgnoredDuringExecution: {{ compatibility_matrix[ssp_version].affinity_default }}
   #    nodeSelectorTerms:
   #    - matchExpressions:
   #      - key: kubernetes.io/e2e-az-name
@@ -186,6 +189,12 @@ route:
 # Set this to true to create Monitoring Dashboard for IBMCCS
 dashboard:
   enabled: false
+
+# The following files can be customized using key value pair in the list format.
+# bin/log.properties, bin/security.properties, bin/perimeter.properties, bin/cdsp.properties, bin/portal/mediatypes.properties 
+# bin/portal/pages.properties, conf/log4j.properties
+# Add/Update: Key and Value both must be provided in the below format.
+# <File Name Without Extension>_<Property Name>=<Property Value>
 customProperties: []
 # below is the example: 
 #customProperties:
