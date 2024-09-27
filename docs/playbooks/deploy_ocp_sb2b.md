@@ -115,6 +115,7 @@ Environment variables for this role:
 |------------------------------|-------------------| ---------|-------------------------------------|
 | ENTITLED_REGISTRY_KEY        |                   | Yes      | IBM Entitled Registry key |
 | SI_INSTANCEID                |                   | Yes      | Used to define your environment |
+| SI_ACTION                    | install           | No       | Action: install, upgrade, prebuiltdb           | 
 | SI_LICENSETYPE               | no-prod           | No       | Specify the license edition as per license agreement. Valid value is **prod** or **non-prod** for Production and Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service | 
 | SI_SYSTEM_PASSPHRASE         | passw0rd          | No       | Name of system passphrase secret if available |
 | SI_ADMIN_MAILADDR            | admin@company.com | No       | Provide the admin email address |

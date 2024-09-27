@@ -5,7 +5,7 @@ cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true) }}" # Specify the node of C:D application
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.3_ifix009', true) }}"
+cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.3_ifix003', true) }}"
 
 cd_admin_password: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
@@ -68,6 +68,18 @@ compatibility_matrix:
     helm_version: "1.3.9"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
     image_tag: "6.3.0.3_ifix009"
+  6.3.0.3_ifix009:
+    helm_version: "1.3.9"
+    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
+    image_tag: "6.3.0.3_ifix009"
+  6.3.0.3_ifix003:
+    helm_version: "1.3.8"
+    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
+    image_tag: "6.3.0.3_ifix003"
+  6.3.0.2_ifix021:
+    helm_version: "1.3.7"
+    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.2"
+    image_tag: "6.3.0.2_ifix021"
 
 # Storage Class Matrix
 # in ibmcloud.rwo: In IBM Cloud, the ReadWriteOnce storage class is 'ibmc-block-gold' but Connect:Direct not worked with it.
