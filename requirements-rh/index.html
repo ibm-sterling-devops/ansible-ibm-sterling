@@ -1269,14 +1269,15 @@ $ ./get_helm.sh
 </ol>
 <pre><code class="language-sh">sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
 </code></pre>
-<p>Change default python</p>
-<pre><code class="language-sh">sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
-sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
+<ol>
+<li>Change default python in </li>
+</ol>
+<pre><code class="language-sh">sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
 sudo alternatives --set python3 /usr/bin/python3.12
-
-pip3 install kubernetes requests
 </code></pre>
-<p>Install Python Libraries</p>
+<ol>
+<li>Install Python Libraries</li>
+</ol>
 <pre><code class="language-sh">pip3 install kubernetes requests
 </code></pre>
 <ol>
