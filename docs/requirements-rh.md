@@ -36,21 +36,18 @@ $ ./get_helm.sh
 sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
 ```
 
-Change default python
+2. Change default python in 
 ```sh
-sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
 sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
 sudo alternatives --set python3 /usr/bin/python3.12
-
-pip3 install kubernetes requests
 ```
 
-Install Python Libraries
+3. Install Python Libraries
 ```sh
 pip3 install kubernetes requests
 ```
 
-2. Install kubernetes.core module
+4. Install kubernetes.core module
 ```sh
 ansible-galaxy collection install kubernetes.core
 ```
