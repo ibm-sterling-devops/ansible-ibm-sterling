@@ -13,11 +13,11 @@
 - name: Helm Install command
   ansible.builtin.debug:
     msg:
-      - "helm install --wait --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
+      - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
 
 - name: Run Helm install command
   ansible.builtin.command:
-    cmd: "helm install --wait --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
+    cmd: "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ cd_namespace }} s0 {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
   when: not cd_skip_helm

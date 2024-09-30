@@ -33,13 +33,22 @@ $ ./get_helm.sh
 ### Install git, ansible, , python3-pip, java (keytool)
 1. Install the dependencies:
 ```sh
-sudo yum -y install epel-release
-sudo yum -y update
-sudo yum -y install git ansible python3-pip java-17-openjdk-headless
-
-pip3.11 install kubernetes requests
+sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
 ```
 
+Change default python
+```sh
+sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
+sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
+sudo alternatives --set python3 /usr/bin/python3.12
+
+pip3 install kubernetes requests
+```
+
+Install Python Libraries
+```sh
+pip3 install kubernetes requests
+```
 
 2. Install kubernetes.core module
 ```sh
