@@ -5,7 +5,7 @@ scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('CCM', true) }}" # productEntitlement: "CCD,CCM"
 
-scc_version: "{{ lookup('env', 'SCC_VERSION') | default('6.3.1.0_iFix02_2024-09-13', true) }}"
+scc_version: "{{ lookup('env', 'SCC_VERSION') | default('6.3.1.0.iFix03_2024-11-04', true) }}"
 
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 
@@ -76,6 +76,13 @@ db2_id: mydb2
 # Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.3.1.0.iFix03_2024-11-04:
+    helm_version: "3.1.9"
+    image_tag: "6.3.1.0.iFix03_2024-11-04"
+    copy_dbdriver_repository: "cp.icr.io/cp/ibm-scc/ibmscc_dbdrivers"
+    copy_dbdriver_tag: "2024"
+    copy_dbdriver_command: "cp /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/* /app/conf/"
+    kube_version: '>=1.27.0'
   6.3.1.0_iFix02_2024-09-13:
     helm_version: "3.1.7"
     image_tag: "6.3.1.0_iFix02_2024-09-13"

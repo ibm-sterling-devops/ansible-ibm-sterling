@@ -7,11 +7,11 @@ replicaCount: 1
 # Control Center image details
 image:
   repository: "cp.icr.io/cp/ibm-scc/ibmscc"
-  tag: "6.3.1.0_iFix02_2024-08-26"
+  tag: "6.3.1.0.iFix03_2024-11-04"
   imageSecrets: ""
   digest:
     enabled: true
-    value: sha256:ccbd27c7f4cc41cca5cdc4eaaa345eaf5cfe738d68aa1c8a5c7abfd497e76363
+    value: sha256:1013375fc911c0a64760a6155b68f7fb65f0264176aa1f8b06ea43a44b4416b7
   pullPolicy: IfNotPresent
 
 # If you want to override the default full name( <release name>-ibm-sccm )
@@ -334,4 +334,4 @@ timeZone: "Asia/Calcutta"
 debugScripts: true
 
 # To enable all engine logs to redirect to console of pod 
-consoleLogEnabled: true
+consoleLogEnabled: false
