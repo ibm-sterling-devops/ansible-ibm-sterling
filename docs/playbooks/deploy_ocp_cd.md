@@ -4,6 +4,7 @@ Playbook will run the last version of Connect:Direct, but take care of Kubernete
 
 | Connect:Direct  | OpenShift           | Kubernetes          | helm-chart | Helm      |
 |-----------------|---------------------|---------------------|------------|-----------|
+| 6.3.0.3_ifix021 | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.12     | >= 3.14.x |
 | 6.3.0.3_ifix014 | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.11     | >= 3.14.x |
 | 6.3.0.3_ifix012 | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.10     | >= 3.14.x |
 | 6.3.0.3_ifix009 |                     |                     | 1.3.9      |           |
