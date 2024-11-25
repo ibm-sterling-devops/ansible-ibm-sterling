@@ -36,6 +36,18 @@ cdArgs:
   configDir: "CDFILES"
   saclConfig: "n"
   trustedAddr: []
+  #Security keys configuration
+  keys:
+    server: | 
+      #
+      # Host      Algorithm Method Key
+      #
+      *           MRLN      SIMP   Cd4Unix/Cd4Unix
+    client: | 
+      #
+      # Host      Algorithm Method Key
+      #
+      *           MRLN      SIMP   Cd4Unix/Cd4Unix
 
 sum:
   enabled: "{{ 'y' if (cd_deploy_sum_enabled == 1) else 'n' }}"
@@ -143,12 +155,12 @@ startupProbe:
   periodSeconds: 10
 
 livenessProbe:
-  initialDelaySeconds: 5
+  initialDelaySeconds: 10
   timeoutSeconds: 5
   periodSeconds: 10
 
 readinessProbe:
-  initialDelaySeconds: 3
+  initialDelaySeconds: 5
   timeoutSeconds: 5
   periodSeconds: 10
 
@@ -178,3 +190,18 @@ ldap:
 cdfa:
   # Set its value to "y" to enable file agent service in container
   fileAgentEnable: "n"
+
+# Horizontal pod autoscaling configuration
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  averageCpuUtilization: 60
+  averageMemoryUtilization: 60
+  stabilizationWindowSeconds: 180
+  periodSeconds: 15
+
+# Pod-Distribution-Budget Configuration
+pdb:
+  enabled: true
+  minAvailable: 1

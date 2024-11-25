@@ -5,7 +5,7 @@ cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true) }}" # Specify the node of C:D application
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.3_ifix025', true) }}"
+cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.4.0.0_ifix000', true) }}"
 
 cd_admin_password: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"
@@ -32,8 +32,8 @@ my_storage_class: "{{ lookup('env', 'CD_STORAGE_CLASS') | default('', true) }}"
 cd_storage_capacity: "{{ lookup('env', 'CD_STORAGE_CAPACITY') | default('1Gi', true) }}"
 
 # CPU and memory limits configuration on the container
-cd_cpu_limits: "{{ lookup('env', 'CD_CPU_LIMITS') | default('500m', true) }}"
-cd_mem_limits: "{{ lookup('env', 'CD_MEM_LIMITS') | default('2000Mi', true) }}"
+cd_cpu_limits: "{{ lookup('env', 'CD_CPU_LIMITS') | default('1500m', true) }}"
+cd_mem_limits: "{{ lookup('env', 'CD_MEM_LIMITS') | default('3000Mi', true) }}"
 cd_ephemeral_storage_limits: "{{ lookup('env', 'CD_EPHEMERAL_STORAGE_LIMITS') | default('5Gi', true) }}"
 
 # CPU and memory request configuration on the container
@@ -56,6 +56,10 @@ cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.4.0.0_ifix000:
+    helm_version: "1.4.0"
+    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.0"
+    image_tag: "6.4.0.0_ifix000"
   6.3.0.3_ifix025:
     helm_version: "1.3.13"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
