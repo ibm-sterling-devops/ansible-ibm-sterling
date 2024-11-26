@@ -71,10 +71,12 @@ resources:
   limits:
     cpu: {{ cdws_cpu_limits }}
     memory: {{ cdws_mem_limits }}
+    ephemeral-storage: "3Gi"
   requests:
     cpu: {{ cdws_cpu_requests }}
     memory: {{ cdws_mem_requests }}
-
+    ephemeral-storage: "2Gi"
+    
 initResources:
   limits:
     cpu: 500m

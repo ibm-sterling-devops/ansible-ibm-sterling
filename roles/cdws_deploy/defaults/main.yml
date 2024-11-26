@@ -23,8 +23,6 @@ cdws_mem_requests: "{{ lookup('env', 'CDWS_MEM_REQUESTS') | default('1Gi', true)
 
 # Entitlement
 # -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others

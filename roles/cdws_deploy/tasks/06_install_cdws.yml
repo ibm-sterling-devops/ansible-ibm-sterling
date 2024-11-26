@@ -20,7 +20,7 @@
     msg:
       - "Image Repository ................. {{ compatibility_matrix[cdws_version].image_repository }}"
       - "Image Tag        ................. {{ compatibility_matrix[cdws_version].image_tag }}"
-      - "cdws_other_values  ................. {{ cdws_other_values }}"
+      - "cdws_other_values ................ {{ cdws_other_values }}"
       - "helm install --timeout {{ cdws_helm.timeout }} -f {{ cdws_helm.values_yaml }} -n {{ cdws_namespace }} {{ cdws_helm.release }} {{ my_helmfile }}"
 
 - name: Run Helm install command
