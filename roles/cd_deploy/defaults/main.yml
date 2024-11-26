@@ -5,7 +5,7 @@ cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true) }}" # Specify the node of C:D application
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.4.0.0_ifix000', true) }}"
+cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.3.0.3_ifix025', true) }}"
 
 cd_admin_password: "{{ lookup('env', 'CD_ADMINPASSWORD') | default('passw0rd', true) }}"
 cd_appuser_pwd: "{{ lookup('env', 'CD_APPUSER_PWD') | default('passw0rd', true) }}"

@@ -5,6 +5,7 @@
     state: absent
   with_items:
     - "{{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}.tgz"
+    - "{{ my_workdir }}/ibm-b2bi-prod"
 
 - name: "Download Helm chart"
   ansible.builtin.get_url:
@@ -15,7 +16,11 @@
   until: download_cout is succeeded
   retries: 3
 
-# TODO: migrate from Shell to module kubernetes.core.k8s
+# - name: "Extract Helm chart"
+#   ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-b2bi-prod-{{ compatibility_matrix[si_version].helm_version }}.tgz -C {{ my_workdir }}"
+#   register: untar_cout
+#   changed_when: ( untar_cout.rc == 0)
+
 #
 # Creating a Role Based Access Control (RBAC)
 # -----------------------------------------------------------------------------
