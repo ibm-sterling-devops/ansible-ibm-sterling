@@ -29,14 +29,14 @@ image:
   # Specify the repository name alongwith image name
   repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.0"
   # Specify the tag name for the image in double quotes 
-  tag: "6.4.0.0_ifix000"
+  tag: "6.4.0.0_ifix001"
   # Specify the image pull secret for the service, if the image is in private registry 
   # protected with password
   imageSecrets: ""
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
-    value: "sha256:b64444e12337b78ffb0d2ae72ece3e3e9cb2f5115212b24a98d91927be84a897"
+    value: "sha256:fc9abddb0e6ab3f15f42f0d397ac71c8a7795d3e3c2b9656f5e065a69fef07be"
   # Specify respective pull policy to used to override default `IfNotPresent` policy 
   pullPolicy: Always
 

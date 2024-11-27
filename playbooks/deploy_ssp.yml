@@ -6,3 +6,4 @@
   roles:
     - ssp_cm_deploy  # don't change this order, waiting for a fix
     - ssp_deploy
+    - ssp_config

@@ -54,14 +54,14 @@ cd_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support ext
 cd_cert_key: "{{ my_workdir }}/cdkey.pem"
 cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
 
-cd_6400_or_higher: "{{ cd_version is defined and cd_version is version('6.4.0.0_ifix000','>=') | bool }}"
+cd_6400_or_higher: "{{ cd_version is defined and cd_version is version('6.4.0.0_ifix000', '>=' ) | bool }}"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
-  6.4.0.0_ifix000:
-    helm_version: "1.4.0"
+  6.4.0.0_ifix001:
+    helm_version: "1.4.1"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.0"
-    image_tag: "6.4.0.0_ifix000"
+    image_tag: "6.4.0.0_ifix001"
   6.3.0.3_ifix025:
     helm_version: "1.3.13"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
