@@ -38,10 +38,6 @@ compatibility_matrix:
     helm_version: "1.4.2"
     image_repository: "cp.icr.io/cp/ibm-seas/seas-docker-image"
     image_tag: "6.1.0.1.01"
-  6.1.0.1:
-    helm_version: "1.4.0"
-    image_repository: "cp.icr.io/cp/ibm-seas/seas-docker-image"
-    image_tag: "6.1.0.1"
 
 
 # Storage Class Matrix
