@@ -2,11 +2,11 @@
 
 Playbook will run the last version of Connect:Direct WebService, but take care of Kubernetes/Openshift version is supported
 
-| Connect:Direct   | helm-chart | Kubernetes          | OpenShift           | Helm      |
-|------------------|------------|---------------------|---------------------|-----------|
-| 6.4.0.0_ifix000  | 1.1.0      | >=1.27.0 <1.30.0    | >= 4.14 and <= 4.16 | >= 3.14.x |
-| 6.3.0.11_ifix000 | 1.0.4      | >=1.27.0 <1.30.0    | >= 4.14 and <= 4.16 | >= 3.14.x |
-| 6.3.0.9_ifix000  | 1.0.2      | >=1.27.0 <1.30.0    | >= 4.14 and <= 4.16 | >= 3.14.x |
+| C:D WebService            | OpenShift           | Kubernetes          | helm-chart | Helm      |
+|---------------------------|---------------------|---------------------|------------|-----------|
+| 6.4.0.0_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.1.0      | >= 3.14.x |
+| 6.3.0.11_ifix000          | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.0.4      | >= 3.14.x |
+| 6.3.0.9_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.0.2      | >= 3.14.x |
 
 
 ## Preparation

@@ -2,9 +2,9 @@
 
 Playbook will run the last version of ITXA, but take care of Kubernetes/Openshift version is supported
 
-| Connect:Direct    | helm-chart | Kubernetes          | OpenShift           | Helm      |
-|-------------------|------------|---------------------|---------------------|-----------|
-| 10.1.2.0.20231130 | 2.1.0      | >=1.26.0 <1.29.0    | >= 4.13 and <= 4.15 | >= 3.14.x |
+| ITX RS                    | OpenShift           | Kubernetes          | helm-chart | Helm      |
+|---------------------------|---------------------|---------------------|------------|-----------|
+| 10.1.2.0.20231130         | >= 4.13 and <= 4.15 | >=1.26.0 <1.29.0    | 2.1.0      | >= 3.14.x |
 
 ## Preparation
 

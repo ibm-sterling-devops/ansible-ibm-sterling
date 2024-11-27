@@ -2,9 +2,9 @@
 
 Playbook will run the last version of SEAS, but take care of Kubernetes/Openshift version is supported
 
-| SSP            | OpenShift           | Kubernetes          | helm-chart | Helm      |
-|----------------|---------------------|---------------------|------------|-----------|
-| 6.2.0.0        | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.4.0      | --        |
+| Sterling Secure Proxy     | OpenShift           | Kubernetes          | helm-chart | Helm      |
+|---------------------------|---------------------|---------------------|------------|-----------|
+| 6.2.0.0                   | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.4.0      | --        |
 
 
 ## Preparation
