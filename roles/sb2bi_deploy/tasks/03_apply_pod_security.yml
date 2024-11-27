@@ -39,8 +39,6 @@
   ansible.builtin.set_fact:
     scc_resource: false
     scc_apiversion: false
-    psp_resource: false
-    psp_apiversion: false
 
 - name: Check for SecurityContextConstraints Resource
   ansible.builtin.set_fact:
@@ -54,18 +52,6 @@
     - scc_resource
     - "'SecurityContextConstraints' in k8s_cl_info.apis['security.openshift.io/v1']"
 
-- name: Check for PodSecurityPolicy Resource
-  ansible.builtin.set_fact:
-    psp_resource: true
-  when: "'policy/v1beta1' in k8s_cl_info.apis"
-
-- name: Check if PodSecurityPolicy API version
-  ansible.builtin.set_fact:
-    psp_apiversion: true
-  when:
-    - psp_resource
-    - "'PodSecurityPolicy' in k8s_cl_info.apis['policy/v1beta1']"
-
 # Debug
 # -----------------------------------------------------------------------------
 - name: Debug Apply Pod Security
@@ -73,10 +59,8 @@
     msg:
       - "scc_resource ................. {{ scc_resource }}"
       - "scc_apiversion ............... {{ scc_apiversion }}"
-      - "psp_resource ................. {{ psp_apiversion }}"
-      - "psp_apiversion ............... {{ psp_apiversion }}"
 
-# Creating Pod Security Policy for Kubernetes Cluster
+# Creating security context constraints for OpenShift Cluster
 # -----------------------------------------------------------------------------
 - name: Creating Security Context Constraints
   kubernetes.core.k8s:
@@ -95,23 +79,3 @@
     state: present
     template: 'ibm-b2bi-rb-scc.yaml.j2'
   when: scc_resource and scc_apiversion
-
-# Creating security context constraints for OpenShift Cluster
-# -----------------------------------------------------------------------------
-- name: Creating Pod Security Policy
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('file', 'files/ibm-b2bi-psp.yaml') | from_yaml }}"
-  when: psp_resource and psp_apiversion
-
-- name: Creating Cluster Role
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('file', 'files/ibm-b2bi-cr.yaml') | from_yaml }}"
-  when: psp_resource and psp_apiversion
-
-- name: Adding a RoleBinding for all namespace users to the PSP...
-  kubernetes.core.k8s:
-    state: present
-    template: 'ibm-b2bi-rb.yaml.j2'
-  when: psp_resource and psp_apiversion
