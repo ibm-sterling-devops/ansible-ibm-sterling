@@ -61,37 +61,71 @@
 
 # 4. Check for Products to Install
 # -----------------------------------------------------------------------------
-- name: "Install CCM,CCD ?"
+- name: "Set Default ?"
   ansible.builtin.set_fact:
-    scc_install_ccm: true
-    scc_install_ccd: true
-    scc_install: "CCM,CCD"
-  when:
-    - scc_products_upper.find('CCM') != -1
-    - scc_products_upper.find('CCD') != -1
+    scc_install_ccm: false
+    scc_install_ccd: false
+    scc_install: ""
 
 - name: "Install CCM ?"
   ansible.builtin.set_fact:
     scc_install_ccm: true
-    scc_install_ccd: false
     scc_install: "CCM"
   when:
-    - scc_install is not defined
     - scc_products_upper.find('CCM') != -1
 
 - name: "Install CCD ?"
   ansible.builtin.set_fact:
-    scc_install_ccm: false
     scc_install_ccd: true
     scc_install: "CCD"
   when:
-    - scc_install is not defined
     - scc_products_upper.find('CCD') != -1
+
+- name: "Install CCM,CCD ?"
+  ansible.builtin.set_fact:
+    scc_install: "CCM,CCD"
+  when:
+    - scc_install_ccm
+    - scc_install_ccd
 
 - name: Fail if neither CCM nor CCD found
   ansible.builtin.fail:
     msg: "Neither CCM nor CCD found in scc_products variable"
-  when: scc_install is not defined
+  when: 
+    - not scc_install_ccm
+    - not scc_install_ccd
+
+# - name: "Install CCM,CCD ?"
+#   ansible.builtin.set_fact:
+#     scc_install_ccm: true
+#     scc_install_ccd: true
+#     scc_install: "CCM,CCD"
+#   when:
+#     - scc_products_upper.find('CCM') != -1
+#     - scc_products_upper.find('CCD') != -1
+
+# - name: "Install CCM ?"
+#   ansible.builtin.set_fact:
+#     scc_install_ccm: true
+#     scc_install_ccd: false
+#     scc_install: "CCM"
+#   when:
+#     - scc_install is not defined
+#     - scc_products_upper.find('CCM') != -1
+
+# - name: "Install CCD ?"
+#   ansible.builtin.set_fact:
+#     scc_install_ccm: false
+#     scc_install_ccd: true
+#     scc_install: "CCD"
+#   when:
+#     - scc_install is not defined
+#     - scc_products_upper.find('CCD') != -1
+
+# - name: Fail if neither CCM nor CCD found
+#   ansible.builtin.fail:
+#     msg: "Neither CCM nor CCD found in scc_products variable"
+#   when: scc_install is not defined
 
 - name: Unique Id for files
   ansible.builtin.set_fact:

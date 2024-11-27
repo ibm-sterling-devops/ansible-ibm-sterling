@@ -18,7 +18,12 @@ global:
     #s3host: "s3.us-east.cloud-object-storage.appdomain.cloud"
     #s3bucket: "nditxa"
     oracleUseServiceName: false # When set to true uses service name in JDBC connection strings for Oracle, while the default (false) utilizes SID.
-  serviceAccountName: "itxa-sa" # This should be replaced with the actual service account name used during deployment.
+  serviceAccountName: "itxa-sa" # Version 1.0.2 of helm
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    name: "itxa-sa" # This should be replaced with the actual service account name used during deployment
+  
 
   persistence:
     useDynamicProvisioning: true
@@ -76,6 +81,7 @@ itxauiserver:
   replicaCount: 1
   # runAsUser applicable only to non OCP clusters.
   runAsUser: 1001
+  xpathExpLimitRemove: false
   image:
     name: itxa-ui-server
     tag: "{{ compatibility_matrix[itxa_version].image_tag }}"

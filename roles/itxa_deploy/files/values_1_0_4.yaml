@@ -1,0 +1,214 @@
+# Licensed Materials - Property of IBM
+# IBM Transformation Extender Advanced (5724-Q23)
+# (C) Copyright IBM Corp. 2021, 2022 All Rights Reserved.
+# US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+
+# Default values for the chart
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  # Change the values license to true to indicate acceptance of license https://www.ibm.com/support/customer/csol/terms/?id=L-QWDZ-KN3PGC
+  license: false
+  # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and
+  # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
+  licenseType: "prod"
+  image:
+    #repository: "image-registry.openshift-image-registry.svc:5000/itxa"
+    repository: "cp.icr.io/ibm-itxa"
+    pullsecret: "er-secret"
+  appSecret: "itxa-db-secret"
+  tlskeystoresecret: ""
+  secureDBConnection:
+    enabled: false
+    dbservercertsecretname: ""
+  database:
+    dbvendor: oracle
+    # The 3 lines below are to configure pulling the db driver from an S3 bucket.  This has been replaced in favor of the resourcesinit container which automatically deploys
+    # The proper db driver based on the dbvendor setting above.  Valid values for dbvendor are oracle, db2 or mssql
+    #dbDriver: ""
+    #s3host: "s3.us-east.cloud-object-storage.appdomain.cloud"
+    #s3bucket: "nditxa"
+    oracleUseServiceName: false # When set to true uses service name in JDBC connection strings for Oracle, while the default (false) utilizes SID.
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    name: "itxa" # This should be replaced with the actual service account name used during deployment
+    
+  # Example:
+  # envs:
+  # - name: FOO
+  #   valueFrom:
+  #     secretKeyRef:
+  #       key: FOO
+  #       name: secret-resource
+  # - name: BAR
+  #   value: bar
+  #- name: LICENSE
+  #  value: accept
+  persistence:
+    useDynamicProvisioning: false
+    storageClassName: ""
+    appLogsPVC:
+      name: "itxa-logs-pvc"
+      selector:
+        label: "intent"
+        value: "itxa-logs"
+      accessMode: ReadWriteMany
+      requestSize: 5Gi
+    securityContext:
+      fsGroup: 0
+      supplementalGroup: 0
+  # Specify architecture (amd64, ppc64le, s390x) and weight to be  used for scheduling as follows :
+  #   0 - Do not use
+  #   1 - Least preferred
+  #   2 - No preference
+  #   3 - Most preferred
+  resourcesInit:
+    enabled: true
+    image:
+      name: itxa-resources
+      tag: 10.0.1.10-x86_64
+      #digest: sha256:34995da412ebfcb2593dcada1459f125c9d10617c13e10605cfa1277217dda24
+      pullPolicy: "IfNotPresent"
+
+  arch:
+    amd64: "2 - No preference"
+  install:
+    itxaUI:
+      enabled: false
+    itxadbinit:
+      enabled: false
+  nginxTimeout: "10m"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 25
+
+logs:
+
+  # true if user wish to redirect the application logs to console else false. If provided value is true , then application logs will reside inside containers. No volume mapping will be used.
+  enableAppLogOnConsole: false
+
+ITX:
+  image:
+    repository: cp.icr.io/cp/ibm-itx-rs
+    tag: 10.1.2
+    digest: "sha256:bc9b60086ca95a8ef6303be33cedabf475d10dd8ad161c75567f51d19aba13b8"
+    pullPolicy: IfNotPresent
+
+
+itxauiserver:
+  replicaCount: 1
+  # runAsUser applicable only to non OCP clusters.
+  runAsUser: 1001
+  xpathExpLimitRemove: false
+  image:
+    name: itxa-ui-server
+    tag: 10.0.1.10-x86_64
+    #digest: sha256:667660b3e7336465fa4819612605795187cff02a8f6466a9bf884e359b26f31b
+    pullPolicy: IfNotPresent
+  config:
+    #vendor: websphere
+    #vendorFile: servers.properties
+    #serverName: DefaultAppServer
+    jvm:
+      xms: 1024m
+      xmx: 2048m
+      #params: []
+    libertyStartupWrapper: "/opt/ibm/helpers/runtime/docker-server.sh"
+  # give a 1 minute buffer for appserver to start before liveness probe can begin.
+  livenessCheckBeginAfterSeconds: 60
+  livenessFailRestartAfterMinutes: 10
+  service:
+    type: NodePort
+    http:
+      port: 9080
+      nodePort: 30089
+    https:
+      port: 9443
+      nodePort: 30452
+  resources:
+    requests:
+      ephemeral-storage: 2560Mi
+      memory: 2560Mi
+      cpu: 1
+    limits:
+      ephemeral-storage: 3840Mi
+      memory: 3840Mi
+      cpu: 2
+  ingress:
+    enabled: true
+    host: ""
+    ssl:
+      enabled: true
+      secretname: "itxa-ingress-secret"
+    controller: nginx
+    contextRoots: ["spe", "adminCenter"]
+    annotations: {}
+  #     <name>: <value>
+  podLabels: {}
+  #   <labelName>: <labelValue>
+  tolerations: []
+  #  - key: "key"
+  #    operator: "Exists"
+  #    effect: "NoSchedule"
+  nodeAffinity:
+    # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
+    # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+    # architecture preference specified in 'global.arch'
+    requiredDuringSchedulingIgnoredDuringExecution: {}
+    #      nodeSelectorTerms:
+    #      - matchExpressions:
+    #        - key: kubernetes.io/e2e-az-name
+    #          operator: In
+    #          values:
+    #          - e2e-az1
+    #          - e2e-az2
+    # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+    # architecture preference specified in 'global.arch'
+    preferredDuringSchedulingIgnoredDuringExecution: []
+  podAffinity:
+    # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+  podAntiAffinity:
+    # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature
+    requiredDuringSchedulingIgnoredDuringExecution: []
+    preferredDuringSchedulingIgnoredDuringExecution: []
+    replicaNotOnSameNode:
+      #   prefer | require | blank
+      mode: prefer
+      # weight only used when mode is prefer
+      weightForPreference: 100
+  importcert:
+    secretname: ""
+  readinessProbePath: "/spe/myspe"
+  userSecret: "itxa-user-secret"
+
+itxadatasetup:
+  dbType: "oracle"
+  #deployPacks - if flag is set to true, will pass the path of respective pack jar to spedeploy-packs.sh and spedbinit-container.sh to deploy and load the pack into database.
+  deployPacks:
+    edi: false
+    fsp: false
+    hc: false
+  tenantId: ""
+  ignoreVersionWarning: true
+  #migrateDB:
+  #enabled : false
+  #The Current FP Version eg 10.0.0.0
+  #fromFPVersion : ""
+  #The FP Version which is installed eg 10.0.0.12
+  #toFPVersion : ""
+  loadFactoryData: "install"
+
+itxadbinit:
+  # runAsUser applicable only to non OCP clusters.
+  runAsUser: 1001
+  image:
+    name: itxa-init-db
+    tag: 10.0.1.10-x86_64
+    #digest: sha256:d208cdc59595eef83f8bc23309bcaaf7225b8704bd4742f248dc979a01123eda
+    pullPolicy: IfNotPresent    

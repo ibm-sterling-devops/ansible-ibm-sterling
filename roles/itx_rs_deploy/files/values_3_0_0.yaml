@@ -1,0 +1,854 @@
+####################################################################
+# Licensed Materials Property of HCL
+# (c) Copyright HCL Technologies Ltd. 2024. All rights reserved.
+# 
+# Trademark of HCL Technologies Limited
+####################################################################
+#
+# This file, values.yaml, contains default parameters for the 
+# IBM Sterling Transformation Extender for Red Hat OpenShift.
+# 
+# Must set to true to accept the license
+# Please refer to: https://ibm.biz/ITX_License11_0_1
+license: false
+# Global parameters
+global:
+  itxImageRegistry: "cp.icr.io"
+  itxImagePullSecret: "ibm-entitlement-key"
+# Shared parameters
+displayName: "IBM Sterling Transformation Extender for Red Hat OpenShift"
+nameOverride: ""
+fullnameOverride: ""
+itxImageRegistry: "cp.icr.io"
+itxImagePullSecret: "ibm-entitlement-key"
+# Rest deployment settings for flow invocations and map executions.
+rest:
+  # rest.deploy is true to start a REST service that handles V2-based REST APIs.
+  deploy: false
+  image:
+    repository: "cp/ibm-itx-rs"
+    tag: "11.0.1.0.20240927"
+    digest: "sha256:9bc80dd8f0cb2db8a35f17f10a11b2eea9b21ec497b3ccae9729fce919475661"
+    pullPolicy: IfNotPresent
+    # rest.image.pullPolicyOverride is true to use pullPolicy instead of 'Always' when using tag.
+
+    pullPolicyOverride: false
+  mapFileExtension: "mmc"
+  redisStem: "tx-rest"
+  cacheType: "external"
+  persistence:
+    data:
+      # rest.persistence.data.enabled is true when data is stored on a PVC or false for an ephemeral volume.
+
+      # Consider setting to false for V1-based deployments.  Keep true for V2 deployments. 
+      enabled: true
+      # rest.persistence.data.existingClaim reuses a pre-existing PVC.
+
+      existingClaim: ""
+      # rest.persistence.data.useDynamicProvisioning is true to dynamically provision a specific storage class.
+
+      useDynamicProvisioning: false
+      # rest.persistence.data.storageClass is name of storage class needed when useDyamicProvisioning is true. 
+
+      storageClass: ""
+      # rest.persistence.data.accessMode is ReadWriteMany for scaling V2 across multiple nodes.
+
+      accessMode: ReadWriteOnce
+      # rest.persistence.logs.size is size of persistent storage or limit of ephemeral storage
+
+      size: 20Gi
+      annotations: {}
+    logs:
+      # rest.persistence.logs.enabled is true for logging to a PVC or false for an ephemeral volume. 
+
+      # Consider setting to false for V1-based deployments.  Keep true for V2 deployments. 
+      enabled: true
+      # rest.persistence.logs.existingClaim reuses a pre-existing PVC.
+
+      existingClaim: ""
+      # rest.persistence.logs.useDynamicProvisioning is true to dynamically provision a specific storage class.
+
+      useDynamicProvisioning: false
+      # rest.persistence.logs.storageClass is name of storage class needed when useDyamicProvisioning is true.
+
+      storageClass: ""
+      # rest.persistence.logs.accessMode is ReadWriteMany for scaling V2 across multiple nodes.
+
+      accessMode: ReadWriteOnce
+      # rest.persistence.logs.size is size of persistent storage or limit of ephemeral storage
+
+      size: 100Mi
+      annotations: {}
+  # rest.inbound sets the protocol for inbound connections to the REST V2 service.
+
+  inbound:
+    http:
+      # rest.inbound.http.enabled is true for plain, non-secure connections to the REST V2 service.
+      enabled: true
+    https:
+      # rest.inbound.https.enabled is true when secure TLS communication is needed.
+      enabled: false
+      # rest.inbound.https.secret is the secret that contains ca.crt, tls.crt and tls.key keys.
+
+      secret: ""
+      # If serviceServingCertificates is true, then the Red Hat OpenShift
+
+      # service serving certificates feature is used to provide a TLS
+
+      # certificate and key for the server. A name for the Secret which holds
+
+      # the certificate and key need not be provided. If clientAuth is true
+
+      # when serviceServingCertificates is true, the service serving
+
+      # certificates CA certificate is used to authenticate clients.
+      serviceServingCertificates: false
+      clientAuth: false
+  serviceAccount:
+    create: false
+    annotations: {}
+    existingName: ""
+  service:
+    type: ClusterIP
+    port:
+      http: 8080
+      https: 8443
+  # rest.synchronousTimeout is the number of seconds to wait for synchronous map/flow execution. 
+
+  synchronousTimeout: 300
+  groupId: "1"
+  extraEnvConfigMap: ""
+  extraEnvSecret: ""
+  probes:
+    liveness:
+      enabled: true
+      initialDelaySeconds: 35
+      periodSeconds: 20
+      successThreshold: 1
+      failureThreshold: 3
+    readiness:
+      enabled: true
+      initialDelaySeconds: 35
+      periodSeconds: 20
+      successThreshold: 1
+      failureThreshold: 3
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "700Mi"
+      # Size request of ephemeral storage.
+    # ephemeral-storage: "20Gi"
+
+    limits:
+      cpu: "4000m"
+      memory: "8Gi"
+      # Size limit of ephemeral storage.
+  # ephemeral-storage: "20Gi"
+
+  # rest.deployPackages sets up auto-deployment of packages to a REST V2 installation.
+  deployPackages:
+    # rest.deployPackages.enabled is true to auto-deploy packages from "directory".
+    enabled: true
+    # rest.deployPackages.directory is searched for ".sqlite" packages. 
+
+    directory: "/data/maps"
+    # rest.deployPackages.archiveDir is location where successfully processed packages are moved.
+
+    archiveDir: "/data/packages"
+    # rest.deployPackages.secret is used when clientAuth is set under rest.inbound.https. 
+
+    secret:
+      # rest.deployPackages.secret.keyName is the client TLS key. Use a value from external.secrets.data.
+      keyName: ""
+      # rest.deployPackages.secret.crtName is the client TLS certificate. Use a value from external.secrets.data.
+
+      crtName: ""
+  nodeSelector: {}
+  tolerations: []
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "kubernetes.io/arch"
+                operator: In
+                values:
+                  - amd64
+# REST deployment and service parameters used solely for V1-based Map invocations
+restV1:
+  # restV1.deploy is true to start a REST service that handles V1-based REST APIs.
+  deploy: true
+  # restV1.runMode is "unfenced" for map execution within the REST service itself.
+
+  # Set to "fenced" to run maps outside the REST service via external Redis server.
+  runMode: "unfenced"
+  redisStem: "tx-rest-v1"
+  cacheType: "internal"
+  # restV1.replicas sets the number of pods that are servicing V1 map executions
+
+  replicas: 1
+  # restV1.inbound sets the protocol for inbound connections to the REST V1 service.
+
+  inbound:
+    http:
+      # restV1.inbound.http.enabled is true for plain, non-secure connections to the REST V1 service.
+      enabled: true
+    https:
+      # rest.inbound.https.enabled is true when secure TLS communication is needed.
+      enabled: false
+      # rest.inbound.https.secret is the secret that contains ca.crt, tls.crt and tls.key keys.
+
+      secret: ""
+      # If serviceServingCertificates is true, then the Red Hat OpenShift
+
+      # service serving certificates feature is used to provide a TLS
+
+      # certificate and key for the server. A name for the Secret which holds
+
+      # the certificate and key need not be provided. If clientAuth is true
+
+      # when serviceServingCertificates is true, the service serving
+
+      # certificates CA certificate is used to authenticate clients.
+      serviceServingCertificates: false
+      clientAuth: false
+  serviceAccount:
+    create: false
+    annotations: {}
+    existingName: ""
+  service:
+    type: ClusterIP
+    port:
+      http: 8080
+      https: 8443
+  # restV1.synchronousTimeout is the number of seconds to wait for synchronous map execution. 
+
+  synchronousTimeout: 300
+  extraEnvConfigMap: ""
+  extraEnvSecret: ""
+  probes:
+    liveness:
+      enabled: true
+      initialDelaySeconds: 35
+      periodSeconds: 20
+      successThreshold: 1
+      failureThreshold: 3
+    readiness:
+      enabled: true
+      initialDelaySeconds: 35
+      periodSeconds: 20
+      successThreshold: 1
+      failureThreshold: 3
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "700Mi"
+      # Size request of ephemeral storage
+    # ephemeral-storage: "20Gi"
+
+    limits:
+      cpu: "4000m"
+      memory: "8Gi"
+      # Size limit of ephemeral storage.
+  # ephemeral-storage: "21Gi"
+
+  nodeSelector: {}
+  tolerations: []
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "kubernetes.io/arch"
+                operator: In
+                values:
+                  - amd64
+  # restV1.autoscaling enables dynamic pod creation based on resource utilization
+
+  autoscaling:
+    # restV1.autoscaling.enabled is true to enable horizontal pod autoscaling
+    enabled: false
+    # restV1.autoscaling.minReplicas is minimum number of pods
+
+    minReplicas: 1
+    # restV1.autoscaling.minReplicas is maximum number of pods
+
+    maxReplicas: 10
+    cpu:
+      # restV1.autoscaling.cpu.enabled is true when monitoring CPU utlization
+      enabled: true
+      # restV1.autoscaling.cpu.averageUtilization is percentage that triggers new pod creation
+
+      averageUtilization: 80
+    memory:
+      # restV1.autoscaling.memory.enabled is true when monitoring memory utlization
+      enabled: true
+      # restV1.autoscaling.memory.averageUtilization is percentage that triggers new pod creation
+
+      averageUtilization: 80
+    custom:
+      # restV1.autoscaling.custom.enabled is true when custom.types is specified
+      enabled: false
+      # restV1.autoscaling.custom.types define an array of custom metric types, such as "Pods" and "Object"
+
+      types: []
+      # Delete '[]' brackets above, then add lines below for custom metrics.
+    #  - type: Pods
+
+    #    pods:
+
+    #      metric:
+
+    #        name: name-of-metric
+
+    #      target:
+
+    #        type: AverageValue
+
+    #        averageValue: 1k
+
+    #  - type: Object
+
+    #    object:
+
+    #      metric:
+
+    #        name: name-of-metric
+
+    #      describedObject:
+
+    #        kind: kind-of-object
+
+    #        name: name-of-object
+
+    #      target:
+
+    #        type: Value
+
+    #        value: 10k
+
+    # restV1.autoscaling.behavior can define scaling policies
+    behavior: {}
+    # Delete '{}' braces above, then uncomment and edit the lines below for custom scaling policy.
+#  scaleDown:
+
+#    stabilizationWindowSeconds: 300
+
+#    policies:
+
+#    - type: Percent
+
+#      value: 100
+
+#      periodSeconds: 15
+
+#  scaleUp:
+
+#    stabilizationWindowSeconds: 0
+
+#    policies:
+
+#    - type: Percent
+
+#      value: 100
+
+#      periodSeconds: 15
+
+#    - type: Pods
+
+#      value: 4
+
+#      periodSeconds: 15
+
+#    selectPolicy: Max 
+
+# Executor service parameters
+executor:
+  serviceAccount:
+    create: false
+    annotations: {}
+    existingName: ""
+  # executor.replicas sets the number of pods that are servicing V2 flow executions
+
+  replicas: 1
+  probes:
+    liveness:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 20
+      successThreshold: 1
+      failureThreshold: 3
+    readiness:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 20
+      successThreshold: 1
+      failureThreshold: 3
+  resources:
+    requests:
+      cpu: 250m
+      memory: 700Mi
+    limits:
+      cpu: 4000m
+      memory: 4Gi
+  nodeSelector: {}
+  tolerations: []
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "kubernetes.io/arch"
+                operator: In
+                values:
+                  - amd64
+  # executor.autoscaling enables dynamic pod creation based on resource utilization
+
+  autoscaling:
+    # executor.autoscaling.enabled is true to enable horizontal pod autoscaling
+    enabled: false
+    # executor.autoscaling.minReplicas is minimum number of pods
+
+    minReplicas: 1
+    # executor.autoscaling.minReplicas is maximum number of pods
+
+    maxReplicas: 10
+    cpu:
+      # executor.autoscaling.cpu.enabled is true when monitoring CPU utlization
+      enabled: true
+      # executor.autoscaling.cpu.averageUtilization is percentage that triggers new pod creation
+
+      averageUtilization: 80
+    memory:
+      # executor.autoscaling.memory.enabled is true when monitoring memory utlization
+      enabled: true
+      # executor.autoscaling.memory.averageUtilization is percentage that triggers new pod creation
+
+      averageUtilization: 80
+    custom:
+      # executor.autoscaling.custom.enabled is true when custom.types is specified as in restV1.autoscaling.custom
+      enabled: false
+      # executor.autoscaling.custom.types define an array of custom metric types, such as "Pods" and "Object"
+
+      types: []
+    # executor.autoscaling.behavior can define scaling policies as in restV1.autoscaling.behavior
+
+    behavior: {}
+# external sets hostname aliases, environment variables, configMaps and secrets for external integrations.
+external:
+  # external.data defines the directory that contains secrets, configMaps and maps.
+  data:
+    volume:
+      # external.data.volume.path is the fully qualified directory for mounted secrets and configMaps.
+      path: "/xdata"
+      size: 50Mi
+    secret:
+      # external.data.secret.subpath is sub-dir of external.data.volume.path and contains external.secrets.
+      subpath: "sec"
+    configMap:
+      # external.data.configMap.subpath is sub-dir of external.data.volume.path and contains external.configMaps.
+      subpath: "cfg"
+    map:
+      # external.data.map.subpath is sub-dir of external.data.volume.path and contains external.maps.
+      subpath: "map"
+  #
+
+  # external.mq sets values used by the IBM MQ client adapter for connectivity to IBM MQ Server.
+  mq:
+    # external.mq.secret contains the client channel table, which is mounted as chlTab in chlLib. 
+    secret: ""
+    # external.mq.chlTab sets the filename for the MQCHLTAB environment variable.
+
+    chlTab: ""
+    # external.mq.chlLib sets the directory path for the MQCHLLIB environment variable.
+
+    chlLib: "/xdata/sec"
+    # external.mq.sslKeyPath sets the SSL key path for the MQSSLKEYR environment variable.
+
+    sslKeyPath: ""
+    # external.mq.dataPath sets the MQ_OVERRIDE_DATA_PATH environment variable.
+
+    dataPath: "/tmp"
+  #
+
+  # external.secrets are added under the external.data.secret.subpath directory
+
+  # by deleting the array brackets "[]" and the first hash mark "#" from edited lines.
+  secrets: []
+  #  - name: "your-secret-name-1"
+
+  #    data: "file.key"
+
+  #  - name: "your-secret-name-2"
+
+  #    data: "file.cer"
+
+  #
+
+  # external.configMaps define files that are mounted under external.data.configMap.subpath.
+  configMaps: []
+  #  - name: "your-configMap-name-1"
+
+  #    key: "keyname1"
+
+  #    path: "file1.xml"
+
+  #  - name: "your-configMap-name-2"
+
+  #    key: "keyname2"
+
+  #    path: "file2.json"
+
+  #
+
+  # external.maps define maps stored in a configMap that are mounted under external.data.map.subpath.
+  maps: []
+  #  - name: "your-configMap-name-1"
+
+  #    key: "keyname1"
+
+  #    path: "map1.mmc"
+
+  #  - name: "your-configMap-name-2"
+
+  #    key: "keyname2"
+
+  #    path: "map2.mmc"
+
+  #
+
+  # external.hostAliases are added to the "/etc/hosts" file. 
+  hostAliases: []
+  #  - ip: "10.x.y.z"
+
+  #    hostnames:
+
+  #    - "server-host-name"
+
+  #
+
+  # external.env defines environment variables during map execution. 
+  env: []
+  #  - name: var-name-1
+
+  #    value: var-value-1
+
+  #  - name: var-name-N
+
+  #    value: var-value-N
+
+  #
+
+  # external.cos enables maps and packages to be downloaded from Cloud Object Storage (COS).
+  cos:
+    # external.cos.enabled is true to initialize pods at startup with maps and packages from COS 
+    enabled: false
+    # external.cos.name is the name of the zip object to download and unzip
+
+    name: maps.zip
+    # external.cos.bucket is the name of the bucket that contains external.cos.name
+
+    bucket: itx
+    # external.cos.targetDir is destination directory where the maps are unzipped. 
+
+    targetDir: "/data/maps"
+    # external.cos.platform is set to 'gcp' or 's3'
+
+    platform: "s3"
+    # external.cos.gcp defines the Google Cloud Platform specific options
+
+    gcp:
+      # external.cos.gcp.cf is the credential file as defined by 'data' field in external.secrets
+      cf: "cf.json"
+    # external.cos.s3 defines the Amazon S3 specific options
+
+    s3:
+      # external.cos.s3.accessKey is a secret containing the access key, as defined by 'data' field in external.secrets
+      accessKey: ""
+      # external.cos.s3.secretKey is a secret containing the secret key, as defined by 'data' field in external.secrets
+
+      secretKey: ""
+      # external.cos.s3.region is Amazon S3 region as per AWS SDK for Java v2  
+
+      region: us-east-1
+      # external.cos.s3.endpoint is necessary when using a non-Amazon S3 compatible storage service
+
+      endpoint: ""
+# Redis client settings are provided if an external Redis server will be used.
+
+#
+
+# Use of the fenced mode of the v1 REST API requires an external Redis server.
+
+# The v2 REST API requires an external Redis server. An external Redis server
+
+# is also required when the external mode is used for map and flow cache
+
+# variables.
+itxRedis:
+  # itxRedis.host is Redis host name, which defaults to redis-master.
+  host: redis-master
+  # itxRedis.port is Redis port, which defaults to 6379.
+
+  port: 6379
+  # itxRedis.database identifies the database number, which defaults to 0. 
+
+  database: 0
+  # itxRedis.password specifies the Redis password
+
+  password:
+    # itxRedis.password.secret is name of the Secret which contains the Redis password.
+    secret: ""
+    # itxRedis.password.key is the key in the Secret which contains the Redis password.
+
+    key: "redis-password"
+  tls:
+    # All of the keys of itxRedis.tls are ignored if itxRedis.tls.enabled is false.
+    enabled: false
+    # If the external Redis server uses mutual TLS (mTLS), then a client
+
+    # secret must be provided. clientSecret is the name of the secret. The
+
+    # secret must contain two keys. One key is the client certificate. This
+
+    # key is specified by certFilename. The other key is the client private
+
+    # key. This key is specified by certKeyFilename.
+    clientSecret: ""
+    certFilename: ""
+    certKeyFilename: ""
+    # A ConfigMap with a key whose value is the certificate authority
+
+    # certificate which will be used as a trust store to authenticate the
+
+    # external Redis server. clientCaConfigMap is the name of the ConfigMap.
+    clientCaConfigMap: ""
+    # The key in the ConfigMap given by clientCaConfigMap whose value is the
+
+    # trust store for Redis server authentication.
+    certCAFilename: ""
+    # If the external Redis server requires use of the TLS Server Name
+
+    # Indication extension (SNI), then the SNI hostname of the server is
+
+    # provided here.
+    sni: ""
+  # Maximum number of flow instances to retain in the statistics
+
+  maxStatisticCount: 100000
+  # When to expire (in days) the flow status message
+
+  statusExpiration: 7
+# Ingress enables external access to REST V2 when not using RHOS route definitions.
+ingress:
+  # ingress.deploy is true to activate and define Ingress access.
+  deploy: false
+  annotations: {}
+  # ingress.className sets the ingressClassName. Set to "" to eliminate use of ingressClassName.
+
+  className: "openshift-default"
+  # ingress.hosts describes all host name paths. Delete '[]' and '#' to activate.
+
+  hosts: []
+  #- host: plain.example.com
+
+  #  paths:
+
+  #  - path: /yourpath1
+
+  #    pathType: Prefix
+
+  #- host: secure.example.com
+
+  #  paths:
+
+  #  - path: /yourpath2
+
+  #    pathType: Prefix
+
+  #    # https is true if Ingress controller can re-encrypt to REST service endpoint. 
+
+  #    https: false
+
+  # ingress.tls identifies the certificates for TLS protocol.  See K8S docs for further details.
+  tls: []
+  #- secretName: secure-example-tls
+
+  #  hosts:
+
+  #  - secure.example.com
+
+  # ingress.default defines the Default backend behavior when no rules exist or match.
+  default:
+    # ingress.default.enabled is true to always use the default ITX-RS service backend
+    enabled: true
+# Ingress enables external access to REST V1 when not using RHOS route definitions.
+ingressV1:
+  # ingress.deploy is true to activate and define Ingress access.
+  deploy: false
+  annotations: {}
+  # ingress.className sets the ingressClassName. Set to "" to eliminate use of ingressClassName.
+
+  className: "openshift-default"
+  # ingress.hosts describes all host name paths. Delete '[]' and '#' to activate.
+
+  hosts: []
+  #- host: plain.example.com
+
+  #  paths:
+
+  #  - path: /yourpath1
+
+  #    pathType: Prefix
+
+  #- host: secure.example.com
+
+  #  paths:
+
+  #  - path: /yourpath2
+
+  #    pathType: Prefix
+
+  #    # https is true if Ingress controller can re-encrypt to REST service endpoint. 
+
+  #    https: false
+
+  # ingress.tls identifies the certificates for TLS protocol.  See K8S docs for further details.
+  tls: []
+  #- secretName: secure-example-tls
+
+  #  hosts:
+
+  #  - secure.example.com
+
+  # ingress.default defines the Default backend behavior when no rules exist or match.
+  default:
+    # ingress.default.enabled is true to always use the default ITX-RS service backend
+    enabled: true
+# config enumerates default config.yaml settings for map/flow executions and logging.
+
+# Override other config.yaml settings by adding the 'camel' case equivalent.
+config:
+  # config.runtime options are specific for the Executor deployment.
+  runtime:
+    # connectionsManager includes scalar values to control the active number of pooled connections.
+    connectionsManager:
+      idle: 60
+      sLim: 4
+    # config.runtime.externalJarFiles loads jar files before invoking a Java-based adapter or JExit function.
+
+    # Set by removing array brackets "[]" and deleting the first hash mark "#" from edited lines.
+    externalJarFiles: []
+    #  - /data/config/file1.jar
+
+    #  - /data/config/file2.jar
+
+    # externalJarDirectores loads jar files from the specified location.
+    externalJarDirectories: []
+    #  - /data/config/dir1
+
+    #  - /data/config/dir2
+
+    # jvmOptions customizes the runtime environment of java-based invocations.  
+    jvmOptions: []
+    #  - -Djava.security.auth.login.config=/xdata/sec/client.properties
+
+    #  - -D<another-option>=<with-another-value>
+
+    # config.runtime.trace is set to "stdout" for Kubernetes logging, otherwise, set to
+
+    # "" for file logging (e.g. "/logs/flowexecutor_<pid>_<host-name>_<timestamp>.log").   
+    trace: "stdout"
+    # config.runtime.locale sets the locale, which defaults to "en".
+
+    # Possible values: de,en,es,fr,it,ja,ko,pt_BR,ru,zh_CN,zh_TW
+    locale: "en"
+  # config.rest are settings for REST and/or EXECUTOR services.
+
+  rest:
+    # config.rest.logging controls the level and size of logging.
+    logging:
+      # config.rest.logging.level: [ALL, TRACE, INFO, ERROR, NONE]
+      level: "ERROR"
+      # config.rest.logging.header is true to include a header.
+
+      header: true
+      # config.rest.logging.columns specify which columns to show.
+
+      columns:
+        # config.rest.logging.columns.time shows the time.
+
+        # 1 - UTC (Zulu) time with milliseconds resolution
+        time: 1
+        # config.rest.logging.columns.uuid shows the UUID of each instance.
+
+        uuid: false
+        # config.rest.logging.columns.rc shows the return code.
+
+        rc: true
+        # config.rest.logging.columns.rcText shows rc's text description.
+
+        rcText: false
+        # config.rest.logging.columns.msgID shows the trace message ID.
+
+        msgID: false
+        # config.rest.logging.columns.flowName shows the flow, node, or adapter name that generated the message.
+
+        flowName: true
+        # config.rest.logging.columns.msg show the trace message.
+
+        msg: true
+        # config.rest.logging.columns.funcName show the function name (for internal debugging only).
+
+        funcName: false
+        # config.rest.logging.columns.sourceInfo shows the source file and line information (for internal debugging only).
+
+        sourceInfo: false
+      # config.rest.logging.trigger sets frequency of execution logs: [ALWAYS, ON_ERROR, NEVER]
+
+      trigger: "ALWAYS"
+      # config.rest.logging.addWebServerConsoleLogging is true to enable Kubernetes logging.
+
+      addWebServerConsoleLogging: true
+      # config.rest.logging.disableWebServerAccessLogging is false to enable logging of REST requests. 
+
+      disableWebServerAccessLogging: false
+      # config.rest.logging.rotation prevent logs from growing too large.
+
+      rotation:
+        # config.rest.logging.rotation.fileCount is max number of files in rotation.
+
+        # 1 disables log rotation, 0 disables log files entirely
+        fileCount: 5
+        # config.rest.logging.rotation.fileSize is max size, in kilobytes, of each log file.
+
+        fileSize: 20000
+        # config.rest.logging.rotation.fileAge is min number of days after which logs are deleted.
+
+        # Set to 0 to never delete log files.
+        fileAge: 30
+    # config.rest.resources sets thread resource usage.
+
+    resources:
+      # config.rest.resources.mapThreads is max # of threads for executing maps
+      mapThreads: 10
+      # config.rest.resources.flowThreads is max # of threads for executing flows
+
+      flowThreads: 10
+    # config.rest.listeners are settings for listeners started by the REST server.
+
+    listeners:
+      # config.rest.listeners.adapter targets java-based adapter listeners. 
+      adapter:
+        # config.rest.listeners.adapter.jvmOptions specify JVM startup options.
+        jvmOptions: ""
+      # config.rest.listeners.file are settings used by the file listener.
+
+      file:
+        # config.rest.listeners.file.zone is the unique name of a geographic zone,
+
+        # which enables file triggering in the same directory of a multi-region release.
+        zone: ""
+        # config.rest.listeners.file.cooperativeMode is true if listeners use the same watches 
+
+        cooperativeMode: false

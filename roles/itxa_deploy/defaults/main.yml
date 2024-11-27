@@ -5,7 +5,7 @@ itxa_instanceid: "{{ lookup('env', 'ITXA_INSTANCEID') }}"
 
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-itxa_version: "{{ lookup('env', 'ITXA_VERSION') | default('10.0.1.9-x86_64', true) }}"
+itxa_version: "{{ lookup('env', 'ITXA_VERSION') | default('10.0.1.10-x86_64', true) }}"
 
 itxa_admin_password: "{{ lookup('env', 'ITXA_ADMIN_PASSWORD') | default('passw0rd', true) }}"
 itxa_tls_keystore_password: "{{ lookup('env', 'ITXA_TLS_KEYSTORE_PASSWORD') | default('changeit', true) }}"
@@ -37,6 +37,10 @@ itxa_route_web: "itxa-web"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  10.0.1.10-x86_64:
+    helm_version: "1.0.4"
+    image_tag: "10.0.1.10-x86_64"
+    itx_image_tag: "10.1.2"
   10.0.1.9-x86_64:
     helm_version: "1.0.2"
     image_tag: "10.0.1.9-x86_64"

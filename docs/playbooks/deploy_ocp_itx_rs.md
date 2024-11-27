@@ -1,5 +1,11 @@
 # Deploy IBM Sterling Transformation Extender on OpenShift using Ansible Scripts
 
+Playbook will run the last version of ITXA, but take care of Kubernetes/Openshift version is supported
+
+| Connect:Direct    | helm-chart | Kubernetes          | OpenShift           | Helm      |
+|-------------------|------------|---------------------|---------------------|-----------|
+| 10.1.2.0.20231130 | 2.1.0      | >=1.26.0 <1.29.0    | >= 4.13 and <= 4.15 | >= 3.14.x |
+
 ## Preparation
 
 ### 1. IBM Entitled Registry
