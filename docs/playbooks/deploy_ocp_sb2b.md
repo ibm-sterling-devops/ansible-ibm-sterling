@@ -9,11 +9,6 @@ Playbook will run the last version of Sterling B2Bi, but take care of Kubernetes
 | 6.2.0.1       | >= 4.13 and <= 4.14 | >= 1.26 and <= 1.28 | 3.0.1      | >= 3.13.x |
 | 6.2.0.0       | >= 4.12 and <= 4.13 | >= 1.25 and <= 1.27 | 3.0.0      | >= 3.12.x |
 
-Check with
-
-```bash 
-kubectl version
-```
 
 ## Preparation
 

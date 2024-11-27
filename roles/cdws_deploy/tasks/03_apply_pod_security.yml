@@ -45,25 +45,3 @@
 #     msg:
 #       - "scc_resource ................. {{ scc_resource }}"
 #       - "scc_apiversion ............... {{ scc_apiversion }}"
-
-# # Creating Pod Security Policy for Kubernetes Cluster
-# # -----------------------------------------------------------------------------
-# - name: Creating Security Context Constraints
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('file', 'files/clusterAdministration/ibm-cdws-scc.yaml') | from_yaml }}"
-#   when: scc_resource and scc_apiversion
-
-# - name: Creating Cluster Role
-#   kubernetes.core.k8s:
-#     state: present
-#     definition: "{{ lookup('file', 'files/clusterAdministration/ibm-cdws-cr-scc.yaml') | from_yaml }}"
-#     namespace: "{{ cdws_namespace }}"
-#   when: scc_resource and scc_apiversion
-
-# - name: Adding all namespace users to SCC...
-#   kubernetes.core.k8s:
-#     state: present
-#     template: 'namespaceAdministration/ibm-cdws-rb-scc.yaml.j2'
-#     namespace: "{{ cdws_namespace }}"
-#   when: scc_resource and scc_apiversion

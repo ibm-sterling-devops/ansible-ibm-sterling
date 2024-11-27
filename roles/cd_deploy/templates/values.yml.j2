@@ -191,6 +191,7 @@ cdfa:
   # Set its value to "y" to enable file agent service in container
   fileAgentEnable: "n"
 
+{% if cd_6400_or_higher %}
 # Horizontal pod autoscaling configuration
 hpa:
   enabled: true
@@ -205,3 +206,4 @@ hpa:
 pdb:
   enabled: true
   minAvailable: 1
+{% endif %}

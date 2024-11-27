@@ -6,12 +6,6 @@ Playbook will run the last version of SEAS, but take care of Kubernetes/Openshif
 |----------------|---------------------|---------------------|------------|-----------|
 | 6.2.0.0        | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.4.0      | --        |
 
-Check with
-
-```bash 
-kubectl version
-```
-
 
 ## Preparation
 
