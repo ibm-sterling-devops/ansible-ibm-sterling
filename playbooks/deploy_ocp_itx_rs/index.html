@@ -1284,6 +1284,27 @@
 
 
 <h1 id="deploy-ibm-sterling-transformation-extender-on-openshift-using-ansible-scripts">Deploy IBM Sterling Transformation Extender on OpenShift using Ansible Scripts<a class="headerlink" href="#deploy-ibm-sterling-transformation-extender-on-openshift-using-ansible-scripts" title="Permanent link"></a></h1>
+<p>Playbook will run the last version of ITXA, but take care of Kubernetes/Openshift version is supported</p>
+<table>
+<thead>
+<tr>
+<th>Connect:Direct</th>
+<th>helm-chart</th>
+<th>Kubernetes</th>
+<th>OpenShift</th>
+<th>Helm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10.1.2.0.20231130</td>
+<td>2.1.0</td>
+<td>&gt;=1.26.0 &lt;1.29.0</td>
+<td>&gt;= 4.13 and &lt;= 4.15</td>
+<td>&gt;= 3.14.x</td>
+</tr>
+</tbody>
+</table>
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
 <h3 id="1-ibm-entitled-registry">1. IBM Entitled Registry<a class="headerlink" href="#1-ibm-entitled-registry" title="Permanent link"></a></h3>
 <p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
