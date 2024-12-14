@@ -793,6 +793,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#change-the-default-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Change the default namespace
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variable" class="md-nav__link">
     <span class="md-ellipsis">
       Environment Variable
@@ -1275,6 +1284,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#change-the-default-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Change the default namespace
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variable" class="md-nav__link">
     <span class="md-ellipsis">
       Environment Variable
@@ -1315,6 +1333,13 @@
 </thead>
 <tbody>
 <tr>
+<td>6.1.0.2.01</td>
+<td>&gt;= 4.13 and &lt;= 4.16</td>
+<td>&gt;=1.26.0 &lt;=1.30.0</td>
+<td>1.5.1</td>
+<td>--</td>
+</tr>
+<tr>
 <td>6.1.0.1.01.1</td>
 <td>&gt;= 4.13 and &lt;= 4.16</td>
 <td>&gt;=1.26.0 &lt;=1.30.0</td>
@@ -1350,11 +1375,14 @@
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
 <h2 id="deploying-sterling-external-authentication-server">Deploying Sterling External Authentication Server<a class="headerlink" href="#deploying-sterling-external-authentication-server" title="Permanent link"></a></h2>
-<p>1) Change namespace</p>
-<pre><code class="language-bash">export SEAS_NAMESPACE=sterling-seas-dev01
-</code></pre>
-<p>2) To run the playbook</p>
+<p>1) To run the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_seas.yml
+</code></pre>
+<h2 id="change-the-default-namespace">Change the default namespace<a class="headerlink" href="#change-the-default-namespace" title="Permanent link"></a></h2>
+<p>1) Change namespace and run the playbook</p>
+<pre><code class="language-bash">export SEAS_NAMESPACE=sterling-seas-dev01
+
+ansible-playbook playbooks/deploy_seas.yml
 </code></pre>
 <h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
 <p>Environment variables for this role:</p>
@@ -1377,7 +1405,7 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <tr>
 <td>SEAS_NAMESPACE</td>
 <td>N/A</td>
-<td>Yes</td>
+<td>No</td>
 <td>Namespace for SEAS application</td>
 </tr>
 <tr>
@@ -1388,13 +1416,13 @@ export ANSIBLE_CONFIG=./ansible.cfg
 </tr>
 <tr>
 <td>SEAS_SYS_PASSPHRASE</td>
-<td>Passw0rd@</td>
+<td>Password123!</td>
 <td>No</td>
 <td>System passphrase for SEAS application</td>
 </tr>
 <tr>
 <td>SEAS_ADMIN_PASSWORD</td>
-<td>Passw0rd@</td>
+<td>Password123!</td>
 <td>No</td>
 <td>Admin password for SEAS application</td>
 </tr>
