@@ -5,7 +5,7 @@ ssp_engine_port: "{{ lookup('env', 'SSP_ENGINE_PORT') | default('63366', true) }
 
 ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') | default('dev01', true) }}"
 ssp_admin_user: "{{ lookup('env', 'SSP_ADMIN_USER') | default('admin', true) }}"
-ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Password123!', true) }}"
 
 ssp_namespace: "ibm-ssp-{{ ssp_instanceid }}-engine"
 ssp_service: "s0-ibm-ssp-engine"

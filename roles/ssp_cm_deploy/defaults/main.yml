@@ -1,25 +1,25 @@
 ---
 ssp_cm_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
 
-ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0', true) }}"
+ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0.01', true) }}"
 
 ssp_cm_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 
 ssp_cm_image_repository: "{{ lookup('env', 'SSP_CM_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-cm/ssp-cm-docker-image', true) }}"
 ssp_cm_skip_image_secret: "{{ lookup('env', 'SSP_CM_SKIP_IMAGE_SECRET') | default(false, true) }}"
 
-ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
-ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Password123!', true) }}"
+ssp_admin_password: "{{ lookup('env', 'SSP_ADMIN_PASSWORD') | default('Password123!', true) }}"
 ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') | default('changeit', true) }}"
 ssp_keycert_encrypt_passphrase: "{{ lookup('env', 'SSP_KEYCERT_ENCRYPT_PASSPHRASE') | default('Change1t@', true) }}"
 ssp_custom_keycert_passphrase: "{{ lookup('env', 'SSP_CUSTOM_KEYCERT_PASSPHRASE') | default('Change1t@', true) }}"
-ssp_commoncert_password: "{{ lookup('env', 'SSP_COMMONCERT_PASSWORD') | default('Passw0rd@', true) }}"
-ssp_engcert_password: "{{ lookup('env', 'SSP_ENGCERT_PASSWORD') | default('Passw0rd@', true) }}"
-ssp_cmclientcert_password: "{{ lookup('env', 'SSP_CMCLIENTCERT_PASSWORD') | default('Passw0rd@', true) }}"
-ssp_cmcert_password: "{{ lookup('env', 'SSP_CMCERT_PASSWORD') | default('Passw0rd@', true) }}"
-ssp_cmservercert_password: "{{ lookup('env', 'SSP_CMSERVERCERT_PASSWORD') | default('Passw0rd@', true) }}"
-ssp_webcert_password: "{{ lookup('env', 'SSP_WEBCERT_PASSWORD') | default('Passw0rd@', true) }}"
-ssp_exportcert_password: "{{ lookup('env', 'SSP_EXPORTEDCERT_PASSWORD') | default('Passw0rd@', true) }}"
+ssp_commoncert_password: "{{ lookup('env', 'SSP_COMMONCERT_PASSWORD') | default('Password123!', true) }}"
+ssp_engcert_password: "{{ lookup('env', 'SSP_ENGCERT_PASSWORD') | default('Password123!', true) }}"
+ssp_cmclientcert_password: "{{ lookup('env', 'SSP_CMCLIENTCERT_PASSWORD') | default('Password123!', true) }}"
+ssp_cmcert_password: "{{ lookup('env', 'SSP_CMCERT_PASSWORD') | default('Password123!', true) }}"
+ssp_cmservercert_password: "{{ lookup('env', 'SSP_CMSERVERCERT_PASSWORD') | default('Password123!', true) }}"
+ssp_webcert_password: "{{ lookup('env', 'SSP_WEBCERT_PASSWORD') | default('Password123!', true) }}"
+ssp_exportcert_password: "{{ lookup('env', 'SSP_EXPORTEDCERT_PASSWORD') | default('Password123!', true) }}"
 
 ssp_cm_skip_helm: "{{ lookup('env', 'SSP_SKIP_HELM') | default(false, true) }}"
 
@@ -59,6 +59,10 @@ ssp_cm_generate_certificates: true  # true when run SSPCm and after SSP
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.2.0.0.01:
+    helm_version: "1.5.1"
+    image_tag: "6.2.0.0.01"
+    affinity_default: "{}"
   6.2.0.0:
     helm_version: "1.4.0"
     image_tag: "6.2.0.0"
