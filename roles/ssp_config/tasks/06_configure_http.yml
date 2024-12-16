@@ -1,12 +1,12 @@
 ---
-- name: Define Facts
+- name: Define Facts HTTP
   ansible.builtin.set_fact:
     policy_name: "http-policy-01"
     netmap_name: "http-netmap-01"
     adapter_name: "http-adapter-01"
     adapter_listen_port: "25000"
 
-- name: Define Facts
+- name: Define Facts HTTP (XML)
   ansible.builtin.set_fact:
     policy_xml: |
       <httpPolicyDef>
@@ -49,7 +49,9 @@
     body: "{{ policy_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.http.policy
+  when:
+    - ssp_cfg.http.policy
+    - "policy_name not in get_all_policies.content"
   register: http_plc_cout
 
 - name: Create Netmap HTTP
@@ -62,7 +64,9 @@
     body: "{{ netmap_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.http.netmap
+  when:
+    - ssp_cfg.http.netmap
+    - "netmap_name not in get_all_netmaps.content"
   register: http_np_cout
 
 - name: Create Adapter HTTP
@@ -75,5 +79,7 @@
     body: "{{ adapter_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.http.adapter
+  when:
+    - ssp_cfg.http.adapter
+    - "adapter_name not in get_all_adapters.content"
   register: http_adp_cout

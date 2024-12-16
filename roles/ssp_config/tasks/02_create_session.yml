@@ -24,3 +24,51 @@
 - name: Set Facts for Engine
   ansible.builtin.set_fact:
     session_token: "{{ session_token_list[0] }}"
+
+- name: Get All Engines
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/engine/getAllEngines
+    method: GET
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    status_code: 200
+    validate_certs: false
+    return_content: true
+  register: get_all_engines
+
+- name: Get All Policies
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/getAllPolicies/
+    method: GET
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    status_code: 200
+    validate_certs: false
+    return_content: true
+  register: get_all_policies
+
+- name: Get All Netmaps
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/netmap/getAllNetmaps
+    method: GET
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    status_code: 200
+    validate_certs: false
+    return_content: true
+  register: get_all_netmaps
+
+- name: Get All Adapters
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/adapter/getAllAdapters
+    method: GET
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    status_code: 200
+    validate_certs: false
+    return_content: true
+  register: get_all_adapters

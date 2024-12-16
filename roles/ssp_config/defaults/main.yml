@@ -14,19 +14,19 @@ ssp_cm_route: "s0-ibm-ssp-cm"
 
 ssp_cfg:
   engine:
-    enabled: false
+    enabled: true
   cd:
-    enabled: false
+    enabled: true
     policy: true
     netmap: true
     adapter: true
   sftp:
-    enabled: false
+    enabled: true
     policy: true
-    netmap: true
+    netmap: false
     adapter: false
   http:
-    enabled: false
+    enabled: true
     policy: true
     netmap: false
     adapter: false

@@ -1,12 +1,12 @@
 ---
-- name: Define Facts
+- name: Define Facts SFTP
   ansible.builtin.set_fact:
     policy_name: "sftp-policy-01"
     netmap_name: "sftp-netmap-01"
     adapter_name: "sftp-adapter-01"
     adapter_listen_port: "25000"
 
-- name: Define Facts
+- name: Define Facts SFTP  (XML)
   ansible.builtin.set_fact:
     policy_xml: |
       <ftpPolicyDef>
@@ -71,7 +71,9 @@
     body: "{{ policy_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.sftp.policy
+  when:
+    - ssp_cfg.sftp.policy
+    - "policy_name not in get_all_policies.content"
   register: sftp_plc_cout
 
 - name: Create Netmap SFTP
@@ -84,7 +86,9 @@
     body: "{{ netmap_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.sftp.netmap
+  when:
+    - ssp_cfg.sftp.netmap
+    - "netmap_name not in get_all_netmaps.content"
   register: sftp_np_cout
 
 - name: Create Adapter SFTP
@@ -97,5 +101,7 @@
     body: "{{ adapter_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.sftp.adapter
+  when:
+    - ssp_cfg.sftp.adapter
+    - "adapter_name not in get_all_adapters.content"
   register: sftp_adp_cout

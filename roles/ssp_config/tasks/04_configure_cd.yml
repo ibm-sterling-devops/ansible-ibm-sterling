@@ -1,13 +1,13 @@
 ---
-- name: Define Facts
+- name: Define Facts C:D
   ansible.builtin.set_fact:
-    policy_name: "cd-policy-01"
+    policy_name: "cd-passthru-policy"
     netmap_name: "cd-netmap-01"
     adapter_name: "cd-adapter-01"
     adapter_listen_port: "25000"
 
 
-- name: Define Facts
+- name: Define Facts C:D (XML)
   ansible.builtin.set_fact:
     policy_xml: |
       <cdPolicyDef>
@@ -86,7 +86,6 @@
         <urlRoutingType>standardRouting</urlRoutingType>
       </cdAdapterDef>
 
-
 - name: Create Policy C:D
   ansible.builtin.uri:
     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
@@ -97,7 +96,10 @@
     body: "{{ policy_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.cd.policy
+    return_content: true
+  when:
+    - ssp_cfg.cd.policy
+    - "policy_name not in get_all_policies.content"
   register: cd_plc_cout
 
 - name: Create Netmap C:D
@@ -110,7 +112,9 @@
     body: "{{ netmap_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.cd.netmap
+  when:
+    - ssp_cfg.cd.netmap
+    - "netmap_name not in get_all_netmaps.content"
   register: cd_np_cout
 
 - name: Create Adapter C:D
@@ -123,5 +127,7 @@
     body: "{{ adapter_xml }}"
     status_code: 200
     validate_certs: false
-  when: ssp_cfg.cd.adapter
+  when:
+    - ssp_cfg.cd.adapter
+    - "adapter_name not in get_all_adapters.content"
   register: cd_adp_cout

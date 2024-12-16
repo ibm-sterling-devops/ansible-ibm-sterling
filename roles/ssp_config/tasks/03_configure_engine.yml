@@ -1,9 +1,13 @@
 ---
-- name: Define Facts (Json)
+- name: Define Facts Engine
+  ansible.builtin.set_fact:
+    engine_name: "ssp-engine-01"
+
+- name: Define Facts Engine (Json)
   ansible.builtin.set_fact:
     engine_json: |
       {
-        "name": "ssp-engine-01",
+        "name": "{{ engine_name }}",
         "host": "{{ ssp_engine_host }}",
         "description": "SSP Engine Demo",
         "port": 63366,
@@ -42,11 +46,9 @@
     status_code: 200
     validate_certs: false
   register: engine_rsp
-
-- name: Debug
-  ansible.builtin.debug:
-    msg:
-      - "engine_rsp.status ................. {{ engine_rsp.status }}"
+  when:
+    - ssp_cfg.engine.enabled
+    - "engine_name not in get_all_engines.content"
 
 # Version 6.2 support rest api using json instead of xml
 #
