@@ -1,25 +1,58 @@
 ---
 - name: Define Facts
   ansible.builtin.set_fact:
-    policy_json: |
-      {
-        "policyName": "sftp-passthru-policy",
-        "description": "SFTP Pass-Through policy",
-        "userAuthentication": "none",
-        "eaAuthProfile": "",
-        "userMapping": "passthru",
-        "protocol": "sftp",
-        "preferredAuthentication": "password",
-        "eaKeyAuthProfile": "",
-        "keyauthReqdBeforePwdauth": false
-      }
-    netmap_json: |
-      {
-        "name": "sftp-passthru-nm",
-        "description": "SFTP Pass-Through netmap",
-        "protocol": "sftp"
-      }
-    adapter_json: |
+    policy_name: "sftp-policy-01"
+    netmap_name: "sftp-netmap-01"
+    adapter_name: "sftp-adapter-01"
+    adapter_listen_port: "25000"
+
+- name: Define Facts
+  ansible.builtin.set_fact:
+    policy_xml: |
+      <ftpPolicyDef>
+        <description>SFTP Policy</description>
+        <eaAuthProfile></eaAuthProfile>
+        <eaKeyAuthProfile></eaKeyAuthProfile>
+        <keyauthReqdBeforePwdauth>false</keyauthReqdBeforePwdauth>
+        <name>{{ policy_name }}</name>
+        <preferredAuthentication>password</preferredAuthentication>
+        <protocol>sftp</protocol>
+        <protocolValidationOn>true</protocolValidationOn>
+        <status>locked</status>
+        <userAuthentication>none</userAuthentication>
+        <userMapping>passthru</userMapping>
+      </ftpPolicyDef>
+    netmap_xml: |
+      <netmapDef>
+      <description>FTP_Netmap</description>
+      <inboundNodes><inboundNodeDef>
+      <description>Inbound</description>
+      <logLevel>DEBUG</logLevel>
+      <name>Inbound</name>
+      <peerAddressPattern>*</peerAddressPattern>
+      <policyId>{{ policy_name }}</policyId>
+      <secureConnection>false</secureConnection>
+      </inboundNodeDef>
+      </inboundNodes>
+      <name>{{ netmap_name }}</name>
+      <outboundNodes><outboundNodeDef>
+      <addresses><address>
+      <nodeName>Outbound_Node_Name</nodeName>
+      <host>10.20.30.40</host>
+      <port>1663</port>
+      </address>
+      </addresses>
+      <logLevel>DEBUG</logLevel>
+      <name>Outbound_Node_Name</name>
+      <secureConnection>false</secureConnection>
+      <validDestination>10.20.30.40</validDestination>
+      <validDestinationPort>1663</validDestinationPort>
+      </outboundNodeDef>
+      </outboundNodes>
+      <protocol>sftp</protocol>
+      <status></status>
+      </netmapDef>
+    adapter_xml: |
       {
         "name": "sftp-adapter-01",
         "listenPort": "30120",
@@ -27,47 +60,42 @@
             "engineName": "ssp-engine-01",
       }
 
-- name: Create Policy Json SFTP
+
+- name: Create Policy SFTP
   ansible.builtin.uri:
-    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/policy
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
     method: POST
     headers:
       X-Authentication: "{{ session_token }}"
-      Accept: "application/json, text/plain, */*"
-      Content-Type: "application/json"
-    body: "{{ policy_json }}"
-    body_format: json
+      Content-Type: "application/xml"
+    body: "{{ policy_xml }}"
     status_code: 200
     validate_certs: false
   when: ssp_cfg.sftp.policy
   register: sftp_plc_cout
 
-# - name: Create Netmap SFTP
-#   ansible.builtin.uri:
-#     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/netmap
-#     method: POST
-#     headers:
-#       X-Authentication: "{{ session_token }}"
-#       Accept: "application/json, text/plain, */*"
-#       Content-Type: "application/json"
-#     body: "{{ netmap_json }}"
-#     body_format: json
-#     status_code: 200
-#     validate_certs: false
-#   when: ssp_cfg.sftp.netmap
-#   register: sftp_np_cout
+- name: Create Netmap SFTP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/netmap/createNetmap
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: "{{ netmap_xml }}"
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.sftp.netmap
+  register: sftp_np_cout
 
-# - name: Create Adapter SFTP
-#   ansible.builtin.uri:
-#     url: https://{{ ssp_cm_url }}sspcmrest/sspcm/rest/api/adapter
-#     method: POST
-#     headers:
-#       X-Authentication: "{{ session_token }}"
-#       Accept: "application/json, text/plain, */*"
-#       Content-Type: "application/json"
-#     body: "{{ adapter_json }}"
-#     body_format: json
-#     status_code: 200
-#     validate_certs: false
-#   when: ssp_cfg.sftp.adapter
-#   register: sftp_adp_cout
+- name: Create Adapter SFTP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/adapter/createAdapter
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: "{{ adapter_xml }}"
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.sftp.adapter
+  register: sftp_adp_cout

@@ -1,25 +1,37 @@
 ---
 - name: Define Facts
   ansible.builtin.set_fact:
-    policy_json: |
-      {
-        "policyName": "http-passthru-policy",
-        "description": "HTTP Pass-Through policy",
-        "userAuthentication": "none",
-        "eaAuthProfile": "",
-        "userMapping": "passthru",
-        "protocol": "http",
-        "preferredAuthentication": "password",
-        "eaKeyAuthProfile": "",
-        "keyauthReqdBeforePwdauth": false
-      }
-    netmap_json: |
+    policy_name: "http-policy-01"
+    netmap_name: "http-netmap-01"
+    adapter_name: "http-adapter-01"
+    adapter_listen_port: "25000"
+
+- name: Define Facts
+  ansible.builtin.set_fact:
+    policy_xml: |
+      <httpPolicyDef>
+        <authenticationType>basic</authenticationType>
+        <blockCommonExploits>true</blockCommonExploits>
+        <commonExploitStrings>"--", "'", "%00"</commonExploitStrings>
+        <description>HTTP Policy</description>
+        <eaAuthProfile></eaAuthProfile>
+        <eaCertProfile></eaCertProfile>
+        <eaCertValidation>false</eaCertValidation>
+        <forceToUnlock>false</forceToUnlock>
+        <name>{{ policy_name }}</name>
+        <protocol>http</protocol>
+        <protocolValidationOn>true</protocolValidationOn>
+        <status>locked</status>
+        <userAuthentication>none</userAuthentication>
+        <userMapping>passthru</userMapping>
+      </httpPolicyDef>
+    netmap_xml: |
       {
         "name": "http-passthru-nm",
         "description": "HTTP Pass-Through netmap",
         "protocol": "http"
       }
-    adapter_json: |
+    adapter_xml: |
       {
         "name": "sfg-adapter-01",
         "listenPort": "30140",
@@ -27,47 +39,41 @@
             "engineName": "ssp-engine-01",
       }
 
-- name: Create Policy Json HTTP
+- name: Create Policy HTTP
   ansible.builtin.uri:
-    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/policy
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
     method: POST
     headers:
       X-Authentication: "{{ session_token }}"
-      Accept: "application/json, text/plain, */*"
-      Content-Type: "application/json"
-    body: "{{ policy_json }}"
-    body_format: json
+      Content-Type: "application/xml"
+    body: "{{ policy_xml }}"
     status_code: 200
     validate_certs: false
   when: ssp_cfg.http.policy
   register: http_plc_cout
 
-# - name: Create Netmap HTTP
-#   ansible.builtin.uri:
-#     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/api/netmap
-#     method: POST
-#     headers:
-#       X-Authentication: "{{ session_token }}"
-#       Accept: "application/json, text/plain, */*"
-#       Content-Type: "application/json"
-#     body: "{{ netmap_json }}"
-#     body_format: json
-#     status_code: 200
-#     validate_certs: false
-#   when: ssp_cfg.http.netmap
-#   register: http_np_cout
+- name: Create Netmap HTTP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/netmap/createNetmap
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: "{{ netmap_xml }}"
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.http.netmap
+  register: http_np_cout
 
-# - name: Create Adapter HTTP
-#   ansible.builtin.uri:
-#     url: https://{{ ssp_cm_url }}sspcmrest/sspcm/rest/api/adapter
-#     method: POST
-#     headers:
-#       X-Authentication: "{{ session_token }}"
-#       Accept: "application/json, text/plain, */*"
-#       Content-Type: "application/json"
-#     body: "{{ adapter_json }}"
-#     body_format: json
-#     status_code: 200
-#     validate_certs: false
-#   when: ssp_cfg.http.adapter
-#   register: http_adp_cout
+- name: Create Adapter HTTP
+  ansible.builtin.uri:
+    url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/adapter/createAdapter
+    method: POST
+    headers:
+      X-Authentication: "{{ session_token }}"
+      Content-Type: "application/xml"
+    body: "{{ adapter_xml }}"
+    status_code: 200
+    validate_certs: false
+  when: ssp_cfg.http.adapter
+  register: http_adp_cout
