@@ -62,6 +62,12 @@
     - ssp_cm_url == ""
     - ssp_cm_route_cout is defined and ssp_cm_route_cout != ""
 
+# 5. Serial ID
+# -----------------------------------------------------------------------------
+- name: Unique Id for files
+  ansible.builtin.set_fact:
+    my_serial: "{{ lookup('password', '/dev/null length=8 chars=ascii_lowercase,digits') }}"
+
 # 4. Print Debug information
 # -----------------------------------------------------------------------------
 - name: Debug
@@ -70,3 +76,4 @@
       - "SSP Engine Host ................. {{ ssp_engine_host }}"
       - "SSP CM URL ...................... {{ ssp_cm_url }}"
       - "SSP CM Admin .................... {{ ssp_admin_user }}"
+      - "my_serial ....................... {{ my_serial }}"

@@ -12,6 +12,8 @@ ssp_service: "s0-ibm-ssp-engine"
 ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
 ssp_cm_route: "s0-ibm-ssp-cm"
 
+my_workdir: /tmp
+
 ssp_cfg:
   engine:
     enabled: true
@@ -23,7 +25,7 @@ ssp_cfg:
   sftp:
     enabled: true
     policy: true
-    netmap: false
+    netmap: true
     adapter: false
   http:
     enabled: true

@@ -5,6 +5,7 @@
     netmap_name: "sftp-netmap-01"
     adapter_name: "sftp-adapter-01"
     adapter_listen_port: "25000"
+    host_key: "{{ my_workdir }}/ssh_host_rsa-{{ my_serial }}.key"
 
 - name: Define Facts SFTP  (XML)
   ansible.builtin.set_fact:
@@ -60,7 +61,6 @@
             "engineName": "ssp-engine-01",
       }
 
-
 - name: Create Policy SFTP
   ansible.builtin.uri:
     url: https://{{ ssp_cm_url }}/sspcmrest/sspcm/rest/policy/createPolicy
@@ -75,6 +75,14 @@
     - ssp_cfg.sftp.policy
     - "policy_name not in get_all_policies.content"
   register: sftp_plc_cout
+
+- name: Ensure the SSH host key exists
+  command:
+    cmd: ssh-keygen -q -t rsa -b 4096 -f {{ host_key }} -N "" -C "host_key"
+  when:
+    - ssp_cfg.sftp.netmap
+    - "netmap_name not in get_all_netmaps.content"
+  register: sftp_np_cout
 
 - name: Create Netmap SFTP
   ansible.builtin.uri:
