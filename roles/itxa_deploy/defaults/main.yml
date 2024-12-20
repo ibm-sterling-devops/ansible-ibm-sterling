@@ -69,8 +69,8 @@ storage_class_matrix:
     rom: ""
     rwop: ""
   azure:
-    rwx: "azurefiles-premium"
-    rwx_nogid: "azurefiles-premium"
+    rwx: "azurefile-premium"
+    rwx_nogid: "azurefile-premium"
     rwo: "managed-premium"
     rom: ""
     rwop: ""
