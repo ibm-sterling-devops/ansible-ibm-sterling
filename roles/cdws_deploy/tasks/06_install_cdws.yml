@@ -28,16 +28,7 @@
     cmd: "helm install --timeout {{ cdws_helm.timeout }} -f {{ cdws_helm.values_yaml }} -n {{ cdws_namespace }} {{ cdws_helm.release }} {{ my_helmfile }}"
   register: helm_cout
   changed_when: helm_cout.rc != 0
-
-# # https://docs.ansible.com/ansible/latest/collections/kubernetes/core/helm_module.html
-# - name: Deploy Connect:Direct chart from local path
-#   kubernetes.core.helm:
-#     name: "{{ cdws_helm_release }}"
-#     chart_ref: "{{ cdws_helm.chart }}"
-#     release_namespace: "{{ cdws_namespace }}"
-#     wait: True
-#     timeout: "{{ cdws_helm.timeout }}"
-#     values_files: "{{ cdws_helm.values }}"
+  when: not cdws_skip_helm
 
 - name: "Lookup Connect:Direct Pod"
   kubernetes.core.k8s_info:
@@ -52,6 +43,7 @@
       type: Ready
       status: "True"
   register: cdws_pod
+  when: not cdws_skip_helm
 
 - name: Configure facts
   ansible.builtin.set_fact:

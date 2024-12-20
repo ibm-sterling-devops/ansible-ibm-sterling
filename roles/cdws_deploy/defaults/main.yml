@@ -9,6 +9,8 @@ cdws_cacert_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('Pass
 
 cdws_license_type: "{{ lookup('env', 'CDWS_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 
+cdws_skip_helm: "{{ lookup('env', 'CDWS_SKIP_HELM') | default(false, true) }}"
+
 # Storage configuration
 cdws_storage_class: "{{ lookup('env', 'CDWS_STORAGE_CLASS') }}"
 cdws_storage_capacity: "{{ lookup('env', 'CDWS_STORAGE_CAPACITY') | default('500Mi', true) }}"
