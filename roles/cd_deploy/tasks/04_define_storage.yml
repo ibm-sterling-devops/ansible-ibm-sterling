@@ -88,7 +88,7 @@
     my_storage_class: "azure"
   when:
     - my_storage_class == ''
-    - "'azurefiles-premium' in my_storage_list"
+    - "'azurefile-premium' in my_storage_list"
 
 - name: Check for IBM Techzone StorageClass
   ansible.builtin.set_fact:
