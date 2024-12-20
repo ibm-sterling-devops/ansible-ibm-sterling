@@ -3,9 +3,9 @@ cdws_namespace: "{{ lookup('env', 'CDWS_NAMESPACE') | default('sterling-cdws01',
 
 cdws_version: "{{ lookup('env', 'CDWS_VERSION') | default('6.4.0.0_ifix001', true) }}"
 
-cdws_truststore_password: "{{ lookup('env', 'CDWS_TRUSTSTOREPASSWORD') | default('changeit', true) }}"
-cdws_keystore_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('changeit', true) }}"
-cdws_cacert_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('passw0rd', true) }}"
+cdws_truststore_password: "{{ lookup('env', 'CDWS_TRUSTSTOREPASSWORD') | default('Change1t@', true) }}"
+cdws_keystore_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('Change1t@', true) }}"
+cdws_cacert_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('Password123!', true) }}"
 
 cdws_license_type: "{{ lookup('env', 'CDWS_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 
