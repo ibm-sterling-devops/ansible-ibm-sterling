@@ -55,7 +55,6 @@ service:
     #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01
 
 ccArgs:
-  # This will be deprecated, instead of this, use storageSecurity.runAsUser
   appUserUID: "1010"
   ccInterval: "2h"
   devEnvDropTables: "false"
@@ -72,11 +71,6 @@ ccArgs:
   dbInit: "true"
   dbPartition: "false"
   dbDrivers: "{{ scc_dbdrivers }}"
-  #dbPasswordVaultEnable: "true"
-  #dbPasswordVaultTimeout: "60"
-  #dbPasswordVaultRetryWaitTime: "15"
-  #dbPasswordVaultScriptLocation: "/app/certs_secret_files/db_script.sh"
-  #dbPasswordVaultRetries: "10"
   mssqlGlobal: "{{ scc_mssqlglobal }}"
 
   autoStopJavaWebAppServer: "true"
@@ -158,7 +152,6 @@ extraInitContainers:
       value: ""
     userInput:
       enabled: false
-hostAliases: []
 
 affinity:
   nodeAffinity:
@@ -221,11 +214,11 @@ secret:
 
 # for ibm cloud environment
 dashboard:
-  enabled: false
+  enabled: {{ scc_dashboard }}
 
 # applicable for openshift environment for accessing UI
 route:
-  enabled: true
+  enabled: {{ scc_oc_route }}
 
 autoscaling:
   enabled: false
@@ -241,51 +234,15 @@ license: true
 licenseType: "{{ scc_licensetype }}"
 
 networkPolicy:
+  policyTypes:
+    - Ingress
+    - Egress
   # apply ingress rule. Default allow all ingress traffic
-  ingress:
-    enabled: false
-  #  fromSelectors:
-  #  - namespaceSelector:
-  #      matchLabels:
-  #        name: <namespace>
-  #    podSelector:
-  #      matchLabels:
-  #        app.kubernetes.io/instance: "<Release Name>"
-  #  - podSelector:
-  #      matchLabels:
-  #        app.kubernetes.io/name: "ibm-sccm"
-  #  - ipBlock:
-  #      cidr: <IP Address>/<block size>
-  #      except:
-  #      - <IP Address>/<block size>
-  #  ports:
-  #   - protocol: TCP
-  #     port: 58083
-  #     endPort: 58083
-
-  #apply egress rule. Default allow all egress traffic
-  egress: 
-    enabled: false
-  #  ports:
-  #    - port: 1433
-  #      protocol: TCP
-  #    - port: 50000
-  #      protocol: TCP
-
-  #  toSelectors:
-  #  - ipBlock:
-  #      cidr: <IP Address>/<block size>
-  #      except:
-  #      - <IP Address>/<block size>
-  #  - namespaceSelector:
-  #      matchLabels:
-  #        name: <namespace>
-  #    podSelector:
-  #      matchLabels:
-  #        app.kubernetes.io/instance: "<Release Name>"
-  #  - podSelector:
-  #      matchLabels:
-  #        app.kubernetes.io/name: "ibm-sccm"
+  # ingress:
+  #   - {}
+  # apply egress rule. Default allow all egress traffic
+  egress:
+    - {}
 
 # can be used when ingress controller is available
 # can be used for rule based access
