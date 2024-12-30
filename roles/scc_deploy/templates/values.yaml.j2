@@ -241,29 +241,10 @@ license: true
 licenseType: "{{ scc_licensetype }}"
 
 networkPolicy:
-  # apply ingress rule. Default allow all ingress traffic
   ingress:
-    enabled: false
-  #  fromSelectors:
-  #  - namespaceSelector:
-  #      matchLabels:
-  #        name: <namespace>
-  #    podSelector:
-  #      matchLabels:
-  #        app.kubernetes.io/instance: "<Release Name>"
-  #  - podSelector:
-  #      matchLabels:
-  #        app.kubernetes.io/name: "ibm-sccm"
-  #  - ipBlock:
-  #      cidr: <IP Address>/<block size>
-  #      except:
-  #      - <IP Address>/<block size>
-  #  ports:
-  #   - protocol: TCP
-  #     port: 58083
-  #     endPort: 58083
+    enabled: true
 
-  #apply egress rule. Default allow all egress traffic
+  # 1433 (MSSQL), 1521 (Oracle) 50000 (DB2), SEAS (61365/61366) 
   egress: 
     enabled: false
   #  ports:
