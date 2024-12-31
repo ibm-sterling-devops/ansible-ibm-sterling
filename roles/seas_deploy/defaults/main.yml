@@ -1,26 +1,30 @@
 ---
-# Environment variables
-# -----------------------------------------------------------------------------------------------------------------
-seas_namespace: "{{ lookup('env', 'SEAS_NAMESPACE') | default('sterling-seas01', true) }}"
+# Entitlement
+# -----------------------------------------------------------------------------
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
+# SEAS action
+# ---------------------------------------------------------------------------
+seas_action: "{{ lookup('env', 'SEAS_ACTION') | default('install', true) }}"
+
+# Configure SEAS instance
+# -----------------------------------------------------------------------------------------------------------------
+seas_namespace: "{{ lookup('env', 'SEAS_NAMESPACE') | default('sterling-seas01', true) }}"
 seas_version: "{{ lookup('env', 'SEAS_VERSION') | default('6.1.0.2.01', true) }}"
+
+seas_license_type: "{{ lookup('env', 'SEAS_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 seas_sys_passphrase: "{{ lookup('env', 'SEAS_SYS_PASSPHRASE') | default('Password123!', true) }}"
 seas_admin_password: "{{ lookup('env', 'SEAS_ADMIN_PASSWORD') | default('Password123!', true) }}"
 # lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=8)
 seas_keystore_passphrase: "{{ lookup('env', 'SEAS_KEYSTORE_PASSPHRASE') | default('Change1t@', true) }}"
 seas_truststore_passphrase: "{{ lookup('env', 'SEAS_TRUSTSTOREPASSWORD') | default('Change1t@', true) }}"
 
-seas_license_type: "{{ lookup('env', 'SEAS_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
-
-
 # Configure instance
 # -----------------------------------------------------------------------------
 entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
 
-
-# Role Internal
+# Others
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
 

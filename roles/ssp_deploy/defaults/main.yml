@@ -1,15 +1,20 @@
 ---
-# Environment variables
-# -----------------------------------------------------------------------------------------------------------------
-ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
+# Entitlement
+# -----------------------------------------------------------------------------
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
-ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0.01', true) }}"
-ssp_license_type: "{{ lookup('env', 'SSP_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
+# SSP action
+# ---------------------------------------------------------------------------
+ssp_action: "{{ lookup('env', 'SSP_ACTION') | default('install', true) }}"
 
+# Configure SSP instance
+# -----------------------------------------------------------------------------------------------------------------
+ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
+ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0.01', true) }}"
+
+ssp_license_type: "{{ lookup('env', 'SSP_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 ssp_image_repository: "{{ lookup('env', 'SSP_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-engine/ssp-engine-docker-image', true) }}"
 ssp_skip_image_secret: "{{ lookup('env', 'SSP_SKIP_IMAGE_SECRET') | default(false, true) }}"
-
 ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Password123!', true) }}"
 ssp_keycert_store_passphrase: "{{ lookup('env', 'SSP_KEYCERT_STORE_PASSPHRASE') | default('changeit', true) }}"
 ssp_keycert_encrypt_passphrase: "{{ lookup('env', 'SSP_KEYCERT_ENCRYPT_PASSPHRASE') | default('Change1t@', true) }}"
@@ -20,16 +25,16 @@ ssp_timezone: "{{ lookup('env', ' SSP_TIMEZONE') | default('America/New_York', t
 
 ssp_skip_helm: "{{ lookup('env', 'SSP_SKIP_HELM') | default(false, true) }}"
 
-# Storage configuration
+# Storage
+# -----------------------------------------------------------------------------
 ssp_storage_class: "{{ lookup('env', 'SSP_STORAGE_CLASS') }}"
 ssp_storage_capacity: "{{ lookup('env', 'SSP_STORAGE_CAPACITY') | default('1Gi', True) }}"
 
-# CPU and memory limits configuration on the container
+# Request/limit defaults
+# -----------------------------------------------------------------------------
 ssp_cpu_limits: "{{ lookup('env', 'SSP_CPU_LIMITS') | default('1000m', true) }}"
 ssp_mem_limits: "{{ lookup('env', 'SSP_MEM_LIMITS') | default('3Gi', true) }}"
 ssp_ephemeral_storage_limits: "{{ lookup('env', 'SSP_EPHEMERAL_STORAGE_LIMITS') | default('6Gi', true) }}"
-
-# CPU and memory request configuration on the container
 ssp_cpu_requests: "{{ lookup('env', 'SSP_CPU_REQUESTS') | default('1000m', true) }}"
 ssp_mem_requests: "{{ lookup('env', 'SSP_MEM_REQUESTS') | default('3Gi', true) }}"
 ssp_ephemeral_storage_requests: "{{ lookup('env', 'SSP_EPHEMERAL_STORAGE_REQUESTS') | default('4Gi', true) }}"

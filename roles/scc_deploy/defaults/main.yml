@@ -1,24 +1,28 @@
 ---
-# Environment variables
+# Entitlement
+# -----------------------------------------------------------------------------
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# SCC action
+# ---------------------------------------------------------------------------
+scc_action: "{{ lookup('env', 'SCC_ACTION') | default('install', true) }}"
+
+# Configure SCC instance
 # -----------------------------------------------------------------------------------------------------------------
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
-scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('CCM', true) }}" # productEntitlement: "CCD,CCM"
-
 scc_version: "{{ lookup('env', 'SCC_VERSION') | default('6.4.0.0_2024-12-17', true) }}"
+
+scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('CCM', true) }}" # productEntitlement: "CCD,CCM"
 
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 
 scc_licensetype: "{{ lookup('env', ' SCC_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
-
 scc_system_passphrase: "{{ lookup('env', ' SCC_SYSTEM_PASSPHRASE') | default('passw0rd', true) }}"
 scc_admin: "{{ lookup('env', 'SCC_ADMIN') | default('admin', true) }}"
 scc_admin_password: "{{ lookup('env', ' SCC_ADMIN_PASSWORD') | default('passw0rd', true) }}"
 scc_truststore_password: "{{ lookup('env', ' SCC_TRUSTSTORE_PASSWORD') | default('changeit', true) }}"
 scc_keystore_password: "{{ lookup('env', ' SCC_KEYSTORE_PASSWORD') | default('changeit', true) }}"
 scc_userkey: "{{ lookup('env', ' SCC_EMAIL_PASSWORD') | default('passw0rd', true) }}"
-
-scc_skip_helm: "{{ lookup('env', 'SCC_SKIP_HELM') | default(false, true) }}"
 
 scc_dbvendor: "{{ lookup('env', ' SCC_DBVENDOR') }}"
 scc_dbhost: "{{ lookup('env', ' SCC_DBHOST') }}"
@@ -42,7 +46,7 @@ scc_jmstruststorepassword: "{{ lookup('env', ' SCC_JMS_TRUSTSTORE_PASSWORD') }}"
 
 scc_timezone: "{{ lookup('env', ' SCC_TIMEZONE') | default('America/New_York', true) }}"
 
-
+scc_skip_helm: "{{ lookup('env', 'SCC_SKIP_HELM') | default(false, true) }}"
 # Configure instance
 # -----------------------------------------------------------------------------
 scc_namespace: "ibm-scc-{{ scc_instanceid }}-app"

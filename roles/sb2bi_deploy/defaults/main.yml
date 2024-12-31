@@ -1,9 +1,15 @@
 ---
-# Get values from Environment Variables
+# Entitlement
 # -----------------------------------------------------------------------------
-si_action: "{{ lookup('env', 'SI_ACTION') | default('install', true) }}"
-si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# Sterling B2Bi action
+# ---------------------------------------------------------------------------
+si_action: "{{ lookup('env', 'SI_ACTION') | default('install', true) }}"
+
+# Configure Sterling B2Bi instance
+# -----------------------------------------------------------------------------------------------------------------
+si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
 
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"

@@ -1,4 +1,14 @@
 ---
+# Entitlement
+# -----------------------------------------------------------------------------
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# SSP action
+# ---------------------------------------------------------------------------
+ssp_ps_action: "{{ lookup('env', 'SSP_ACTION') | default('install', true) }}"
+
+# Configure SSP instance
+# -----------------------------------------------------------------------------------------------------------------
 ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
 
 ssp_ps_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0.01', true) }}"
@@ -12,7 +22,6 @@ ssp_ps_skip_image_secret: "{{ lookup('env', 'SSP_PS_SKIP_IMAGE_SECRET') | defaul
 # -----------------------------------------------------------------------------
 entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------
