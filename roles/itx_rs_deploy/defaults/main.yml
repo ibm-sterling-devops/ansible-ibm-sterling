@@ -1,24 +1,30 @@
 ---
-# Environment variables
+# Entitlement
+# -----------------------------------------------------------------------------
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# ITX RS action
+# ---------------------------------------------------------------------------
+itx_rs_action: "{{ lookup('env', 'ITX_RS_ACTION') | default('install', true) }}"
+
+# Configure ITX RS instance
 # -----------------------------------------------------------------------------------------------------------------
 itx_rs_namespace: "{{ lookup('env', 'ITX_RS_NAMESPACE') }}"
 itx_rs_instanceid: "{{ lookup('env', 'ITX_RS_INSTANCEID') }}"
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
-
 itx_rs_version: "{{ lookup('env', 'ITX_RS_VERSION') | default('10.1.2.0.20231130', true) }}"
 
 itx_rs_sys_passphrase: "{{ lookup('env', 'ITX_RS_SYS_PASSPHRASE') | default('Passw0rd@', true) }}"
 
-# Storage configuration
+# Storage
+# -----------------------------------------------------------------------------
 itx_rs_storage_class: "{{ lookup('env', 'ITX_RS_STORAGE_CLASS') }}"
 itx_rs_storage_capacity_data: "{{ lookup('env', 'ITX_RS_STORAGE_CAPACITY_DATA') | default('10Gi', true) }}"
 itx_rs_storage_capacity_logs: "{{ lookup('env', 'ITX_RS_STORAGE_CAPACITY_LOGS') | default('10Gi', true) }}"
 
-# CPU and memory limits configuration on the container
+# Request/limit defaults
+# -----------------------------------------------------------------------------
 itx_rs_cpu_limits: "{{ lookup('env', 'ITX_RS_CPU_LIMITS') | default('4000m', true) }}"
 itx_rs_mem_limits: "{{ lookup('env', 'ITX_RS_MEM_LIMITS') | default('16Gi', true) }}"
-
-# CPU and memory request configuration on the container
 itx_rs_cpu_requests: "{{ lookup('env', 'ITX_RS_CPU_REQUESTS') | default('1000m', true) }}"
 itx_rs_mem_requests: "{{ lookup('env', 'ITX_RS_MEM_REQUESTS') | default('4Gi', true) }}"
 

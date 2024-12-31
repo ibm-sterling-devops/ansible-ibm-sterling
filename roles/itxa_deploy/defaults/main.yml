@@ -1,10 +1,15 @@
 ---
-# Environment variables
-# -----------------------------------------------------------------------------------------------------------------
-itxa_instanceid: "{{ lookup('env', 'ITXA_INSTANCEID') }}"
-
+# Entitlement
+# -----------------------------------------------------------------------------
 entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
+# ITX RS action
+# ---------------------------------------------------------------------------
+itxa_action: "{{ lookup('env', 'ITXA_ACTION') | default('install', true) }}"
+
+# Configure ITX RS instance
+# -----------------------------------------------------------------------------------------------------------------
+itxa_instanceid: "{{ lookup('env', 'ITXA_INSTANCEID') }}"
 itxa_version: "{{ lookup('env', 'ITXA_VERSION') | default('10.0.1.10-x86_64', true) }}"
 
 itxa_admin_password: "{{ lookup('env', 'ITXA_ADMIN_PASSWORD') | default('passw0rd', true) }}"
