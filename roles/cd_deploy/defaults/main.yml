@@ -118,3 +118,9 @@ storage_class_matrix:
     rwo: "scale-cnsa"
     rom: "scale-cnsa"
     rwop: "scale-cnsa"
+  ibm-fyre1:
+    rwx: "rook-cephfs"
+    rwx_nogid: "rook-cephfs"
+    rwo: "rook-cephfs" # rook-ceph-block
+    rom: ""
+    rwop: ""

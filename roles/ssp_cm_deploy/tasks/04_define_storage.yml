@@ -63,6 +63,13 @@
     - my_storage_class is not defined
     - "'nfs' in my_storage_list"
 
+- name: Check for IBM Fyre StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "ibm-fyre1"
+  when:
+    - my_storage_class is not defined
+    - "'rook-cephfs' in my_storage_list"
+
 - name: StorageClass provided by user
   ansible.builtin.set_fact:
     my_storage_class: "{{ ssp_cm_storage_class }}"
