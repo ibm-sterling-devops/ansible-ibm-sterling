@@ -49,7 +49,6 @@ ssp_cm_ephemeral_storage_requests: "{{ lookup('env', 'SSP_CM_EPHEMERAL_STORAGE_R
 # -----------------------------------------------------------------------------
 entitled_registry: "cp.icr.io"
 entitled_registry_user: cp
-entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
 
 # Others
 # -----------------------------------------------------------------------------

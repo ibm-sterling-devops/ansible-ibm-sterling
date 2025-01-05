@@ -9,7 +9,7 @@
 # https://www.ibm.com/docs/en/connect-direct/6.3.0?topic=software-installing#concept_swd_dcn_lkb
 - name: Using pre-created Persistent Volume
   ansible.builtin.set_fact:
-    my_use_dynamic_provisioning:  "false"
+    my_use_dynamic_provisioning: "false"
     storage_class_matrix:
       pre-created-pvc:
         rwx: ""

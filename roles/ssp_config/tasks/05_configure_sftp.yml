@@ -77,7 +77,7 @@
   register: sftp_plc_cout
 
 - name: Ensure the SSH host key exists
-  command:
+  ansible.builtin.command:
     cmd: ssh-keygen -q -t rsa -b 4096 -f {{ host_key }} -N "" -C "host_key"
   when:
     - ssp_cfg.sftp.netmap

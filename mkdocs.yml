@@ -9,12 +9,12 @@ edit_uri: blob/main/docs/
 
 nav:
   - "Home":
-    - "Getting Started": index.md
-    - "Requirements":
-      - "MacOS": requirements-macos.md
-      - "Redhat Linux": requirements-rh.md
-      - "Ubuntu Linux": requirements-ubuntu.md
-      - "MS Windows": requirements-windows.md
+      - "Getting Started": index.md
+      - "Requirements":
+          - "MacOS": requirements-macos.md
+          - "Redhat Linux": requirements-rh.md
+          - "Ubuntu Linux": requirements-ubuntu.md
+          - "MS Windows": requirements-windows.md
   - "Deploy on RedHat OpenShift":
       - "Connect:Direct 6.x": playbooks/deploy_ocp_cd.md
       - "Connect:Direct WebServices": playbooks/deploy_ocp_cdws.md
@@ -36,8 +36,7 @@ nav:
       - "Deploy OpenLDAP as LDAP Server": playbooks/tools_deploy_openldap.md
   - "All Roles": all_roles.md
   - "Others":
-    - "Known Problems": others/known_problems.md
-
+      - "Known Problems": others/known_problems.md
 
 theme:
   name: material
