@@ -20,7 +20,7 @@ Current playbooks:
 * [Deploy IBM Sterling B2B Integrator](playbooks/deploy_ocp_sb2b.md)
 * [Deploy IBM Sterling Control Center Director/Monitor](playbooks/deploy_ocp_scc.md)
 * [Deploy IBM Sterling External Authentication Server](playbooks/deploy_ocp_seas.md)
-* [Deploy IBM Sterling Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter)](playbooks/deploy_ocp_ssp.md)
+* [Deploy IBM Sterling Secure Proxy Server on Redhat OpenShift (Engine, Configuration Manager, Perimeter)](playbooks/deploy_ocp_ssp.md)
 * [Deploy IBM Sterling Transformation Server](playbooks/deploy_ocp_itx_rs.md)
 * [Deploy IBM Sterling Transformation Extender Advanced](playbooks/deploy_ocp_itxa.md)
 
