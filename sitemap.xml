@@ -45,6 +45,10 @@
          <lastmod>2025-01-10</lastmod>
     </url>
     <url>
+         <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_pem/</loc>
+         <lastmod>2025-01-10</lastmod>
+    </url>
+    <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_sb2b/</loc>
          <lastmod>2025-01-10</lastmod>
     </url>

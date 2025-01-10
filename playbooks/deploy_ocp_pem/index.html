@@ -8,9 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cloudbeaver/">
+        <link rel="canonical" href="https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_pem/">
       
       
+        <link rel="prev" href="../deploy_ocp_ssp/">
+      
+      
+        <link rel="next" href="../deploy_ocp_seas/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -18,7 +22,7 @@
     
     
       
-        <title>Role cloudbeaver - IBM Sterling Devops Ansible</title>
+        <title>Sterling Partner Engagement Manager - IBM Sterling Devops Ansible</title>
       
     
     
@@ -62,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#role-cloudbeaver" class="md-skip">
+        <a href="#deploy-ibm-sterling-partner-engagement-manager-on-redhat-openshift" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Role cloudbeaver
+              Sterling Partner Engagement Manager
             
           </span>
         </div>
@@ -189,11 +193,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../playbooks/deploy_ocp_cd/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../deploy_ocp_cd/" class="md-tabs__link">
           
   
   Deploy on RedHat OpenShift
@@ -211,7 +217,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../playbooks/setup_cd/" class="md-tabs__link">
+        <a href="../setup_cd/" class="md-tabs__link">
           
   
   Standard Install
@@ -229,7 +235,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../playbooks/tools_deploy_cloudbeaver/" class="md-tabs__link">
+        <a href="../tools_deploy_cloudbeaver/" class="md-tabs__link">
           
   
   Tools
@@ -530,25 +536,28 @@
       
   
   
+    
   
   
+  
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -559,7 +568,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Deploy on RedHat OpenShift
@@ -573,7 +582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_cd/" class="md-nav__link">
+      <a href="../deploy_ocp_cd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -594,7 +603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_cdws/" class="md-nav__link">
+      <a href="../deploy_ocp_cdws/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -615,7 +624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_sb2b/" class="md-nav__link">
+      <a href="../deploy_ocp_sb2b/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -636,7 +645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_scc/" class="md-nav__link">
+      <a href="../deploy_ocp_scc/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -657,7 +666,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_ssp/" class="md-nav__link">
+      <a href="../deploy_ocp_ssp/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -675,10 +684,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_pem/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Sterling Partner Engagement Manager
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -687,6 +716,95 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preparation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ibm-entitled-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. IBM Entitled Registry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-login-on-openshift" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Login on OpenShift
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cloning-ansible-ibm-websphere-from-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cloning ansible-ibm-websphere from git
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-set-roles-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Set roles path
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-sterling-b2b-integrator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying Sterling B2B Integrator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variable
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -699,7 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_seas/" class="md-nav__link">
+      <a href="../deploy_ocp_seas/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -720,7 +838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_itx_rs/" class="md-nav__link">
+      <a href="../deploy_ocp_itx_rs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -741,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/deploy_ocp_itxa/" class="md-nav__link">
+      <a href="../deploy_ocp_itxa/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -809,7 +927,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/setup_cd/" class="md-nav__link">
+      <a href="../setup_cd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -830,7 +948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/setup_b2b/" class="md-nav__link">
+      <a href="../setup_b2b/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -898,7 +1016,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/tools_deploy_cloudbeaver/" class="md-nav__link">
+      <a href="../tools_deploy_cloudbeaver/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -919,7 +1037,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/tools_deploy_kafka/" class="md-nav__link">
+      <a href="../tools_deploy_kafka/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -940,7 +1058,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/tools_deploy_kowl/" class="md-nav__link">
+      <a href="../tools_deploy_kowl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -961,7 +1079,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/tools_deploy_minio/" class="md-nav__link">
+      <a href="../tools_deploy_minio/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -982,7 +1100,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../playbooks/tools_deploy_openldap/" class="md-nav__link">
+      <a href="../tools_deploy_openldap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1118,9 +1236,69 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#role-variables" class="md-nav__link">
+  <a href="#preparation" class="md-nav__link">
     <span class="md-ellipsis">
-      Role Variables
+      Preparation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ibm-entitled-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. IBM Entitled Registry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-login-on-openshift" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Login on OpenShift
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cloning-ansible-ibm-websphere-from-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cloning ansible-ibm-websphere from git
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-set-roles-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Set roles path
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-sterling-b2b-integrator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying Sterling B2B Integrator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variable
     </span>
   </a>
   
@@ -1144,9 +1322,56 @@
   
 
 
-<h1 id="role-cloudbeaver">Role cloudbeaver<a class="headerlink" href="#role-cloudbeaver" title="Permanent link"></a></h1>
-<p>Deploy Cloudbeaver to manage databases inside containers</p>
-<h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
+<h1 id="deploy-ibm-sterling-partner-engagement-manager-on-redhat-openshift">Deploy IBM Sterling Partner Engagement Manager on RedHat OpenShift<a class="headerlink" href="#deploy-ibm-sterling-partner-engagement-manager-on-redhat-openshift" title="Permanent link"></a></h1>
+<p>Playbook will run the last version of IBM Sterling Partner Engagement Manager, but take care of Kubernetes/Openshift version is supported</p>
+<table>
+<thead>
+<tr>
+<th>Sterling PEM</th>
+<th>OpenShift</th>
+<th>Kubernetes</th>
+<th>helm-chart</th>
+<th>Helm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6.2.3.2</td>
+<td>&gt;= 4.14</td>
+<td>&gt;= 1.27</td>
+<td>1.3.2</td>
+<td>&gt;= 3.15.x</td>
+</tr>
+</tbody>
+</table>
+<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
+<h3 id="1-ibm-entitled-registry">1. IBM Entitled Registry<a class="headerlink" href="#1-ibm-entitled-registry" title="Permanent link"></a></h3>
+<p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
+<p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
+<pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
+</code></pre>
+<h3 id="2-login-on-openshift">2. Login on OpenShift<a class="headerlink" href="#2-login-on-openshift" title="Permanent link"></a></h3>
+<p>Do a login in Openshift console and run the command:</p>
+<pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
+</code></pre>
+<h3 id="3-cloning-ansible-ibm-websphere-from-git">3. Cloning ansible-ibm-websphere from git<a class="headerlink" href="#3-cloning-ansible-ibm-websphere-from-git" title="Permanent link"></a></h3>
+<pre><code class="language-bash">git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
+</code></pre>
+<h3 id="4-set-roles-path">4. Set roles path<a class="headerlink" href="#4-set-roles-path" title="Permanent link"></a></h3>
+<p>To run playbook the playbook</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+
+export ANSIBLE_CONFIG=./ansible.cfg 
+</code></pre>
+<h2 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h2>
+<p>1) First you need to provide PEM_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
+<pre><code class="language-bash">export PEM_INSTANCEID=dev01
+</code></pre>
+<p>2) To run playbook the playbook</p>
+<pre><code class="language-bash">ansible-playbook playbooks/deploy_pem.yml
+</code></pre>
+<h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
+<p>Environment variables for this role:</p>
 <table>
 <thead>
 <tr>
@@ -1158,25 +1383,139 @@
 </thead>
 <tbody>
 <tr>
-<td>CB_NAMESPACE</td>
-<td>cloudbeaver</td>
-<td>No</td>
-<td>Namespace for CloudBeaver</td>
+<td>ENTITLED_REGISTRY_KEY</td>
+<td></td>
+<td>Yes</td>
+<td>IBM Entitled Registry key</td>
 </tr>
 <tr>
-<td>CB_ADMIN</td>
-<td>cbadmin</td>
-<td>No</td>
-<td>Admin username for CloudBeaver</td>
+<td>PEM_INSTANCEID</td>
+<td></td>
+<td>Yes</td>
+<td>Used to define your environment</td>
 </tr>
 <tr>
-<td>CB_PASSWORD</td>
+<td>PEM_ACTION</td>
+<td>install</td>
+<td>No</td>
+<td>Action: install, upgrade, prebuiltdb</td>
+</tr>
+<tr>
+<td>PEM_DEFAULT_PASSWORD</td>
+<td>Password123!</td>
+<td>No</td>
+<td>Default Password for PEM applications</td>
+</tr>
+<tr>
+<td>PEM_DEFAULT_PASSPHRASE</td>
+<td>P@ssPhr4s3_890@</td>
+<td>No</td>
+<td>Default Passphrase for PEM applications</td>
+</tr>
+<tr>
+<td>PEM_KEYSTORE_PASSWORD</td>
+<td>Change1t@</td>
+<td>No</td>
+<td>Default Password for Keystores and Truststore</td>
+</tr>
+<tr>
+<td>PEM_ADMIN_MAILADDR</td>
+<td>admin@company.com</td>
+<td>No</td>
+<td>Provide the admin email address</td>
+</tr>
+<tr>
+<td>PEM_SMTPHOST</td>
+<td>smtp.company.com</td>
+<td>No</td>
+<td>Provide the SMTP host details</td>
+</tr>
+<tr>
+<td>PEM_SMTPPORT</td>
+<td>25</td>
+<td>No</td>
+<td>Provide the SMTP host details</td>
+</tr>
+<tr>
+<td>PEM_DBVENDOR</td>
+<td>DB2</td>
+<td>No</td>
+<td>Database vendor: DB2, Oracle, MSSQL</td>
+</tr>
+<tr>
+<td>PEM_DBHOST</td>
+<td><from service></td>
+<td>No</td>
+<td>Database hostname/ip address</td>
+</tr>
+<tr>
+<td>PEM_DBPORT</td>
+<td><from service></td>
+<td>No</td>
+<td>Database port</td>
+</tr>
+<tr>
+<td>PEM_DBNAME</td>
+<td>PEMDB</td>
+<td>No</td>
+<td>Database name</td>
+</tr>
+<tr>
+<td>PEM_DBUSER</td>
+<td>db2inst1</td>
+<td>No</td>
+<td>Database user</td>
+</tr>
+<tr>
+<td>PEM_DBPASSWORD</td>
 <td>passw0rd</td>
 <td>No</td>
-<td>Admin password for CloudBeaver</td>
+<td>Database user password</td>
+</tr>
+<tr>
+<td>PEM_DBSCHEMA</td>
+<td>DB2INST1</td>
+<td>No</td>
+<td>Database user password</td>
+</tr>
+<tr>
+<td>PEM_JMS_USERNAME</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue user</td>
+</tr>
+<tr>
+<td>PEM_JMS_PASSWORD</td>
+<td>passw0rd</td>
+<td>No</td>
+<td>JMS Queue user password</td>
+</tr>
+<tr>
+<td>PEM_JMS_KEYSTORE_PASSWORD</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue keystore password</td>
+</tr>
+<tr>
+<td>PEM_JMS_TRUSTSTORE_PASSWORD</td>
+<td></td>
+<td>No</td>
+<td>JMS Queue truststore password</td>
+</tr>
+<tr>
+<td>PEM_SKIP_HELM</td>
+<td>false</td>
+<td>No</td>
+<td>Avoid to run helm, only generate values.yaml</td>
 </tr>
 </tbody>
 </table>
+<p>For all environment variables</p>
+<ul>
+<li>Role <a href="../../roles/pem_setup_db2">pem_setup_db2</a></li>
+<li>Role <a href="../../roles/pem_deploy_db2">pem_deploy_db2</a></li>
+<li>Role <a href="../../roles/pem_deploy_mq">pem_deploy_mq</a></li>
+</ul>
 
 
 
