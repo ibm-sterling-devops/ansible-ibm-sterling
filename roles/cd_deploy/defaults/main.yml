@@ -53,11 +53,8 @@ cd_deploy_sum_enabled: 1 # sumEnabled value could either 0 or 1 to disable/enabl
 cd_deploy_registry_secret: ibm-registry-secret
 cd_deploy_secret: cd-secret
 cd_deploy_cert_secret: cd-cert-secret
-cd_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support extensions .crt, .pem and .cer
-cd_cert_key: "{{ my_workdir }}/cdkey.pem"
-cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
 
-cd_6400_or_higher: "{{ cd_version is defined and cd_version is version('6.4.0.0_ifix000', '>=') | bool }}"
+cd_6400_or_higher: "{{ cd_version is defined and cd_version is version('6.4.0.1_iFix001', '>=') | bool }}"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:

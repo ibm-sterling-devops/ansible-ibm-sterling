@@ -1,4 +1,10 @@
 ---
+- name: Define multiple variables
+  ansible.builtin.set_fact:
+    cd_cert_crt: "{{ my_workdir }}/cdcert.crt"  # CD install script only support extensions .crt, .pem and .cer
+    cd_cert_key: "{{ my_workdir }}/cdkey.pem"
+    cd_cert_pem: "{{ my_workdir }}/cdcert.pem"
+
 # Create Certificate for Connect:Direct on Kubernetes
 # -----------------------------------------------------------------------------
 - name: Running OpenSSL command
