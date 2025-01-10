@@ -14,6 +14,7 @@ playbooks/my*
 playbooks/cleanup/dev*
 roles/dev*
 docs/dev*
+docs/playbooks/dev*
 temporary
 temporary/*
 resultado.txt
