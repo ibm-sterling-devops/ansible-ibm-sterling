@@ -4,7 +4,7 @@
 # --set option provided by helm cli.
 
 # Change license to true to indicate that you have read and agree to license agreements
-# Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-FYHF-K7J2TN)
+# Refer: https://www.ibm.com/support/customer/csol/terms/licenses#license-search (L/N: L-ZWKV-MQ9Z94)
 license: false
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
@@ -17,7 +17,7 @@ env:
   extraEnvs: []
   #-name: AWS_ACCESS_ID
   # value: AWS_ACCESS_KEY
-
+  
 # Add extra labels in addition to default labels to all resources
 extraLabels: {}
 
@@ -27,16 +27,16 @@ replicaCount: 1
 # Specify the respective Docker Image details for IBMCCS
 image:
   # Specify the repository name alongwith image name
-  repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
+  repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.1"
   # Specify the tag name for the image in double quotes 
-  tag: "6.3.0.3_ifix021"
+  tag: "6.4.0.1_iFix001"
   # Specify the image pull secret for the service, if the image is in private registry 
   # protected with password
   imageSecrets: ""
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
-    value: "sha256:a4ecb456bf39582fa1f64ec5993877e8a1dc62287c79e0113aa064a20479a95e"
+    value: "sha256:6cc43139891f786b6c395680f12c99dc6443f379500d70456293f838d9ace848"
   # Specify respective pull policy to used to override default `IfNotPresent` policy 
   pullPolicy: Always
 
@@ -48,18 +48,20 @@ nameOverride: ""
 # its impact. Thus you have taken the desired action to update the user
 # from cduser to cdadmin if used outside the container in some kind of 
 # script.  
-upgradeCompCheck: false
 
+upgradeCompCheck: false
 # Specify this fields to mount extra volume as volumeMounts in container spec
+
 extraVolumeMounts: []
-  #- name:
-  #  mountPath: /svshare
+#- name:
+#  mountPath: /svshare
 # Specify this field to mount extra volume as volumes in the pod spec
+
 extraVolume: []
-  #- name: pvc-name
-  #  hostPath:
-  #    path: /svshare
-  #    type: Directory
+#- name: pvc-name
+#  hostPath:
+#    path: /svshare
+#    type: Directory
 
 # Currently, the only supported architecture for IBMCCS is `amd64`
 arch: "amd64"
@@ -79,7 +81,7 @@ cdArgs:
   # Specify the name of directory created on persistent volume path having certificate 
   #files need for Secure+ plus configuration
   configDir: "CDFILES"
-  # Specify the configuration for SACL options. Refer - https://www.ibm.com/support/knowledgecenter/SS4PJT_6.3.0/cd_unix/cdunix_admin/CDU_Strong_Access_Ctrl_File.html
+  # Specify the configuration for SACL options. Refer - https://www.ibm.com/support/knowledgecenter/SS4PJT_6.4.0/cd_unix/cdunix_admin/CDU_Strong_Access_Ctrl_File.html
   saclConfig: "n"
   # Specify the trusted IP list in array as given in example below for Port Check configuration
   #trustedAddr:
@@ -87,11 +89,23 @@ cdArgs:
   #- 5.6.7.8
   #- ::1
   trustedAddr: []
+  #Security keys configuration
+  keys:
+    server: |
+      #
+      # Host      Algorithm Method Key
+      #
+      *           MRLN      SIMP   Cd4Unix/Cd4Unix
+    client: |
+      #
+      # Host      Algorithm Method Key
+      #
+      *           MRLN      SIMP   Cd4Unix/Cd4Unix
 
 # Standard User Mode Configuration
 sum:
   # Set its value to "n" to disable standard user mode in container
-  # The CDExec ID for SUM will be the appuser username in container. Refer - https://www.ibm.com/docs/en/connect-direct/6.3.0?topic=planning-ordinary-user-mode-in-connectdirect-unix-containers 
+  # The CDExec ID for SUM will be the appuser username in container. Refer - https://www.ibm.com/docs/en/connect-direct/6.4.0?topic=planning-ordinary-user-mode-in-connectdirect-unix-containers 
   enabled: "y"
 
 storageSecurity:
@@ -125,13 +139,13 @@ pvClaim:
 service:
   # ClusterPort to be exposed
   type: "LoadBalancer"
-  apiport: 
+  apiport:
     name: "api"
-    port:  
+    port:
     protocol: "TCP"
-  ftport: 
+  ftport:
     name: "ft"
-    port: 
+    port:
     protocol: "TCP"
   # List of IP addresses at which the service is available
   # Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
@@ -140,17 +154,14 @@ service:
   # - 1.2.3.4
   # - 5.6.7.8
   externalIP: []
-  
   # Specify Load Balancer IP, if available
   loadBalancerIP: ""
-
   # Load Balancer sources
   # https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
   # E.g -
   # loadBalancerSourceRanges:
   # - 10.10.10.0/24
   loadBalancerSourceRanges: []
-  
   # Specify Service Annotations, if required
   annotations: {}
   # Specify external traffic policy, if required
@@ -218,8 +229,8 @@ serviceAccount:
 ##
 resources:
   limits:
-    cpu: 500m
-    memory: 2000Mi
+    cpu: 1500m
+    memory: 3000Mi
     ephemeral-storage: "5Gi"
   requests:
     cpu: 500m
@@ -236,38 +247,34 @@ affinity:
   # architecture preference specified in 'arch'
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution: {}
-  #   nodeSelectorTerms:
-  #   - matchExpressions:
-  #     - key: kubernetes.io/e2e-az-name
-  #       operator: In
-  #       values:
-  #       - e2e-az1
-  #       - e2e-az2
-  # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
-  # architecture preference specified in 'arch'
+    #   nodeSelectorTerms:
+    #   - matchExpressions:
+    #     - key: kubernetes.io/e2e-az-name
+    #       operator: In
+    #       values:
+    #       - e2e-az1
+    #       - e2e-az2
+    # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+    # architecture preference specified in 'arch'
     preferredDuringSchedulingIgnoredDuringExecution: []
-
   podAffinity:
     requiredDuringSchedulingIgnoredDuringExecution: []
     preferredDuringSchedulingIgnoredDuringExecution: []
-
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution: []
     preferredDuringSchedulingIgnoredDuringExecution: []
 
 # startup, liveness and Probeness details for the health of pods
 startupProbe:
-  initialDelaySeconds: 30
+  initialDelaySeconds: 0
   timeoutSeconds: 5
-  periodSeconds: 10
-
+  periodSeconds: 5
 livenessProbe:
-  initialDelaySeconds: 5
+  initialDelaySeconds: 10
   timeoutSeconds: 5
   periodSeconds: 10
-
 readinessProbe:
-  initialDelaySeconds: 3
+  initialDelaySeconds: 5
   timeoutSeconds: 5
   periodSeconds: 10
 
@@ -313,3 +320,18 @@ ldap:
 cdfa:
   # Set its value to "y" to enable file agent service in container
   fileAgentEnable: "n"
+
+# Horizontal pod autoscaling configuration
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  averageCpuUtilization: 60
+  averageMemoryUtilization: 60
+  stabilizationWindowSeconds: 180
+  periodSeconds: 15
+
+# Pod-Distribution-Budget Configuration
+pdb:
+  enabled: true
+  minAvailable: 1
