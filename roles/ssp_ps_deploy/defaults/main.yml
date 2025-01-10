@@ -18,11 +18,6 @@ ssp_ps_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', 
 ssp_ps_image_repository: "{{ lookup('env', 'SSP_PS_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-ps/ssp-ps-docker-image', true) }}"
 ssp_ps_skip_image_secret: "{{ lookup('env', 'SSP_PS_SKIP_IMAGE_SECRET') | default(false, true) }}"
 
-# Entitlement
-# -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
-
 # Others
 # -----------------------------------------------------------------------------
 my_workdir: /tmp

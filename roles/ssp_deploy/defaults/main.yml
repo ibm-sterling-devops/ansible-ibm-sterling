@@ -44,8 +44,6 @@ ssp_ephemeral_storage_requests: "{{ lookup('env', 'SSP_EPHEMERAL_STORAGE_REQUEST
 ssp_namespace: "ibm-ssp-{{ ssp_instanceid }}-engine"
 ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
 
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
 
 # Role Internal
 # -----------------------------------------------------------------------------

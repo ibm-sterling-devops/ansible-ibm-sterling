@@ -45,11 +45,6 @@ ssp_cm_cpu_requests: "{{ lookup('env', 'SSP_CM_CPU_REQUESTS') | default('1000m',
 ssp_cm_mem_requests: "{{ lookup('env', 'SSP_CM_MEM_REQUESTS') | default('2Gi', true) }}"
 ssp_cm_ephemeral_storage_requests: "{{ lookup('env', 'SSP_CM_EPHEMERAL_STORAGE_REQUESTS') | default('3Gi', true) }}"
 
-# Entitlement
-# -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
-
 # Others
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
