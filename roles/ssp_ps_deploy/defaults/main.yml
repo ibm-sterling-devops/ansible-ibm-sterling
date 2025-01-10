@@ -31,8 +31,8 @@ ssp_ps_namespace: "ibm-ssp-{{ ssp_instanceid }}-ps"
 ssp_namespace: "ibm-ssp-{{ ssp_instanceid }}-engine"
 ssp_cm_namespace: "ibm-ssp-{{ ssp_instanceid }}-cm"
 
-ssp_ps_registry_secret: ibm-registry-secret
-ssp_ps_secret: ibm-ssp-ps-secret
+ssp_ps_deploy_registry_secret: ibm-registry-secret
+ssp_ps_deploy_secret: ibm-ssp-ps-secret
 ssp_keycert_secret: ssp-cm-keycert
 ssp_ps_use_dynamic_provisioning: false
 

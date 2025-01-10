@@ -12,6 +12,7 @@ environments/hosts*
 playbooks/dev*
 playbooks/my*
 playbooks/cleanup/dev*
+roles/bkp*
 roles/dev*
 docs/dev*
 docs/playbooks/dev*
