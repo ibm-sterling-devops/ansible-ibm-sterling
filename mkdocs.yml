@@ -21,6 +21,7 @@ nav:
       - "Sterling B2B Integrator": playbooks/deploy_ocp_sb2b.md
       - "Sterling Control Center Monitor/Director (CCM/CCD)": playbooks/deploy_ocp_scc.md
       - "Sterling Secure Proxy Server (SSP)": playbooks/deploy_ocp_ssp.md
+      - "Sterling Partner Engagement Manager": playbooks/deploy_ocp_pem.md
       - "Sterling External Authentication Server (SEAS)": playbooks/deploy_ocp_seas.md
       - "IBM Sterling Transformation Server (ITX RS)": playbooks/deploy_ocp_itx_rs.md
       - "IBM Sterling Transformation Advanced (ITXA)": playbooks/deploy_ocp_itxa.md

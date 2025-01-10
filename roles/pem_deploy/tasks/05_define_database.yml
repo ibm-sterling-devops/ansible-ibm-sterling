@@ -1,0 +1,110 @@
+---
+# Get Information from db2_namespace
+# -----------------------------------------------------------------------------
+- name: "Lookup Secrets from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: "{{ db2_secret }}"
+    namespace: "{{ db2_namespace }}"
+  register: db_secret_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: "Lookup Service from db2_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: "{{ db2_id }}-ci"
+    namespace: "{{ db2_namespace }}"
+  register: db_svc_cout
+  when: db2_namespace is defined and db2_namespace != ""
+
+- name: Set Facts for Database Configuration from db2_namespace
+#  no_log: true
+  ansible.builtin.set_fact:
+    pem_dbvendor: "DB2"
+    pem_dbhost: "{{ db2_id }}-ci.{{ db2_namespace }}.svc.cluster.local"
+    pem_dbport: "{{ db_svc_cout.resources[0].spec.ports[0].port }}"
+    pem_dbname: "PEMDB"
+    pem_dbschema: "DB2INST1"
+    pem_dbuser: "db2inst1"
+    pem_dbpassword: "{{ db_secret_cout.resources[0].data.DB2INST1_PASSWORD | b64decode }}"
+    pem_dbname_test: "PEMTEST"
+    pem_dbschema_test: "DB2INST1"
+  when:
+    - db2_namespace is defined and db2_namespace != ""
+    - db_secret_cout is defined and db_secret_cout != ""
+    - db_svc_cout is defined and db_svc_cout != ""
+# jdbc_url: "jdbc:db2://c-{{db2_instance_name | lower}}-db2u-engn-svc.{{ db2_namespace }}.svc:{{db2_tls_serviceport}}
+#            /{{db2_dbname}}:sslConnection=true;sslVersion={{ tls_version }};"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    pem_dbjdbc: "db2jcc4.jar"
+    pem_dbdriver: "com.ibm.db2.jcc.DB2Driver"
+    pem_dburl: "jdbc:db2://{{ pem_dbhost }}:{{ pem_dbport }}"
+  when:
+    - pem_dbvendor is defined and pem_dbvendor == "DB2"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    pem_dbjdbc: "ojdbc8.jar"
+    pem_dbdriver: "oracle.jdbc.OracleDriver"
+    pem_dburl: "jdbc:oracle:thin://{{ pem_dbhost }}:{{ pem_dbport }}"
+    pem_oracle_useservicename: "true"
+  when:
+    - pem_dbvendor is defined and pem_dbvendor == "Oracle"
+
+- name: Set Facts for Database Configuration when is Oracle
+#  no_log: true
+  ansible.builtin.set_fact:
+    pem_dbjdbc: "mssql_FIXME.jar"
+    pem_dbdriver: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    pem_dburl: "jdbc://{{ pem_dbhost }}:{{ pem_dbport }}"
+  when:
+    - pem_dbvendor is defined and pem_dbvendor == "SQLServer"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "DB Vendor ................. {{ pem_dbvendor }}"
+      - "DB Host   ................. {{ pem_dbhost }}"
+      - "DB Port   ................. {{ pem_dbport }}"
+      - "DB Name   ................. {{ pem_dbname }}"
+      - "DB User   ................. {{ pem_dbuser }}"
+      - "DB Password ............... {{ pem_dbpassword }}"
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that:
+      - pem_dbvendor is defined and pem_dbvendor != ""
+      - pem_dbhost is defined and pem_dbhost != ""
+      - pem_dbport is defined and pem_dbport != ""
+      - pem_dbname is defined and pem_dbname != ""
+      - pem_dbuser is defined and pem_dbuser != ""
+      - pem_dbpassword is defined and pem_dbpassword != ""
+    fail_msg: "Database Properties are required"
+
+- name: "Generate Secret '{{ pem_deploy_db_secret }}'"
+  no_log: false
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque
+      metadata:
+        name: "{{ pem_deploy_db_secret }}"
+        namespace: "{{ pem_namespace }}"
+      data:
+        DB_USER: "{{ pem_dbuser | b64encode }}"
+        DB_PASSWORD: "{{ pem_dbpassword | b64encode }}"
+        DB_PASS: "{{ pem_dbpassword | b64encode }}"
+        PEM_DB_PASSWORD: "{{ pem_dbpassword | b64encode }}"
+        TESTMODE_DB_PASSWORD: "{{ pem_dbpassword | b64encode }}"
+  register: pem_deploy_db_secret_cout

@@ -1,0 +1,26 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      # Sterling B2B
+      - lookup('env', 'PEM_INSTANCEID') != ""
+      # IBM
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+# 1. Check for undefined properties that do not have a default
+# -----------------------------------------------------------------------------
+- name: "Fail if mq_namespace is not provided"
+  ansible.builtin.assert:
+    that: mq_namespace is defined and mq_namespace != ""
+    fail_msg: "mq_namespace property is required"
+
+- name: "Fail if mq_name is not provided"
+  ansible.builtin.assert:
+    that: mq_name is defined and mq_name != ""
+    fail_msg: "mq_name property is required"
+
+- name: "Fail if entitled_registry_key is not provided"
+  ansible.builtin.assert:
+    that: entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "entitled_registry_key property is required"

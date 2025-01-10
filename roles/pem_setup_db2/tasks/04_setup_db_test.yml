@@ -1,0 +1,94 @@
+---
+- name: Create setupdb script in local /tmp
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ my_workdir }}/{{ item }}"
+    mode: "777"
+  with_items:
+    - "setupdb_test_part1.sh"
+    - "setupdb_test_part2.sh"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: "Debug information - part 2"
+  ansible.builtin.debug:
+    msg:
+      - "Db2 namespace .......................... {{ db2_namespace }}"
+      - "Db2 instance name ...................... {{ db2_instance_name }}"
+      - "Db2 database name ...................... {{ db2_dbname_test }}"
+      - "Db2 Pod name ........................... {{ db2_pod_name }}"
+      - "Db2 Container name ..................... {{ db2_container }}"
+
+- name: Copy the setupdb_test_partN scripts into the mydb2-0 pod
+  kubernetes.core.k8s_cp:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    local_path: "{{ my_workdir }}/{{ item }}"
+    remote_path: "/database/config/{{ db2_user }}/{{ item }}"
+    no_preserve: true
+    state: to_pod
+  register: cout_k8s_cp
+  retries: 10
+  delay: 30 # seconds
+  with_items:
+    - "setupdb_test_part1.sh"
+    - "setupdb_test_part2.sh"
+
+- name: "Wait for setupdb_test_partN.sh available"
+  ansible.builtin.pause:
+    minutes: 1
+
+- name: Run db2profile to set environmnet for DB2
+  kubernetes.core.k8s_exec:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    command: "su - {{ db2_user }} -c 'source /database/config/{{ db2_user }}/sqllib/db2profile && echo $PATH | tee setprofile.log' "
+  register: cout_setprofile
+
+# need to add db2profile to run db2 commands
+- name: Run setupdb_test_part1 to prepare database
+  kubernetes.core.k8s_exec:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    command: "su - {{ db2_user }} -c 'pwd && ./setupdb_test_part1.sh | tee setupdb_test_shell.log' "
+  register: cout_setupdb1
+  retries: 10 # Retry up to 3 times on connection issues
+  delay: 30 # seconds
+  until: cout_setupdb1.rc == 0
+# and not cout_setupdb.stdout.find("WebSocketConnectionClosedException") > -1
+# The database alias \"B2BI\" already exists in either the local
+# log_message "setupdb.sh:SUCCESS"
+
+- name: "Wait for setupdb_test_part1.sh available"
+  ansible.builtin.pause:
+    minutes: 5
+
+- name: Run setupdb_test_part2 to prepare database
+  kubernetes.core.k8s_exec:
+    namespace: "{{ db2_namespace }}"
+    pod: "{{ db2_pod_name }}"
+    container: "{{ db2_container }}"
+    command: "su - {{ db2_user }} -c 'pwd && ./setupdb_test_part2.sh | tee setupdb_test_shell.log' "
+  register: cout_setupdb2
+  retries: 10 # Retry up to 3 times on connection issues
+  delay: 30 # seconds
+  until: cout_setupdb2.rc == 0
+# log_message "setupdb.sh:SUCCESS"
+
+- name: "Database setup debug information"
+  ansible.builtin.debug:
+    msg:
+      - "Result (stdout) ........................ {{ cout_setupdb1.stdout }}"
+      - "result (stderr) ........................ {{ cout_setupdb1.stderr }}"
+      - "Result (stdout) ........................ {{ cout_setupdb2.stdout }}"
+      - "result (stderr) ........................ {{ cout_setupdb2.stderr }}"
+
+- name: "Failed to execute the script"
+  ansible.builtin.fail:
+    msg: "Failed to execute the script setupdb.sh h on DB2 instance"
+  when:
+    - cout_setupdb1.rc != 0
+    - cout_setupdb2.rc != 0

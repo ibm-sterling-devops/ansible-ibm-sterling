@@ -1,0 +1,76 @@
+---
+# Debug
+# -----------------------------------------------------------------------------
+# Get Information from mq_namespace
+# -----------------------------------------------------------------------------
+- name: "Lookup Secrets from mq_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: "{{ mq_secret }}"
+    namespace: "{{ mq_namespace }}"
+  register: jms_secret_cout
+  when: mq_namespace is defined and mq_namespace != ""
+
+- name: "Lookup Service from mq_namespace if provided"
+#  no_log: true
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: "mq-data"
+    namespace: "{{ mq_namespace }}"
+  register: jms_svc_cout
+  when: mq_namespace is defined and mq_namespace != ""
+
+- name: Set Facts for JMS Configuration from mq_namespace
+#  no_log: true
+  ansible.builtin.set_fact:
+    pem_jmsuser: "app"
+    pem_jmsvendor: "IBMMQ"
+    pem_jmsconnectionfactory: "com.ibm.mq.jms.MQQueueConnectionFactory"
+    pem_jmsqueuename: "DEV.QUEUE.1"
+    pem_jmschannel: "DEV.APP.SVRCONN"
+    pem_jmsenablessl: "false"
+    pem_jmspassword: "{{ jms_secret_cout.resources[0].data.appPassword | b64decode }}"
+    # pem_jmskeystorepassword: "{{ jms_secret_cout.resources[0].data.JMS_KEYSTORE_PASSWORD | b64decode }}"
+    # pem_jmstruststorepassword: "{{ jms_secret_cout.resources[0].data.JMS_TRUSTSTORE_PASSWORD | b64decode }}"
+    pem_jmshost: "mq-data.{{ mq_namespace }}.svc.cluster.local"
+    pem_jmsport: "{{ jms_svc_cout.resources[0].spec.ports[0].port }}"
+    pem_jmsconnectionnamelist: "mq-data.{{ mq_namespace }}.svc.cluster.local({{ jms_svc_cout.resources[0].spec.ports[0].port }})"
+  when:
+    - mq_namespace is defined and mq_namespace != ""
+    - jms_secret_cout is defined and jms_secret_cout != ""
+    - jms_svc_cout is defined and jms_svc_cout != ""
+
+- name: Debug
+  ansible.builtin.debug:
+    msg:
+      - "JMS User     ................. {{ pem_jmsuser }}"
+      - "JMS Password ................. {{ pem_jmspassword }}"
+      - "JMS keypw    ................. {{ pem_jmskeystorepassword }}"
+      - "JMS trustpw  ................. {{ pem_jmstruststorepassword }}"
+
+- name: "Fail if Database Information is not provided"
+  ansible.builtin.assert:
+    that:
+      - pem_jmsuser is defined and pem_jmsuser != ""
+      - pem_jmspassword is defined and pem_jmspassword != ""
+    fail_msg: "JMS Queue Properties are required"
+
+- name: "Generate secret 'ibm-pem-jms-secret'"
+  no_log: false
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque
+      metadata:
+        name: "ibm-pem-jms-secret"
+        namespace: "{{ pem_namespace }}"
+      data:
+        JMS_USERNAME: "{{ pem_jmsuser | b64encode }}"
+        JMS_PASSWORD: "{{ pem_jmspassword | b64encode }}"
+        # JMS_KEYSTORE_PASSWORD: "{{ pem_jmskeystorepassword | b64encode }}"
+        # JMS_TRUSTSTORE_PASSWORD: "{{ pem_jmstruststorepassword | b64encode }}"
+  register: pem_jms_secret_cout

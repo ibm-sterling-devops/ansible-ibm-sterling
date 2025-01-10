@@ -1,0 +1,158 @@
+---
+- name: "Create Kubernetes Service {{ db2_svc_ci }}"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: "{{ db2_svc_ci }}"
+        namespace: "{{ db2_namespace }}"
+      spec:
+        type: ClusterIP
+        selector:
+          app: "{{ db2_id }}"
+        ports:
+          - name: "{{ db2_id }}-ci-srv"
+            protocol: TCP
+            port: 50000
+            targetPort: 50000
+          - name: "{{ db2_id }}-ci-srvs"
+            protocol: TCP
+            port: 50001
+            targetPort: 50001
+
+- name: Create ConfigMap in Kubernetes
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: pemdb-configmap
+        namespace: "{{ db2_namespace }}"
+      data:
+        createdb.sh: |
+          #!/bin/sh +
+
+          whoami
+          sudo -i -u db2inst1 bash -c '/opt/ibm/db2/V11.5/bin/db2 -stvf /var/custom/createdb.sql -z createdb.log'
+        createdb.sql: |
+          CREATE DATABASE PEMDB AUTOMATIC STORAGE YES USING CODESET UTF-8 TERRITORY DEFAULT COLLATE USING IDENTITY PAGESIZE 4096;
+          CONNECT TO PEMDB;
+          UPDATE DATABASE CONFIG FOR PEMDB USING LOGFILSIZ 65536;
+          UPDATE DATABASE CONFIG FOR PEMDB USING LOGPRIMARY 40;
+          UPDATE DATABASE CONFIG FOR PEMDB USING NUM_LOG_SPAN 32;
+          UPDATE DATABASE CONFIG FOR PEMDB USING AUTO_MAINT ON;
+          UPDATE DATABASE CONFIG FOR PEMDB USING AUTO_TBL_MAINT ON;
+          UPDATE DATABASE CONFIG FOR PEMDB USING AUTO_RUNSTATS ON;
+          UPDATE DATABASE CONFIG FOR PEMDB USING AUTO_REORG ON;
+          UPDATE DATABASE CONFIG FOR PEMDB USING AUTO_DB_BACKUP ON;
+          UPDATE DATABASE CONFIG FOR PEMDB USING NCHAR_MAPPING GRAPHIC_CU16;
+          CREATE USER TEMPORARY TABLESPACE B2BUSERTEMP PAGESIZE 32K BUFFERPOOL IBMDEFAULTBP;
+          CREATE BUFFERPOOL PEMDB_04KBP IMMEDIATE SIZE 1000 PAGESIZE 4K;
+          CREATE REGULAR TABLESPACE TS_REG04_PEMDB PAGESIZE 4K BUFFERPOOL PEMDB_04KBP;
+          CREATE BUFFERPOOL PEMDB_08KBP IMMEDIATE SIZE 1000 PAGESIZE 8K;
+          CREATE REGULAR TABLESPACE TS_REG08_PEMDB PAGESIZE 8K BUFFERPOOL PEMDB_08KBP;
+          CREATE BUFFERPOOL PEMDB_16KBP IMMEDIATE SIZE 1000 PAGESIZE 16K;
+          CREATE REGULAR TABLESPACE TS_REG16_PEMDB PAGESIZE 16K BUFFERPOOL PEMDB_16KBP;
+          CREATE BUFFERPOOL PEMDB_32KBP IMMEDIATE SIZE 1000 PAGESIZE 32K;
+          CREATE REGULAR TABLESPACE TS_REG32_PEMDB PAGESIZE 32K BUFFERPOOL PEMDB_32KBP;
+          CONNECT RESET;
+
+# Deploy DB2 on Kubernetes
+# -----------------------------------------------------------------------------
+- name: Deploy DB2 on Kubernetes
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: "{{ db2_id }}"
+        namespace: "{{ db2_namespace }}"
+      spec:
+        selector:
+          matchLabels:
+            app: "{{ db2_id }}"
+        serviceName: "{{ db2_id }}"
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: "{{ db2_id }}"
+              app-instance: "{{ db2_instance_name }}"
+          spec:
+            serviceAccount: "{{ db2_service_account }}"
+            containers:
+              - name: "{{ db2_id }}"
+                securityContext:
+                  privileged: true
+                image: "icr.io/db2_community/db2:{{ db2_version }}"
+                env:
+                  - name: DB2INST1_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        name: "{{ db2_secret }}"
+                        key: DB2INST1_PASSWORD
+                  - name: LICENSE
+                    value: accept
+                  - name: DB2INSTANCE
+                    value: "{{ db2_instance_name }}"
+                ports:
+                  - containerPort: 50000
+                    name: "{{ db2_id }}-srv"
+                  - containerPort: 50001
+                    name: "{{ db2_id }}-srvs"
+                imagePullPolicy: IfNotPresent
+                volumeMounts:
+                  - mountPath: /database
+                    name: db2vol
+                  - mountPath: /var/configFiles
+                    name: config-files
+                    subPath: configFiles
+                    readOnly: true
+                imagePullSecrets:
+                  - name: "{{ db2_registry_secret }}"
+            volumes:
+              - name: config-files
+                configMap:
+                  name: pemdb-configmap
+        volumeClaimTemplates:
+          - metadata:
+              name: db2vol
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: "{{ db2_storage_size | default('40Gi') }}"
+              storageClassName: "{{ storage_class_matrix[db2_storage_class].rwo | default('') }}"
+
+- name: "Lookup DB2 Pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ db2_namespace }}"
+    label_selectors:
+      - app={{ db2_id }}
+      - app-instance={{ db2_instance_name }}
+    wait: true
+    wait_sleep: 30
+    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: db2_pod
+
+- name: Configure facts
+  ansible.builtin.set_fact:
+    db2_pod_name: "{{ db2_pod.resources[0].metadata.name }}"
+
+- name: "Pod Name"
+  ansible.builtin.debug:
+    msg:
+      - "Pod name ............................... {{ db2_pod_name }}"
+
+- name: "Wait : Give 1 minute to DB2 container to be ready"
+  ansible.builtin.pause:
+    minutes: 1

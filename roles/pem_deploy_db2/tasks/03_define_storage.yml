@@ -1,0 +1,117 @@
+---
+# Provide intelligent storage class selection to minimize required user knowledge
+
+# 1. Non-Dynamic Provisioning
+# -----------------------------------------------------------------------------
+# Using pre-created Persistent Volume
+# Create Persistent volume using NFS server
+# Using pre-created Persistent Volume Claim (PVC)
+# https://www.ibm.com/docs/en/connect-direct/6.3.0?topic=software-installing#concept_swd_dcn_lkb
+- name: Using pre-created Persistent Volume
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "false"
+    storage_class_matrix:
+      pre-created-pvc:
+        rwx: ""
+        rwx_nogid: ""
+        rwo: ""
+        rom: ""
+        rwop: ""
+    my_storage_class: "pre-created-pvc"
+  when:
+    - my_predefined_pvc != ''
+
+# 2. Lookup storage class availabiity
+# -----------------------------------------------------------------------------
+- name: Lookup Storage classes
+  kubernetes.core.k8s_info:
+    #    api_version: storage.k8s.io/v1
+    kind: StorageClass
+  register: lookup_storageclasses
+  when:
+    - my_predefined_pvc == ''
+
+- name: Create List of Storages
+  ansible.builtin.set_fact:
+    my_storage_list: "{{ lookup_storageclasses.resources | map(attribute='metadata.name') | list }}"
+  when:
+    - my_predefined_pvc == ''
+
+# 3. Custom StorageClass
+# -----------------------------------------------------------------------------
+- name: Check for Custom StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    storage_class_matrix:
+      custom-sc:
+        rwx: "{{ my_storage_class }}"
+        rwx_nogid: "{{ my_storage_class }}"
+        rwo: "{{ my_storage_class }}"
+        rom: "{{ my_storage_class }}"
+        rwop: ""
+    my_storage_class: "custom-sc"
+  when:
+    - my_predefined_pvc == ''
+    - my_storage_class != ''
+    - my_storage_class != 'pre-created-pvc'
+    - my_storage_class in my_storage_list
+
+# 4. Dynamic Provisioning
+# -----------------------------------------------------------------------------
+- name: Check for IBM Cloud StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "ibmcloud"
+  when:
+    - my_storage_class == ''
+    - "'ibmc-file-gold' in my_storage_list"
+
+- name: Check for Redhat StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "redhat"
+  when:
+    - my_storage_class == ''
+    - "'ocs-storagecluster-cephfs' in my_storage_list"
+
+- name: Check for AWS StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "aws"
+  when:
+    - my_storage_class == ''
+    - "'gp2' in my_storage_list"
+
+- name: Check for Azure StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "azure"
+  when:
+    - my_storage_class == ''
+    - "'azurefile-premium' in my_storage_list"
+
+- name: Check for IBM Techzone StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "techzone"
+  when:
+    - my_storage_class == ''
+    - "'managed-nfs-storage' in my_storage_list"
+
+- name: Check for IBM Spectrum Scale StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "ibm-spectrum"
+  when:
+    - my_storage_class == ''
+    - "'scale-cnsa' in my_storage_list"
+
+- name: Assert that storage class has been defined
+  ansible.builtin.assert:
+    that: my_storage_class is defined and my_storage_class != ""
+    fail_msg: "Storage Class or Predefined PVC must be defined"
+
+- name: Define Storage Class for DB2
+  ansible.builtin.set_fact:
+    db2_use_dynamic_provisioning: true
+    db2_storage_class: "{{ my_storage_class }}"

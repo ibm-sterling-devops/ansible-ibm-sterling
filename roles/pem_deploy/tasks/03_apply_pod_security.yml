@@ -1,0 +1,95 @@
+---
+- name: "Cleanup directories and files"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ my_workdir }}/ibm-pem-standard-prod-{{ compatibility_matrix[pem_version].helm_version }}.tgz"
+    - "{{ my_workdir }}/ibm-pem-standard-prod"
+
+- name: "Download Helm chart"
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-pem-standard-prod-{{ compatibility_matrix[pem_version].helm_version }}.tgz"
+    dest: "{{ my_workdir }}/ibm-pem-standard-prod-{{ compatibility_matrix[pem_version].helm_version }}.tgz"
+    mode: "0666"
+  register: download_cout
+  until: download_cout is succeeded
+  retries: 3
+
+# - name: "Extract Helm chart"
+#   ansible.builtin.unarchive:
+#     src: "{{ my_workdir }}/ibm-pem-standard-prod-{{ compatibility_matrix[pem_version].helm_version }}.tgz"
+#     dest: "{{ my_workdir }}"
+#     remote_src: no
+
+- name: "Extract Helm chart"
+  ansible.builtin.command: "tar -xzvf {{ my_workdir }}/ibm-pem-standard-prod-{{ compatibility_matrix[pem_version].helm_version }}.tgz -C {{ my_workdir }}"
+  register: untar_cout
+  changed_when: ( untar_cout.rc == 0)
+
+# Create ServiceAccount
+# -----------------------------------------------------------------------------
+- name: Create Service Account
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: "{{ pem_serviceaccount }}"
+        namespace: "{{ pem_namespace }}"
+
+- name: Bind SCC to ServiceAccount
+  ansible.builtin.command: >
+    oc adm policy add-scc-to-user ibm-pem-scc system:serviceaccount:{{ pem_namespace }}:{{ pem_serviceaccount }}
+
+# Check for Kubernetes Resources and APIs
+# -----------------------------------------------------------------------------
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cl_info
+
+- name: Check for SecurityContextConstraints Resource
+  ansible.builtin.set_fact:
+    scc_resource: false
+    scc_apiversion: false
+
+- name: Check for SecurityContextConstraints Resource
+  ansible.builtin.set_fact:
+    scc_resource: true
+  when: "'security.openshift.io/v1' in k8s_cl_info.apis"
+
+- name: Check if SecurityContextConstraints API version
+  ansible.builtin.set_fact:
+    scc_apiversion: true
+  when:
+    - scc_resource
+    - "'SecurityContextConstraints' in k8s_cl_info.apis['security.openshift.io/v1']"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug Apply Pod Security
+  ansible.builtin.debug:
+    msg:
+      - "scc_resource ................. {{ scc_resource }}"
+      - "scc_apiversion ............... {{ scc_apiversion }}"
+
+# Creating Pod Security Policy for Kubernetes Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Security Context Constraints
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/ibm-pem-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion
+
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/ibm-pem-cr-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion
+
+- name: Adding all namespace users to SCC...
+  kubernetes.core.k8s:
+    state: present
+    template: 'ibm-pem-scc.yaml.j2'
+  when: scc_resource and scc_apiversion

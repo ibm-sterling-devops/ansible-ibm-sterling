@@ -1,0 +1,60 @@
+---
+- name: "Set fact helm file"
+  ansible.builtin.set_fact:
+    my_helmfile: "{{ my_workdir }}/ibm-pem-standard-prod"
+    my_valuesfile: "{{ my_workdir }}/mypem_values-{{ my_serial }}.yml"
+
+- name: Generate my_values.yml
+  ansible.builtin.template:
+    src: "values.yaml.j2"
+    dest: "{{ my_valuesfile }}"
+    mode: "0640"
+
+- name: "Fix problem with "
+  ansible.builtin.file:
+    path: "{{ my_workdir }}/ibm-pem-standard-prod/templates/resource-pvc.yml"
+    state: absent
+  # with_items:
+  #   - "{{ my_workdir }}/ibm-pem-standard-prod-{{ compatibility_matrix[pem_version].helm_version }}.tgz"
+  #   - "{{ my_workdir }}/ibm-pem-standard-prod"
+
+- name: Show Helm install command
+  ansible.builtin.debug:
+    msg: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ pem_namespace }} {{ pem_deploy_helm }} {{ my_helmfile }}"
+
+- name: Run Helm install command
+  ansible.builtin.command:
+    cmd: "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ pem_namespace }} {{ pem_deploy_helm }} {{ my_helmfile }}"
+  when: not pem_skip_helm
+  register: helm_cout
+  ignore_errors: true
+# --wait
+
+# oc patch route {{ pem_deploy_helm }}-pem-route -n {{ pem_namespace }} -p '{"spec":{"tls":{"destinationCACertificate":"{{ pem_cert_content }}"}}}'
+- name: Update the route with the certificate
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: "{{ pem_deploy_helm }}-{{ item }}-route"
+        namespace:  "{{ pem_namespace }}"
+      spec:
+        tls:
+          destinationCACertificate: "{{ pem_cert_content }}"
+  when: not pem_skip_helm
+  register: helm_cout
+  with_items:
+    - gateway
+    - pem
+    - pr
+    - pp
+
+- name: "IBM Sterling PEM Summary:"
+  ansible.builtin.debug:
+    msg:
+      - "IBM Sterling PEM status .............................. Ready!"
+      - "IBM Sterling PEM namespace ........................... {{ pem_namespace }}"
+      - "helm install --timeout 120m0s -f {{ my_valuesfile }} -n {{ pem_namespace }} s0 {{ my_helmfile }}"
+      - "For username and password check secret .............. {{ pem_deploy_secret }}'"

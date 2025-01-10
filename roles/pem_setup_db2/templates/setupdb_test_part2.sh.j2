@@ -1,0 +1,210 @@
+#!/bin/sh
+
+source /database/config/{{ db2_user }}/sqllib/db2profile
+
+log_file="/database/config/{{ db2_user }}/setupdb_test.log"
+create_pemtest_sql="/database/config/{{ db2_user }}/create_pemtest_db2.sql"
+create_pemtest_sql_log="/database/config/{{ db2_user }}/create_pemtest_db2.log"
+
+function log_message() {
+  local message="$1"
+  local msgtype="${2:-INFO}"
+  timestamp=$(date +%Y-%m-%d_%H:%M:%S)
+  echo "$timestamp: $msgtype $message" >> "$log_file"
+}
+
+function config_settings {
+    if grep -qF "config_settings:SUCCESS" "$log_file"; then
+        log_message "config_settings already successful."
+        return 0
+    fi
+
+    log_message "config_settings:START"
+    log_message ""
+
+    db2set DB2_PARALLEL_IO=ON;  >> "$log_file"
+    db2_pi=$?
+
+    db2set DB2_SKIPDELETED=ON;  >> "$log_file"
+    db2_sd=$?
+
+    db2set DB2_SKIPINSERTED=ON;  >> "$log_file"
+    db2_si=$?
+
+    db2set DB2_USE_ALTERNATE_PAGE_CLEANING=ON;  >> "$log_file"
+    db2_uapc=$?
+
+    db2set DB2_EVALUNCOMMITTED=ON;  >> "$log_file"
+    db2_eu=$?
+
+    db2set DB2LOCK_TO_RB=STATEMENT;  >> "$log_file"
+    db2_lock=$?
+
+    db2set DB2COMM=TCPIP  >> "$log_file"
+    db2_comm=$?
+    # db2 update dbm cfg using DFT_MON_BUFPOOL ON;
+    # db2 update dbm cfg using DFT_MON_LOCK ON;
+    # db2 update dbm cfg using DFT_MON_SORT ON;
+    # db2 update dbm cfg using DFT_MON_STMT ON;
+    # db2 update dbm cfg using DFT_MON_TABLE ON;
+    # db2 update dbm cfg using DFT_MON_TIMESTAMP ON;
+    # db2 update dbm cfg using DFT_MON_UOW ON;
+    # db2 update dbm cfg using MON_HEAP_SZ AUTOMATIC;
+
+    log_message "config_settings: $db2_pi | $db2_sd | $db2_si | $db2_uapc | $db2_eu | $db2_lock | $db2_comm " 
+    if [ "$db2_pi" -ne 0 ] || [ "$db2_sd" -ne 0 ] || [ "$db2_si" -ne 0 ] || [ "$db2_uapc" -ne 0 ] || [ "$db2_eu" -ne 0 ] || [ "$db2_lock" -ne 0 ] 
+    then
+        log_message "config_settings: ERROR - error detected " "ERROR"
+        exit 1
+    fi
+
+    if [ "$db2_comm" -ne 0 ]
+    then
+        log_message "config_settings: ERROR - error detected DB2COMM" "ERROR"
+        exit 2
+    fi
+    log_message "config_settings:SUCCESS"
+}
+
+function create_pemtest_db_02 {
+    # Check if step already executed
+    if grep -qF "create_pemtest_db_02:SUCCESS" "$log_file"; then
+        log_message "create_pemtest_db already successful - SKIPPING"
+        return 0
+    fi
+
+    log_message "create_pemtest_db_02:START"
+    log_message ""
+
+
+cat << EOF > "$create_pemtest_sql"
+CONNECT TO {{ db2_dbname_test }};
+UPDATE DATABASE CONFIG FOR PEMTEST USING LOGFILSIZ 65536;
+UPDATE DATABASE CONFIG FOR PEMTEST USING LOGPRIMARY 40;
+UPDATE DATABASE CONFIG FOR PEMTEST USING NUM_LOG_SPAN 32;
+UPDATE DATABASE CONFIG FOR PEMTEST USING AUTO_MAINT ON;
+UPDATE DATABASE CONFIG FOR PEMTEST USING AUTO_TBL_MAINT ON;
+UPDATE DATABASE CONFIG FOR PEMTEST USING AUTO_RUNSTATS ON;
+UPDATE DATABASE CONFIG FOR PEMTEST USING AUTO_REORG ON;
+UPDATE DATABASE CONFIG FOR PEMTEST USING AUTO_DB_BACKUP ON;
+UPDATE DATABASE CONFIG FOR PEMTEST USING NCHAR_MAPPING GRAPHIC_CU16;
+CREATE USER TEMPORARY TABLESPACE B2BUSERTEMP PAGESIZE 32K BUFFERPOOL IBMDEFAULTBP;
+CREATE BUFFERPOOL PEMTEST_04KBP IMMEDIATE SIZE 1000 PAGESIZE 4K;
+CREATE REGULAR TABLESPACE TS_REG04_PEMTEST PAGESIZE 4K BUFFERPOOL PEMTEST_04KBP;
+CREATE BUFFERPOOL PEMTEST_08KBP IMMEDIATE SIZE 1000 PAGESIZE 8K;
+CREATE REGULAR TABLESPACE TS_REG08_PEMTEST PAGESIZE 8K BUFFERPOOL PEMTEST_08KBP;
+CREATE BUFFERPOOL PEMTEST_16KBP IMMEDIATE SIZE 1000 PAGESIZE 16K;
+CREATE REGULAR TABLESPACE TS_REG16_PEMTEST PAGESIZE 16K BUFFERPOOL PEMTEST_16KBP;
+CREATE BUFFERPOOL PEMTEST_32KBP IMMEDIATE SIZE 1000 PAGESIZE 32K;
+CREATE REGULAR TABLESPACE TS_REG32_PEMTEST PAGESIZE 32K BUFFERPOOL PEMTEST_32KBP;
+CONNECT RESET;
+EOF
+
+    log_message ""
+    if [ ! -f "$create_pemtest_sql" ]; then
+        log_message "create_pemtest_db_02: ERROR - Cannot write to $create_pemtest_sql"
+        exit 1
+    fi
+    log_message "create_pemtest_db_02: File $create_pemtest_sql created sucessfully "
+
+    
+
+    # run command to create database
+    db2 -tvf "$create_pemtest_sql" -z "$create_pemtest_sql_log"  >> "$log_file"
+    db2_create_02=$?
+
+
+    log_message ""
+    log_message "create_pemtest_db_02: $db2_create"
+    if [ $db2_create_02 -ne 0 ]; then
+        log_message "create_pemtest_db_02: ERROR - Failed to run 'db2 -tvf create_pemtest_db2.sql' " "ERROR"
+        exit 2
+    fi
+
+    log_message "create_pemtest_db_02: run 'db2 -tvf create_pemtest_db2.sql' sucessfully"
+    log_message "create_pemtest_db_02:SUCCESS" >> "$log_file"
+}
+
+function apply_settings {
+
+    if grep -qF "apply_settings:SUCCESS" "$log_file"; then
+        log_message "apply_settings already successful."
+        return 0
+    fi
+
+    log_message "apply_settings:START" >> "$log_file"
+    log_message ""
+
+    db2 connect to {{ db2_dbname_test }}  >> "$log_file"
+    db2_ct=$?
+
+    if [ $db2_ct -ne 0 ]; then
+        log_message "apply_settings: ERROR - Failed to connect to db2" "ERROR"
+        exit 1
+    fi
+
+    log_message "apply_settings: connected to {{ db2_dbname_test }} sucessfully"
+
+    db2 update db cfg for {{ db2_dbname_test }} using CATALOGCACHE_SZ 300;  >> "$log_file"
+    db2_updb_1=$?
+
+    db2 update db cfg for {{ db2_dbname_test }} using UTIL_HEAP_SZ AUTOMATIC;  >> "$log_file"
+    db2_updb_2=$?
+
+    db2 update db cfg for {{ db2_dbname_test }} using CHNGPGS_THRESH 80;  >> "$log_file"
+    db2_updb_3=$?
+
+    db2 update dbm cfg using svcename 50000;  >> "$log_file"
+    db2_updb_4=$?
+
+    log_message "apply_settings: db2 update db2_updb_1=$db2_updb_1 | db2_updb_2=$db2_updb_2 | db2_updb_3=$db2_updb_3 | db2_updb_4=$db2_updb_4"
+    # if [ "$db2_updb_1" -ne 0 ] || [ "$db2_updb_2" -ne 0 ] || [ "$db2_updb_3" -ne 0 ]
+    # then
+    #     log_message "apply_settings: ERROR - Failed to start to db2" "ERROR"
+    #     exit 3
+    # fi
+
+
+    db2 connect reset  >> "$log_file"
+    db2_cr=$?
+
+    db2 terminate  >> "$log_file"
+    db2_t=$?
+
+    db2 force applications all  >> "$log_file"
+    db2_fal=$?
+
+    db2 deactivate db {{ db2_dbname_test }}  >> "$log_file"
+    db2_ddb=$?
+
+    log_message "Run db2stop"
+    db2stop  >> "$log_file"
+    db2_stop=$?
+
+    log_message "Run db2start"
+    db2start  >> "$log_file"
+    db2_start=$?
+
+    log_message ""
+    log_message "apply_settings: db2 restart conreset=$db2_cr | terminate=$db2_t | forceapp=$db2_fal | deactivate=$db2_ddb | db2stop=$db2_stop | db2start=$db2_start "
+    if [ "$db2_cr" -ne 0 ] || [ "$db2_t" -ne 0 ] || [ "$db2_fal" -ne 0 ] || [ "$db2_ddb" -ne 0 ] || [ "$db2_stop" -ne 0 ] || [ "$db2_start" -ne 0 ]
+    then
+        log_message "apply_settings: ERROR - Failed to start to db2 " "ERROR"
+        exit 3
+    fi
+    log_message "apply_settings: finished sucessfully "
+    log_message "apply_settings:SUCCESS"
+}
+
+########################## Main Part of Shell Script ##########################
+log_message "Creating Sterling B2Bi Database - create_pemtest_db"
+create_pemtest_db_02
+
+log_message "Define Config settings to DB2 - config_settings"
+config_settings
+
+log_message "Applying settings to DB2"
+apply_settings
+
+log_message "setupdb.sh:SUCCESS"
+log_message "End of script setupdb.sh "

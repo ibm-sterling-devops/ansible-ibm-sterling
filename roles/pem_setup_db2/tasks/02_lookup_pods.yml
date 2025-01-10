@@ -1,0 +1,27 @@
+---
+- name: "Lookup DB2 Pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ db2_namespace }}"
+    label_selectors:
+      - app={{ db2_id }}
+      - app-instance={{ db2_instance_name }}
+    wait: true
+    wait_sleep: 30
+    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: db2_pod
+
+- name: Configure facts db2_pod_name
+  ansible.builtin.set_fact:
+    db2_pod_name: "{{ db2_pod.resources[0].metadata.name }}"
+  when:
+    - (db2_pod is defined) and (db2_pod.resources[0].metadata.name != "")
+
+- name: "Failed to get Pod Name"
+  ansible.builtin.fail:
+    msg: "Failed to execute the script /tmp/setupdb.sh h on DB2 instance"
+  when:
+    - db2_pod_name is not defined

@@ -1,0 +1,14 @@
+# Configure Db2 instance
+# -----------------------------------------------------------------------------------------------------------------
+pem_instanceid: "{{ lookup('env', 'PEM_INSTANCEID') | default('dev01', true) }}"
+db2_namespace: "ibm-pem-{{ pem_instanceid }}-db2"
+
+db2_instance_name: "db2inst1"
+db2_user: "db2inst1"
+db2_dbname: "PEMDB"
+db2_dbname_test: "PEMTEST"
+db2_container: "mydb2"
+
+# Others
+# -----------------------------------------------------------------------------
+my_workdir: /tmp

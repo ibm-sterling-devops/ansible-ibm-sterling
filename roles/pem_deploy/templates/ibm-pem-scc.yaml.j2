@@ -1,0 +1,13 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ibm-pem-scc
+  namespace: {{ pem_namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ pem_serviceaccount }}
+    namespace: {{ pem_namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ibm-pem-scc

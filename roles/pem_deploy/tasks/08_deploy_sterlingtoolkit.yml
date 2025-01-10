@@ -1,0 +1,185 @@
+---
+# Create ServiceAccount
+# -----------------------------------------------------------------------------
+- name: Create Service Account for sterling-toolkit
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: sterling-toolkit-sa
+        namespace: "{{ pem_namespace }}"
+
+# Create Role Binding
+# -----------------------------------------------------------------------------
+- name: Create Role Binding for sterling-toolkit
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: 'sterling-toolkit-anyuid'
+        namespace: "{{ pem_namespace }}"
+        labels:
+          app: sterling-toolkit
+      subjects:
+        - kind: ServiceAccount
+          name: sterling-toolkit-sa
+          namespace: "{{ pem_namespace }}"
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: 'system:openshift:scc:anyuid'
+
+# # Create PV
+# # -----------------------------------------------------------------------------
+# - name: "Create PV 'ibm-pem-resources-pv'"
+#   kubernetes.core.k8s:
+#     definition:
+#       apiVersion: v1
+#       kind: PersistentVolume
+#       metadata:
+#         name: ibm-pem-resources-pv
+#         namespace: "{{ pem_namespace }}"
+#       spec:
+#         accessModes:
+#           - ReadWriteMany
+#         volumeMode: Filesystem
+#         capacity:
+#           storage: 100Mi
+#         storageClassName: "{{ storage_class_matrix[pem_storage_class].rwx }}"
+#         persistentVolumeReclaimPolicy: Retain
+#         hostPath:  # Adicionado para definir o tipo de volume
+#           path: "/mnt/data/ibm-pem-resources"  # Caminho no nó onde o volume será armazenado
+
+
+# Create PVC
+# -----------------------------------------------------------------------------
+- name: "Create PVC 's0-resources-pvc'"
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: s0-resources-pvc
+        namespace: "{{ pem_namespace }}"
+        labels:
+          app.kubernetes.io/instance: s0-pvc
+          app.kubernetes.io/managed-by: Helm
+          app.kubernetes.io/name: s0-pvc
+          helm.sh/chart: ibm-pem-standard-prod-1.3.2
+          release: partnerEngagementStandard
+      spec:
+        accessModes:
+          - ReadWriteMany
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 100Mi
+        storageClassName: "{{ storage_class_matrix[pem_storage_class].rwx }}"
+
+- name: Wait for PVC to be Bound
+  kubernetes.core.k8s_info:
+    kind: PersistentVolumeClaim
+    name: s0-resources-pvc
+    namespace: "{{ pem_namespace }}"
+  register: pvc_info
+  until: pvc_info.resources[0].status.phase == 'Bound'
+  retries: 15  # Total retries will be 15 * 20s = 300s (5 minutes)
+  delay: 20     # Wait for 20 seconds between each retry
+
+# Create Job to copy files
+# -----------------------------------------------------------------------------
+- name: Run sterling-toolkit
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: sterling-toolkit
+        namespace: "{{ pem_namespace }}"
+        labels:
+          app: sterling-toolkit
+          app.kubernetes.io/name: sterling-toolkit
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: sterling-toolkit
+        template:
+          metadata:
+            labels:
+              app: sterling-toolkit
+          spec:
+            serviceAccountName: sterling-toolkit-sa
+            containers:
+              - name: sterling-toolkit
+                image: quay.io/ibm-sterling-devops/pem-resources:1.0.0
+                imagePullPolicy: Always
+                securityContext:
+                  runAsUser: 0
+                env:
+                  - name: DB_VENDOR
+                    value: "{{ pem_dbvendor }}"
+                  - name: RESOURCES_DIR_MOUNT
+                    value: "/var/nfs-data/resources"
+                volumeMounts:
+                  - mountPath: /var/nfs-data/resources
+                    name: sterling-toolkit-data
+            volumes:
+              - name: sterling-toolkit-data
+                persistentVolumeClaim:
+                  claimName: s0-resources-pvc
+
+- name: "Lookup sterling-toolkit pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ pem_namespace }}"
+    name: "sterling-toolkit"
+    wait: true
+    wait_sleep: 30
+    wait_timeout: 60 # 10 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: pem_pod
+
+# # kubectl cp some-namespace/some-pod:/tmp/foo /tmp/bar
+# - name: Copy pem-keystore.jks for a remote pod to {{ my_certfile }}
+#   kubernetes.core.k8s_cp:
+#     namespace: "{{ pem_namespace }}"
+#     pod: "sterling-toolkit"
+#     container: "sterling-toolkit"
+#     local_path: "{{ pem_keystore_file_jks }}"
+#     remote_path: /var/nfs-data/resources/pem-keystore.jks
+#     state: to_pod
+#     no_preserve: true
+#   register: cout_k8s_cp
+#   retries: 10
+#   delay: 30 # seconds
+#   when: not ssp_cm_generate_certificates
+
+
+# createKeystore () {
+
+#         if [ -d /opt/IBM/PCM/security/${SERVICE_NAME} ]; then
+#       echo "Found certificate"
+          
+#       openssl pkcs12 -export -out /opt/IBM/config/security/pcm-keystore.pfx -inkey /opt/IBM/PCM/security/${SERVICE_NAME}/tls.key -in /opt/IBM/PCM/security/${SERVICE_NAME}/tls.crt -password pass:${SERVER_KEYSTORE_PASSWORD}
+   
+#       openssl pkcs12 -in /opt/IBM/config/security/pcm-keystore.pfx -out /opt/IBM/config/security/pcm-keystore.pem -nodes -password pass:${SERVER_KEYSTORE_PASSWORD}
+
+#       openssl pkcs12 -export -in /opt/IBM/config/security/pcm-keystore.pem -out /opt/IBM/config/security/pcm-keystore.p12 -noiter -nomaciter -password pass:${SERVER_KEYSTORE_PASSWORD} -keypbe aes-256-cbc -certpbe aes-256-cbc
+
+#         else 
+#           echo "creating a internal self signed certificate"
+          
+#           keytool -genkeypair -alias local -keyalg RSA -keysize 2048 -dname "CN=${SERVICE_NAME}" -keystore /opt/IBM/config/security/pcm-keystore.jks -deststorepass ${SERVER_KEYSTORE_PASSWORD} -keypass ${SERVER_KEYSTORE_PASSWORD} -validity 1500
+#         fi
+
+#         chmod 444 /opt/IBM/config/security/pcm-keystore.p12
+
+# }

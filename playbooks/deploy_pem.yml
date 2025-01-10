@@ -1,0 +1,10 @@
+- name: Deploy IBM Sterling Partner Engagement Manager on RedHat OpenShift
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - pem_deploy_db2
+    - pem_setup_db2
+    - pem_deploy_mq
+    - pem_deploy

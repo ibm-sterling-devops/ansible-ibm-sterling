@@ -1,0 +1,90 @@
+#!/bin/sh
+
+source /database/config/{{ db2_user }}/sqllib/db2profile
+
+log_file="/database/config/{{ db2_user }}/setupdb.log"
+create_pem_sql="/database/config/{{ db2_user }}/create_pem_db2.sql"
+create_pem_sql_log="/database/config/{{ db2_user }}/create_pem_db2.log"
+
+function log_message() {
+  local message="$1"
+  local msgtype="${2:-INFO}"
+  timestamp=$(date +%Y-%m-%d_%H:%M:%S)
+  echo "$timestamp: $msgtype $message" >> "$log_file"
+}
+
+function db2_verify_and_start {
+
+    if ! db2gcf -s | grep Available >/dev/null; then
+
+        db2_kill  >> "$log_file"
+        db2_k=$?
+
+        ipclean -a  >> "$log_file"
+
+        db2start  >> "$log_file"
+        db2_start=$?
+        
+        log_message ""
+        log_message "db2_verify_and_start: db2_kill=$db2_k |db2start=$db2_start "
+        if [ "$db2_start" -ne  "0" ]; then
+            log_message "db2_verify_and_start: error detected" "ERROR"
+            exit 1
+        fi
+
+        log_message ""
+        log_message "db2_verify_and_start: Check if DB2 is Available "
+        counter=0
+        max_checks=5
+        interval=30
+
+        while [ $counter -lt $max_checks ]; do
+            if db2gcf -s | grep Available >/dev/null; then
+                log_message "db2_verify_and_start: DB2 is Avaliable "
+                break  # Exit loop if condition is met
+            else
+                log_message "db2_verify_and_start: DB2 is starting. Waiting $interval seconds before next check... "
+                sleep $interval
+                counter=$((counter + 1))
+            fi
+        done
+
+        if [ $counter -eq $max_checks ]; then
+            log_message "db2_verify_and_start: DB2 is NOT Avaliable. Please check." "ERROR"
+            exit 2
+        fi
+
+    fi
+}
+
+
+function create_pem_db_01 {
+    if grep -qF "create_pem_db_01:SUCCESS" "$log_file"; then
+        log_message "create_pem_db_01 already successful - SKIPPING"
+        return 0
+    fi
+
+    log_message "create_pem_db_01:START"
+    log_message ""
+
+    db2 CREATE DATABASE {{ db2_dbname }} AUTOMATIC STORAGE YES USING CODESET UTF-8 TERRITORY US COLLATE USING IDENTITY PAGESIZE 4096;  >> "$log_file"
+    db2_create_01=$?
+
+    if [ $db2_create_01 -ne 0 ]; then
+        log_message "create_pem_db_01: ERROR - Failed to run 'db2 \"CREATE DATABASE' -- rc: $db2_create_01 " "ERROR"
+        exit "$db2_create_01"
+    fi
+    log_message "create_pem_db_01:SUCCESS" >> "$log_file"
+    
+}
+
+
+
+########################## Main Part of Shell Script ##########################
+log_message "Start of script setupdb.sh"
+
+log_message "Starting db2 - db2_verify_and_start"
+db2_verify_and_start
+
+log_message "Creating Sterling B2Bi Database - create_pem_db_01"
+create_pem_db_01

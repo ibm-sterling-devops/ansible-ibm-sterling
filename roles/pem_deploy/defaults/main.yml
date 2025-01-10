@@ -1,0 +1,157 @@
+---
+# Entitlement
+# -----------------------------------------------------------------------------
+entitled_registry_key: "{{ lookup('env', 'ENTITLED_REGISTRY_KEY') }}"
+
+# Configure PEM instance
+# -----------------------------------------------------------------------------------------------------------------
+pem_action: "{{ lookup('env', 'PEM_ACTION') | default('install', true) }}"
+pem_instanceid: "{{ lookup('env', 'PEM_INSTANCEID') | default('dev01', true) }}"
+
+env_db2_namespace: "{{ lookup('env', 'PEM_DB2_NAMESPACE') }}"
+env_mq_namespace: "{{ lookup('env', 'PEM_MQ_NAMESPACE') | trim }}"
+
+pem_version: "{{ lookup('env', 'PEM_VERSION') | default('6.2.3.2', true) }}"
+
+pem_skip_helm: "{{ lookup('env', 'PEM_SKIP_HELM') | default(false, true) }}"
+
+pem_dbvendor: "{{ lookup('env', 'PEM_DBVENDOR') }}"
+pem_dbhost: "{{ lookup('env', 'PEM_DBHOST') }}"
+pem_dbport: "{{ lookup('env', 'PEM_DBPORT') }}"
+pem_dbname: "{{ lookup('env', 'PEM_DBNAME') }}"
+pem_dbuser: "{{ lookup('env', 'PEM_DBUSER') }}"
+pem_dbpassword: "{{ lookup('env', 'PEM_DBPASSWORD') | default('passw0rd', true) }}"
+pem_dburl: "{{ lookup('env', 'PEM_DBURL') }}"
+
+pem_default_password: "{{ lookup('env', 'PEM_DEFAULT_PASSWORD') | default('Password123!', true) }}"
+pem_default_passphrase: "{{ lookup('env', 'PEM_DEFAULT_PASSPHRASE') | default('P@ssPhr4s3_890@', true) }}"
+pem_keystore_password: "{{ lookup('env', 'PEM_KEYSTORE_PASSWORD') | default('Change1t@', true) }}"
+
+pem_adminmailaddr: "{{ lookup('env', 'PEM_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
+pem_smtphost: "{{ lookup('env', 'PEM_SMTPHOST') | default('smtp.company.com', true) }}"
+pem_smtpport: "{{ lookup('env', 'PEM_SMTPPORT') | default('25', true) }}"
+
+pem_jmsuser: "{{ lookup('env', 'PEM_JMS_USERNAME') }}"
+pem_jmspassword: "{{ lookup('env', 'PEM_JMS_PASSWORD') }}"
+pem_jmskeystorepassword: "{{ lookup('env', 'PEM_JMS_KEYSTORE_PASSWORD') }}"
+pem_jmstruststorepassword: "{{ lookup('env', 'PEM_JMS_TRUSTSTORE_PASSWORD') }}"
+
+pem_deploy_actions_defaults:
+  install:
+    dbsetup_enabled: "true"
+    dbsetup_upgrade: "false"
+  upgrade:
+    dbsetup_enabled: "true"
+    dbsetup_upgrade: "true"
+
+pem_dbsetup_enabled: "{{ lookup('env', 'PEM_DATASETUP_ENABLED') | default(pem_deploy_actions_defaults[pem_action].dbsetup_enabled, true) }}"
+pem_dbsetup_upgrade: "{{ lookup('env', 'PEM_DATASETUP_UPGRADE') | default(pem_deploy_actions_defaults[pem_action].dbsetup_upgrade, true) }}"
+pem_env_timezone: "{{ lookup('env', 'PEM_ENV_TIMEZONE') | default('UTC', true) }}"
+pem_env_debugmode: "{{ lookup('env', 'PEM_ENV_DEBUGMODE') | default('false', true) }}"
+
+# Storage
+# -----------------------------------------------------------------------------
+my_predefined_pvc: "{{ lookup('env', 'PEM_EXISTING_CLAIMNAME') | default('', true) }}"
+my_storage_class: "{{ lookup('env', 'PEM_STORAGE_CLASS') | default('', true) }}"
+
+# Defaults for B2Bi instances.
+# -----------------------------------------------------------------------------
+my_workdir: /tmp
+
+pem_namespace: "ibm-pem-{{ pem_instanceid }}-app"
+pem_db2_namespace: "ibm-pem-{{ pem_instanceid }}-db2"
+pem_mq_namespace: "ibm-pem-{{ pem_instanceid }}-mq"
+pem_registry_secret: ibm-registry-secret
+pem_name: "pem-{{ pem_instanceid }}"
+pem_cm_name: "pem-cm-{{ pem_instanceid }}"
+pem_serviceaccount: "ibm-pem-sa"
+pem_deploy_helm: "s0"
+
+pem_deploy_secret: "ibm-pem-secret"
+pem_deploy_db_secret: "ibm-pem-db-secret"
+pem_deploy_cm_prod_secret: "ibm-pem-cm-prod-secret"
+pem_deploy_cm_nonprod_secret: "ibm-pem-cm-nonprod-secret"
+pem_deploy_keyalias: "pem_default"
+pem_deploy_cert_jks_secret: "pem-keystore.jks"
+pem_deploy_cert_p12_secret: "pem-keystore.p12"
+pem_deploy_cert_crt_secret: "pem-cert.crt"
+
+db2_namespace: ""
+db2_secret: mydb2-secret
+db2_id: mydb2
+
+mq_namespace: ""
+mq_secret: mymq-secret
+
+pem_b2bi_url: s0-b2bi-asi-frontend-svc.sterling-b2bi-dev01-app.svc.cluster.local:35000
+pem_b2bi_user: admin
+pem_b2bi_pw: passw0rd
+pem_b2bi_passphrase: passw0rd
+pem_b2bi_apiurl: s0-b2bi-api-frontend-svc.sterling-b2bi-dev01-app.svc.cluster.local:35005
+pem_b2bi_apiuser: admin
+pem_b2bi_apipw: passw0rd
+pem_b2bi_dburl: jdbc:db2://mydb2-ci.sterling-b2bi-dev01-db2.svc.cluster.local:50000/B2BI
+pem_b2bi_dbuser: db2inst1
+pem_b2bi_dbpw: passw0rd
+
+
+# Sterling B2Bi Compatibility Matrix
+# -----------------------------------------------------------------------------
+compatibility_matrix:
+  6.2.3.2:
+    helm_version: "1.3.2"
+    image:
+      tag: "6.2.3.2"
+    test:
+      image:
+        tag: "1.1.60"
+    communitymanager:
+      image:
+        tag: "6.2.3.2"
+
+
+# Storage Class Matrix - definition by Cloud Provider
+# -----------------------------------------------------------------------------
+storage_class_matrix:
+  ibmcloud:
+    rwx: "ibmc-file-gold-gid" # ReadWriteMany - ibmc-file-gold-gid not supported in multizone
+    rwx_nogid: "ibmc-file-gold-gid" # ReadWriteMany no GID
+    rwo: "ibmc-block-gold"    # ReadWriteOnce
+    rom: "ibmc-file-gold-gid" # ReadOnlyMany  #FIXME need to define this value
+    rwop: ""                  # ReadWriteOncePod
+  redhat:
+    rwx: "ocs-storagecluster-cephfs"
+    rwx_nogid: "ocs-storagecluster-cephfs"
+    rwo: "ocs-storagecluster-ceph-rbd"
+    rom: "ocs-storagecluster-cephfs"
+    rwop: ""
+  aws:
+    rwx: "efs"
+    rwx_nogid: "efs"
+    rwo: "gp2"
+    rom: ""
+    rwop: ""
+  azure:
+    rwx: "azurefile-premium"
+    rwx_nogid: "azurefile-premium"
+    rwo: "managed-premium"
+    rom: ""
+    rwop: ""
+  techzone:
+    rwx: "managed-nfs-storage"
+    rwx_nogid: "managed-nfs-storage"
+    rwo: "managed-nfs-storage"
+    rom: "managed-nfs-storage"
+    rwop: "managed-nfs-storage"
+  ibm-spectrum:
+    rwx: "scale-cnsa"
+    rwx_nogid: "scale-cnsa"
+    rwo: "scale-cnsa"
+    rom: "scale-cnsa"
+    rwop: "scale-cnsa"
+  ibm-fyre1:
+    rwx: "rook-cephfs"
+    rwx_nogid: "rook-cephfs"
+    rwo: "rook-cephfs" # rook-ceph-block
+    rom: ""
+    rwop: ""

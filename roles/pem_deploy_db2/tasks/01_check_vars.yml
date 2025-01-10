@@ -1,0 +1,18 @@
+---
+- name: Check for required environment variables
+  ansible.builtin.assert:
+    that:
+      # DB2 Database
+      - lookup('env', 'PEM_INSTANCEID') != ""
+      # IBM
+      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
+    fail_msg: "One or more required environment variables are not defined"
+
+# 1. Fail if required parameters are not set
+# -----------------------------------------------------------------------------
+- name: "Fail if required properties have not been provided"
+  ansible.builtin.assert:
+    that:
+      - db2_namespace is defined and db2_namespace != ""
+      - entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "One or more required properties have not been set"
