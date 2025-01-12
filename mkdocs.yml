@@ -41,6 +41,8 @@ nav:
 
 theme:
   name: material
+  palette:
+    primary: black
   features:
     - navigation.instant
     - navigation.instant.progress

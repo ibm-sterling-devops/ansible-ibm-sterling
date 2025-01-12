@@ -21,7 +21,7 @@ Current playbooks:
 * [Deploy IBM Sterling Control Center Director/Monitor](playbooks/deploy_ocp_scc.md)
 * [Deploy IBM Sterling External Authentication Server](playbooks/deploy_ocp_seas.md)
 * [Deploy IBM Sterling Secure Proxy Server (Engine, Configuration Manager, Perimeter)](playbooks/deploy_ocp_ssp.md)
-* [Deploy IBM Sterling Partner Engagement Manager)](playbooks/deploy_ocp_pem.md)
+* [Deploy IBM Sterling Partner Engagement Manager](playbooks/deploy_ocp_pem.md)
 * [Deploy IBM Sterling Transformation Server](playbooks/deploy_ocp_itx_rs.md)
 * [Deploy IBM Sterling Transformation Extender Advanced](playbooks/deploy_ocp_itxa.md)
 
