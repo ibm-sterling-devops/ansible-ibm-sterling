@@ -627,7 +627,7 @@ gateway:
       truststore_password: {{ pem_deploy_secret }} #Specify the secret name for server's truststore password.
 
 communitymanager:
-  install: false
+  install: {{ pem_cm_enable }}
   image:
     repository: "cp.icr.io/cp/ibm-pem/pem_cm" #Specify the repository
     pullPolicy: IfNotPresent #Specify te image pull policy
@@ -647,8 +647,8 @@ communitymanager:
       ssl_protocols: TLSv1.2 #define the protocol you want to specify between application and database
       spring:
         datasource:
-          url: "{{ pem_b2bi_dburl }}" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
-          username: "{{ pem_b2bi_dbuser }}" #Specify the database user naem
+          url: "{{ pem_b2bi_prod_dburl }}" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
+          username: "{{ pem_b2bi_prod_dbuser }}" #Specify the database user naem
           driver_class_name: "{{ pem_dbdriver }}" #Specify the dirver class name
           ssl:
             enabled: false #Specify it as true id database connection is ssl enabled
@@ -658,7 +658,7 @@ communitymanager:
             trust_store: {{ pem_deploy_cert_jks_secret }} #truststore name
             trustStoreSecret: "{{ pem_deploy_cm_prod_secret }}" #secret for keystore
         jpa:
-          database_platform: com.pe.pcm.config.database.dialect.Oracle12cExtendedDialect #dialect value based on the database default will be oracle
+          database_platform: {{ pem_b2bi_prod_jpa_dialect }} #dialect value based on the database default will be oracle
           # database_platform: com.pe.pcm.config.database.dialect.Oracle12cExtendedDialect #Default value
         mail:
           host: {{ pem_smtphost }} #smtp hostname
@@ -678,11 +678,11 @@ communitymanager:
       sterling_b2bi:
         connectivity:
           api:
-            baseUrl: "{{ pem_b2bi_apiurl }}" #Sterling b2bi api base url 
-            username: "{{ pem_b2bi_apiuser }}" #Sterling b2bi username
+            baseUrl: "{{ pem_b2bi_prod_apiurl }}" #Sterling b2bi api base url 
+            username: "{{ pem_b2bi_prod_apiuser }}" #Sterling b2bi username
             password: "{{ pem_deploy_cm_prod_secret }}" #pull secret name
-        username: "{{ pem_b2bi_user }}" #Sterling b2bi username used to integrate CM and B2B
-        baseUrl: "{{ pem_b2bi_url }}" #Specify the B2B restapi url with port
+        username: "{{ pem_b2bi_prod_user }}" #Sterling b2bi username used to integrate CM and B2B
+        baseUrl: "{{ pem_b2bi_prod_url }}" #Specify the B2B restapi url with port
         b2bi_api:
           active: true #This will say whether B2Bi API available or not
           auth_host: #This tag will accept key Value pair here we need to configure the External user User Hostname as key and order as value
@@ -873,15 +873,15 @@ communitymanager:
         cmSecret: "{{ pem_deploy_cm_nonprod_secret }}" #Provide the password secret
       spring:
         datasource:
-          url: "{{ pem_b2bi_dburl }}" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
-          username: "{{ pem_b2bi_dbuser }}" #Specify the database user naem
+          url: "{{ pem_b2bi_nonprod_dburl }}" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
+          username: "{{ pem_b2bi_nonprod_dbuser }}" #Specify the database user naem
           driver_class_name: "{{ pem_dbdriver }}" #Specify the dirver class name
           ssl:
             enabled: false #Specify it as true id database connection is ssl enabled
             trust_store: "pemcm.truststore" #truststore name
             trustStoreSecret: "{{ pem_deploy_cm_nonprod_secret }}" #secret for keystore
         jpa:
-          database_platform: com.pe.pcm.config.database.dialect.Oracle12cExtendedDialect #dialect value based on the database default will be oracle
+          database_platform: {{ pem_b2bi_nonprod_jpa_dialect }} #dialect value based on the database default will be oracle
         mail:
           host: #smtp hostname
           port: #SMTP port
@@ -900,11 +900,11 @@ communitymanager:
       sterling_b2bi:
         connectivity:
           api:
-            baseUrl:  #Sterling b2bi api base url 
-            username: #Sterling b2bi username
-            password: #pull secret name
-        username: b2bapi_username #Sterling b2bi username used to integrate CM and B2B
-        baseUrl: #Specify the B2B restapi url with port
+            baseUrl: "{{ pem_b2bi_nonprod_apiurl }}" #Sterling b2bi api base url 
+            username: "{{ pem_b2bi_nonprod_apiuser }}" #Sterling b2bi username
+            password: "{{ pem_deploy_cm_nonprod_secret }}" #pull secret name
+        username: "{{ pem_b2bi_nonprod_user }}" #Sterling b2bi username used to integrate CM and B2B
+        baseUrl: "{{ pem_b2bi_nonprod_url }}" #Specify the B2B restapi url with port
         b2bi_api:
           active: true #This will say whether B2Bi API available or not
           auth_host: #This tag will accept key Value pair here we need to configure the External user User Hostname as key and order as value

@@ -7,7 +7,7 @@ Playbook will run the last version of IBM Sterling Partner Engagement Manager, b
 | 6.2.3.2                   | >= 4.14             | >= 1.27             | 1.3.2      | >= 3.15.x |
 
 
-## Preparation
+## Deploying Sterling PEM
 
 ### 1. IBM Entitled Registry
 
@@ -43,7 +43,7 @@ cd ansible-ibm-sterling
 export ANSIBLE_CONFIG=./ansible.cfg 
 ```
 
-## Deploying Sterling B2B Integrator
+### 5. Deploying Sterling PEM
 
 1) First you need to provide PEM_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
 
@@ -58,6 +58,42 @@ ansible-playbook playbooks/deploy_pem.yml
 ```
 
 
+## Deploying Sterling PEM with Community Manager
+
+1) Deploy Serling B2Bi
+
+You need to provide to install a **production** Sterling B2Bi
+
+```bash 
+export SI_INSTANCEID=prd01
+
+ansible-playbook playbooks/deploy_sb2b.yml
+```
+
+You need to provide to install a **non-production** Sterling B2Bi
+
+```bash 
+export SI_INSTANCEID=dev01
+
+ansible-playbook playbooks/deploy_sb2b.yml
+```
+
+After install change admin password to 'Password123!'
+
+2) Now you need to provide PEM_INSTANCEID and PEM_CM_ENABLE
+
+```bash 
+export PEM_INSTANCEID=dev01
+export PEM_CM_ENABLE=true
+```
+
+3) To run playbook the playbook
+
+```bash 
+ansible-playbook playbooks/deploy_pem.yml
+```
+
+
 ## Environment Variable
 
 Environment variables for this role:
@@ -66,7 +102,7 @@ Environment variables for this role:
 |-------------------------------|-------------------| ---------|-------------------------------------|
 | ENTITLED_REGISTRY_KEY         |                   | Yes      | IBM Entitled Registry key |
 | PEM_INSTANCEID                |                   | Yes      | Used to define your environment |
-| PEM_ACTION                    | install           | No       | Action: install, upgrade, prebuiltdb           | 
+| PEM_ACTION                    | install           | No       | Action: install, upgrade, prebuiltdb           |
 | PEM_DEFAULT_PASSWORD          | Password123!      | No       | Default Password for PEM applications|
 | PEM_DEFAULT_PASSPHRASE        | P@ssPhr4s3_890@   | No       | Default Passphrase for PEM applications|
 | PEM_KEYSTORE_PASSWORD         | Change1t@         | No       | Default Password for Keystores and Truststore|
@@ -85,6 +121,7 @@ Environment variables for this role:
 | PEM_JMS_KEYSTORE_PASSWORD     |                   | No       | JMS Queue keystore password |
 | PEM_JMS_TRUSTSTORE_PASSWORD   |                   | No       | JMS Queue truststore password |
 | PEM_SKIP_HELM                 | false             | No       | Avoid to run helm, only generate values.yaml  |
+| PEM_CM_ENABLE                 | false             | No       | Enable/Disable PEM Community Manager  |
 
 For all environment variables
 
