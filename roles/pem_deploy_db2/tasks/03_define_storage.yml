@@ -110,7 +110,7 @@
   ansible.builtin.set_fact:
     my_storage_class: "ibm-fyre1"
   when:
-    - my_storage_class is not defined
+    - my_storage_class == ''
     - "'rook-cephfs' in my_storage_list"
 
 - name: Assert that storage class has been defined
