@@ -38,7 +38,7 @@ sudo systemctl enable nginx
  cp IBM_CD_V6.2_UNIX_RedHat.Z.tar.Z /usr/share/nginx/html
 ```
 
-### Cloning ansible-ibm-websphere from git
+### Cloning ansible-ibm-sterling from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git

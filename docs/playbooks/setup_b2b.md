@@ -42,7 +42,7 @@ sudo systemctl enable nginx
  cp <files> /usr/share/nginx/html
 ```
 
-### Cloning ansible-ibm-websphere from git
+### Cloning ansible-ibm-sterling from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git

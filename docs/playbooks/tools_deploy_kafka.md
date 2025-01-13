@@ -12,7 +12,7 @@ Do a login in Openshift console and run the command:
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
-#### 2. Cloning ansible-ibm-websphere from git
+#### 2. Cloning ansible-ibm-sterling from git
 
 ```bash 
 git clone https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git
