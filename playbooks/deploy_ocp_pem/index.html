@@ -741,13 +741,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#preparation" class="md-nav__link">
+  <a href="#deploying-sterling-pem" class="md-nav__link">
     <span class="md-ellipsis">
-      Preparation
+      Deploying Sterling PEM
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Preparation">
+    <nav class="md-nav" aria-label="Deploying Sterling PEM">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -786,15 +786,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#5-deploying-sterling-pem" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Deploying Sterling PEM
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploying-sterling-b2b-integrator" class="md-nav__link">
+  <a href="#deploying-sterling-pem-with-community-manager" class="md-nav__link">
     <span class="md-ellipsis">
-      Deploying Sterling B2B Integrator
+      Deploying Sterling PEM with Community Manager
     </span>
   </a>
   
@@ -1244,13 +1253,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#preparation" class="md-nav__link">
+  <a href="#deploying-sterling-pem" class="md-nav__link">
     <span class="md-ellipsis">
-      Preparation
+      Deploying Sterling PEM
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Preparation">
+    <nav class="md-nav" aria-label="Deploying Sterling PEM">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1289,15 +1298,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#5-deploying-sterling-pem" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Deploying Sterling PEM
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploying-sterling-b2b-integrator" class="md-nav__link">
+  <a href="#deploying-sterling-pem-with-community-manager" class="md-nav__link">
     <span class="md-ellipsis">
-      Deploying Sterling B2B Integrator
+      Deploying Sterling PEM with Community Manager
     </span>
   </a>
   
@@ -1352,7 +1370,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link"></a></h2>
+<h2 id="deploying-sterling-pem">Deploying Sterling PEM<a class="headerlink" href="#deploying-sterling-pem" title="Permanent link"></a></h2>
 <h3 id="1-ibm-entitled-registry">1. IBM Entitled Registry<a class="headerlink" href="#1-ibm-entitled-registry" title="Permanent link"></a></h3>
 <p>You must have <strong>kubectl</strong>, <strong>oc</strong>, <strong>git</strong> and <strong>ansible</strong> installed in your machine</p>
 <p>Log in the <a href="https://myibm.ibm.com/products-services/containerlibrary">IBM Container software library</a> with the IBMid and password that are associated with the entitled software. Click <strong>Get entitlement key</strong>. With key export variable</p>
@@ -1371,11 +1389,31 @@
 
 export ANSIBLE_CONFIG=./ansible.cfg 
 </code></pre>
-<h2 id="deploying-sterling-b2b-integrator">Deploying Sterling B2B Integrator<a class="headerlink" href="#deploying-sterling-b2b-integrator" title="Permanent link"></a></h2>
+<h3 id="5-deploying-sterling-pem">5. Deploying Sterling PEM<a class="headerlink" href="#5-deploying-sterling-pem" title="Permanent link"></a></h3>
 <p>1) First you need to provide PEM_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01</p>
 <pre><code class="language-bash">export PEM_INSTANCEID=dev01
 </code></pre>
 <p>2) To run playbook the playbook</p>
+<pre><code class="language-bash">ansible-playbook playbooks/deploy_pem.yml
+</code></pre>
+<h2 id="deploying-sterling-pem-with-community-manager">Deploying Sterling PEM with Community Manager<a class="headerlink" href="#deploying-sterling-pem-with-community-manager" title="Permanent link"></a></h2>
+<p>1) Deploy Serling B2Bi</p>
+<p>You need to provide to install a <strong>production</strong> Sterling B2Bi</p>
+<pre><code class="language-bash">export SI_INSTANCEID=prd01
+
+ansible-playbook playbooks/deploy_sb2b.yml
+</code></pre>
+<p>You need to provide to install a <strong>non-production</strong> Sterling B2Bi</p>
+<pre><code class="language-bash">export SI_INSTANCEID=dev01
+
+ansible-playbook playbooks/deploy_sb2b.yml
+</code></pre>
+<p>After install change admin password to 'Password123!'</p>
+<p>2) Now you need to provide PEM_INSTANCEID and PEM_CM_ENABLE</p>
+<pre><code class="language-bash">export PEM_INSTANCEID=dev01
+export PEM_CM_ENABLE=true
+</code></pre>
+<p>3) To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_pem.yml
 </code></pre>
 <h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
@@ -1515,6 +1553,12 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <td>false</td>
 <td>No</td>
 <td>Avoid to run helm, only generate values.yaml</td>
+</tr>
+<tr>
+<td>PEM_CM_ENABLE</td>
+<td>false</td>
+<td>No</td>
+<td>Enable/Disable PEM Community Manager</td>
 </tr>
 </tbody>
 </table>
