@@ -106,6 +106,13 @@
     - my_storage_class == ''
     - "'scale-cnsa' in my_storage_list"
 
+- name: Check for IBM Fyre StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "ibm-fyre1"
+  when:
+    - my_storage_class is not defined
+    - "'rook-cephfs' in my_storage_list"
+
 - name: Assert that storage class has been defined
   ansible.builtin.assert:
     that: my_storage_class is defined and my_storage_class != ""
