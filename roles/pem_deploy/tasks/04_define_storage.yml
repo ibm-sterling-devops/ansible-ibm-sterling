@@ -108,6 +108,7 @@
 
 - name: Check for IBM Fyre StorageClass
   ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
     my_storage_class: "ibm-fyre1"
   when:
     - my_storage_class == ''
