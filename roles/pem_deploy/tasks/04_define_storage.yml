@@ -131,3 +131,13 @@
       - "pem_use_dynamic_provisioning ................................. {{ pem_use_dynamic_provisioning }}!"
       - "pem_storage_class ............................................ {{ pem_storage_class }}"
       - "pem_existing_claimname ....................................... {{ pem_existing_claimname }}"
+
+# FIXME 
+# - name: Show default Storage Class
+#   ansible.builtin.debug:
+#     msg: "{{ item.metadata.name}}"
+#   with_items: "{{ lookup_storageclasses.resources }}"
+#   when: 
+#     - item.metadata.annotations is defined 
+#     - item.metadata.annotations['storageclass.kubernetes.io/is-default-class'] is defined 
+#     - item.metadata.annotations['storageclass.kubernetes.io/is-default-class'] == 'true'

@@ -36,12 +36,8 @@
       apiVersion: v1
       kind: ServiceAccount
       metadata:
-        name: "{{ pem_serviceaccount }}"
+        name: "{{ pem_deploy_sa }}"
         namespace: "{{ pem_namespace }}"
-
-- name: Bind SCC to ServiceAccount
-  ansible.builtin.command: >
-    oc adm policy add-scc-to-user ibm-pem-scc system:serviceaccount:{{ pem_namespace }}:{{ pem_serviceaccount }}
 
 # Check for Kubernetes Resources and APIs
 # -----------------------------------------------------------------------------
@@ -93,3 +89,23 @@
     state: present
     template: 'ibm-pem-scc.yaml.j2'
   when: scc_resource and scc_apiversion
+
+- name: Create Role Binding anyuid
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: 'ibm-pem-anyuid'
+        namespace: "{{ pem_namespace }}"
+        labels:
+          app: ibm-pem
+      subjects:
+        - kind: ServiceAccount
+          name: "{{ pem_deploy_sa }}"
+          namespace: "{{ pem_namespace }}"
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: 'system:openshift:scc:anyuid'

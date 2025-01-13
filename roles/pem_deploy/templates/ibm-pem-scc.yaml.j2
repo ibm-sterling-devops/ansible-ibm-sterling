@@ -5,7 +5,7 @@ metadata:
   namespace: {{ pem_namespace }}
 subjects:
   - kind: ServiceAccount
-    name: {{ pem_serviceaccount }}
+    name: {{ pem_deploy_sa }}
     namespace: {{ pem_namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io

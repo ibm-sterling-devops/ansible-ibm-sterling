@@ -54,7 +54,6 @@
 #         hostPath:  # Adicionado para definir o tipo de volume
 #           path: "/mnt/data/ibm-pem-resources"  # Caminho no nó onde o volume será armazenado
 
-
 # Create PVC
 # -----------------------------------------------------------------------------
 - name: "Create PVC 's0-resources-pvc'"

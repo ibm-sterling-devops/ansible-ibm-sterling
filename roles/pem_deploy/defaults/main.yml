@@ -66,7 +66,7 @@ pem_mq_namespace: "ibm-pem-{{ pem_instanceid }}-mq"
 pem_registry_secret: ibm-registry-secret
 pem_name: "pem-{{ pem_instanceid }}"
 pem_cm_name: "pem-cm-{{ pem_instanceid }}"
-pem_serviceaccount: "ibm-pem-sa"
+pem_deploy_sa: "ibm-pem-sa"
 pem_deploy_helm: "s0"
 
 pem_deploy_secret: "ibm-pem-secret"

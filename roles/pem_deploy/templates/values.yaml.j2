@@ -36,7 +36,7 @@ global:
       #     port: <port no>
       #     endPort: <end port no>
 
-serviceAccountName: {{ pem_serviceaccount }} #specify the service account name which has required permissions
+serviceAccountName: {{ pem_deploy_sa }} #specify the service account name which has required permissions
 timezone:
    configmapname: "localtime" #specify the timezone configmap
 volumeClaims:
