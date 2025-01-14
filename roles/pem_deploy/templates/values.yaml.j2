@@ -670,9 +670,9 @@ communitymanager:
           properties:
             mail:
               smtp:
-                auth: true #If you want to send a mail with ssl authentication then make it as true or elase false
+                auth: false #If you want to send a mail with ssl authentication then make it as true or elase false
                 starttls:
-                  enable: true #If you want to send a mail with ssl authentication then make it as true or else false
+                  enable: false #If you want to send a mail with ssl authentication then make it as true or else false
       jwt:
         secretkey: CACE9E5A149ED201C4033C1A1E02C9BE #Specify the jwt token
       sterling_b2bi:
@@ -853,7 +853,7 @@ communitymanager:
       failureThreshold: 3
     hostname: #specify the route dns host to access Partner Provisioner if not set default hostname will be generated
     route:
-      timeout: #specify the route timeout. the default value is '30s'
+      timeout: 30s #specify the route timeout. the default value is '30s'
     ingress:
       tls:
         secretName: {{ pem_deploy_cert_jks_secret }} #define the ingress secret
@@ -883,8 +883,8 @@ communitymanager:
         jpa:
           database_platform: {{ pem_deploy_b2bi_nonprod_jpa_dialect }} #dialect value based on the database default will be oracle
         mail:
-          host: #smtp hostname
-          port: #SMTP port
+          host: {{ pem_smtphost }} #smtp hostname
+          port: {{ pem_smtpport }} #SMTP port
           username: #Specify the username exmaple: username@compnay.com
           from: from_mailid@company.com #Specify the from mail id.
           app_contact_mail: app_contact_mailid@company.com #Application contact email which will be used in mail signature
@@ -892,9 +892,9 @@ communitymanager:
           properties:
             mail:
               smtp:
-                auth: true #If you want to send a mail with ssl authentication then make it as true or elase false
+                auth: false #If you want to send a mail with ssl authentication then make it as true or elase false
                 starttls:
-                  enable: true #If you want to send a mail with ssl authentication then make it as true or else false
+                  enable: false #If you want to send a mail with ssl authentication then make it as true or else false
       jwt:
         secretkey: CACE9E5A149ED201C4033C1A1E02C9BE #Specify the jwt token
       sterling_b2bi:
@@ -1074,10 +1074,10 @@ communitymanager:
       failureThreshold: 3
     hostname: #specify the route dns host to access Partner Provisioner if not set default hostname will be generated
     route:
-      timeout: #specify the route timeout. the default value is '30s'
+      timeout: 30s #specify the route timeout. the default value is '30s'
     ingress:
       tls:
-        secretName: pemcm.keystore #define the ingress secret
+        secretName: {{ pem_deploy_cert_jks_secret }} #define the ingress secret
     archive:
       enable: false #set to true to enable persistent volume for archive
       pvcname: #Specify the pvc name of the b2bi documents shared pvc
