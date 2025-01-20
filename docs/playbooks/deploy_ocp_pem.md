@@ -65,7 +65,7 @@ ansible-playbook playbooks/deploy_pem.yml
 You need to provide to install a **production** Sterling B2Bi
 
 ```bash 
-export SI_INSTANCEID=prd01
+export SI_INSTANCEID=prod01
 
 ansible-playbook playbooks/deploy_sb2b.yml
 ```

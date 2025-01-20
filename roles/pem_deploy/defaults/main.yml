@@ -86,14 +86,14 @@ mq_namespace: ""
 mq_secret: mymq-secret
 
 
-pem_deploy_b2bi_prod_url: s0-b2bi-asi-frontend-svc.sterling-b2bi-prd01-app.svc.cluster.local:35000
+pem_deploy_b2bi_prod_url: s0-b2bi-asi-frontend-svc.sterling-b2bi-prod01-app.svc.cluster.local:35000
 pem_deploy_b2bi_prod_user: admin
 pem_deploy_b2bi_prod_pw: Password123!
 pem_deploy_b2bi_prod_passphrase: Password123!
-pem_deploy_b2bi_prod_apiurl: s0-b2bi-api-frontend-svc.sterling-b2bi-prd01-app.svc.cluster.local:35005
+pem_deploy_b2bi_prod_apiurl: s0-b2bi-api-frontend-svc.sterling-b2bi-prod01-app.svc.cluster.local:35005
 pem_deploy_b2bi_prod_apiuser: admin
 pem_deploy_b2bi_prod_apipw: Password123!
-pem_deploy_b2bi_prod_dburl: jdbc:db2://mydb2-ci.sterling-b2bi-prd01-db2.svc.cluster.local:50000/B2BI
+pem_deploy_b2bi_prod_dburl: jdbc:db2://mydb2-ci.sterling-b2bi-prod01-db2.svc.cluster.local:50000/B2BI
 pem_deploy_b2bi_prod_dbuser: db2inst1
 pem_deploy_b2bi_prod_dbpw: passw0rd
 pem_deploy_b2bi_prod_jpa_dialect: com.pe.pcm.config.database.dialect.DB2ExtendedDialect
