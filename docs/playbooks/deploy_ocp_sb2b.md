@@ -54,6 +54,20 @@ export ANSIBLE_CONFIG=./ansible.cfg
 export SI_INSTANCEID=dev01
 ```
 
+2) To run playbook the playbook
+
+```bash 
+ansible-playbook playbooks/deploy_sb2b.yml
+```
+
+## Deploying Sterling B2B Integrator - older version
+
+1) First you need to provide SI_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
+
+```bash 
+export SI_INSTANCEID=dev01
+```
+
 2) (Optional) change your version: 
 
 We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.
@@ -68,6 +82,7 @@ export SI_VERSION=6.2.0.2
 ```bash 
 ansible-playbook playbooks/deploy_sb2b.yml
 ```
+
 
 ## Deploy Sterling B2Bi using prebuilt db.
 

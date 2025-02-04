@@ -92,6 +92,43 @@ si_helm:
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.2.0.4:
+    helm_version: "3.0.6"
+    ocp_min_version: "4.14"
+    k8s_min_version: "1.27"
+    k8s_max_version: "1.30"
+    global:
+      image:
+        tag: "6.2.0.4"
+    resourcesInit:
+      image:
+        tag: "6.2.0.4"
+    dataSetup:
+      image:
+        tag: "6.2.0.4"
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:
+        image:
+          tag: "10.1.2.1.2024112"
+      itxaIntegration:
+        image:
+          repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
+          tag: "10.0.1.10-x86_64"
+        resourcesInit:
+          image:
+            repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
+            tag: "10.0.1.10-x86_64"
+    test:
+      image:
+        tag: '1.1.67'
+    purge:
+      image:
+        tag: "6.2.0.4"
+    documentService:
+      image:
+        tag: 1.0.0.4
   6.2.0.3:
     helm_version: "3.0.5"
     ocp_min_version: "4.14"

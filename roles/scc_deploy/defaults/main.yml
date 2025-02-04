@@ -75,7 +75,7 @@ db2_id: mydb2
 # -----------------------------------------------------------------------------
 compatibility_matrix:
   6.4.0.0_2024-12-17:
-    helm_version: "4.0.1"
+    helm_version: "4.0.2"
     image_tag: "6.4.0.0_2024-12-17"
     copy_dbdriver_tag: "2024"
     kube_version: '>=1.27.0'
