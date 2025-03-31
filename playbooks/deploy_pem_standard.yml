@@ -4,7 +4,7 @@
   gather_facts: false
   any_errors_fatal: true
   roles:
-    - pem_deploy_db2
-    - pem_setup_db2
-    - pem_deploy_mq
-    - pem_deploy
+    - pem_std_deploy_db2
+    - pem_std_setup_db2
+    - pem_std_deploy_mq
+    - pem_std_deploy

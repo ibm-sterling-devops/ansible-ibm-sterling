@@ -2,12 +2,13 @@
 
 Playbook will run the last version of IBM Sterling Partner Engagement Manager, but take care of Kubernetes/Openshift version is supported
 
-| Sterling PEM              | OpenShift           | Kubernetes          | helm-chart | Helm      |
-|---------------------------|---------------------|---------------------|------------|-----------|
-| 6.2.3.2                   | >= 4.14             | >= 1.27             | 1.3.2      | >= 3.15.x |
+| Sterling PEM              | OpenShift           | Kubernetes          | helm-chart |
+|---------------------------|---------------------|---------------------|------------|
+| 6.2.4_standard            | >= 4.14             | >= 1.27             | 1.4.0      |
+| 6.2.3.2                   | >= 4.14             | >= 1.27             | 1.3.2      |
 
 
-## Deploying Sterling PEM
+## Deploying Sterling PEM Standard
 
 ### 1. IBM Entitled Registry
 
@@ -43,7 +44,7 @@ cd ansible-ibm-sterling
 export ANSIBLE_CONFIG=./ansible.cfg 
 ```
 
-### 5. Deploying Sterling PEM
+### 5. Deploying Sterling PEM Standard
 
 1) First you need to provide PEM_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
 
@@ -54,7 +55,7 @@ export PEM_INSTANCEID=dev01
 2) To run playbook the playbook
 
 ```bash 
-ansible-playbook playbooks/deploy_pem.yml
+ansible-playbook playbooks/deploy_pem_standard.yml
 ```
 
 
@@ -90,7 +91,7 @@ export PEM_CM_ENABLE=true
 3) To run playbook the playbook
 
 ```bash 
-ansible-playbook playbooks/deploy_pem.yml
+ansible-playbook playbooks/deploy_pem_standard.yml
 ```
 
 
@@ -125,6 +126,6 @@ Environment variables for this role:
 
 For all environment variables
 
-* Role [pem_setup_db2](../../roles/pem_setup_db2)
-* Role [pem_deploy_db2](../../roles/pem_deploy_db2)
-* Role [pem_deploy_mq](../../roles/pem_deploy_mq)
+* Role [pem_std_setup_db2](../../roles/pem_std_setup_db2)
+* Role [pem_std_deploy_db2](../../roles/pem_std_deploy_db2)
+* Role [pem_std_deploy_mq](../../roles/pem_std_deploy_mq)

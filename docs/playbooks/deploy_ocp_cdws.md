@@ -2,11 +2,12 @@
 
 Playbook will run the last version of Connect:Direct WebService, but take care of Kubernetes/Openshift version is supported
 
-| C:D WebService            | OpenShift           | Kubernetes          | helm-chart | Helm      |
-|---------------------------|---------------------|---------------------|------------|-----------|
-| 6.4.0.0_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.1.0      | >= 3.14.x |
-| 6.3.0.11_ifix000          | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.0.4      | >= 3.14.x |
-| 6.3.0.9_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.0.2      | >= 3.14.x |
+| C:D WebService            | OpenShift           | Kubernetes          | helm-chart |
+|---------------------------|---------------------|---------------------|------------|
+| 6.4.0.2_ifix000           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.1.5      |
+| 6.4.0.0_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.1.0      |
+| 6.3.0.11_ifix000          | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.0.4      |
+| 6.3.0.9_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.0.2      |
 
 
 ## Preparation
@@ -78,14 +79,14 @@ Environment variables for this role:
 |-----------------------------|-----------------|----------|--------------------------------------------------|
 | ENTITLED_REGISTRY_KEY       | N/A             | Yes      | Entitlement registry key                         |
 | CDWS_NAMESPACE              | sterling-cdws01 | Yes      | Namespace for C:D application                    |
-| CDWS_VERSION                | 6.3.0.8_ifix000 | No       | Version of C:D container to deploy               |
+| CDWS_VERSION                | 6.4.0.2_ifix000 | No       | Version of C:D container to deploy               |
 | CDWS_TRUSTSTOREPASSWORD     | Change1t@       | No       | Password for truststore                          |
 | CDWS_KEYSTOREPASSWORD       | Change1t@       | No       | Password for keystore                            |
 | CDWS_CACERT_PASSWORD        | Password123!    | No       | Password for CA certificate                      |
 | CDWS_LICENSE_TYPE           | non-prod        | No       | License type for C:D application (prod or non-prod) |
-| CDWS_STORAGE_CLASS          | -               | Yes      | Storage class to be used for the container            |
-| CDWS_STORAGE_CAPACITY       | 500Mi           | No       | Storage capacity to be allocated to the container     |
-| CDWS_CPU_LIMITS             | 3000m           | No       | CPU limit for the container                           |
-| CDWS_MEM_LIMITS             | 2Gi             | No       | Memory limit for the container                        |
-| CDWS_CPU_REQUESTS           | 1500m           | No       | CPU request for the container                         |
-| CDWS_MEM_REQUESTS           | 1Gi             | No       | Memory request for the container                      |
+| CDWS_STORAGE_CLASS          | -               | Yes      | Storage class to be used for the container       |
+| CDWS_STORAGE_CAPACITY       | 500Mi           | No       | Storage capacity to be allocated to the container|
+| CDWS_CPU_LIMITS             | 3000m           | No       | CPU limit for the container                      |
+| CDWS_MEM_LIMITS             | 2Gi             | No       | Memory limit for the container                   |
+| CDWS_CPU_REQUESTS           | 1500m           | No       | CPU request for the container                    |
+| CDWS_MEM_REQUESTS           | 1Gi             | No       | Memory request for the container                 |

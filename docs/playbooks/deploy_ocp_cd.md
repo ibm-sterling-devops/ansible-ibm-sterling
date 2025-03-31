@@ -2,12 +2,13 @@
 
 Playbook will run the last version of Connect:Direct, but take care of Kubernetes/Openshift version is supported
 
-| Connect:Direct            | OpenShift           | Kubernetes          | helm-chart | Helm      |
-|---------------------------|---------------------|---------------------|------------|-----------|
-| 6.4.0.1_iFix001           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.4.2      | >= 3.14.x |
-| 6.3.0.3_ifix025           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.13     | >= 3.14.x |
-| 6.3.0.3_ifix021           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.12     | >= 3.14.x |
-| 6.3.0.3_ifix014           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.11     | >= 3.14.x |
+| Connect:Direct            | OpenShift           | Kubernetes          | helm-chart | 
+|---------------------------|---------------------|---------------------|------------|
+| 6.4.0.1_iFix018           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.4.3      |
+| 6.4.0.1_iFix001           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.4.2      |
+| 6.3.0.3_ifix025           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.13     |
+| 6.3.0.3_ifix021           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.12     |
+| 6.3.0.3_ifix014           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.11     |
 
 
 ## Preparation
@@ -95,7 +96,7 @@ Environment variables for this role:
 | ENTITLED_REGISTRY_KEY         | -                     | Yes      | Entitlement registry key                         |
 | CD_NAMESPACE                  | sterling-cdnode01-dev | No       | Namespace for C:D application                    |
 | CD_NODENAME                   | CDNODE01              | No       | Specify the nodename of C:D                      |
-| CD_VERSION                    | 6.4.0.1_iFix001       | No       | Version of C:D container to deploy               |
+| CD_VERSION                    | 6.4.0.1_iFix018       | No       | Version of C:D container to deploy               |
 | CD_ADMINPASSWORD              | passw0rd              | No       | Password for C:D Admin                           |
 | CD_APPUSER_PWD                | passw0rd              | No       | Password for C:D User                            |
 | CD_LOCALCERTPASSPHRASE        | changeit              | No       | Passphrase for local certificate                 |

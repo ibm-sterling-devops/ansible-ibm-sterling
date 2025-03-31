@@ -8,6 +8,7 @@ arch: amd64 #Specify the architecture (amd64, s390x)
 ## Set the value to true in order to accept the application license 
 ## https://www14.software.ibm.com/cgi-bin/weblap/lap.pl?li_formnum=L-BTGF-XLKNU9
 license: true # Set true to accept the license agreement
+envType: "prod" #Specify the environment type for the product . If it is a production environment, specify "prod". If it is a non-production environment, specify "nonprod". The default value is "prod".
 
 global:
   networkPolicies:
@@ -165,6 +166,7 @@ dbsetup:
     testmode_db_name: {{ pem_dbname_test }} #Specify the Database Name
     testmode_db_schema: {{ pem_dbschema_test }} #Specify the Database Schema
     testmode_db_user: {{ pem_dbuser }} # Specify the databse user name
+
     testmode_db_password: {{ pem_deploy_db_secret }} #Provide the secret name
     testmode_db_driver: {{ pem_dbdriver }} #Specify the database driver Name
     ## TESTMODE DB CONNECTION MANAGER DETAILS. COMMON FOR IBM PEM, PARTNER
@@ -215,6 +217,7 @@ setupfile:
     enableConsoleLogs: false #Specify true or false for enabling or disabling logging in console
     provisioner_request_listener_max_concurrency: 10 #Specify the number of concurrent provisioning requests that should be processed. The default value is 10.
     provisioner_response_listener_max_concurrency: 10 #Specify the number of concurrent provisioning responses that should be processed. The default value is 10.
+    skipHostnameVerificationForHosts: #Specify the hostnames that should be ignored during hostname verification in the Liberty Server.
 
 ssoSeas:
   enable: false #set the property to true to enable ssl connection
@@ -625,12 +628,16 @@ gateway:
       truststore_type: JKS #Specify the SSL truststore file type. For example, JKS.
       truststore_alias: #Specify the alias of server's public certificate within the truststore.
       truststore_password: {{ pem_deploy_secret }} #Specify the secret name for server's truststore password.
+      ratelimit:
+        limit_for_period: 45 # The maximum number of requests allowed within each limit_for_period. The default value is set to 45.
+        limit_refresh_period: 60 # The interval(in seconds) at which the rate limit is reset. The default value is set to 60.
+        timeout_duration: 5 # The maximum time(in seconds) a request will wait if the rate limit is exceeded before failing or timing out. The default value is set to 5.
 
 communitymanager:
   install: {{ pem_cm_enable }}
   image:
     repository: "cp.icr.io/cp/ibm-pem/pem_cm" #Specify the repository
-    pullPolicy: IfNotPresent #Specify te image pull policy
+    pullPolicy: Always #Specify te image pull policy
     tag: "{{ compatibility_matrix[ pem_version ].communitymanager.image.tag }}" #Specify the tag name
     pullSecret: "{{ pem_registry_secret }}" #Provide the pull secret name
   prod:
@@ -638,13 +645,17 @@ communitymanager:
     setupfile:
       time_zone: UTC #Deafult value is UTC; Specify the timezone EX:America/New_York (Country/city)
       max_file_length: 10 #Default is 10 MB max file size allowed to view
+      edit_and_upload: true #false to disable/hide edit and upload button in file transfer search screen
       jvmoptions: "-Dspring.datasource.hikari.maximum-pool-size=60" #Additional jvm arguments based on requirement Do not change the default.
       acceptLicence: true #We should make accept-license should be true for pcm installation
       cm:
         color: black  #This will enable the black theme in UI, PCM colores. red, green, grey, yellow, black
         cmSecret: "{{ pem_deploy_cm_prod_secret }}" #Provide the password secret
-      ssl_connection: false #
-      ssl_protocols: TLSv1.2 #define the protocol you want to specify between application and database
+        logo_location: #logo.png #uncomment logo.png if you want to use custom logo mount logo.png file as config map
+        protocol:
+          disallowed_special_characters: "!@#:$%^&*()+?,<>{}[]|;\"'/\\"  #We need to add the special characters in double quotes, by default <> are restricted and make sure escape characters are being handled properly
+      ssl_enabled_protocols: TLSv1.2,TLSv1.3 # Enabled SSL/TLS protocols for the server  
+      ssl_ciphers: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_DSS_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_SHA256,TLS_ECDHE_RSA_WITH_AES_128_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_SHA,TLS_ECDHE_RSA_WITH_AES_256_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_SHA384,TLS_ECDHE_RSA_WITH_AES_256_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_SHA,TLS_DHE_RSA_WITH_AES_128_SHA256,TLS_DHE_RSA_WITH_AES_128_SHA,TLS_DHE_DSS_WITH_AES_128_SHA256,TLS_DHE_RSA_WITH_AES_256_SHA256,TLS_DHE_DSS_WITH_AES_256_SHA,TLS_DHE_RSA_WITH_AES_256_SHA #List of supported cipers, can be modified according to the your ssl certificates 
       spring:
         datasource:
           url: "{{ pem_deploy_b2bi_prod_dburl }}" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
@@ -681,6 +692,9 @@ communitymanager:
             baseUrl: "{{ pem_deploy_b2bi_prod_apiurl }}" #Sterling b2bi api base url 
             username: "{{ pem_deploy_b2bi_prod_apiuser }}" #Sterling b2bi username
             password: "{{ pem_deploy_cm_prod_secret }}" #pull secret name
+        user:
+          cmks_validation: false #Set this value to true to integrate PCM with B2Bi
+          cmks: #provide app-secret name reference STERLING_SYSTEM_PASSPHRASE
         username: "{{ pem_deploy_b2bi_prod_user }}" #Sterling b2bi username used to integrate CM and B2B
         baseUrl: "{{ pem_deploy_b2bi_prod_url }}" #Specify the B2B restapi url with port
         b2bi_api:
@@ -769,7 +783,17 @@ communitymanager:
           action: EXPORT  #Actions:  EXPORT, MIGRATE, REPORT
           file_name: pcm_user #File name which will be used in EXPORT, MIGRATE, and REORT Actions
       loggerLevel: DEBUG #set the value to generate logs accepted values INFo , ERROR, DEBUG
-
+      saml:
+        enabled: false
+        ssourl: #provide the SAML 2.0 Single Sign On(SSO) URL
+        idp:
+          metadata: #provide SAML2.0 metadata file name
+          registrationid: pcm #provide saml 2.0 application registration id
+        idpgroupsrolemapper: pcmsuperadmin-super_admin,pcmadmin-admin,cmonboarder-on_boarder #provide your saml group vs pcm role (-), idp role name should not have special characters (-).
+        defaultrole: super_admin #default role for sso user
+        jwt:
+          secretkey: yeWAgVDfb$!MFn@MCJVN7uqkznHbDLR#  #provide the jwt secret key
+          sessionexpire: 60 #provide your application session expiry in minutes
       sso_ssp_seas:
         enable: false
         ssp:
@@ -903,6 +927,9 @@ communitymanager:
             baseUrl: "{{ pem_deploy_b2bi_nonprod_apiurl }}" #Sterling b2bi api base url 
             username: "{{ pem_deploy_b2bi_nonprod_apiuser }}" #Sterling b2bi username
             password: "{{ pem_deploy_cm_nonprod_secret }}" #pull secret name
+        user:
+          cmks_validation: false #Set this value to true to integrate PCM with B2Bi
+          cmks: #provide app-secret name reference STERLING_SYSTEM_PASSPHRASE
         username: "{{ pem_deploy_b2bi_nonprod_user }}" #Sterling b2bi username used to integrate CM and B2B
         baseUrl: "{{ pem_deploy_b2bi_nonprod_url }}" #Specify the B2B restapi url with port
         b2bi_api:
@@ -991,7 +1018,17 @@ communitymanager:
           action: EXPORT  #Actions:  EXPORT, MIGRATE, REPORT
           file_name: pcm_user #File name which will be used in EXPORT, MIGRATE, and REORT Actions
       loggerLevel: INFO #set the value to generate logs accepted values INFo , ERROR, DEBUG
-
+      saml:
+        enabled: false
+        ssourl: #provide the SAML 2.0 Single Sign On(SSO) URL
+        idp:
+          metadata: #provide SAML2.0 metadata file name
+          registrationid: pcm #provide saml 2.0 application registration id
+        idpgroupsrolemapper: pcmsuperadmin-super_admin,pcmadmin-admin,cmonboarder-on_boarder #provide your saml group vs pcm role (-), idp role name should not have special characters (-).
+        defaultrole: super_admin #default role for sso user
+        jwt:
+          secretkey: yeWAgVDfb$!MFn@MCJVN7uqkznHbDLR#  #provide the jwt secret key
+          sessionexpire: 60 #provide your application session expiry in minutes
       sso_ssp_seas:
         enable: false
         ssp:
