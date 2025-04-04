@@ -63,6 +63,13 @@
     - my_storage_class is not defined
     - "'rook-cephfs' in my_storage_list"
 
+- name: Check for IBM Fyre StorageClass 2
+  ansible.builtin.set_fact:
+    my_storage_class: "ibm-fyre2"
+  when:
+    - my_storage_class is not defined
+    - "'ocs-external-storagecluster-cephfs' in my_storage_list"
+
 # 2. Non-Dynamic Provisioning
 # -----------------------------------------------------------------------------
 # Using pre-created Persistent Volume

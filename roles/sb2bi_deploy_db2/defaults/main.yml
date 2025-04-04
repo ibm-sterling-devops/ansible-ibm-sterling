@@ -72,3 +72,9 @@ storage_class_matrix:
     rwo: "rook-cephfs" # rook-ceph-block
     rom: ""
     rwop: ""
+  ibm-fyre2:
+    rwx: "ocs-external-storagecluster-cephfs"
+    rwx_nogid: "ocs-external-storagecluster-cephfs"
+    rwo: "ocs-external-storagecluster-ceph-rbd"
+    rom: "ocs-external-storagecluster-cephfs"
+    rwop: ""
