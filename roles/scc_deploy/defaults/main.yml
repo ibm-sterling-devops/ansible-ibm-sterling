@@ -10,7 +10,7 @@ scc_action: "{{ lookup('env', 'SCC_ACTION') | default('install', true) }}"
 # Configure SCC instance
 # -----------------------------------------------------------------------------------------------------------------
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
-scc_version: "{{ lookup('env', 'SCC_VERSION') | default('6.4.0.0_2024-12-17', true) }}"
+scc_version: "{{ lookup('env', 'SCC_VERSION') | default('6.4.0.0.iFix01_2025-04-04', true) }}"
 
 scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('CCM', true) }}" # productEntitlement: "CCD,CCM"
 
@@ -74,6 +74,11 @@ db2_id: mydb2
 # Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.4.0.0.iFix01_2025-04-04:
+    helm_version: "4.0.6"
+    image_tag: "6.4.0.0.iFix01_2025-04-04"
+    copy_dbdriver_tag: "2024"
+    kube_version: '>=1.27.0'
   6.4.0.0_2024-12-17:
     helm_version: "4.0.2"
     image_tag: "6.4.0.0_2024-12-17"
@@ -82,11 +87,6 @@ compatibility_matrix:
   6.3.1.0.iFix03_2024-11-04:
     helm_version: "3.1.9"
     image_tag: "6.3.1.0.iFix03_2024-11-04"
-    copy_dbdriver_tag: "2024"
-    kube_version: '>=1.27.0'
-  6.3.1.0_iFix02_2024-09-13:
-    helm_version: "3.1.7"
-    image_tag: "6.3.1.0_iFix02_2024-09-13"
     copy_dbdriver_tag: "2024"
     kube_version: '>=1.27.0'
 
