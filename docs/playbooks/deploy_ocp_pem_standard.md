@@ -44,22 +44,7 @@ cd ansible-ibm-sterling
 export ANSIBLE_CONFIG=./ansible.cfg 
 ```
 
-### 5. Deploying Sterling PEM Standard
-
-1) First you need to provide PEM_INSTANCEID, this is used to define your environment. Samples: dev01, dev02, poc01, qa01, prod01
-
-```bash 
-export PEM_INSTANCEID=dev01
-```
-
-2) To run playbook the playbook
-
-```bash 
-ansible-playbook playbooks/deploy_pem_standard.yml
-```
-
-
-## Deploying Sterling PEM with Community Manager
+### 5. Deploying Sterling PEM with Community Manager
 
 1) Deploy Serling B2Bi
 
