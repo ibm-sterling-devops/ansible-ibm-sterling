@@ -331,7 +331,7 @@ pp:
     tls:
       secretName: {{ pem_deploy_cert_jks_secret }} #Specify the tls certificate secret for the hostname
   route:
-    timeout: 30s #Specify the timeout for the route. The default value is '30s'.
+    timeout: #Specify the timeout for the route. The default value is '30s'.
     tls:
       termination: reencrypt #Specify TLS termination types for serving certificates for securing the route. PEM currently supports reencrypt termination only.
       insecureEdgeTerminationPolicy: None #Specify policy for traffic on insecure schemes like HTTP.
@@ -593,7 +593,7 @@ gateway:
     tls:
       secretName: {{ pem_deploy_cert_jks_secret }} #Specify the tls certificate secret for the hostname
   route:
-    timeout: 30s #Specify the timeout for the route. The default value is '30s'.
+    timeout: #Specify the timeout for the route. The default value is '30s'.
     tls:
       termination: reencrypt #Specify TLS termination types for serving certificates for securing the route. PEM currently supports reencrypt termination only.
       insecureEdgeTerminationPolicy: None #Specify policy for traffic on insecure schemes like HTTP.
@@ -663,9 +663,6 @@ communitymanager:
           driver_class_name: "{{ pem_dbdriver }}" #Specify the dirver class name
           ssl:
             enabled: false #Specify it as true id database connection is ssl enabled
-            encryption: 
-              enabled: false 
-              strict: false #Specify it as true when database is enabled with strict ssl
             trust_store: {{ pem_deploy_cert_jks_secret }} #truststore name
             trustStoreSecret: "{{ pem_deploy_cm_prod_secret }}" #secret for keystore
         jpa:
@@ -782,7 +779,7 @@ communitymanager:
         data:
           action: EXPORT  #Actions:  EXPORT, MIGRATE, REPORT
           file_name: pcm_user #File name which will be used in EXPORT, MIGRATE, and REORT Actions
-      loggerLevel: DEBUG #set the value to generate logs accepted values INFo , ERROR, DEBUG
+      loggerLevel: INFO #set the value to generate logs accepted values INFo , ERROR, DEBUG
       saml:
         enabled: false
         ssourl: #provide the SAML 2.0 Single Sign On(SSO) URL
@@ -843,7 +840,7 @@ communitymanager:
         client_id:  #Specify the app registered client id
         client_secret: "{{ pem_deploy_cm_prod_secret }}" #Specify the secret name for the client secret used for app registration
         username:  #Specify the username used to create the app registration
-        cmks:  "{{ pem_deploy_cm_prod_secret }}" #Specify the secret name for user account password used for app registration 
+        cmks: "{{ pem_deploy_cm_prod_secret }}" #Specify the secret name for user account password used for app registration 
         scope: openid #Specify the scope used for app registration.
         resource:
         token:
@@ -877,7 +874,7 @@ communitymanager:
       failureThreshold: 3
     hostname: #specify the route dns host to access Partner Provisioner if not set default hostname will be generated
     route:
-      timeout: 30s #specify the route timeout. the default value is '30s'
+      timeout: #specify the route timeout. the default value is '30s'
     ingress:
       tls:
         secretName: {{ pem_deploy_cert_jks_secret }} #define the ingress secret
@@ -1111,7 +1108,7 @@ communitymanager:
       failureThreshold: 3
     hostname: #specify the route dns host to access Partner Provisioner if not set default hostname will be generated
     route:
-      timeout: 30s #specify the route timeout. the default value is '30s'
+      timeout: #specify the route timeout. the default value is '30s'
     ingress:
       tls:
         secretName: {{ pem_deploy_cert_jks_secret }} #define the ingress secret

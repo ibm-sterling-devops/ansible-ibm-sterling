@@ -11,7 +11,7 @@ pem_instanceid: "{{ lookup('env', 'PEM_INSTANCEID') | default('dev01', true) }}"
 env_db2_namespace: "{{ lookup('env', 'PEM_DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'PEM_MQ_NAMESPACE') | trim }}"
 
-pem_version: "{{ lookup('env', 'PEM_VERSION') | default('6.2.4_standard', true) }}"
+pem_version: "{{ lookup('env', 'PEM_VERSION') | default('6.2.3.2', true) }}"
 
 pem_skip_helm: "{{ lookup('env', 'PEM_SKIP_HELM') | default(false, true) }}"
 
