@@ -10,13 +10,20 @@
     dest: "{{ my_valuesfile }}"
     mode: "0640"
 
-- name: "Fix problem with "
+- name: "Fix problem with resource-pvc.yml"
   ansible.builtin.file:
     path: "{{ my_workdir }}/ibm-pem-standard-prod/templates/resource-pvc.yml"
     state: absent
   # with_items:
   #   - "{{ my_workdir }}/ibm-pem-standard-prod-{{ compatibility_matrix[pem_version].helm_version }}.tgz"
   #   - "{{ my_workdir }}/ibm-pem-standard-prod"
+
+- name: "Replace dot with dash in migrator-job.yml name field"
+  ansible.builtin.replace:
+    path: "{{ my_workdir }}/ibm-pem-standard-prod/templates/migrator-job.yml"
+    regexp: '\.Release\.Name }}\.migrator"'
+    replace: '.Release.Name }}-migrator"'
+
 
 - name: Show Helm install command
   ansible.builtin.debug:
@@ -29,6 +36,10 @@
   register: helm_cout
   ignore_errors: true
 # --wait
+
+# "rc": 1,
+# "stderr": "Error: INSTALLATION FAILED: failed pre-install: 1 error occurred:\n\t* job s0-migrator failed: BackoffLimitExceeded",
+# "stdout": "",
 
 # oc patch route {{ pem_deploy_helm }}-pem-route -n {{ pem_namespace }} -p '{"spec":{"tls":{"destinationCACertificate":"{{ pem_cert_content }}"}}}'
 - name: Update the route with the certificate
@@ -43,8 +54,10 @@
       spec:
         tls:
           destinationCACertificate: "{{ pem_cert_content }}"
-  when: not pem_skip_helm
-  register: helm_cout
+  when: 
+    - not pem_skip_helm
+    - helm_cout.rc == 0
+  register:  route_cout
   with_items:
     - gateway
     - pem

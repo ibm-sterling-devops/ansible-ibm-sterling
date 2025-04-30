@@ -1,3 +1,5 @@
+# (C) Copyright 2019-2021 Syncsort Incorporated. All rights reserved.
+
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
 metadata:
@@ -42,6 +44,9 @@ requiredDropCapabilities:
   - DAC_OVERRIDE
 runAsUser:
   type: MustRunAsRange
+  ranges:
+    - min: 1
+      max: 4294967294
 # This can be customized for your host machine
 seLinuxContext:
   type: RunAsAny

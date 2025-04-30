@@ -11,7 +11,7 @@ pem_instanceid: "{{ lookup('env', 'PEM_INSTANCEID') | default('dev01', true) }}"
 env_db2_namespace: "{{ lookup('env', 'PEM_DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'PEM_MQ_NAMESPACE') | trim }}"
 
-pem_version: "{{ lookup('env', 'PEM_VERSION') | default('6.2.3.2', true) }}"
+pem_version: "{{ lookup('env', 'PEM_VERSION') | default('6.2.4.0.1_standard', true) }}"
 
 pem_skip_helm: "{{ lookup('env', 'PEM_SKIP_HELM') | default(false, true) }}"
 
@@ -114,8 +114,18 @@ pem_deploy_b2bi_nonprod_jpa_dialect: com.pe.pcm.config.database.dialect.DB2Exten
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.2.4.0.1_standard:
+    helm_version: "1.4.2"
+    image:
+      tag: "6.2.4_standard"
+    test:
+      image:
+        tag: "1.1.67"
+    communitymanager:
+      image:
+        tag: "6.2.4.0.1"
   6.2.4_standard:
-    helm_version: "1.3.2"
+    helm_version: "1.4.0"
     image:
       tag: "6.2.4_standard"
     test:

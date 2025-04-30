@@ -1,13 +1,13 @@
 image:
-  name: "cp.icr.io/cp/ibm-pem/pem" #Provide the value in double quotes
-  tag: "{{ compatibility_matrix[ pem_version ].image.tag }}" #Specify the tag name
-  pullPolicy: IfNotPresent #Specify the image pull policy
-  pullSecret: "{{ pem_registry_secret }}" #Provide the pull secret name
+   name: "cp.icr.io/cp/ibm-pem/pem" #Provide the value in double quotes
+   tag: "6.2.4.0.1_standard" #Specify the tag name
+   pullPolicy: #Specify the image pull policy
+   pullSecret: "" #Provide the pull secret name
 
 arch: amd64 #Specify the architecture (amd64, s390x)
 ## Set the value to true in order to accept the application license 
-## https://www14.software.ibm.com/cgi-bin/weblap/lap.pl?li_formnum=L-BTGF-XLKNU9
-license: true # Set true to accept the license agreement
+## https://www14.software.ibm.com/cgi-bin/weblap/lap.pl?li_formnum=L-AZZP-8HTUVZ
+license: false # Set true to accept the license agreement
 envType: "prod" #Specify the environment type for the product . If it is a production environment, specify "prod". If it is a non-production environment, specify "nonprod". The default value is "prod".
 
 global:
@@ -15,7 +15,7 @@ global:
     ingress:
       enabled: false # Set true to configure ingress network policies
     egress:
-      enabled: false # Set to true to configure egress network policies
+      enabled: true # Set to true to configure egress network policies
       customPolicies: # For communication with external applications, configure custom egress network policy by uncommenting the below section and configuring required toSelectors
       #- name:
       #  toSelectors:
@@ -37,14 +37,14 @@ global:
       #     port: <port no>
       #     endPort: <end port no>
 
-serviceAccountName: {{ pem_deploy_sa }} #specify the service account name which has required permissions
+serviceAccountName: ibm-pem-sa #specify the service account name which has required permissions
 timezone:
-   configmapname: "localtime" #specify the timezone configmap
+   configmapname: #specify the timezone configmap
 volumeClaims:
    resources:
       enabled: true #if enabled persistent volume will be used
       capacity: 100Mi #Specify the resources persistent volume capacity
-      storageclass: "{{ storage_class_matrix[ pem_storage_class ].rwx }}" #Specify the storage class
+      storageclass: slow #Specify the storage class
       subpath:
         dbdrivers: dbdrivers #specify the directory for dbdrivers inside a persistent volume for resources with required permissions
         wmq: wmq #specify the directory for wmq jars inside a persistent volume for resources with required permissions
@@ -52,7 +52,7 @@ volumeClaims:
         ssomigrator: ssomigrator #specify the directory for ssomigrator data files inside a persistent volume for resources with required permissions
         pcm: pcm #specify the directory for pcm jars inside a persistent volume for resources with required permissions
    logs:
-      enabled: false #Specify the values to true or false based on requriement
+      enabled: true #Specify the values to true or false based on requriement
       subpath:
         migrator: migrator #specify the directory for migrator logs inside a persistent volume for logs with required permissions
         dbutils: dbutil #specify the directory for dbutils logs inside a persistent volume for logs with required permissions
@@ -66,20 +66,20 @@ volumeClaims:
         pcmProd: PCM_prod #specify the directory for pcmProd logs inside a persistent volume for logs with required permissions
         pcmNonProd: PCM_nonProd #specify the directory for pcmNonProd logs inside a persistent volume for logs with required permissions
       capacity: 1Gi #Specify the logs persistent volume capacity
-      storageclass: "{{ storage_class_matrix[ pem_storage_class ].rwx }}" #Specify the storage class
+      storageclass: #Specify the storage class
       accessModes:
         - ReadWriteMany #Specify the access mode for the persistent volume
 test:
   image:
     repository: 'cp.icr.io/cp' #Specify the image repository
     name: 'opencontent-common-utils' #Specify the image name
-    tag: '{{ compatibility_matrix[ pem_version ].test.image.tag }}' #Specify the image tag
+    tag: '1.1.67' #Specify the image tag
     pullPolicy: 'IfNotPresent' #Specify the image pull policy
-    pullSecret: "{{ pem_registry_secret }}" #Specify the image pull secret name
+    pullSecret: "ibm-entitlement-key" #Specify the image pull secret name
 
 dbsetup:
-  enabled: {{ pem_dbsetup_enabled }} #If it is first installation specify the values true
-  upgrade: {{ pem_dbsetup_upgrade }}  #If it is upgrade Specify the values to true
+  enabled: false #If it is first installation specify the values true
+  upgrade: true  #If it is upgrade Specify the values to true
   resources:
     requests:
       memory: "2Gi" #specify the memory request as needed
@@ -90,12 +90,12 @@ dbsetup:
       cpu: "500m" #Specify the maximimum cpu a pod can utilize
       ephemeral-storage: "3Gi" #Specify the maximimum ephemeral-storage a pod can utilize
   setupfile:
-    passphrasesecret: "{{ pem_deploy_secret }}" #Specify the passphrase secret name
+    passphrasesecret: #Specify the passphrase secret name
     migrator:
       default_sponsor: true #Set the value is true to onboard the default sponsor. 
     ## For more information about configuring the properties of certified container,
     #refer to
-    #https://www.ibm.com/docs/en/spems/6.2.3?topic=prerequisites-configuring-certified-container
+    #https://www.ibm.com/docs/en/spems/6.2.4.0.1?topic=prerequisites-configuring-certified-container
     ## LICENSE
     ## Setting this value to true enables you to accept the licenses and start
     #the docker container. Valid values are true and false.
@@ -110,22 +110,22 @@ dbsetup:
 
     #proxy_password: #Provide the secret name
     #proxy_protocol:
-    customer_id: {{ pem_instanceid }} ## Specify the customer ID. Ensure that the customer ID that you specify matches with your Bluemix ID that you have registered to download IBM PEM image
+    customer_id: ## Specify the customer ID. Ensure that the customer ID that you specify matches with your Bluemix ID that you have registered to download IBM PEM image
     ## DATABASE AND SSL PROPERTIES THAT ARE COMMON TO ALL THE APPLICATIONS
-    db_type: {{ pem_dbvendor }} #Specify the database type which you are using either DB2 or Oracle or mssql.
+    db_type: #Specify the database type which you are using either DB2 or Oracle or mssql.
     ## Enable or disable the SSL connection for master and testmode database
     #schemas. Valid values are true and false and the default value is set to
     #false.
-    ssl_connection: false #Set the value to true if your using SSL connection between the application servers and database
+    ssl_connection: #Set the value to true if your using SSL connection between the application servers and database
     # Specify the database details for the master schema.
     #These propertiesenable you to start the following pods: IBM PEM, PartnerRepository, Partner Provisioner, Purge, Migrator,and DBUtils. ,
-    db_port: {{ pem_dbport }} #specify the port
-    db_host: {{ pem_dbhost }} #specify the host
-    db_name: {{ pem_dbname }} #Specify the DATABASE Name
-    db_schema: {{ pem_dbschema }} #Specify the Schema name
-    db_user: {{ pem_dbuser }} #Specify the DB username
-    db_password: {{ pem_deploy_db_secret }} #Specify the secret
-    db_driver: {{ pem_dbdriver }} #Specify the corresponding driver details for oracle or DB2 or mssql depnding on the db_type that is selected. For example, for oracle, set the values of db_driver to oracle.jdbc.OracleDriver. For DB2, set com.ibm.db2.jcc.DB2Driver. For mssql, set com.microsoft.sqlserver.jdbc.SQLServerDriver.
+    db_port: #specify the port
+    db_host: #specify the host
+    db_name: #Specify the DATABASE Name
+    db_schema: #Specify the Schema name
+    db_user: #Specify the DB username
+    db_password: #Specify the secret
+    db_driver: #Specify the corresponding driver details for oracle or DB2 or mssql depnding on the db_type that is selected. For example, for oracle, set the values of db_driver to oracle.jdbc.OracleDriver. For DB2, set com.ibm.db2.jcc.DB2Driver. For mssql, set com.microsoft.sqlserver.jdbc.SQLServerDriver.
     ## DB CONNECTION MANAGER DETAILS. COMMON FOR IBM PEM, PARTNER REPOSITORY &
     #PARTNER PROVISIONER
 
@@ -152,7 +152,7 @@ dbsetup:
 
     db_sslTrustStoresecret: #Provide the secret name
 
-    db_sslTrustStorePassword: {{ pem_deploy_secret }} #Provide the password secret name
+    db_sslTrustStorePassword: #Provide the password secret name
     ## Specify the database details for the test mode schema. These properties
     #enable you to start the following docker containers: IBM PEM, Partner
     #Provisioner, Migrator, Master key regenerator, and DBUtils.
@@ -161,14 +161,14 @@ dbsetup:
     db_mssql_sslProtocol: # DEPRECATED, Specify MSSQL TLS version, if db_sslProtocol value is empty then db_mssql_sslProtocol is used in mssql dbType
     db_mssql_encrypt: # Specify encryption type based on encryption policy configured on MSSQL server. #Allowed Values are : strict , true, false
     
-    testmode_db_port: {{ pem_dbport }} ## Specify the database details for the test mode schema. These properties enable you to start the following docker containers: IBM PEM, Partner Provisioner, Migrator, Master key regenerator, and DBUtils. Specify the port
-    testmode_db_host: {{ pem_dbhost }} # Specify the database host
-    testmode_db_name: {{ pem_dbname_test }} #Specify the Database Name
-    testmode_db_schema: {{ pem_dbschema_test }} #Specify the Database Schema
-    testmode_db_user: {{ pem_dbuser }} # Specify the databse user name
-
-    testmode_db_password: {{ pem_deploy_db_secret }} #Provide the secret name
-    testmode_db_driver: {{ pem_dbdriver }} #Specify the database driver Name
+    testmode_db_port: ## Specify the database details for the test mode schema. These properties enable you to start the following docker containers: IBM PEM, Partner Provisioner, Migrator, Master key regenerator, and DBUtils. Specify the port
+    testmode_db_host: # Specify the database host
+    testmode_db_name: #Specify the Database Name
+    testmode_db_schema: #Specify the Database Schema
+    testmode_db_user: # Specify the databse user name
+    
+    testmode_db_password: #Provide the secret name
+    testmode_db_driver: #Specify the database driver Name
     ## TESTMODE DB CONNECTION MANAGER DETAILS. COMMON FOR IBM PEM, PARTNER
     #REPOSITORY & PARTNER PROVISIONER
     ## Specify the maximum pool size of the test mode schema's database
@@ -192,7 +192,7 @@ dbsetup:
     testmode_db_sslTrustStoreName: #Specify the SSL Keystore  file name for the test mode database schema.
     testmode_db_sslTrustStoresecret: #Specify the SSL Keystore secret for the test mode database schema.
 
-    testmode_db_sslTrustStorePassword: {{ pem_deploy_secret }} #Provide the secret name
+    testmode_db_sslTrustStorePassword: #Provide the secret name
 
     testmode_db_mssql_hostNameInCertificate: #Specify the host name to be used in validating the SQL Server TLS/SSL certificate, if hostname used in place of db_host ip then we do not have to provide the value for *_db_mssql_hostNameInCertificate (or not a mandatory field if we provide the hostname in the db_host property)
     testmode_db_mssql_sslProtocol: # DEPRECATED, Specify MSSQL TLS version for testmode, if testmode_db_sslProtocol value is empty then testmode_db_mssql_sslProtocol is used in mssql dbType.
@@ -212,23 +212,23 @@ security:
 
 setupfile:
   servers:
-    ssl_protocol: TLSv1.2 #Specify the protocol for ECC certificate support.
+    ssl_protocol: #Specify the protocol for ECC certificate support.
     enabled_ciphers: #Specify the ciphers for ECC certificate support.
-    enableConsoleLogs: false #Specify true or false for enabling or disabling logging in console
-    provisioner_request_listener_max_concurrency: 10 #Specify the number of concurrent provisioning requests that should be processed. The default value is 10.
-    provisioner_response_listener_max_concurrency: 10 #Specify the number of concurrent provisioning responses that should be processed. The default value is 10.
+    enableConsoleLogs: #Specify true or false for enabling or disabling logging in console
+    provisioner_request_listener_max_concurrency: #Specify the number of concurrent provisioning requests that should be processed. The default value is 10.
+    provisioner_response_listener_max_concurrency: #Specify the number of concurrent provisioning responses that should be processed. The default value is 10.
     skipHostnameVerificationForHosts: #Specify the hostnames that should be ignored during hostname verification in the Liberty Server.
 
 ssoSeas:
   enable: false #set the property to true to enable ssl connection
   truststoreName: #Specify the secret name for truststorefile
   truststoreSecret: #Provide the secret name
-  truststorePassword: {{ pem_deploy_secret }} #specify the secret name for truststore password
+  truststorePassword: #specify the secret name for truststore password
   truststoreAlias: #Specify the alias of SEAS's public certificate within the truststore
   truststoreType: #Specify the SEAS truststore type.
   keystoreName: #Specify the secret name for keystore file
   keystoreSecret: #Provide the secret name
-  keystorePassword: {{ pem_deploy_secret }} #specify the secret name for keystore password
+  keystorePassword: #specify the secret name for keystore password
   keystoretype: #Specify the SEAS keystore type.
   keystoreAlias: #Specify the SEAS keystore alias
 
@@ -244,8 +244,8 @@ ssomigration:
 
 masterKeyRegenerator:
   enable: false #Set the property to true to enable master key regenerator
-  passphraseOldSecret: # {{ pem_deploy_secret }} #Specify the secret for old passphrase
-  passphraseNewSecret: # {{ pem_deploy_secret }} #Specify the secret for new passphrase
+  passphraseOldSecret: #Specify the secret for old passphrase
+  passphraseNewSecret: #Specify the secret for new passphrase
 
 pem:
   enable: true #set to true to install IBM PEM
@@ -276,9 +276,9 @@ pem:
   hostname: #specify the route dns host to access IBM PEM if not set default hostname will be generated
   ingress:
     tls:
-      secretName: {{ pem_deploy_cert_jks_secret }} #Specify the tls certificate secret for the hostname
+      secretName: #Specify the tls certificate secret for the hostname
   route:
-    timeout: 60s #Specify the timeout for the route. The default value is '60s'.
+    timeout: #Specify the timeout for the route. The default value is '60s'.
     tls:
       termination: reencrypt #Specify TLS termination types for serving certificates for securing the route. PEM currently supports reencrypt termination only.
       insecureEdgeTerminationPolicy: None #Specify policy for traffic on insecure schemes like HTTP.
@@ -287,9 +287,9 @@ pem:
       #For example, jvm_options: "-Xms4g -Xmx4g".
       jvm_options: # Specify the list of JVM options for the servers, and separated by space.
 
-      keystore_password: {{ pem_deploy_secret }} #Specify the secret name
-      keystore_alias: {{ pem_deploy_keyalias }} #Specify the private key's alias within the keystore.
-      keystore_filename: {{ pem_deploy_cert_jks_secret }} #Specify the secret name and key inside secret has to be same as secret name
+      keystore_password: #Specify the secret name
+      keystore_alias: #Specify the private key's alias within the keystore.
+      keystore_filename: #Specify the secret name and key inside secret has to be same as secret name
 
       # The default value is 100 MB.
       max_file_size: 100 # Specify the maximum size for the server log file in MB.
@@ -329,7 +329,7 @@ pp:
   hostname: #specify the route dns host to access Partner Provisioner if not set default hostname will be generated
   ingress:
     tls:
-      secretName: {{ pem_deploy_cert_jks_secret }} #Specify the tls certificate secret for the hostname
+      secretName: #Specify the tls certificate secret for the hostname
   route:
     timeout: #Specify the timeout for the route. The default value is '30s'.
     tls:
@@ -344,9 +344,9 @@ pp:
       #Repository, and Partner Provisioner. The keystore file (.jks file) has to be
       #copied in the <mount location>/resources/security folder.
       #Provide the secret name
-      keystore_password: {{ pem_deploy_secret }} #Specify the secret name
-      keystore_alias: {{ pem_deploy_keyalias }} #Specify the private key's alias within the keystore.
-      keystore_filename: {{ pem_deploy_cert_jks_secret }} #Specify the secret name and key inside secret has to be same as secret name
+      keystore_password: #Specify the secret name
+      keystore_alias: #Specify the private key's alias within the keystore.
+      keystore_filename: #Specify the secret name and key inside secret has to be same as secret name
       
       max_file_size: 100 # Specify the maximum size for the server log file in MB. The default value is 100 MB.
 
@@ -405,9 +405,9 @@ pr:
   hostname: #specify the route dns host to access Partner Provisioner if not set default hostname will be generated
   ingress:
     tls:
-      secretName: {{ pem_deploy_cert_jks_secret }} #Specify the tls certificate secret for the hostname
+      secretName: #Specify the tls certificate secret for the hostname
   route:
-    timeout: 30s #Specify the timeout for the route. The default value is '30s'.
+    timeout: #Specify the timeout for the route. The default value is '30s'.
     tls:
       termination: reencrypt #Specify TLS termination types for serving certificates for securing the route. PEM currently supports reencrypt termination only.
       insecureEdgeTerminationPolicy: None #Specify policy for traffic on insecure schemes like HTTP.
@@ -417,9 +417,9 @@ pr:
       #For example, jvm_options: "-Xms4g -Xmx4g".
       jvm_options: ## Specify the list of JVM options for the servers, and separated by space.
 
-      keystore_password: {{ pem_deploy_secret }} #Specify the secret name
-      keystore_alias: {{ pem_deploy_keyalias }} #Specify the private key's alias within the keystore.
-      keystore_filename: {{ pem_deploy_cert_jks_secret }} #Specify the secret name and key inside secret has to be same as secret name
+      keystore_password: #Specify the secret name
+      keystore_alias: #Specify the private key's alias within the keystore.
+      keystore_filename: #Specify the secret name and key inside secret has to be same as secret name
       # The default value is 100 MB.
       max_file_size: 100 # Specify the maximum size for the server log file in MB.
 
@@ -457,7 +457,7 @@ wmq:
   connection_name_list: #Specify the WebSphere MQ connection list separated by comma. For example, 9.89.31.226 (19443), 9.77.53.126 (17286). This example is valid for a WebSphere MQ setup with HA (High Availability).For WMQ without HA, it can be a single <host_name or IP>:<port_number>.
   queue_manager: #Specify the WebSphere MQ queue manager.
   username: #Specify the WebSphere MQ user name.
-  password: {{ pem_deploy_secret }} #Provide the secret name
+  password: #Provide the secret name
   wmq_provisioner_request_queue_manager: #Specify the WebSphere MQ request queue manager.
   wmq_provisioner_response_queue_manager: #Specify the WebSphere MQ response queue manager.
   wmq_provisioner_request_queue_name: #Specify the WebSphere MQ request queue name.
@@ -508,14 +508,14 @@ purge:
       target_db_name: #Specify the database name
       target_db_schema: #Specify the database schema
       target_db_user: #Specify the database user
-      target_db_password: {{ pem_deploy_secret }} #Specify database secret
+      target_db_password: #Specify database secret
       target_db_driver: #Specify the database driver
 
       target_ssl_connection: false #Enable or disable the SSL connection for purge target database schema. Valid values are true and false and the default value is set to false.
       target_db_sslProtocol: # Specify the DB2 or MSSQL TLS version for purge target db,If you do not specify the protocol, a default value of TLSv1.2 is set.
       target_db_sslTrustStoreName: #Specify the keystore/truststore file name that contains the public certificate of the target purge database schema.
       target_db_sslTrustStoreSecret: #Specify the keystore/truststore secret name.
-      target_db_sslTrustStorePassword: {{ pem_deploy_secret }} #Specify the keystore/truststore password secret name
+      target_db_sslTrustStorePassword: #Specify the keystore/truststore password secret name
       target_db_mssql_hostNameInCertificate: #Specify the host name to be used in validating the SQL Server TLS/SSL certificate, if hostname used in place of db_host ip then we do not have to provide the value for *_db_mssql_hostNameInCertificate (or not a mandatory field if we provide the hostname in the db_host property)
       target_db_mssql_sslProtocol: # DEPRECATED, Specify MSSQL TLS version for purge target db, if target_db_sslProtocol value is empty then target_db_mssql_sslProtocol is used when mssql dbType.
       target_db_mssql_encrypt: # Specify encryption type for purge target db based on encryption policy configured on MSSQL server. #Allowed Values are : strict , true, false
@@ -591,7 +591,7 @@ gateway:
   hostname: #specify the route dns host to access gateway IMPORTANT in order to enable api this property must be set
   ingress:
     tls:
-      secretName: {{ pem_deploy_cert_jks_secret }} #Specify the tls certificate secret for the hostname
+      secretName: #Specify the tls certificate secret for the hostname
   route:
     timeout: #Specify the timeout for the route. The default value is '30s'.
     tls:
@@ -602,9 +602,9 @@ gateway:
 
       jvm_options: ## Specify the list of JVM options for the servers, and separated by space. For example, jvm_options: "-Xms4g -Xmx4g".
 
-      keystore_password: {{ pem_deploy_secret }} #Specify the secret name
-      keystore_alias: {{ pem_deploy_keyalias }} #Specify the private key's alias within the keystore.
-      keystore_filename: pemapi-keystore.jks #Specify the secret name and key inside secret has to be same as secret name
+      keystore_password: #Specify the secret name
+      keystore_alias: #Specify the private key's alias within the keystore.
+      keystore_filename: #Specify the secret name and key inside secret has to be same as secret name
 
       max_file_size: 100 # Specify the maximum size for the server log file in MB.
 
@@ -619,27 +619,27 @@ gateway:
       cors_allowedOrigins: "*"
       ## Enter the list of containers available for each service in a comma
       #separated fashion [https://<host1>:<port1>,https://<host2>:<port2>,...]
-      pem_servers: "https://{{ pem_deploy_helm }}-release-pem-service:80" #Specify the PEM service URL. PEM service is created with following name format: <release_name>-pem-service and port as 80. Example value: https://my-release-pem-service:80 where my-release is the release name. This field is important to specify a list of PEM containers to which API calls are sent by the Gateway. If more than one container address is specified, then the Gateway load balances.
-      pr_servers: "https://{{ pem_deploy_helm }}-release-pr-service:80" #Specify the PR service URL. PR service is created with following name format: <release_name>-pr-service and port as 80. Example value: https://my-release-pr-service:80 where my-release is the release name. This field is important to specify a list of PR containers to which API calls are sent by the Gateway. If more than one container address is specified, then the Gateway load balances.
+      pem_servers: #Specify the PEM service URL. PEM service is created with following name format: <release_name>-pem-service and port as 80. Example value: https://my-release-pem-service:80 where my-release is the release name. This field is important to specify a list of PEM containers to which API calls are sent by the Gateway. If more than one container address is specified, then the Gateway load balances.
+      pr_servers: #Specify the PR service URL. PR service is created with following name format: <release_name>-pr-service and port as 80. Example value: https://my-release-pr-service:80 where my-release is the release name. This field is important to specify a list of PR containers to which API calls are sent by the Gateway. If more than one container address is specified, then the Gateway load balances.
       max_file_size: #This value sets the limit to the size of the file that is uploaded via Gateway.
       max_request_size: #This value sets the limit to the size of request that is uploaded via Gateway.
-      hostname_validation_required: false #This flag is provided to enable/disable certificate hostname validation for API Gateway.
-      truststore_filename: {{ pem_deploy_cert_jks_secret }} #Specify the secret name for SSL truststore file name for the API Gateway server to communicate with PEM and PR. Key inside secret has to be same as secret name
-      truststore_type: JKS #Specify the SSL truststore file type. For example, JKS.
+      hostname_validation_required: true #This flag is provided to enable/disable certificate hostname validation for API Gateway.
+      truststore_filename: #Specify the secret name for SSL truststore file name for the API Gateway server to communicate with PEM and PR. Key inside secret has to be same as secret name
+      truststore_type: #Specify the SSL truststore file type. For example, JKS.
       truststore_alias: #Specify the alias of server's public certificate within the truststore.
-      truststore_password: {{ pem_deploy_secret }} #Specify the secret name for server's truststore password.
+      truststore_password: #Specify the secret name for server's truststore password.
       ratelimit:
         limit_for_period: 45 # The maximum number of requests allowed within each limit_for_period. The default value is set to 45.
         limit_refresh_period: 60 # The interval(in seconds) at which the rate limit is reset. The default value is set to 60.
         timeout_duration: 5 # The maximum time(in seconds) a request will wait if the rate limit is exceeded before failing or timing out. The default value is set to 5.
-
+        
 communitymanager:
-  install: {{ pem_cm_enable }}
+  install: true
   image:
     repository: "cp.icr.io/cp/ibm-pem/pem_cm" #Specify the repository
     pullPolicy: Always #Specify te image pull policy
-    tag: "{{ compatibility_matrix[ pem_version ].communitymanager.image.tag }}" #Specify the tag name
-    pullSecret: "{{ pem_registry_secret }}" #Provide the pull secret name
+    tag: "6.2.4.0.1" #Specify the tag name
+    pullSecret: #Provide the pull secret name
   prod:
     enable: true #If you are want to proceed for prod pcm installation then you have to mention it as true or else false
     setupfile:
@@ -650,7 +650,7 @@ communitymanager:
       acceptLicence: true #We should make accept-license should be true for pcm installation
       cm:
         color: black  #This will enable the black theme in UI, PCM colores. red, green, grey, yellow, black
-        cmSecret: "{{ pem_deploy_cm_prod_secret }}" #Provide the password secret
+        cmSecret: ibm-pem-cm-secret-prod #Provide the password secret
         logo_location: #logo.png #uncomment logo.png if you want to use custom logo mount logo.png file as config map
         protocol:
           disallowed_special_characters: "!@#:$%^&*()+?,<>{}[]|;\"'/\\"  #We need to add the special characters in double quotes, by default <> are restricted and make sure escape characters are being handled properly
@@ -658,19 +658,19 @@ communitymanager:
       ssl_ciphers: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_DSS_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_SHA256,TLS_ECDHE_RSA_WITH_AES_128_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_SHA,TLS_ECDHE_RSA_WITH_AES_256_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_SHA384,TLS_ECDHE_RSA_WITH_AES_256_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_SHA,TLS_DHE_RSA_WITH_AES_128_SHA256,TLS_DHE_RSA_WITH_AES_128_SHA,TLS_DHE_DSS_WITH_AES_128_SHA256,TLS_DHE_RSA_WITH_AES_256_SHA256,TLS_DHE_DSS_WITH_AES_256_SHA,TLS_DHE_RSA_WITH_AES_256_SHA #List of supported cipers, can be modified according to the your ssl certificates 
       spring:
         datasource:
-          url: "{{ pem_deploy_b2bi_prod_dburl }}" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
-          username: "{{ pem_deploy_b2bi_prod_dbuser }}" #Specify the database user naem
-          driver_class_name: "{{ pem_dbdriver }}" #Specify the dirver class name
+          url: "" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
+          username:  #Specify the database user naem
+          driver_class_name:  #Specify the dirver class name
           ssl:
             enabled: false #Specify it as true id database connection is ssl enabled
-            trust_store: {{ pem_deploy_cert_jks_secret }} #truststore name
-            trustStoreSecret: "{{ pem_deploy_cm_prod_secret }}" #secret for keystore
+            trust_store: #truststore name
+            trustStoreSecret: #secret for keystore
         jpa:
-          database_platform: {{ pem_deploy_b2bi_prod_jpa_dialect }} #dialect value based on the database default will be oracle
+          database_platform: com.pe.pcm.config.database.dialect.Oracle12cExtendedDialect #dialect value based on the database default will be oracle
           # database_platform: com.pe.pcm.config.database.dialect.Oracle12cExtendedDialect #Default value
         mail:
-          host: {{ pem_smtphost }} #smtp hostname
-          port: {{ pem_smtpport }} #SMTP port
+          host: #smtp hostname
+          port: #SMTP port
           username: #Specify the username exmaple: username@compnay.com
           from: from_mailid@company.com #Specify the from mail id.
           app_contact_mail: app_contact_mailid@company.com #Application contact email which will be used in mail signature
@@ -678,22 +678,22 @@ communitymanager:
           properties:
             mail:
               smtp:
-                auth: false #If you want to send a mail with ssl authentication then make it as true or elase false
+                auth: true #If you want to send a mail with ssl authentication then make it as true or elase false
                 starttls:
-                  enable: false #If you want to send a mail with ssl authentication then make it as true or else false
+                  enable: true #If you want to send a mail with ssl authentication then make it as true or else false
       jwt:
-        secretkey: CACE9E5A149ED201C4033C1A1E02C9BE #Specify the jwt token
+        secretkey: #it is recommended that you choose a strong, randomly generated password of at least 32 characters in length.
       sterling_b2bi:
         connectivity:
           api:
-            baseUrl: "{{ pem_deploy_b2bi_prod_apiurl }}" #Sterling b2bi api base url 
-            username: "{{ pem_deploy_b2bi_prod_apiuser }}" #Sterling b2bi username
-            password: "{{ pem_deploy_cm_prod_secret }}" #pull secret name
+            baseUrl:  #Sterling b2bi api base url 
+            username: #Sterling b2bi username
+            password: #pull secret name
         user:
           cmks_validation: false #Set this value to true to integrate PCM with B2Bi
           cmks: #provide app-secret name reference STERLING_SYSTEM_PASSPHRASE
-        username: "{{ pem_deploy_b2bi_prod_user }}" #Sterling b2bi username used to integrate CM and B2B
-        baseUrl: "{{ pem_deploy_b2bi_prod_url }}" #Specify the B2B restapi url with port
+        username: b2bapi_username #Sterling b2bi username used to integrate CM and B2B
+        baseUrl: #Specify the B2B restapi url with port
         b2bi_api:
           active: true #This will say whether B2Bi API available or not
           auth_host: #This tag will accept key Value pair here we need to configure the External user User Hostname as key and order as value
@@ -761,9 +761,9 @@ communitymanager:
               path: #Provide the base directory path
             session_timeout: 5000 #Time in milliseconds
         datasource:
-          url: "{{ pem_dburl }}/{{ pem_dbname }}" #Datbase url example jdbc:oracle:thin:@DBHostname:1521/DBName
-          username: "{{ pem_dbuser }}" #Specify the database username
-          driver_class_name: "{{ pem_dbdriver }}" #Provide db driver class name Ex: oracle.jdbc.driver.OracleDriver
+          url: jdbc:oracle:thin:@DBHostname:1521/DBName #Datbase url example jdbc:oracle:thin:@DBHostname:1521/DBName
+          username: USERNAME #Specify the database username
+          driver_class_name: oracle.jdbc.driver.OracleDriver #Provide db driver class name Ex: oracle.jdbc.driver.OracleDriver
         api_ws:
           active: true #Specify true to use pem rollout api
           base_url: #specify the url
@@ -789,7 +789,7 @@ communitymanager:
         idpgroupsrolemapper: pcmsuperadmin-super_admin,pcmadmin-admin,cmonboarder-on_boarder #provide your saml group vs pcm role (-), idp role name should not have special characters (-).
         defaultrole: super_admin #default role for sso user
         jwt:
-          secretkey: yeWAgVDfb$!MFn@MCJVN7uqkznHbDLR#  #provide the jwt secret key
+          secretkey:  #it is recommended that you choose a strong, randomly generated password of at least 32 characters in length.
           sessionexpire: 60 #provide your application session expiry in minutes
       sso_ssp_seas:
         enable: false
@@ -805,12 +805,12 @@ communitymanager:
             enabled: false #SSL enable or not in SEAS
             trust_store:
               name: keystore.p12 #SEAS truststore file name
-              secretName: "{{ pem_deploy_cm_prod_secret }}" #secret for truststore
+              secretName: #secret for truststore
               alias: seasssl_sso #SEAS truststore alias
               type: PKCS12 #SEAS truststore type
             key_store:
-              name: pemcm.keystore #SEAS keystore file name
-              secretName: "{{ pem_deploy_cm_prod_secret }}" #secret for truststore
+              name: keystore.p12 #SEAS keystore file name
+              secretName: #secret for truststore
               alias: community_manager #SEAS keystore alias
               type: PKCS12 #SEAS keystore type
         user_request:
@@ -838,9 +838,9 @@ communitymanager:
         token_url: "" #Specify the token url for ms oauth token generation ex:https://login.microsoftonline.com/e16b23a5-6e25-4446-993c-d19c0wqedqwff803/oauth2/token
         grant_type: client_credentials #grant type can be password or client_credentials  
         client_id:  #Specify the app registered client id
-        client_secret: "{{ pem_deploy_cm_prod_secret }}" #Specify the secret name for the client secret used for app registration
+        client_secret:  #Specify the secret name for the client secret used for app registration
         username:  #Specify the username used to create the app registration
-        cmks: "{{ pem_deploy_cm_prod_secret }}" #Specify the secret name for user account password used for app registration 
+        cmks:  #Specify the secret name for user account password used for app registration 
         scope: openid #Specify the scope used for app registration.
         resource:
         token:
@@ -877,7 +877,7 @@ communitymanager:
       timeout: #specify the route timeout. the default value is '30s'
     ingress:
       tls:
-        secretName: {{ pem_deploy_cert_jks_secret }} #define the ingress secret
+        secretName:  #define the ingress secret
     archive:
       enable: false #set to true to enable persistent volume for archive
       pvcname: #Specify the pvc name of the b2bi documents shared pvc
@@ -887,25 +887,31 @@ communitymanager:
     setupfile:
       time_zone: UTC #Default value is UTC; Specify the timezone EX:America/New_York (Country/city)
       max_file_length: 10 #Default is 10 MB max file size allowed to view
+      edit_and_upload: true #false to disable/hide edit and upload button in file transfer search screen
       jvmoptions: "-Dspring.datasource.hikari.maximum-pool-size=60" #Additional jvm arguments based on requirement Do not change the default.
       acceptLicence: true #We should make accept-license should be true for pcm installation
       cm:
         color: black  #This will enable the black theme in UI, PCM colores. red, green, grey, yellow, black
-        cmSecret: "{{ pem_deploy_cm_nonprod_secret }}" #Provide the password secret
+        cmSecret: #Provide the password secret
+        logo_location: #logo.png #uncomment logo.png if you want to use custom logo mount logo.png file as config map
+        protocol:
+          disallowed_special_characters: "!@#:$%^&*()+?,<>{}[]|;\"'/\\"  #We need to add the special characters in double quotes, by default <> are restricted and make sure escape characters are being handled properly
+      ssl_enabled_protocols: TLSv1.2,TLSv1.3 # Enabled SSL/TLS protocols for the server  
+      ssl_ciphers: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_DSS_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_SHA256,TLS_ECDHE_RSA_WITH_AES_128_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_SHA,TLS_ECDHE_RSA_WITH_AES_256_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_SHA384,TLS_ECDHE_RSA_WITH_AES_256_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_SHA,TLS_DHE_RSA_WITH_AES_128_SHA256,TLS_DHE_RSA_WITH_AES_128_SHA,TLS_DHE_DSS_WITH_AES_128_SHA256,TLS_DHE_RSA_WITH_AES_256_SHA256,TLS_DHE_DSS_WITH_AES_256_SHA,TLS_DHE_RSA_WITH_AES_256_SHA #List of supported cipers, can be modified according to the your ssl certificates 
       spring:
         datasource:
-          url: "{{ pem_deploy_b2bi_nonprod_dburl }}" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
-          username: "{{ pem_deploy_b2bi_nonprod_dbuser }}" #Specify the database user naem
-          driver_class_name: "{{ pem_dbdriver }}" #Specify the dirver class name
+          url: "" # Specify the database url  example for jdbc:oracle:thin:@localhost:1521/XE
+          username:  #Specify the database user naem
+          driver_class_name:  #Specify the dirver class name
           ssl:
             enabled: false #Specify it as true id database connection is ssl enabled
-            trust_store: "pemcm.truststore" #truststore name
-            trustStoreSecret: "{{ pem_deploy_cm_nonprod_secret }}" #secret for keystore
+            trust_store: #truststore name
+            trustStoreSecret: #secret for keystore
         jpa:
-          database_platform: {{ pem_deploy_b2bi_nonprod_jpa_dialect }} #dialect value based on the database default will be oracle
+          database_platform: com.pe.pcm.config.database.dialect.Oracle12cExtendedDialect #dialect value based on the database default will be oracle
         mail:
-          host: {{ pem_smtphost }} #smtp hostname
-          port: {{ pem_smtpport }} #SMTP port
+          host: #smtp hostname
+          port: #SMTP port
           username: #Specify the username exmaple: username@compnay.com
           from: from_mailid@company.com #Specify the from mail id.
           app_contact_mail: app_contact_mailid@company.com #Application contact email which will be used in mail signature
@@ -913,22 +919,22 @@ communitymanager:
           properties:
             mail:
               smtp:
-                auth: false #If you want to send a mail with ssl authentication then make it as true or elase false
+                auth: true #If you want to send a mail with ssl authentication then make it as true or elase false
                 starttls:
-                  enable: false #If you want to send a mail with ssl authentication then make it as true or else false
+                  enable: true #If you want to send a mail with ssl authentication then make it as true or else false
       jwt:
-        secretkey: CACE9E5A149ED201C4033C1A1E02C9BE #Specify the jwt token
+        secretkey: #it is recommended that you choose a strong, randomly generated password of at least 32 characters in length.
       sterling_b2bi:
         connectivity:
           api:
-            baseUrl: "{{ pem_deploy_b2bi_nonprod_apiurl }}" #Sterling b2bi api base url 
-            username: "{{ pem_deploy_b2bi_nonprod_apiuser }}" #Sterling b2bi username
-            password: "{{ pem_deploy_cm_nonprod_secret }}" #pull secret name
+            baseUrl:  #Sterling b2bi api base url 
+            username: #Sterling b2bi username
+            password: #pull secret name
         user:
           cmks_validation: false #Set this value to true to integrate PCM with B2Bi
           cmks: #provide app-secret name reference STERLING_SYSTEM_PASSPHRASE
-        username: "{{ pem_deploy_b2bi_nonprod_user }}" #Sterling b2bi username used to integrate CM and B2B
-        baseUrl: "{{ pem_deploy_b2bi_nonprod_url }}" #Specify the B2B restapi url with port
+        username: b2bapi_username #Sterling b2bi username used to integrate CM and B2B
+        baseUrl: #Specify the B2B restapi url with port
         b2bi_api:
           active: true #This will say whether B2Bi API available or not
           auth_host: #This tag will accept key Value pair here we need to configure the External user User Hostname as key and order as value
@@ -996,9 +1002,9 @@ communitymanager:
               path: #Provide the base directory path
             session_timeout: 5000 #Time in milliseconds
         datasource:
-          url: "{{ pem_dburl }}/{{ pem_dbname }}" #Datbase url example jdbc:oracle:thin:@DBHostname:1521/DBName
-          username: "{{ pem_dbuser }}" #Specify the database username
-          driver_class_name: "{{ pem_dbdriver }}" #Provide db driver class name Ex: oracle.jdbc.driver.OracleDriver
+          url: jdbc:oracle:thin:@DBHostname:1521/DBName #Datbase url example jdbc:oracle:thin:@DBHostname:1521/DBName
+          username: USERNAME #Specify the database username
+          driver_class_name: oracle.jdbc.driver.OracleDriver #Provide db driver class name Ex: oracle.jdbc.driver.OracleDriver
         api_ws:
           active: true #Specify true to use pem rollout api
           base_url: #specify the url
@@ -1024,7 +1030,7 @@ communitymanager:
         idpgroupsrolemapper: pcmsuperadmin-super_admin,pcmadmin-admin,cmonboarder-on_boarder #provide your saml group vs pcm role (-), idp role name should not have special characters (-).
         defaultrole: super_admin #default role for sso user
         jwt:
-          secretkey: yeWAgVDfb$!MFn@MCJVN7uqkznHbDLR#  #provide the jwt secret key
+          secretkey: #it is recommended that you choose a strong, randomly generated password of at least 32 characters in length.
           sessionexpire: 60 #provide your application session expiry in minutes
       sso_ssp_seas:
         enable: false
@@ -1040,12 +1046,12 @@ communitymanager:
             enabled: false #SSL enable or not in SEAS
             trust_store:
               name: keystore.p12 #SEAS truststore file name
-              secretName: {{ pem_deploy_cm_nonprod_secret }} #secret for truststore
+              secretName: #secret for truststore
               alias: seasssl_sso #SEAS truststore alias
               type: PKCS12 #SEAS truststore type
             key_store:
               name: keystore.p12 #SEAS keystore file name
-              secretName: {{ pem_deploy_cm_nonprod_secret }} #secret for truststore
+              secretName: #secret for truststore
               alias: community_manager #SEAS keystore alias
               type: PKCS12 #SEAS keystore type
         user_request:
@@ -1073,9 +1079,9 @@ communitymanager:
         token_url: "" #Specify the token url for ms oauth token generation ex:https://login.microsoftonline.com/e16b23a5-6e25-4446-993c-d19c0wqedqwff803/oauth2/token
         grant_type: client_credentials #grant type can be password or client_credentials  
         client_id:  #Specify the app registered client id
-        client_secret: "{{ pem_deploy_cm_nonprod_secret }}" #Specify the secret name for the client secret used for app registration
+        client_secret:  #Specify the secret name for the client secret used for app registration
         username:  #Specify the username used to create the app registration
-        cmks: "{{ pem_deploy_cm_nonprod_secret }}" #Specify the secret name for user account password used for app registration 
+        cmks:  #Specify the secret name for user account password used for app registration 
         scope: openid #Specify the scope used for app registration.
         resource:
         token:
@@ -1111,7 +1117,7 @@ communitymanager:
       timeout: #specify the route timeout. the default value is '30s'
     ingress:
       tls:
-        secretName: {{ pem_deploy_cert_jks_secret }} #define the ingress secret
+        secretName: #define the ingress secret
     archive:
       enable: false #set to true to enable persistent volume for archive
       pvcname: #Specify the pvc name of the b2bi documents shared pvc

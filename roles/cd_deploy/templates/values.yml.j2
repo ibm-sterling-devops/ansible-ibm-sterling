@@ -35,6 +35,9 @@ cdArgs:
   sport: 1364
   configDir: "CDFILES"
   saclConfig: "n"
+  # You can create the ConfigMap using the following command:  
+  # kubectl create configmap cd-userfiles --from-file=userfile.cfg --from-file=netmap.cfg -n <your-namespace>
+  userNetmapConfigmap: ""
   trustedAddr: []
   #Security keys configuration
   keys:
