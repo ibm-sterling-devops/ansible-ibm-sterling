@@ -4,6 +4,7 @@ Playbook will run the last version of Sterling Control Center, but take care of 
 
 | Sterling Control Center   | OpenShift           | Kubernetes          | helm-chart |
 |---------------------------|---------------------|---------------------|------------|
+| 6.4.0.0.iFix01_2025-05-07 | >= 4.14             | >=1.27.0            | 4.0.6      |
 | 6.4.0.0.iFix01_2025-04-04 | >= 4.14             | >=1.27.0            | 4.0.6      |
 | 6.4.0.0_2024-12-17        | >= 4.14             | >=1.27.0            | 4.0.2      |
 | 6.3.1.0.iFix03_2024-11-04 | >= 4.14             | >=1.27.0            | 3.1.9      |

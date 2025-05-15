@@ -2,39 +2,40 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1 
+replicaCount: 1
 
 # Control Center image details
 image:
   repository: "cp.icr.io/cp/ibm-scc/ibmscc"
-  tag: "6.3.1.0_iFix02_2024-09-13"
+  tag: "6.4.0.0.iFix01_2025-05-07"
   imageSecrets: ""
   digest:
     enabled: true
-    value: sha256:7c209197cffc8f0c96038bc576bfae839513f47678e505f0884e8977636720c4
+    value: "sha256:2e3550aab32599b677d77adeee8e74c4a9d670d84b55f69120911447cfa05d8e"
   pullPolicy: IfNotPresent
 
 # If you want to override the default full name( <release name>-ibm-sccm )
 nameOverride: ""
 fullnameOverride: ""
 
-# Use name field if you want to override default name 
-# Use create field as false if you want to manually create and give that service account name
+
+# change value of name field if you want to give already created serviceaccount other than default
+# Set create field as true to automatically create a serviceaccount if not created already
 serviceAccount:
-  create: true
-  name: ""
+  create: false
+  name: "default"
 
 service:
   type: LoadBalancer
   loadBalancerIP: ""
-  
+
   # Load Balancer sources
   # https://kubernetes.io/docs/concepts/services-networking/
   # E.g -
   # loadBalancerSourceRanges:
   # - 10.10.10.0/24
+  externalTrafficPolicy: "Local"
   loadBalancerSourceRanges: []
-  
   sessionAffinity: "ClientIP"
   swingConsole:
     name: "swing-console"
@@ -60,7 +61,8 @@ service:
     protocol: "TCP"
     # for network policy
     allowIngressTraffic: true
-  externalIP: ""
+  #externalIP: ""
+  externalIPs: []
   # Specify this to set annotations 
   annotations: {}
     #service.kubernetes.io/ibm-load-balancer-cloud-provider-ip-type: public
@@ -68,7 +70,8 @@ service:
     #service.kubernetes.io/ibm-load-balancer-cloud-provider-zone: main01  
 
 ccArgs:
-  appUserUID: "1010"
+  # This will be deprecated, instead of this, use storageSecurity.runAsUser
+  appUserUID: ""
   ccInterval: "2h"
   # This variable will be used to drop tables for fresh install in dev environment
   devEnvDropTables: "false"
@@ -85,17 +88,26 @@ ccArgs:
   dbUser: "ibm"
   dbName: "CC_HELM"
   dbLoc: "none"
+  
+  # If dbinit flag is true, then Only Monitored server activities will be deleted. Change this to true only if you need to delete all the monitored servers' activities. Even when this flag is true, no summary data (CC_PROCESS, CC_FILE_TRANSFER) will be deleted. Also, no configuration data such as Rules, SLCs, Monitored servers connection details will be deleted.
   dbInit: "false"
   dbPartition: "false"
   dbDrivers: "/app/CC/conf/db2jcc4.jar,/app/CC/conf/db2jcc_license_cu.jar"
+  #dbPasswordVaultEnable: "true"
+  #dbPasswordVaultTimeout: "60"
+  #dbPasswordVaultRetryWaitTime: "15"
+  #dbPasswordVaultScriptLocation: "/app/certs_secret_files/db_script.sh"
+  #dbPasswordVaultRetries: "10"
+  
+
   #Globalization is only needed if data to be stored contains multi-byte characters, which are common in character sets such as Kanji.
   #Database I/O performance may drop multiple orders of magnitude if globalization support is selected, so it is NOT recommended you do so with MSSQL.
   #If you set true for mssqlGlobal variable, then your database size can also increase significantly.
   mssqlGlobal: "false"
- 
+
   autoStopJavaWebAppServer: "true"
   eventRepositoryAuth: "false"
-  
+
   #Email related details
   emailHostname: "localhost"
   emailPort: "25"
@@ -103,9 +115,9 @@ ccArgs:
   emailRespond: "noone@anywhere"
   ccAdminEmailAddress: "noone@anywhere"
   smtpTLSEnabled: "true"
-  
+
   oracleRacOrScan: ""
-  
+
   #JMS related details if needed to post events to remote JMS system
   jmsEnable: ""
   jmsType: ""
@@ -121,10 +133,10 @@ ccArgs:
   jmsRetries: ""
   jmsRetryWait: ""
   jmsBrokerName: ""
-  
+
   #Secure parameters
   dbSSL: ""
-    
+
   # Keystore and truststore configuration
   keyStore: "/app/CC/user_inputs/CCenter.keystore"
   trustStore: "/app/CC/user_inputs/CCenter.truststore"
@@ -143,7 +155,7 @@ ccArgs:
   seasSecureProtocol: ""
 
 #From the given values 70% resources will be allocated to EP and remaining 20% will be allocated to webappserver
-resources: 
+resources:
   limits:
     cpu: 3000m
     memory: 8Gi
@@ -189,16 +201,26 @@ initResources:
 # specify the appropriate JDBC Driver path from the above list in command section for your database server type and version.
 extraInitContainers: []
 #  - name: "copy-dbdriver"
-#    repository: "cp.icr.io/cp/ibm-scc/ibmscc_dbdrivers"
-#    tag: "2024"
+#    repository: "cp.icr.io/cp/ibm-scc/ibmscc_resources"
+#    tag: "dbdrivers"
 #    imageSecrets: "ibm-entitlement-key"
 #    pullPolicy: Always
 #    command: "cp /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/* /app/conf/"
 #    digest:
 #      enabled: false
-#      value: sha256:a1bd211ef90e446af809db2421abdd0fe60e1ae6d44ef646fe98e97b94fd13ce
+#      value: sha256:995b4efff9a9002baccab2034ce18ac8e7a39ecef4b3000b0541dba92685737f
 #    userInput:
 #      enabled: false
+
+hostAliases: []
+#- ip: "127.0.0.1"
+#  hostnames:
+#  - "foo.local"
+#  - "bar.local"
+#- ip: "10.1.2.3"
+#  hostnames:
+#  - "foo.remote"
+#  - "bar.remote"
 
 affinity:
   nodeAffinity:
@@ -239,7 +261,7 @@ persistentVolumeUserInputs:
   selector:
     label: ""
     value: ""
-    
+
 # Manage Storage permission 
 storageSecurity:
   # fsGroup -  Used for controlling access to block storage such as Ceph RBD, iSCSI, and some Cloud storage.
@@ -247,7 +269,8 @@ storageSecurity:
   # supplementalGroups - supplemental Groups IDs are used for controlling access to shared storage like NFS and GlusterFS
   # Replace supplementalGroup Id with NFS User's groupId if the root squash is enabled on NFS server otherwise volume access will fail
   supplementalGroups: [65534]
-  
+  runAsUser: "1010"
+
 # liveness and Probeness
 livenessProbe:
   initialDelaySeconds: 175
@@ -258,10 +281,10 @@ readinessProbe:
   initialDelaySeconds: 175
   timeoutSeconds: 15
   periodSeconds: 120
-  
+
 secret:
   # Secret with all passwords such as db and admin passwords
-  secretName:  ""
+  secretName: ""
   # secret with keystore and truststore
   certsSecretName: ""
 
@@ -283,7 +306,7 @@ autoscaling:
 arch: "amd64"
 
 # Change license to true to indicate that you have read and agree to license agreements
-# Refer: https://www.ibm.com/support/customer/csol/terms/?id=L-QZDV-G39NEP&lc=en#detail-document (L-QZDV-G39NEP)
+# Refer: https://www.ibm.com/support/customer/csol/terms/?id=L-MBLY-9ARX3J&lc=en (L-MBLY-9ARX3J)
 license: false
 
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
@@ -294,16 +317,52 @@ licenseType: non-prod
 # https://kubernetes.io/docs/concepts/services-networking/network-policies/
 # Default ingress policy will be created from Service object of values if no custom ingress policy is specified
 networkPolicy:
-  policyTypes:
-    - Ingress
-    - Egress
   # apply ingress rule. Default allow all ingress traffic
-  # ingress:
-  #   - {}
-  # apply egress rule. Default allow all egress traffic 
+  ingress:
+    enabled: false
+  #  fromSelectors:
+  #  - namespaceSelector:
+  #      matchLabels:
+  #        name: <namespace>
+  #    podSelector:
+  #      matchLabels:
+  #        app.kubernetes.io/instance: "<Release Name>"
+  #  - podSelector:
+  #      matchLabels:
+  #        app.kubernetes.io/name: "ibm-sccm"
+  #  - ipBlock:
+  #      cidr: <IP Address>/<block size>
+  #      except:
+  #      - <IP Address>/<block size>
+  #  ports:
+  #   - protocol: TCP
+  #     port: 58083
+  #     endPort: 58083
+
+  #apply egress rule. Default allow all egress traffic
   egress: 
-    - {}
-  
+    enabled: false
+  #  ports:
+  #    - port: 1433
+  #      protocol: TCP
+  #    - port: 50000
+  #      protocol: TCP
+
+  #  toSelectors:
+  #  - ipBlock:
+  #      cidr: <IP Address>/<block size>
+  #      except:
+  #      - <IP Address>/<block size>
+  #  - namespaceSelector:
+  #      matchLabels:
+  #        name: <namespace>
+  #    podSelector:
+  #      matchLabels:
+  #        app.kubernetes.io/instance: "<Release Name>"
+  #  - podSelector:
+  #      matchLabels:
+  #        app.kubernetes.io/name: "ibm-sccm"
+
 # can be used when ingress controller is available
 # can be used for rule based access 
 # TLS related configuration is requierd if passthrough termination is not used
