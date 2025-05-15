@@ -89,6 +89,11 @@ compatibility_matrix:
     image_tag: "6.4.0.0_2024-12-17"
     copy_dbdriver_tag: "2024"
     kube_version: '>=1.27.0'
+  6.3.1.0.iFix04_2025-05-01:
+    helm_version: "3.1.15"
+    image_tag: "6.3.1.0.iFix04_2025-05-01"
+    copy_dbdriver_tag: "2024"
+    kube_version: '>=1.27.0'
   6.3.1.0.iFix03_2024-11-04:
     helm_version: "3.1.9"
     image_tag: "6.3.1.0.iFix03_2024-11-04"
