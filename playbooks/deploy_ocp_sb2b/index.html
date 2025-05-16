@@ -1484,6 +1484,12 @@
 </thead>
 <tbody>
 <tr>
+<td>6.2.1.0</td>
+<td>&gt;= 4.14</td>
+<td>&gt;= 1.28 and &lt;= 1.31</td>
+<td>3.1.0</td>
+</tr>
+<tr>
 <td>6.2.0.4</td>
 <td>&gt;= 4.14</td>
 <td>&gt;= 1.27</td>
@@ -1506,12 +1512,6 @@
 <td>&gt;= 4.13 and &lt;= 4.14</td>
 <td>&gt;= 1.26 and &lt;= 1.28</td>
 <td>3.0.1</td>
-</tr>
-<tr>
-<td>6.2.0.0</td>
-<td>&gt;= 4.12 and &lt;= 4.13</td>
-<td>&gt;= 1.25 and &lt;= 1.27</td>
-<td>3.0.0</td>
 </tr>
 </tbody>
 </table>
@@ -1547,7 +1547,7 @@ export ANSIBLE_CONFIG=./ansible.cfg
 </code></pre>
 <p>2) (Optional) change your version: </p>
 <p>We always run the last version of Sterling B2Bi, but you can choose to run a different version, based on your RH OpenShift version.</p>
-<pre><code class="language-bash">export SI_VERSION=6.2.0.2
+<pre><code class="language-bash">export SI_VERSION=6.2.0.4
 </code></pre>
 <p>3) To run playbook the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_sb2b.yml

@@ -2,214 +2,214 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/all_roles/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements-macos/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements-rh/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements-ubuntu/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/requirements-windows/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/others/known_problems/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_cd/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_cdws/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_itx_rs/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_itxa/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_pem_essentials/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_pem_standard/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_sb2b/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_scc/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_seas/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/deploy_ocp_ssp/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/setup_b2b/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/setup_cd/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_cert_manager/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_cloudbeaver/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_kafka/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_kowl/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_minio/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/playbooks/tools_deploy_openldap/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cd_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cdws_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cert_manager/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/cloudbeaver/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/db2_console/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/itx_rs_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/itxa_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/itxa_deploy_db2/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/itxa_setup_db2/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/kafka/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/kowl/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/minio/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/openldap/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/phpldapadmin/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy_db2/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_deploy_mq/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_prebuiltdb_db2/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/sb2bi_setup_db2/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy_db2/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_deploy_mq/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/scc_setup_db2/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/seas_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_cm_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_config/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
     <url>
          <loc>https://ibm-sterling-devops.github.io/ansible-ibm-sterling/roles/ssp_ps_deploy/</loc>
-         <lastmod>2025-05-15</lastmod>
+         <lastmod>2025-05-16</lastmod>
     </url>
 </urlset>
