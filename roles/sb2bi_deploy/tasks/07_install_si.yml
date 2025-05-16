@@ -15,8 +15,6 @@
   ansible.builtin.set_fact:
     si_helm_values:
       setupCfg:
-        licenseAcceptEnableSfg: "true"
-        licenseAcceptEnableFileOperation: "true"
         dbCreateSchema: "true"
         defaultDocumentStorageType: "DB"
       asi:

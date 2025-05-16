@@ -14,7 +14,7 @@ si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"
 
-si_version: "{{ lookup('env', 'SI_VERSION') | default('6.2.0.3', true) }}"
+si_version: "{{ lookup('env', 'SI_VERSION') | default('6.2.1.0', true) }}"
 
 si_licensetype: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passw0rd', true) }}"
@@ -92,6 +92,47 @@ si_helm:
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.2.1.0:
+    helm_version: "3.1.0"
+    ocp_min_version: "4.14"
+    k8s_min_version: "1.27"
+    k8s_max_version: "1.30"
+    global:
+      image:
+        tag: "6.2.1.0"
+    resourcesInit:
+      image:
+        tag: "6.2.1.0"
+    customizationInit:
+      image:
+        tag: "6.2.1.0"
+    dataSetup:
+      image:
+        tag: "6.2.1.0"
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:       # Integration with ITX is not supported in SI 6210 release
+        image:
+          tag: "10.1.2.1.2024112"
+      itxaIntegration:      # Integration with ITXA Certified Container edition is supported only for release version 10.0.1.9 onwards
+        image:              # Integration with ITXA Certified Container edition is not supported in SI 6210 release
+          tag: "10.0.1.10-x86_64"
+        resourcesInit:
+          image:
+            tag: "10.0.1.10-x86_64"
+    test:
+      image:
+        tag: '1.1.68'
+    purge:
+      image:
+        tag: "6.2.1.0"
+    documentService:
+      image:
+        tag: "6.2.1.0"
+    as4Service:
+      image:
+        tag: "6.2.1.0"
   6.2.0.4:
     helm_version: "3.0.6"
     ocp_min_version: "4.14"
@@ -114,11 +155,9 @@ compatibility_matrix:
           tag: "10.1.2.1.2024112"
       itxaIntegration:
         image:
-          repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
           tag: "10.0.1.10-x86_64"
         resourcesInit:
           image:
-            repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
             tag: "10.0.1.10-x86_64"
     test:
       image:
@@ -151,11 +190,9 @@ compatibility_matrix:
           tag: "10.1.2.0.20231130"
       itxaIntegration:
         image:
-          repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
           tag: "10.0.1.9-x86_64"
         resourcesInit:
           image:
-            repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
             tag: "10.0.1.9-x86_64"
     test:
       image:
@@ -188,11 +225,9 @@ compatibility_matrix:
           tag: "10.1.2.0.20231130"
       itxaIntegration:
         image:
-          repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
           tag: "10.0.1.9-x86_64"
         resourcesInit:
           image:
-            repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
             tag: "10.0.1.9-x86_64"
     test:
       image:
@@ -225,11 +260,9 @@ compatibility_matrix:
           tag: "10.1.2.0.20231130"
       itxaIntegration:
         image:
-          repository: "cp.icr.io/cp/ibm-itxa/itxa-runtime"
           tag: "10.0.1.8-x86_64"
         resourcesInit:
           image:
-            repository: "cp.icr.io/cp/ibm-itxa/itxa-resources"
             tag: "10.0.1.8-x86_64"
     test:
       image:
@@ -240,43 +273,6 @@ compatibility_matrix:
     documentService:
       image:
         tag: 1.0.0.1
-  6.2.0.0:
-    helm_version: "3.0.0"
-    ocp_min_version: "4.12"
-    k8s_min_version: "1.25"
-    k8s_max_version: "1.27"
-    global:
-      image:
-        tag: "6.2.0.0"
-    resourcesInit:
-      image:
-        tag: "6.2.0.0"
-    dataSetup:
-      image:
-        tag: "6.2.0.0"
-    integrations:
-      seasIntegration:
-        seasVersion: "1.0"
-      itxIntegration:
-        image:
-          tag: "10.1.1.1.20221116"
-      itxaIntegration:
-        image:
-          repository: "cp.icr.io/cp/ibm-itxa-runtime"
-          tag: "10.0.1.8"
-        resourcesInit:
-          image:
-            repository: "cp.icr.io/cp/ibm-itxa-resources"
-            tag: "10.0.1.8"
-    test:
-      image:
-        tag: '1.1.62'
-    purge:
-      image:
-        tag: "6.2.0.0"
-    documentService:
-      image:
-        tag: 1.0.0.0
 
 
 # Storage Class Matrix - definition by Cloud Provider

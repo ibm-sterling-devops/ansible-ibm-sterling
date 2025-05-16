@@ -20,6 +20,8 @@ temporary
 temporary/*
 resultado.txt
 
+roles/db2
+roles/common_tasks
 roles/ibm/cd-unix/dev
 roles/ibm/sb2bi/dev
 roles/ibm/seas/dev
