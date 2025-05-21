@@ -34,17 +34,20 @@ resourcesInit:
   command:
 
 customizationInit:
-  enabled: false
+  enabled: true
   dataSetup:
     enabled: false
     # mention custom service package names to be included for DB setup. It could be set to all (default), none or comma separated list of packages
     includeServicePackages: "all"
   image:
-    repository: "cp.icr.io/cp/ibm-b2bi/b2bi-customization"
-    tag: "{{ compatibility_matrix[ si_version ].customizationInit.image.tag | default('') }}"
+    #repository: "cp.icr.io/cp/ibm-b2bi/b2bi-customization"
+    #tag: "6.2.1.0"
+    repository: "{{ si_custom_init_repo }}"
+    tag: "{{ si_custom_init_tag }}"
     digest:
-    pullPolicy: "IfNotPresent"
+    pullPolicy: "Always"
   command:
+
 persistence:
   enabled: true
   useDynamicProvisioning: {{ si_use_dynamic_provisioning }}
