@@ -71,7 +71,7 @@ add the context below at the end of url
 
 ```
 /cdws-ui/login
-````
+```
 
 Click on Admin tab
 
