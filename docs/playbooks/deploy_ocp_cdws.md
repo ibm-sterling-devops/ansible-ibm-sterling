@@ -77,7 +77,12 @@ Click on Admin tab
 
 ![Admin tab](./images/deploy_ocp_cdws_03_admintab.png)
 
-Provided user **admin** and password
+Provided Admin password:
+
+* User: **admin**
+* Password: **admin**
+
+Change the Admin password.
 
 
 ## Examples
