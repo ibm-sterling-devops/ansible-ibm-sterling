@@ -766,6 +766,30 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-change-namespace-and-cd-node-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Change namespace and C:D node name
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variable" class="md-nav__link">
     <span class="md-ellipsis">
       Environment Variable
@@ -1426,6 +1450,30 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-change-namespace-and-cd-node-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Change namespace and C:D node name
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variable" class="md-nav__link">
     <span class="md-ellipsis">
       Environment Variable
@@ -1522,23 +1570,14 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <p><img alt="Go to routes" src="../images/deploy_ocp_cdws_02_route.png" /></p>
 <p>add the context below at the end of url</p>
 <pre><code>/cdws-ui/login
-````
-
-Click on Admin tab
-
-![Admin tab](./images/deploy_ocp_cdws_03_admintab.png)
-
-Provided user **admin** and password
-
-
-## Examples
-
-### Example 1: Change namespace and C:D node name
-
-To change namespace/project and C:D node name
-
-```bash 
-cd ansible-ibm-sterling
+</code></pre>
+<p>Click on Admin tab</p>
+<p><img alt="Admin tab" src="../images/deploy_ocp_cdws_03_admintab.png" /></p>
+<p>Provided user <strong>admin</strong> and password</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link"></a></h2>
+<h3 id="example-1-change-namespace-and-cd-node-name">Example 1: Change namespace and C:D node name<a class="headerlink" href="#example-1-change-namespace-and-cd-node-name" title="Permanent link"></a></h3>
+<p>To change namespace/project and C:D node name</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
 
 export CDWS_NAMESPACE=sterling-cdws01
 
