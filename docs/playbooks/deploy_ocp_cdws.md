@@ -56,6 +56,30 @@ ansible-playbook playbooks/deploy_cdws.yml
 
 check for **sterling-cdws01** namespace in Kubernetes/Openshift console.
 
+
+## After install
+
+Open you project
+
+![Open project](./images/deploy_ocp_cdws_01_project.png)
+
+Go to Routes and click on the link at right side
+
+![Go to routes](./images/deploy_ocp_cdws_02_route.png)
+
+add the context below at the end of url
+
+```
+/cdws-ui/login
+````
+
+Click on Admin tab
+
+![Admin tab](./images/deploy_ocp_cdws_03_admintab.png)
+
+Provided user **admin** and password
+
+
 ## Examples
 
 ### Example 1: Change namespace and C:D node name
