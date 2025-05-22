@@ -757,26 +757,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
+  <a href="#after-install" class="md-nav__link">
     <span class="md-ellipsis">
-      Examples
+      After install
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-1-change-namespace-and-cd-node-name" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example 1: Change namespace and C:D node name
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1432,26 +1417,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
+  <a href="#after-install" class="md-nav__link">
     <span class="md-ellipsis">
-      Examples
+      After install
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-1-change-namespace-and-cd-node-name" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example 1: Change namespace and C:D node name
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1545,10 +1515,30 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_cdws.yml
 </code></pre>
 <p>check for <strong>sterling-cdws01</strong> namespace in Kubernetes/Openshift console.</p>
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link"></a></h2>
-<h3 id="example-1-change-namespace-and-cd-node-name">Example 1: Change namespace and C:D node name<a class="headerlink" href="#example-1-change-namespace-and-cd-node-name" title="Permanent link"></a></h3>
-<p>To change namespace/project and C:D node name</p>
-<pre><code class="language-bash">cd ansible-ibm-sterling
+<h2 id="after-install">After install<a class="headerlink" href="#after-install" title="Permanent link"></a></h2>
+<p>Open you project</p>
+<p><img alt="Open project" src="../images/deploy_ocp_cdws_01_project.png" /></p>
+<p>Go to Routes and click on the link at right side</p>
+<p><img alt="Go to routes" src="../images/deploy_ocp_cdws_02_route.png" /></p>
+<p>add the context below at the end of url</p>
+<pre><code>/cdws-ui/login
+````
+
+Click on Admin tab
+
+![Admin tab](./images/deploy_ocp_cdws_03_admintab.png)
+
+Provided user **admin** and password
+
+
+## Examples
+
+### Example 1: Change namespace and C:D node name
+
+To change namespace/project and C:D node name
+
+```bash 
+cd ansible-ibm-sterling
 
 export CDWS_NAMESPACE=sterling-cdws01
 
