@@ -5,10 +5,11 @@
 
 # Change license to true to indicate that you have read and agree to license agreements
 # Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-SLRC-WFGR28)
-license: true
+license: false
+
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: "{{ ssp_ps_license_type }}"
+licenseType: prod
 
 # Specify respective timezone
 timezone: "UTC"
@@ -18,13 +19,13 @@ image:
   # Specify the repository name along with image name
   repository: "cp.icr.io/cp/ibm-ssp-ps/ssp-ps-docker-image"
   # Specify the tag name for the image  
-  tag: "{{ compatibility_matrix[ssp_ps_version].image_tag }}"
+  tag: "6.2.0.1.02"
   # Specify the image pull secret for the service, if the image is in private registry 
-  imageSecrets: "{{ ssp_ps_deploy_registry_secret }}"
+  imageSecrets: ""
   # Enable true/false to use image digest
   digest:
-    enabled: false
-    value: ""
+    enabled: true
+    value: sha256:12741a6e51e6b8882e7d1916d044c6ab9087c046b8a6f4430cbc2b7ef6258555
   # Specify respective pull policy to used to override default `IfNotPresent` policy  
   pullPolicy: IfNotPresent
 
@@ -232,19 +233,19 @@ networkPolicy:
   
   # apply ingress rule. Default allow all ingress traffic.
   ingress:
-  - from:
-    ports:
-    - protocol: TCP
-      port: 30800
-    - protocol: TCP
-      port: 30900
+  - from: []
+    #ports:
+    #- protocol: TCP
+     # port: 30800
+    #- protocol: TCP
+     # port: 30900
       
   # apply egress rule. Default allow all egress traffic 
   egress:
-  - to:
-    ports:
-    - protocol: TCP
-      port: 63366
+  - to: []
+    #ports:
+    #- protocol: TCP
+     # port: 63366
    
       
 

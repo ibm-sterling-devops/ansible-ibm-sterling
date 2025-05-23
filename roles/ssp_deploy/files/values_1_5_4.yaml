@@ -5,29 +5,29 @@
 
 # Change license to true to indicate that you have read and agree to license agreements
 # Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-SLRC-WFGR28)
-license: true
+license: false
 
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: "{{ ssp_license_type }}"
+licenseType: prod
 
 # Specify respective timezone
-timezone: "{{ ssp_timezone }}"
+timezone: "UTC"
 
 
 
 # Specify the respective Docker Image details for IBMCS
 image:
   # Specify the repository name along with image name
-  repository: "{{ ssp_image_repository }}"
+  repository: "cp.icr.io/cp/ibm-ssp-engine/ssp-engine-docker-image"
   # Specify the tag name for the image  
-  tag: "{{ compatibility_matrix[ssp_version].image_tag }}"
+  tag: "6.2.0.1.02"
   # Specify the image pull secret for the service, if the image is in private registry 
-  imageSecrets: "{{ ssp_registry_secret }}"
+  imageSecrets: ""
   # Enable true/false to use image digest
   digest:
-    enabled: false
-    value: ""
+    enabled: true
+    value: sha256:def3d0529374c2d3dae11ac66aad666ad07de29efa05fc246c03b8e3ca8ede79
   # Specify respective pull policy to used to override default `IfNotPresent` policy  
   pullPolicy: IfNotPresent
 
@@ -40,13 +40,9 @@ arch: "amd64"
 engineArgs:
    # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy Engine before CM
    # Set the value "false" to Import Key Cert Exported from Secure Proxy CM if you have installed Secure Proxy CM first
-{% if (ssp_generate_certificates) %}
-  keyCertExport: true
-{% else %}
   keyCertExport: false
   # Certificate alias value. 
   keyCertAliasName: "keycert"
-{% endif %}
   # JVM max heap size - don't set more than container limit resource memory. 
   maxHeapSize: "2048m"
   # Change SSP brand name if required else keep it as it is.
@@ -64,15 +60,15 @@ persistentVolume:
   # enabled is whether to use Persistent Volumes or not
   enabled: true
   # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes 
-  useDynamicProvisioning: true
+  useDynamicProvisioning: false
   # Specify the existing PV claim name to be used for deployment
   existingClaimName: ""
   # Specify this to use selector label name for PV-PVC bind
-  labelName: ""
+  labelName: "app.kubernetes.io/name"
   # Specify this to use selector label value for PV-PVC bind
-  labelValue: ""
+  labelValue: "ibm-ssp-engine-pv"
   # Specify this to set storage class name
-  storageClassName: "{{ storage_class_matrix[ ssp_storage_class ].rwo }}"
+  storageClassName: "manual"
   # Specify this to set PVC size
   size: 2Gi
   # Specify this to set access mode
@@ -87,12 +83,12 @@ storageSecurity:
   # rootSquashCheck flag has been created for the new deployment to indicate whether the user has reviewed the rootSquash requirements.
   # Set it to true - if the deployment user has read the rootSquash requirement.
   # Set it to false - if the deployment user has not read the rootSquash requirement. 
-  rootSquashCheck: true
+  rootSquashCheck: false
   # root squash setting 
   rootSquash:
     # set it to true - If root squash is enabled on the mounted PV server.
     # set it to false - If root squash is disabled on the mounted PV server. In this scenario, the umask should be set to 002, since the mounted directory is owned by the root user and the group needs write permissions. Additionally, the mounted PV directory should have 775 permissions.  
-    enabled: true
+    enabled: false
     # It should correspond to either the fsGroup or supplementalGroup ID 
     runAsUser: 65534
   
@@ -167,42 +163,30 @@ service2:
       
   # Expose adapter ports one by one if we are not using Less Secure Perimeter Server.
   # nodePort - it will assign to service if you have selected service type as NodePort. 
-  ports:
-    - name: ftp-adapter-01
-      port: 30110
-      nodePort: 30110
-    - name: sftp-adapter-01
-      port: 30120
-      nodePort: 30120
-    - name: cd-adapter-01
-      port: 30130
-      nodePort: 30130
-    - name: sfg-adapter-01 # myfilegateway
-      port: 30140
-      nodePort: 30140
-    - name: myfg-adapter-01 # myfg 2.0
-      port: 30141
-      nodePort: 30141
-    - name: restapi-adapter-01
-      port: 30142
-      nodePort: 30142
+  ports: []
+    #- name: adapter1
+     # port: 30110
+     # nodePort: 30110
+    #- name: adapter2
+     # port: 30111 
+     # nodePort: 30111
+    #- name: adapter3
+     # port: 30112    
+     # nodePort: 30112     
 
+# Specify the Secret configuration for Engine
 secret:
   # Secret name for PassPhase and Password
-  secretName: "{{ ssp_secret }}"
+  secretName: ""
   # Secret name for the imported Key Certificate file from CM - Use this if you are installing Engine after Configuration Manager otherwise it's not needed. 
-{% if (ssp_generate_certificates) %}
   keyCertSecretName: ""
-{% else %}
-  keyCertSecretName: "{{ ssp_keycert_secret }}"
-{% endif %}
 
 # Specify the service account details
 serviceAccount:
   # Set this field to `true` to create service account or `false` to use existing service account 
   create: true
   # Specify the name of service account to be used
-  name: "ssp-engine-sa"
+  name: "" 
 
 
 ## Configure resource requests and limits
@@ -327,43 +311,19 @@ networkPolicy:
   
   # apply ingress rule.
   ingress:
-  - from:
-    ports:
-    - protocol: TCP
-      port: 63366
-    - protocol: TCP
-      port: 30800
-    - protocol: TCP
-      port: 30110
-    - protocol: TCP
-      port: 30120
-    - protocol: TCP
-      port: 30130
-    - protocol: TCP
-      port: 30140
-    - protocol: TCP
-      port: 30141
-    - protocol: TCP
-      port: 30142
+  - from: []
+    #ports:
+    #- protocol: TCP
+     # port: 63366
+    #- protocol: TCP
+     # port: 30800
       
   # apply egress rule.
   egress:
-  - to:
-    ports:
-    - protocol: TCP
-      port: 30800
-    - protocol: TCP
-      port: 30110
-    - protocol: TCP
-      port: 30120
-    - protocol: TCP
-      port: 30130
-    - protocol: TCP
-      port: 30140
-    - protocol: TCP
-      port: 30141
-    - protocol: TCP
-      port: 30142
+  - to: []
+    #ports:
+    #- protocol: TCP
+     # port: 30800
 
 # Remove the backup files and directories.    
 # Upon every restart or upgrade, Engine creates backups for the following files and directories:

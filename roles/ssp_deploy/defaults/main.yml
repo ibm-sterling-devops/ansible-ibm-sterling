@@ -10,7 +10,7 @@ ssp_action: "{{ lookup('env', 'SSP_ACTION') | default('install', true) }}"
 # Configure SSP instance
 # -----------------------------------------------------------------------------------------------------------------
 ssp_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
-ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0.01', true) }}"
+ssp_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.1.02', true) }}"
 
 ssp_license_type: "{{ lookup('env', 'SSP_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 ssp_image_repository: "{{ lookup('env', 'SSP_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-engine/ssp-engine-docker-image', true) }}"
@@ -28,16 +28,6 @@ ssp_skip_helm: "{{ lookup('env', 'SSP_SKIP_HELM') | default(false, true) }}"
 # Storage
 # -----------------------------------------------------------------------------
 ssp_storage_class: "{{ lookup('env', 'SSP_STORAGE_CLASS') }}"
-ssp_storage_capacity: "{{ lookup('env', 'SSP_STORAGE_CAPACITY') | default('1Gi', True) }}"
-
-# Request/limit defaults
-# -----------------------------------------------------------------------------
-ssp_cpu_limits: "{{ lookup('env', 'SSP_CPU_LIMITS') | default('1000m', true) }}"
-ssp_mem_limits: "{{ lookup('env', 'SSP_MEM_LIMITS') | default('3Gi', true) }}"
-ssp_ephemeral_storage_limits: "{{ lookup('env', 'SSP_EPHEMERAL_STORAGE_LIMITS') | default('6Gi', true) }}"
-ssp_cpu_requests: "{{ lookup('env', 'SSP_CPU_REQUESTS') | default('1000m', true) }}"
-ssp_mem_requests: "{{ lookup('env', 'SSP_MEM_REQUESTS') | default('3Gi', true) }}"
-ssp_ephemeral_storage_requests: "{{ lookup('env', 'SSP_EPHEMERAL_STORAGE_REQUESTS') | default('4Gi', true) }}"
 
 # Configure instance
 # -----------------------------------------------------------------------------
@@ -59,6 +49,10 @@ ssp_generate_certificates: false
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.2.0.1.02:
+    helm_version: "1.5.4"
+    image_tag: "6.2.0.1.02"
+    affinity_default: "{}"
   6.2.0.0.01:
     helm_version: "1.5.1"
     image_tag: "6.2.0.0.01"

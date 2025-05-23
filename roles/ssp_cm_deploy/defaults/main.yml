@@ -10,7 +10,7 @@ ssp_cm_action: "{{ lookup('env', 'SSP_ACTION') | default('install', true) }}"
 # Configure SSP instance
 # -----------------------------------------------------------------------------------------------------------------
 ssp_cm_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
-ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.0.01', true) }}"
+ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.1.02', true) }}"
 
 ssp_cm_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Password123!', true) }}"
@@ -26,7 +26,6 @@ ssp_cmservercert_password: "{{ lookup('env', 'SSP_CMSERVERCERT_PASSWORD') | defa
 ssp_webcert_password: "{{ lookup('env', 'SSP_WEBCERT_PASSWORD') | default('Password123!', true) }}"
 ssp_exportcert_password: "{{ lookup('env', 'SSP_EXPORTEDCERT_PASSWORD') | default('Password123!', true) }}"
 
-ssp_cm_image_repository: "{{ lookup('env', 'SSP_CM_IMAGE_REPOSITORY') | default('cp.icr.io/cp/ibm-ssp-cm/ssp-cm-docker-image', true) }}"
 ssp_cm_skip_image_secret: "{{ lookup('env', 'SSP_CM_SKIP_IMAGE_SECRET') | default(false, true) }}"
 
 ssp_cm_skip_helm: "{{ lookup('env', 'SSP_SKIP_HELM') | default(false, true) }}"
@@ -34,16 +33,6 @@ ssp_cm_skip_helm: "{{ lookup('env', 'SSP_SKIP_HELM') | default(false, true) }}"
 # Storage
 # -----------------------------------------------------------------------------
 ssp_cm_storage_class: "{{ lookup('env', 'SSP_CM_STORAGE_CLASS') }}"
-ssp_cm_storage_capacity: "{{ lookup('env', 'SSP_CM_STORAGE_CAPACITY') | default('1Gi', true) }}"
-
-# Request/limit defaults
-# -----------------------------------------------------------------------------
-ssp_cm_cpu_limits: "{{ lookup('env', 'SSP_CM_CPU_LIMITS') | default('1000m', true) }}"
-ssp_cm_mem_limits: "{{ lookup('env', 'SSP_CM_MEM_LIMITS') | default('2Gi', true) }}"
-ssp_cm_ephemeral_storage_limits: "{{ lookup('env', 'SSP_CM_EPHEMERAL_STORAGE_LIMITS') | default('5Gi', true) }}"
-ssp_cm_cpu_requests: "{{ lookup('env', 'SSP_CM_CPU_REQUESTS') | default('1000m', true) }}"
-ssp_cm_mem_requests: "{{ lookup('env', 'SSP_CM_MEM_REQUESTS') | default('2Gi', true) }}"
-ssp_cm_ephemeral_storage_requests: "{{ lookup('env', 'SSP_CM_EPHEMERAL_STORAGE_REQUESTS') | default('3Gi', true) }}"
 
 # Others
 # -----------------------------------------------------------------------------
@@ -61,6 +50,10 @@ ssp_cm_generate_certificates: true  # true when run SSPCm and after SSP
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.2.0.1.02:
+    helm_version: "1.5.4"
+    image_tag: "6.2.0.1.02"
+    affinity_default: "{}"
   6.2.0.0.01:
     helm_version: "1.5.1"
     image_tag: "6.2.0.0.01"

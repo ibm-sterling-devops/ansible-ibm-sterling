@@ -5,11 +5,11 @@
 
 # Change license to true to indicate that you have read and agree to license agreements
 # Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-SLRC-WFGR28)
-license: true
+license: false
 
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: "{{ ssp_cm_license_type }}"
+licenseType: prod
 
 # This name will be appended to release name to form the name of the resources created by this chart
 nameOverride: ""
@@ -24,13 +24,13 @@ image:
   # Specify the repository name along with image name
   repository: "cp.icr.io/cp/ibm-ssp-cm/ssp-cm-docker-image"
   # Specify the tag name for the image  
-  tag: "{{ compatibility_matrix[ssp_cm_version].image_tag }}"
+  tag: "6.2.0.1.02"
   # Specify the image pull secret for the service, if the image is in private registry 
-  imageSecrets: "{{ ssp_cm_registry_secret }}"
+  imageSecrets: ""
   # Enable true/false to use image digest
   digest:
-    enabled: false
-    value: ""
+    enabled: true
+    value: sha256:3ff3474d36a43e42f4fdea5047cf825ddd7c84e3109066fd3742aabf6e71e5bf
   # Specify respective pull policy to used to override default `IfNotPresent` policy  
   pullPolicy: IfNotPresent
 
@@ -39,13 +39,9 @@ image:
 cmArgs:
    # Set the value "true" to Generate Key Certificate, if you are installing Secure Proxy CM first.
    # Set the value "false" to Import Key Cert Exported from Secure Proxy Engine if you have installed Secure Proxy Engine first.
-{% if (ssp_cm_generate_certificates) %}
   keyCertExport: true
-{% else %}
-  keyCertExport: false
   # Set the certificate alias value. 
   keyCertAliasName: "keycert"
-{% endif %}
   # JVM max heap size - don't set more than container limit resource memory. 
   maxHeapSize: "2048m"
   # Enable/Disable host name verification
@@ -69,15 +65,15 @@ persistentVolume:
   # enabled is whether to use Persistent Volumes or not
   enabled: true
   # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes 
-  useDynamicProvisioning: true
+  useDynamicProvisioning: false
   # Specify the existing PV claim name to be used for deployment
   existingClaimName: ""
   # Specify this to use selector label name for PV-PVC bind
-  labelName: ""
+  labelName: "app.kubernetes.io/name"
   # Specify this to use selector label value for PV-PVC bind
-  labelValue: ""
+  labelValue: "ibm-ssp-cm-pv"
   # Specify this to set storage class name
-  storageClassName: "{{ storage_class_matrix[ ssp_cm_storage_class ].rwo }}"
+  storageClassName: "manual"
   # Specify this to set PVC size
   size: 2Gi
   # Specify this to set access mode
@@ -94,22 +90,22 @@ storageSecurity:
   # rootSquashCheck flag has been created for the new deployment to indicate whether the user has reviewed the rootSquash requirements.
   # Set it to true - if the deployment user has read the rootSquash requirement.
   # Set it to false - if the deployment user has not read the rootSquash requirement. 
-  rootSquashCheck: true
+  rootSquashCheck: false
   # root squash setting 
   rootSquash:
     # set it to true - If root squash is enabled on the mounted PV server.
     # set it to false - If root squash is disabled on the mounted PV server. In this scenario, the umask should be set to 002, since the mounted directory is owned by the root user and the group needs write permissions. Additionally, the mounted PV directory should have 775 permissions.  
-    enabled: true
+    enabled: false
     # It should correspond to either the fsGroup or supplementalGroup ID 
     runAsUser: 65534
   
 # Specify these fields for Services
 service:
   # Specify this to set service type.
-  type: "ClusterIP"
+  type: "LoadBalancer"
   # Specify this to set load balancer IP. It's added for cloud environment.
   loadBalancerIP: "" 
-  # Specify this to set external IP to access application outside the cluster.
+
   externalIP: ""
   # Specify this to set annotations 
   annotations: {}
@@ -143,13 +139,9 @@ service:
 # Specify the Secret configuration for Configuration Manager
 secret:
   # Secret name for PassPhase and Password
-  secretName: "{{ ssp_cm_secret }}"
+  secretName: ""
   # Secret name for the imported Key Certificate from Engine - Use this if you are installing Configuration Manager after Engine otherwise it's not needed. 
-{% if (ssp_cm_generate_certificates) %}
   keyCertSecretName: ""
-{% else %}
-  keyCertSecretName: "{{ ssp_cm_keycert_secret }}"
-{% endif %}
 
 # Specify the service account details
 serviceAccount:
@@ -214,7 +206,7 @@ readinessProbe:
 
 # Set this to true create route in OpenShift cluster
 route:
-  enabled: true
+  enabled: false
   
 # Set this to true to create Monitoring Dashboard for IBMCCS
 dashboard:
@@ -360,19 +352,19 @@ networkPolicy:
   
   # apply ingress rule.
   ingress:
-  - from:
-    ports:
-    - protocol: TCP
-      port: 8443
-    - protocol: TCP
-      port: 62366
+  - from: []
+    #ports:
+    #- protocol: TCP
+     # port: 8443
+    #- protocol: TCP
+     # port: 62366
       
   # apply egress rule.
   egress:
-  - to:
-    ports:
-    - protocol: TCP
-      port: 63366  
+  - to: []
+    #ports:
+    #- protocol: TCP
+     # port: 63366  
 
 # Remove the backup files.    
 # Upon every restart or upgrade, CM creates backups for the following files:
