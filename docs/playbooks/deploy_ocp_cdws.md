@@ -4,6 +4,7 @@ Playbook will run the last version of Connect:Direct WebService, but take care o
 
 | C:D WebService            | OpenShift           | Kubernetes          | helm-chart |
 |---------------------------|---------------------|---------------------|------------|
+| 6.4.0.2_ifix001           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.1.6      |
 | 6.4.0.2_ifix000           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.1.5      |
 | 6.4.0.0_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.1.0      |
 | 6.3.0.11_ifix000          | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.0.4      |
