@@ -811,6 +811,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#post-deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Post-Deployment Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Post-Deployment Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-verify-pod-and-service-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Verify Pod and Service Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-get-admin-user-and-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Get Admin User and Password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-test-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Test Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variable" class="md-nav__link">
     <span class="md-ellipsis">
       Environment Variable
@@ -1378,6 +1420,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#post-deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Post-Deployment Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Post-Deployment Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-verify-pod-and-service-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Verify Pod and Service Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-get-admin-user-and-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Get Admin User and Password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-test-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Test Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#environment-variable" class="md-nav__link">
     <span class="md-ellipsis">
       Environment Variable
@@ -1468,6 +1552,25 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <p>2) To run the playbook</p>
 <pre><code class="language-bash">ansible-playbook playbooks/deploy_ssp.yml
 </code></pre>
+<h2 id="post-deployment-steps">Post-Deployment Steps<a class="headerlink" href="#post-deployment-steps" title="Permanent link"></a></h2>
+<p>After you have deployed Sterling Secure Proxy (SSP) on OpenShift, follow these post-deployment steps to ensure your installation is successful and production-ready:</p>
+<pre><code>Replace `ibm-ssp-dev01-cm` if you provide another SSP_INSTANCEID
+</code></pre>
+<h3 id="1-verify-pod-and-service-status">1. Verify Pod and Service Status<a class="headerlink" href="#1-verify-pod-and-service-status" title="Permanent link"></a></h3>
+<p>Check that all SSP pods are running without errors:</p>
+<pre><code class="language-bash">oc get pods -n ibm-ssp-dev01-cm
+</code></pre>
+<h3 id="2-get-admin-user-and-password">2. Get Admin User and Password<a class="headerlink" href="#2-get-admin-user-and-password" title="Permanent link"></a></h3>
+<p>Check the secrets that provides Admin User and Password:</p>
+<pre><code class="language-bash">oc get secret ibm-ssp-cm-secret -n ibm-ssp-dev01-cm -o yaml
+</code></pre>
+<p>Ensure that the correct instance ID, SSP version, and credentials are set.</p>
+<h3 id="3-test-connectivity">3. Test Connectivity<a class="headerlink" href="#3-test-connectivity" title="Permanent link"></a></h3>
+<p>Confirm that the SSP service is accessible via the route (or ingress) created:</p>
+<pre><code class="language-bash">oc get routes -n ibm-ssp-dev01-cm
+</code></pre>
+<p>Open the provided URL in a browser to check application access.</p>
+<p>Provide Admin user and password from previous step.</p>
 <h2 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h2>
 <p>Environment variables for this role:</p>
 <table>
