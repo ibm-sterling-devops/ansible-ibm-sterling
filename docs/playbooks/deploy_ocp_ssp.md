@@ -57,6 +57,44 @@ export SSP_INSTANCEID=dev01
 ansible-playbook playbooks/deploy_ssp.yml
 ```
 
+## Post-Deployment Steps
+
+After you have deployed Sterling Secure Proxy (SSP) on OpenShift, follow these post-deployment steps to ensure your installation is successful and production-ready:
+
+```
+Replace `ibm-ssp-dev01-cm` if you provide another SSP_INSTANCEID
+```
+
+### 1. Verify Pod and Service Status
+
+Check that all SSP pods are running without errors:
+
+```bash
+oc get pods -n ibm-ssp-dev01-cm
+```
+
+### 2. Get Admin User and Password
+
+Check the secrets that provides Admin User and Password:
+
+```bash
+oc get secret ibm-ssp-cm-secret -n ibm-ssp-dev01-cm -o yaml
+```
+Ensure that the correct instance ID, SSP version, and credentials are set.
+
+### 3. Test Connectivity
+
+Confirm that the SSP service is accessible via the route (or ingress) created:
+
+```bash
+oc get routes -n ibm-ssp-dev01-cm
+```
+Open the provided URL in a browser to check application access.
+
+Provide Admin user and password from previous step.
+
+
+
 ## Environment Variable
 
 Environment variables for this role:
