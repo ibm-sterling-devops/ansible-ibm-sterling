@@ -1564,7 +1564,8 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <p>Check the secrets that provides Admin User and Password:</p>
 <pre><code class="language-bash">oc get secret ibm-ssp-cm-secret -n ibm-ssp-dev01-cm -o yaml
 </code></pre>
-<p>Ensure that the correct instance ID, SSP version, and credentials are set.</p>
+<p>Get clean password</p>
+<p>echo <value from adminPassword> | base64 -d</p>
 <h3 id="3-test-connectivity">3. Test Connectivity<a class="headerlink" href="#3-test-connectivity" title="Permanent link"></a></h3>
 <p>Confirm that the SSP service is accessible via the route (or ingress) created:</p>
 <pre><code class="language-bash">oc get routes -n ibm-ssp-dev01-cm
