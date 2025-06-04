@@ -80,7 +80,10 @@ Check the secrets that provides Admin User and Password:
 ```bash
 oc get secret ibm-ssp-cm-secret -n ibm-ssp-dev01-cm -o yaml
 ```
-Ensure that the correct instance ID, SSP version, and credentials are set.
+
+Get clean password
+
+echo <value from adminPassword> | base64 -d
 
 ### 3. Test Connectivity
 
