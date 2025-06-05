@@ -6,7 +6,7 @@
     - "{{ __extraction_folder }}"
     - "{{ __workdir_folder }}"
 
-- name: "Download Others Files to the {{ __extraction_folder }}"
+name: "Download Others Files from {{ __repository_url }}  to the {{ __extraction_folder }}"
   ansible.builtin.get_url:
     url: "{{ __repository_url }}/{{ item }}"
     dest: "{{ __extraction_folder }}"
