@@ -98,6 +98,13 @@
     - my_storage_class == ''
     - "'managed-nfs-storage' in my_storage_list"
 
+- name: Check for Redhat External Storageclass
+  ansible.builtin.set_fact:
+    my_storage_class: "redhat-external"
+  when:
+    - my_storage_class is not defined
+    - "'ocs-external-storagecluster-cephfs' in my_storage_list"
+
 - name: Check for IBM Spectrum Scale StorageClass
   ansible.builtin.set_fact:
     my_use_dynamic_provisioning: "true"

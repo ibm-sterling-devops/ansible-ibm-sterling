@@ -74,6 +74,14 @@
     - my_storage_class == ''
     - "'ocs-storagecluster-cephfs' in my_storage_list"
 
+- name: Check for Redhat External Storageclass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "redhat-external"
+  when:
+    - my_storage_class == ''
+    - "'ocs-external-storagecluster-cephfs' in my_storage_list"
+
 - name: Check for AWS StorageClass
   ansible.builtin.set_fact:
     my_use_dynamic_provisioning: "true"
