@@ -830,9 +830,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-get-admin-user-and-password" class="md-nav__link">
+  <a href="#2-login-on-openshift_1" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Get Admin User and Password
+      2. Login on OpenShift
     </span>
   </a>
   
@@ -1439,9 +1439,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-get-admin-user-and-password" class="md-nav__link">
+  <a href="#2-login-on-openshift_1" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Get Admin User and Password
+      2. Login on OpenShift
     </span>
   </a>
   
@@ -1560,9 +1560,11 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <p>Check that all SSP pods are running without errors:</p>
 <pre><code class="language-bash">oc get pods -n ibm-ssp-dev01-cm
 </code></pre>
-<h3 id="2-get-admin-user-and-password">2. Get Admin User and Password<a class="headerlink" href="#2-get-admin-user-and-password" title="Permanent link"></a></h3>
-<p>Check the secrets that provides Admin User and Password:</p>
-<pre><code class="language-bash">oc get secret ibm-ssp-cm-secret -n ibm-ssp-dev01-cm -o yaml
+<h3 id="2-login-on-openshift_1">2. Login on OpenShift<a class="headerlink" href="#2-login-on-openshift_1" title="Permanent link"></a></h3>
+<p>Access the OpenShift console and click on your user icon in the upper-right corner to retrieve your login command.</p>
+<p><img alt="Copy Login" src="../images/get_oc_login.png" /></p>
+<p>Click on <strong>Display Token</strong>, and copy the oc login command and paste it into your terminal. Sample:</p>
+<pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 </code></pre>
 <p>Get clean password</p>
 <p>echo <value from adminPassword> | base64 -d</p>

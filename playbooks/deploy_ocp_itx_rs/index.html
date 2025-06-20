@@ -1444,7 +1444,9 @@
 <pre><code class="language-bash">export ENTITLED_REGISTRY_KEY=&lt;entitlement_key&gt;
 </code></pre>
 <h3 id="2-login-on-openshift">2. Login on OpenShift<a class="headerlink" href="#2-login-on-openshift" title="Permanent link"></a></h3>
-<p>Do a login in Openshift console and run the command:</p>
+<p>Access the OpenShift console and click on your user icon in the upper-right corner to retrieve your login command.</p>
+<p><img alt="Copy Login" src="../images/get_oc_login.png" /></p>
+<p>Click on <strong>Display Token</strong>, and copy the oc login command and paste it into your terminal. Sample:</p>
 <pre><code class="language-bash">oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 </code></pre>
 <h3 id="3-cloning-ansible-ibm-sterling-from-git">3. Cloning ansible-ibm-sterling from git<a class="headerlink" href="#3-cloning-ansible-ibm-sterling-from-git" title="Permanent link"></a></h3>
