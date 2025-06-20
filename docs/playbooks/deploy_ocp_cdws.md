@@ -29,7 +29,7 @@ Access the OpenShift console and click on your user icon in the upper-right corn
 
 ![Copy Login](./images/get_oc_login.png)
 
-Click on **Display Login**, and copy the oc login command and paste it into your terminal. Sample:
+Click on **Display Token**, and copy the oc login command and paste it into your terminal. Sample:
 
 ```bash 
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234

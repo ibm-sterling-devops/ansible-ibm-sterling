@@ -21,7 +21,11 @@ export ENTITLED_REGISTRY_KEY=<entitlement_key>
 
 ### 2. Login on OpenShift
 
-Do a login in Openshift console and run the command:
+Access the OpenShift console and click on your user icon in the upper-right corner to retrieve your login command.
+
+![Copy Login](./images/get_oc_login.png)
+
+Click on **Display Token**, and copy the oc login command and paste it into your terminal. Sample:
 
 ```bash 
 oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234

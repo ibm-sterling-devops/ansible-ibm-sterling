@@ -73,12 +73,16 @@ Check that all SSP pods are running without errors:
 oc get pods -n ibm-ssp-dev01-cm
 ```
 
-### 2. Get Admin User and Password
+### 2. Login on OpenShift
 
-Check the secrets that provides Admin User and Password:
+Access the OpenShift console and click on your user icon in the upper-right corner to retrieve your login command.
 
-```bash
-oc get secret ibm-ssp-cm-secret -n ibm-ssp-dev01-cm -o yaml
+![Copy Login](./images/get_oc_login.png)
+
+Click on **Display Token**, and copy the oc login command and paste it into your terminal. Sample:
+
+```bash 
+oc login --token=sha256~P...k --server=https://c....containers.cloud.xxx.com:31234
 ```
 
 Get clean password
