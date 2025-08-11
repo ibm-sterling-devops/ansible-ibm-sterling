@@ -61,7 +61,7 @@
     my_use_dynamic_provisioning: "true"
     my_storage_class: "ibm-fyre1"
   when:
-    - my_storage_class == ''
+    - my_storage_class is not defined
     - "'rook-cephfs' in my_storage_list"
 
 # 2. Non-Dynamic Provisioning
