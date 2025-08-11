@@ -42,6 +42,13 @@
     - my_storage_class is not defined
     - "'azurefile-premium' in my_storage_list"
 
+- name: Check for Azure-2 StorageClass
+  ansible.builtin.set_fact:
+    my_storage_class: "azure-csi"
+  when:
+    - my_storage_class is not defined
+    - "'azurefile-csi' in my_storage_list"
+
 - name: Check for IBM Techzone StorageClass
   ansible.builtin.set_fact:
     my_storage_class: "techzone"

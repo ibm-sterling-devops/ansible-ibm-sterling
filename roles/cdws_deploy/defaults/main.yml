@@ -131,6 +131,12 @@ storage_class_matrix:
     rwo: "azurefile-premium"
     rom: ""
     rwop: ""
+  azure-csi:
+    rwx: "azurefile-csi"
+    rwx_nogid: "azurefile-csi"
+    rwo: "managed-csi"
+    rom: ""
+    rwop: ""
   techzone:
     rwx: "managed-nfs-storage"
     rwx_nogid: "managed-nfs-storage"
