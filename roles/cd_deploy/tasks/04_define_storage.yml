@@ -90,6 +90,14 @@
     - my_storage_class == ''
     - "'azurefile-premium' in my_storage_list"
 
+- name: Check for Azure CSI StorageClass
+  ansible.builtin.set_fact:
+    my_use_dynamic_provisioning: "true"
+    my_storage_class: "azure-csi"
+  when:
+    - my_storage_class == ''
+    - "'azurefile-csi' in my_storage_list"
+
 - name: Check for IBM Techzone StorageClass
   ansible.builtin.set_fact:
     my_use_dynamic_provisioning: "true"

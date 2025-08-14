@@ -58,6 +58,10 @@ cd_6400_or_higher: "{{ cd_version is defined and cd_version is version('6.4.0.1_
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.4.0.2-iFix004-2025-07-29:
+    helm_version: "1.4.8"
+    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu"
+    image_tag: "6.4.0.2-iFix004-2025-07-29"
   6.4.0.1_iFix029:
     helm_version: "1.4.4"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.1"
@@ -106,6 +110,12 @@ storage_class_matrix:
     rwx: "azurefile-premium"
     rwx_nogid: "azurefile-premium"
     rwo: "managed-premium"
+    rom: ""
+    rwop: ""
+  azure-csi:
+    rwx: "azurefile-csi"
+    rwx_nogid: "azurefile-csi"
+    rwo: "managed-csi"
     rom: ""
     rwop: ""
   techzone:
