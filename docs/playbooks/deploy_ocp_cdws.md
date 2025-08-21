@@ -100,9 +100,9 @@ To change namespace/project and C:D node name
 ```bash 
 cd ansible-ibm-sterling
 
-export CDWS_NAMESPACE=sterling-cdws01
+export CDWS_NAMESPACE=sterling-cdws02
 
-ansible-playbook playbooks/deploy_cd.yml
+ansible-playbook playbooks/deploy_cdws.yml
 ```
 
 
