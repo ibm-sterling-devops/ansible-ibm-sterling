@@ -9,7 +9,6 @@ Playbook will run the last version of Connect:Direct, but take care of Kubernete
 | 6.4.0.1_iFix001           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.4.2      |
 | 6.3.0.3_ifix025           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.13     |
 | 6.3.0.3_ifix021           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.12     |
-| 6.3.0.3_ifix014           | >= 4.11 and <= 4.16 | >=1.24.0 <1.30.0    | 1.3.11     |
 
 
 ## Preparation
