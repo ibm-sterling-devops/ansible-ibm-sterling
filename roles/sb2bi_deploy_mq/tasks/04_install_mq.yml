@@ -52,6 +52,7 @@
           kind: Service
           name: "{{ mq_svc_web }}"
         wildcardPolicy: None
+  when: mq_is_openshift | default(false)
 
 # Deploy MQ on Kubernetes
 # -----------------------------------------------------------------------------
