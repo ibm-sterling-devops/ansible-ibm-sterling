@@ -70,14 +70,6 @@ compatibility_matrix:
     helm_version: "1.4.4"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.1"
     image_tag: "6.4.0.1_iFix029"
-  6.4.0.1_iFix018:
-    helm_version: "1.4.3"
-    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.1"
-    image_tag: "6.4.0.1_iFix018"
-  6.4.0.1_iFix001:
-    helm_version: "1.4.2"
-    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.4_certified_container_6.4.0.1"
-    image_tag: "6.4.0.1_iFix001"
   6.3.0.3_ifix025:
     helm_version: "1.3.13"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu6.3_certified_container_6.3.0.3"
