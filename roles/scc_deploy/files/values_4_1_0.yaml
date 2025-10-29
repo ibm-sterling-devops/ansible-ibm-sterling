@@ -7,11 +7,11 @@ replicaCount: 1
 # Control Center image details
 image:
   repository: "cp.icr.io/cp/ibm-scc/ibmscc"
-  tag: "{{ compatibility_matrix[scc_version].image_tag }}"
-  imageSecrets: "{{ scc_registry_secret }}"
+  tag: "6.4.1.0_2025-07-07"
+  imageSecrets: ""
   digest:
-    enabled: false
-    value: ""
+    enabled: true
+    value: "sha256:a6eccc9af8a16e2dd1df0bc130dfe3e010b37b2961d16d7c3861e51bc9c8656f"
   pullPolicy: IfNotPresent
 
 # If you want to override the default full name( <release name>-ibm-sccm )
@@ -22,8 +22,8 @@ fullnameOverride: ""
 # change value of name field if you want to give already created serviceaccount other than default
 # Set create field as true to automatically create a serviceaccount if not created already
 serviceAccount:
-  create: true
-  name: ""
+  create: false
+  name: "default"
 
 service:
   type: LoadBalancer
@@ -71,7 +71,7 @@ service:
 
 ccArgs:
   # This will be deprecated, instead of this, use storageSecurity.runAsUser
-  appUserUID: "1010"
+  appUserUID: ""
   ccInterval: "2h"
   # This variable will be used to drop tables for fresh install in dev environment
   devEnvDropTables: "false"
@@ -81,18 +81,18 @@ ccArgs:
   #Control center database information
   #Specify engineNamePrefix for new install only and if you want to change engine name with this prefix, you have to run configcc manually
   engineNamePrefix: ""
-  productEntitlement: "{{ scc_install }}"
-  dbType: "{{ scc_dbvendor }}"
-  dbHost: "{{ scc_dbhost }}"
-  dbPort: "{{ scc_dbport }}"
-  dbUser: "{{ scc_dbuser }}"
-  dbName: "{{ scc_dbname }}"
+  productEntitlement: "CCD,CCM"
+  dbType: "MSSQL"
+  dbHost: ""
+  dbPort: "1433"
+  dbUser: "ibm"
+  dbName: "CC_HELM"
   dbLoc: "none"
   
   # If dbinit flag is true, then Only Monitored server activities will be deleted. Change this to true only if you need to delete all the monitored servers' activities. Even when this flag is true, no summary data (CC_PROCESS, CC_FILE_TRANSFER) will be deleted. Also, no configuration data such as Rules, SLCs, Monitored servers connection details will be deleted.
-  dbInit: "true"
+  dbInit: "false"
   dbPartition: "false"
-  dbDrivers: "{{ scc_dbdrivers }}"
+  dbDrivers: "/app/CC/conf/db2jcc4.jar,/app/CC/conf/db2jcc_license_cu.jar"
   #dbPasswordVaultEnable: "true"
   #dbPasswordVaultTimeout: "60"
   #dbPasswordVaultRetryWaitTime: "15"
@@ -103,20 +103,20 @@ ccArgs:
   #Globalization is only needed if data to be stored contains multi-byte characters, which are common in character sets such as Kanji.
   #Database I/O performance may drop multiple orders of magnitude if globalization support is selected, so it is NOT recommended you do so with MSSQL.
   #If you set true for mssqlGlobal variable, then your database size can also increase significantly.
-  mssqlGlobal: "{{ scc_mssqlglobal }}"
+  mssqlGlobal: "false"
 
   autoStopJavaWebAppServer: "true"
   eventRepositoryAuth: "false"
 
   #Email related details
-  emailHostname: "{{ scc_emailhostname }}"
-  emailPort: "{{ scc_emailport }}"
-  emailUser: "{{ scc_emailuser }}"
-  emailRespond: "{{ scc_emailrespond }}"
-  ccAdminEmailAddress: "{{ scc_ccadmin_emailaddress }}"
-  smtpTLSEnabled: "{{ scc_smtp_tlsenabled }}"
+  emailHostname: "localhost"
+  emailPort: "25"
+  emailUser: ""
+  emailRespond: "noone@anywhere"
+  ccAdminEmailAddress: "noone@anywhere"
+  smtpTLSEnabled: "true"
 
-  oracleRacOrScan: "{{ scc_oracle_racorscan }}"
+  oracleRacOrScan: ""
 
   #JMS related details if needed to post events to remote JMS system
   jmsEnable: ""
@@ -141,7 +141,7 @@ ccArgs:
   keyStore: "/app/CC/user_inputs/CCenter.keystore"
   trustStore: "/app/CC/user_inputs/CCenter.truststore"
   keyAlias: "ccalias120"
-  adminEmailAddress: "{{ scc_ccadmin_emailaddress }}"
+  adminEmailAddress: "admin@test.com"
 
   #Seas Parameters
   packagePath: "../packages"
@@ -199,18 +199,19 @@ initResources:
 # To copy JDBC driver from the CC resources container, 
 # uncomment the following and remove empty square braketss next to extraInitContainers and 
 # specify the appropriate JDBC Driver path from the above list in command section for your database server type and version.
-extraInitContainers:
-  - name: "copy-dbdriver"
-    repository: "cp.icr.io/cp/ibm-scc/ibmscc_dbdrivers"
-    tag: "{{ compatibility_matrix[scc_version].copy_dbdriver_tag }}"
-    imageSecrets: "{{ scc_registry_secret }}"
-    pullPolicy: IfNotPresent
-    command: "cp /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/* /app/conf/"
-    digest:
-      enabled: false
-      value: ""
-    userInput:
-      enabled: false
+extraInitContainers: []
+#  - name: "copy-dbdriver"
+#    repository: "cp.icr.io/cp/ibm-scc/ibmscc_resources"
+#    tag: "dbdrivers"
+#    imageSecrets: "ibm-entitlement-key"
+#    pullPolicy: Always
+#    command: "cp /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/* /app/conf/"
+#    digest:
+#      enabled: false
+#      value: sha256:995b4efff9a9002baccab2034ce18ac8e7a39ecef4b3000b0541dba92685737f
+#    userInput:
+#      enabled: false
+
 hostAliases: []
 #- ip: "127.0.0.1"
 #  hostnames:
@@ -239,10 +240,10 @@ persistentVolumeCCM:
   enabled: true
   claimName: ""
   #if claim name is not given and enabled is true then next 3 parameters are required
-  storageClassName: "{{ storage_class_matrix[scc_storage_class].rwo | default('manual') }}"
-  size: "{{ scc_helm_values.persistentVolumeCCM.size | default('2Gi')}}" # 20Gi
+  storageClassName: "manual"
+  size: 20Gi
   accessMode: "ReadWriteOnce"
-  useDynamicProvisioning: true
+  useDynamicProvisioning: false
   selector:
     label: ""
     value: ""
@@ -254,8 +255,8 @@ persistentVolumeUserInputs:
   enabled: true
   claimName: ""
   #if claim name is not given and enabled is true then next 3 properties are required
-  storageClassName: "{{ storage_class_matrix[scc_storage_class].rwo | default('manual') }}"
-  size: "{{ scc_helm_values.persistentVolumeCCM.size | default('2Gi')}}" # 2Gi
+  storageClassName: "manual"
+  size: 2Gi
   accessMode: "ReadWriteOnce"
   selector:
     label: ""
@@ -285,13 +286,13 @@ readinessProbe:
 
 secret:
   # Secret with all passwords such as db and admin passwords
-  secretName: "{{ scc_secret }}"
+  secretName: ""
   # secret with keystore and truststore
-  certsSecretName: "{{ scc_cert_secret }}"
+  certsSecretName: ""
 
 # for ibm cloud environment
 dashboard:
-  enabled: false
+  enabled: true
 
 # applicable for openshift environment for accessing UI 
 route:
@@ -308,11 +309,11 @@ arch: "amd64"
 
 # Change license to true to indicate that you have read and agree to license agreements
 # Refer: https://www.ibm.com/support/customer/csol/terms/?id=L-MBLY-9ARX3J&lc=en (L-MBLY-9ARX3J)
-license: true
+license: false
 
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: "{{ scc_licensetype }}"
+licenseType: non-prod
 
 # Set network policy
 # https://kubernetes.io/docs/concepts/services-networking/network-policies/
@@ -340,7 +341,6 @@ networkPolicy:
   #     port: 58083
   #     endPort: 58083
 
-  # 1433 (MSSQL), 1521 (Oracle) 50000 (DB2), SEAS (61365/61366) 
   #apply egress rule. Default allow all egress traffic
   egress: 
     enabled: false
@@ -389,7 +389,7 @@ secComp:
   profile: ""
 
 #set timezone of container
-timeZone: "America/New_York"
+timeZone: "Asia/Calcutta"
 
 # For troubleshooting purpose only
 debugScripts: true
