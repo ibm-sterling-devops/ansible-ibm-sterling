@@ -14,7 +14,7 @@ si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"
 
-si_version: "{{ lookup('env', 'SI_VERSION') | default('6.2.1.0', true) }}"
+si_version: "{{ lookup('env', 'SI_VERSION') | default('6.2.1.1', true) }}"
 
 si_licensetype: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passw0rd', true) }}"
@@ -28,6 +28,8 @@ si_dbname: "{{ lookup('env', 'SI_DBNAME') }}"
 si_dbuser: "{{ lookup('env', 'SI_DBUSER') }}"
 si_dbpassword: "{{ lookup('env', 'SI_DBPASSWORD') }}"
 si_oracle_useservicename: "{{ lookup('env', 'SI_ORACLESERVICENAME') | default('false', true) }}"
+
+si_routedomain: "{{ lookup('env', 'SI_ROUTEDOMAIN') | default('company.com', true) }}"
 
 si_adminmailaddr: "{{ lookup('env', 'SI_ADMIN_MAILADDR') | default('admin@company.com', true) }}"
 si_adminsmtphost: "{{ lookup('env', 'SI_ADMIN_SMTPHOST') | default('smtp.company.com', true) }}"
@@ -95,6 +97,47 @@ si_helm:
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.2.1.1:
+    helm_version: "3.1.1"
+    ocp_min_version: "4.16"
+    k8s_min_version: "1.30"
+    k8s_max_version: "1.33"
+    global:
+      image:
+        tag: "6.2.1.1"
+    resourcesInit:
+      image:
+        tag: "6.2.1.1"
+    customizationInit:
+      image:
+        tag: "6.2.1.1"
+    dataSetup:
+      image:
+        tag: "6.2.1.1"
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:       # Integration with ITX is not supported in SI 6210 release
+        image:
+          tag: "11.0.1.1.20250425"
+      itxaIntegration:      # Integration with ITXA Certified Container edition is supported only for release version 10.0.1.9 onwards
+        image:              # Integration with ITXA Certified Container edition is not supported in SI 6210 release
+          tag: "10.0.1.10-x86_64"
+        resourcesInit:
+          image:
+            tag: "10.0.1.10-x86_64"
+    test:
+      image:
+        tag: '1.1.68'
+    purge:
+      image:
+        tag: "6.2.1.1"
+    documentService:
+      image:
+        tag: "6.2.1.1"
+    as4Service:
+      image:
+        tag: "6.2.1.1"
   6.2.1.0:
     helm_version: "3.1.0"
     ocp_min_version: "4.14"

@@ -4,6 +4,7 @@ Playbook will run the last version of Sterling B2Bi, but take care of Kubernetes
 
 | Sterling B2Bi             | OpenShift           | Kubernetes          | helm-chart |
 |---------------------------|---------------------|---------------------|------------|
+| 6.2.1.1                   | >= 4.16             | >= 1.30 and <= 1.33 | 3.1.8      |
 | 6.2.1.0                   | >= 4.14             | >= 1.28 and <= 1.31 | 3.1.0      |
 | 6.2.0.4                   | >= 4.14             | >= 1.27             | 3.0.6      |
 | 6.2.0.3                   | >= 4.14             | >= 1.27             | 3.0.5      |

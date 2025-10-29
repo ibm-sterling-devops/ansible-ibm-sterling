@@ -24,3 +24,14 @@
   ansible.builtin.assert:
     that: entitled_registry_key is defined and entitled_registry_key != ""
     fail_msg: "entitled_registry_key property is required"
+
+# Check for Kubernetes Resources and APIs
+# -----------------------------------------------------------------------------
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cl_info
+
+- name: Check if we are on OpenShift
+  ansible.builtin.set_fact:
+    mq_is_openshift: true
+  when: "'route.openshift.io/v1' in k8s_cl_info.apis"

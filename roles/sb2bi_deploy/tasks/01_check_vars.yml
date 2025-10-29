@@ -32,6 +32,11 @@
   ansible.builtin.set_fact:
     k8s_version: "{{ k8s_cluster_info.version.server.kubernetes.major }}.{{ k8s_cluster_info.version.server.kubernetes.minor }}"
 
+- name: Check if we are on OpenShift
+  ansible.builtin.set_fact:
+    si_is_openshift: true
+  when: "'route.openshift.io/v1' in k8s_cluster_info.apis"
+
 - name: Debug
   ansible.builtin.debug:
     msg:

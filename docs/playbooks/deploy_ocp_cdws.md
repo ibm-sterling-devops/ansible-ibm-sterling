@@ -4,6 +4,7 @@ Playbook will run the last version of Connect:Direct WebService, but take care o
 
 | C:D WebService            | OpenShift           | Kubernetes          | helm-chart |
 |---------------------------|---------------------|---------------------|------------|
+| 6.4.0.3_ifix000           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.1.9      |
 | 6.4.0.2_ifix001           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.1.6      |
 | 6.4.0.2_ifix000           | >= 4.14 and <= 4.18 | >=1.27.0 <1.32.0    | 1.1.5      |
 | 6.4.0.0_ifix000           | >= 4.14 and <= 4.16 | >=1.27.0 <1.30.0    | 1.1.0      |
@@ -99,9 +100,9 @@ To change namespace/project and C:D node name
 ```bash 
 cd ansible-ibm-sterling
 
-export CDWS_NAMESPACE=sterling-cdws01
+export CDWS_NAMESPACE=sterling-cdws02
 
-ansible-playbook playbooks/deploy_cd.yml
+ansible-playbook playbooks/deploy_cdws.yml
 ```
 
 
@@ -113,7 +114,7 @@ Environment variables for this role:
 |-----------------------------|-----------------|----------|--------------------------------------------------|
 | ENTITLED_REGISTRY_KEY       | N/A             | Yes      | Entitlement registry key                         |
 | CDWS_NAMESPACE              | sterling-cdws01 | Yes      | Namespace for C:D application                    |
-| CDWS_VERSION                | 6.4.0.2_ifix000 | No       | Version of C:D container to deploy               |
+| CDWS_VERSION                | 6.4.0.3_ifix000 | No       | Version of C:D container to deploy               |
 | CDWS_TRUSTSTOREPASSWORD     | Change1t@       | No       | Password for truststore                          |
 | CDWS_KEYSTOREPASSWORD       | Change1t@       | No       | Password for keystore                            |
 | CDWS_CACERT_PASSWORD        | Password123!    | No       | Password for CA certificate                      |
