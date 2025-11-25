@@ -10,7 +10,7 @@ scc_action: "{{ lookup('env', 'SCC_ACTION') | default('install', true) }}"
 # Configure SCC instance
 # -----------------------------------------------------------------------------------------------------------------
 scc_instanceid: "{{ lookup('env', 'SCC_INSTANCEID') }}"
-scc_version: "{{ lookup('env', 'SCC_VERSION') | default('6.4.1.0_2025-07-07', true) }}"
+scc_version: "{{ lookup('env', 'SCC_VERSION') | default('6.4.2.0_2025-11-18', true) }}"
 
 scc_products: "{{ lookup('env', 'SCC_PRODUCTS') | default('CCM', true) }}" # productEntitlement: "CCD,CCM"
 
@@ -74,6 +74,10 @@ db2_id: mydb2
 # Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.4.2.0_2025-11-18:
+    helm_version: "4.2.0"
+    image_tag: "6.4.2.0_2025-11-18"
+    copy_dbdriver_tag: "2024"
   6.4.1.0_2025-07-07:
     helm_version: "4.1.0"
     image_tag: "6.4.1.0_2025-07-07"
