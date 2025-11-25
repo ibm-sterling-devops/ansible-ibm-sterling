@@ -372,3 +372,9 @@ storage_class_matrix:
     rwo: "ocs-external-storagecluster-ceph-rbd"
     rom: "ocs-external-storagecluster-cephfs"
     rwop: ""
+  hpe-storage:
+    rwx: "hpe-nfs"
+    rwx_nogid: "hpe-nfs"
+    rwo: "hpe-standard"
+    rom: "hpe-nfs"
+    rwop: ""
