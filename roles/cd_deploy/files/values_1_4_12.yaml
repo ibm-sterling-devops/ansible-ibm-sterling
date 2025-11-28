@@ -29,14 +29,14 @@ image:
   # Specify the repository name alongwith image name
   repository: "cp.icr.io/cp/ibm-connectdirect/cdu"
   # Specify the tag name for the image in double quotes 
-  tag: "6.4.0.2-iFix004-2025-07-29"
+  tag: "6.4.0.3-iFix011-2025-11-03"
   # Specify the image pull secret for the service, if the image is in private registry 
   # protected with password
   imageSecrets: ""
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
-    value: "sha256:274b1e687bda986b66badbc6f37529cb633eb18ab7894dd1df3ef93cd64fcc44"
+    value: "sha256:5f52e91f2078ee97d022eb04398e1e7760e932737205c8fda93bd4df274ad9be"
   # Specify respective pull policy to used to override default `IfNotPresent` policy 
   pullPolicy: Always
 
@@ -336,6 +336,8 @@ ldap:
   clientCert: ""
   # Specify client key file name
   clientKey: ""
+  # Specify true or false to enable or disable overriding the shell to Bash
+  override_shell_enabled: false
 
 # Integrated File Agent Configuration
 cdfa:

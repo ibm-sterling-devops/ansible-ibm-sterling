@@ -10,7 +10,7 @@ ssp_cm_action: "{{ lookup('env', 'SSP_ACTION') | default('install', true) }}"
 # Configure SSP instance
 # -----------------------------------------------------------------------------------------------------------------
 ssp_cm_instanceid: "{{ lookup('env', 'SSP_INSTANCEID') }}"
-ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.0.1.02', true) }}"
+ssp_cm_version: "{{ lookup('env', 'SSP_VERSION') | default('6.2.1.1-iFix00-2025-10-15', true) }}"
 
 ssp_cm_license_type: "{{ lookup('env', 'SSP_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 ssp_sys_passphrase: "{{ lookup('env', 'SSP_SYS_PASSPHRASE') | default('Password123!', true) }}"
@@ -50,6 +50,10 @@ ssp_cm_generate_certificates: true  # true when run SSPCm and after SSP
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.2.1.1-iFix00-2025-10-15:
+    helm_version: "1.6.1"
+    image_tag: "6.2.1.1-iFix00-2025-10-15"
+    affinity_default: "{}"
   6.2.0.1.02:
     helm_version: "1.5.4"
     image_tag: "6.2.0.1.02"

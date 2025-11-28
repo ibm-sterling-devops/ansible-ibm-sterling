@@ -11,7 +11,7 @@ cd_action: "{{ lookup('env', 'CD_ACTION') | default('install', true) }}"
 # -----------------------------------------------------------------------------------------------------------------
 cd_namespace: "{{ lookup('env', 'CD_NAMESPACE') | default('sterling-cdnode01-dev', true) }}"
 cd_nodename: "{{ lookup('env', 'CD_NODENAME') | default('CDNODE01', true) }}" # Specify the node of C:D application
-cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.4.0.2-iFix008-2025-08-21', true) }}"
+cd_version: "{{ lookup('env', 'CD_VERSION') | default('6.4.0.3-iFix011-2025-11-03', true) }}"
 
 cd_license_type: "{{ lookup('env', 'CD_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 cd_env_timezone: "{{ lookup('env', 'CD_ENV_TIMEZONE') | default('UTC', true) }}"
@@ -58,6 +58,10 @@ cd_6400_or_higher: "{{ cd_version is defined and cd_version is version('6.4.0.1_
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.4.0.3-iFix011-2025-11-03:
+    helm_version: "1.4.12"
+    image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu"
+    image_tag: "6.4.0.3-iFix011-2025-11-03"
   6.4.0.2-iFix008-2025-08-21:
     helm_version: "1.4.9"
     image_repository: "cp.icr.io/cp/ibm-connectdirect/cdu"

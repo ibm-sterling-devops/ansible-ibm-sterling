@@ -8,7 +8,7 @@ replicaCount: 1
 # Specify the respective Docker Image details for CDWS
 image:
   # Specify the repository name alongwith image name
-  repository: cp.icr.io/cp/ibm-cdws/cdws6.4_certified_container_6.4.0.0
+  repository: cp.icr.io/cp/ibm-cdws/cdws6.4_certified_container_6.4.0.4
   # Specify respective pull policy to be used to override default `IfNotPresent` policy
   pullPolicy: Always
   # Specify the image pull secret for the service, if the image is in private registry 
@@ -17,9 +17,9 @@ image:
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
-    value: "sha256:8ae05a7550201ba44d739bc5acbe0b5adf65c57972cdfd28745878f6aba0c033"
+    value: "sha256:b2ee36de3dbe34066dfafd4e536727b3088af3c97da688f9f23940c0c9ea1ebe"
   # Specify the tag name for the image in double quotes
-  tag: "6.4.0.0_ifix001"
+  tag: "6.4.0.4_ifix001"
 
 # If you want to override the default full name( <release name>-ibm-cdws )
 nameOverride: ""

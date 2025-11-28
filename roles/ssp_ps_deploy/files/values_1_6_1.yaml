@@ -4,11 +4,12 @@
 # --set option provided by helm cli.
 
 # Change license to true to indicate that you have read and agree to license agreements
-# Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-SLRC-WFGR28)
-license: true
+# Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N: L-MQZE-7HK9KN)
+license: false
+
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: "{{ ssp_ps_license_type }}"
+licenseType: prod
 
 # Specify respective timezone
 timezone: "UTC"
@@ -18,13 +19,13 @@ image:
   # Specify the repository name along with image name
   repository: "cp.icr.io/cp/ibm-ssp-ps/ssp-ps-docker-image"
   # Specify the tag name for the image  
-  tag: "{{ compatibility_matrix[ssp_ps_version].image_tag }}"
+  tag: "6.2.1.1-iFix00-2025-10-15"
   # Specify the image pull secret for the service, if the image is in private registry 
-  imageSecrets: "{{ ssp_ps_deploy_registry_secret }}"
+  imageSecrets: ""
   # Enable true/false to use image digest
   digest:
-    enabled: false
-    value: ""
+    enabled: true
+    value: sha256:20b8faf811a110dc35c6c3a366226bb7a2453b30375acf4a59fef3d8d95589e8
   # Specify respective pull policy to used to override default `IfNotPresent` policy  
   pullPolicy: IfNotPresent
 
@@ -232,23 +233,24 @@ networkPolicy:
   
   # apply ingress rule. Default allow all ingress traffic.
   ingress:
-  - from:
-    ports:
-    - protocol: TCP
-      port: 30800
-    - protocol: TCP
-      port: 30900
+  - from: []
+    #ports:
+    #- protocol: TCP
+     # port: 30800
+    #- protocol: TCP
+     # port: 30900
       
   # apply egress rule. Default allow all egress traffic 
   egress:
-  - to:
-    ports:
-    - protocol: TCP
-      port: 63366
-
+  - to: []
+    #ports:
+    #- protocol: TCP
+     # port: 63366
+   
 # Specify these fields for statefulSet
 statefulSet:
   # Specify the statefulSet/Pod annotations
   annotations: {}
   #  sidecar.istio.io/inject: "false"
-  #  prometheus.io/scrape: "true"     
+  #  prometheus.io/scrape: "true"      
+

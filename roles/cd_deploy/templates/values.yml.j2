@@ -148,6 +148,22 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution: []
     preferredDuringSchedulingIgnoredDuringExecution: []
 
+# Tolerations allow pods to be scheduled on nodes with matching taints,
+tolerations: []
+  #- key: "cd-taints"
+  #  operator: "Equal"
+  #  value: "node"
+  #  effect: "NoSchedule"
+
+# Topology spread constraints ensure even pod distribution across nodes or zones
+topologySpreadConstraints: []
+  #- maxSkew: 1
+  #  topologyKey: kubernetes.io/hostname
+  #  whenUnsatisfiable: ScheduleAnyway
+  #  labelSelector:
+  #  matchLabels:
+  #    app.kubernetes.io/name: ibm-connect-direct
+
 # startup, liveness and Probeness details for the health of pods
 startupProbe:
   initialDelaySeconds: 30
@@ -184,6 +200,8 @@ ldap:
   clientValidation: {{ cd_other_values.ldap.clientValidation }}
   clientCert: "{{ cd_other_values.ldap.clientCert | default('false') }}"
   clientKey: "{{ cd_other_values.ldap.clientKey | default('false') }}"
+  # Specify true or false to enable or disable overriding the shell to Bash
+  override_shell_enabled: false
 {% endif %}
 
 # Integrated File Agent Configuration
