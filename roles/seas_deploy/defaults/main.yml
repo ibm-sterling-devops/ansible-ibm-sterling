@@ -10,7 +10,7 @@ seas_action: "{{ lookup('env', 'SEAS_ACTION') | default('install', true) }}"
 # Configure SEAS instance
 # -----------------------------------------------------------------------------------------------------------------
 seas_namespace: "{{ lookup('env', 'SEAS_NAMESPACE') | default('sterling-seas01', true) }}"
-seas_version: "{{ lookup('env', 'SEAS_VERSION') | default('6.1.0.2.01', true) }}"
+seas_version: "{{ lookup('env', 'SEAS_VERSION') | default('6.1.1.1-iFix00-2025-10-15', true) }}"
 
 seas_license_type: "{{ lookup('env', 'SEAS_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 seas_sys_passphrase: "{{ lookup('env', 'SEAS_SYS_PASSPHRASE') | default('Password123!', true) }}"
@@ -34,17 +34,17 @@ seas_use_dynamic_provisioning: false
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.1.1.1-iFix00-2025-10-15:
+    helm_version: "1.6.1"
+    image_tag: "6.1.1.1-iFix00-2025-10-15"
   6.1.0.2.01:
     helm_version: "1.5.1"
-    image_repository: "cp.icr.io/cp/ibm-seas/seas-docker-image"
     image_tag: "6.1.0.2.01"
   6.1.0.1.01.1:
     helm_version: "1.4.3"
-    image_repository: "cp.icr.io/cp/ibm-seas/seas-docker-image"
     image_tag: "6.1.0.1.01.1"
   6.1.0.1.01:
     helm_version: "1.4.2"
-    image_repository: "cp.icr.io/cp/ibm-seas/seas-docker-image"
     image_tag: "6.1.0.1.01"
 
 

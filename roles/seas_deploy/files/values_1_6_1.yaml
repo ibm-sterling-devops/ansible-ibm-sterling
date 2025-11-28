@@ -5,11 +5,11 @@
 
 # Change license to true to indicate that you have read and agree to license agreements
 # Refer: http://www-03.ibm.com/software/sla/sladb.nsf (L/N:  L-RTZS-YBMYST)
-license: true
+license: false
 
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
 # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
-licenseType: "{{ seas_license_type }}"
+licenseType: prod
 
 # Specify respective timezone
 timezone: "UTC"
@@ -19,13 +19,13 @@ image:
   # Specify the repository name along with image name
   repository: "cp.icr.io/cp/ibm-seas/seas-docker-image"
   # Specify the tag name for the image  
-  tag: "{{ compatibility_matrix[seas_version].image_tag }}"
+  tag: "6.1.1.1-iFix00-2025-10-15"
   # Specify the image pull secret for the service, if the image is in private registry 
-  imageSecrets: "{{ seas_registry_secret }}"
+  imageSecrets: ""
   # Enable true/false to use image digest
   digest:
-    enabled: false
-    value: ""
+    enabled: true
+    value: sha256:2fd394338f80aea796769a5e0db92c361a38e4d5ca22fce76b5ccf130e903515
   # Specify respective pull policy to used to override default `IfNotPresent` policy  
   pullPolicy: IfNotPresent
 
@@ -72,17 +72,17 @@ persistentVolume:
   # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes 
   useDynamicProvisioning: false
   # Specify the existing PV claim name to be used for deployment
-  existingClaimName: "s0-ibm-seas-pvc-{{ my_serial }}"
+  existingClaimName: ""
   # Specify this to use selector label name for PV-PVC bind
-  #labelName: "app.kubernetes.io/name"
+  labelName: "app.kubernetes.io/name"
   # Specify this to use selector label value for PV-PVC bind
-  #labelValue: "ibm-seas-pv"
+  labelValue: "ibm-seas-pv"
   # Specify this to set storage class name
-  #storageClassName: "manual"
+  storageClassName: "manual"
   # Specify this to set PVC size
-  #size: 2Gi
+  size: 2Gi
   # Specify this to set access mode
-  #accessMode: "ReadWriteOnce"
+  accessMode: "ReadWriteOnce"
 
   
 # Specify these fields for Services
@@ -131,7 +131,7 @@ service:
 
 # Specify the Secret configuration for SEAS
 secret:
-  secretName: "{{ seas_secret }}"
+  secretName: ""
 
 # Specify the service account details
 serviceAccount:
@@ -154,7 +154,7 @@ resources:
     memory: 1Gi
     ephemeral-storage: "3Gi"
 
-
+    
 affinity:
   # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
   # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
@@ -196,7 +196,7 @@ readinessProbe:
 
 # Set this to true create route in OpenShift cluster
 route:
-  enabled: true
+  enabled: false
   
 # Set this to true to create Monitoring Dashboard for IBMCCS
 dashboard:
@@ -206,7 +206,6 @@ dashboard:
 # bin/log.properties, bin/security.properties, bin/ldapImportTool.properties 
 # Add/Update: Key and Value both must be provided in the below format.
 # <File Name Without Extension>_<Property Name>=<Property Value>
-
 customProperties: []
 # below is the example: 
 #customProperties:
@@ -242,26 +241,24 @@ networkPolicy:
   policyTypes:
   - Ingress
   - Egress
-
+  
   # apply ingress rule.
   ingress:
-  - from:
-    ports:
-    - protocol: TCP
-      port: 61366
-    - protocol: TCP
-      port: 61365
-    - protocol: TCP
-      port: 9080
-
+  - from: []
+    #ports:
+    #- protocol: TCP
+     # port: 61366
+    #- protocol: TCP
+     # port: 61365
+    #- protocol: TCP
+     # port: 9080
+      
   # apply egress rule. 
   egress:
-  - to:
-    ports:
-    - protocol: TCP
-      port: 389
-    - protocol: TCP
-      port: 636
+  - to: []
+    #ports:
+    #- protocol: TCP
+     # port: 389
 
 # Remove the backup files   
 # Upon every restart or upgrade, SEAS creates backups for the following files:
