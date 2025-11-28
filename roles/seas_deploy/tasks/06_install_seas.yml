@@ -13,7 +13,6 @@
 - name: Debug
   ansible.builtin.debug:
     msg:
-      - "Image Repository  ................. {{ compatibility_matrix[seas_version].image_repository }}"
       - "Image Tag         ................. {{ compatibility_matrix[seas_version].image_tag }}"
       - "helm install --timeout 10m0s -f {{ my_valuesfile }} -n {{ seas_namespace }} s0 {{ my_helmfile }}"
 
