@@ -57,7 +57,7 @@
   register: cout_setupdb1
   retries: 10 # Retry up to 3 times on connection issues
   delay: 30 # seconds
-  until: cout_setupdb1.rc == 0
+  until: (cout_setupdb1.rc | default(1)) == 0
 # and not cout_setupdb.stdout.find("WebSocketConnectionClosedException") > -1
 # The database alias \"B2BI\" already exists in either the local
 # log_message "setupdb.sh:SUCCESS"
@@ -75,7 +75,7 @@
   register: cout_setupdb2
   retries: 10 # Retry up to 3 times on connection issues
   delay: 30 # seconds
-  until: cout_setupdb2.rc == 0
+  until: (cout_setupdb2.rc | default(1)) == 0
 # log_message "setupdb.sh:SUCCESS"
 
 - name: "Database setup debug information"
@@ -90,5 +90,5 @@
   ansible.builtin.fail:
     msg: "Failed to execute the script setupdb.sh h on DB2 instance"
   when:
-    - cout_setupdb1.rc != 0
-    - cout_setupdb2.rc != 0
+    - (cout_setupdb1.rc | default(1)) != 0
+    - (cout_setupdb2.rc | default(1)) != 0
