@@ -175,7 +175,8 @@ integrations:
       digest:
       pullPolicy: IfNotPresent
       pullSecret: "{{ si_registry_secret }}"
-    appSecret: "{{ si_itxa_secret }}"
+    appSecret: 
+    #appSecret: "{{ si_itxa_secret }}"
     secureDBConnection:
       enabled: false
       dbservercertsecretname: ""
