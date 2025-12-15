@@ -62,18 +62,6 @@ compatibility_matrix:
     helm_version: "1.5.1"
     image_tag: "6.2.0.0.01"
     affinity_default: "{}"
-  6.2.0.0:
-    helm_version: "1.4.0"
-    image_tag: "6.2.0.0"
-    affinity_default: "{}"
-  6.1.0.0.04:
-    helm_version: "1.3.6"
-    image_tag: "6.1.0.0.04"
-    affinity_default: "[]"
-  6.1.0.0.03plus:
-    helm_version: "1.3.5"
-    image_tag: "6.1.0.0.03plus"
-    affinity_default: "[]"
 
 # Storage Class Matrix
 # -----------------------------------------------------------------------------
