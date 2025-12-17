@@ -598,17 +598,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-helm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install helm
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#install-git-ansible-python3-pip-java-keytool" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1515,17 +1504,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-helm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install helm
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#install-git-ansible-python3-pip-java-keytool" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1636,30 +1614,27 @@ chmod +x kubectl
 
 sudo mv oc kubectl /usr/local/bin/
 </code></pre>
-<h3 id="install-helm">Install helm<a class="headerlink" href="#install-helm" title="Permanent link"></a></h3>
-<ol>
-<li>Download the latest release:</li>
-</ol>
-<pre><code class="language-sh">curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-$ chmod 700 get_helm.sh
-$ ./get_helm.sh
-</code></pre>
 <h3 id="install-git-ansible-python3-pip-java-keytool">Install git, ansible, , python3-pip, java (keytool)<a class="headerlink" href="#install-git-ansible-python3-pip-java-keytool" title="Permanent link"></a></h3>
 <ol>
 <li>Install the dependencies:</li>
 </ol>
-<pre><code class="language-sh">sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
+<pre><code class="language-sh">sudo dnf install -y python3.13 python3.13-pip helm java-21-openjdk git
 </code></pre>
 <ol>
 <li>Change default python in </li>
 </ol>
-<pre><code class="language-sh">sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
-sudo alternatives --set python3 /usr/bin/python3.12
+<pre><code class="language-sh">sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1
+sudo alternatives --set python3 /usr/bin/python3.13
+</code></pre>
+<ol>
+<li>Install the ansible:</li>
+</ol>
+<pre><code class="language-sh">sudo dnf install -y ansible-core
 </code></pre>
 <ol>
 <li>Install Python Libraries</li>
 </ol>
-<pre><code class="language-sh">pip3 install kubernetes requests
+<pre><code class="language-sh">pip3.13 install kubernetes requests ansible-core
 </code></pre>
 <ol>
 <li>Install kubernetes.core module</li>
@@ -1686,11 +1661,6 @@ sudo alternatives --set python3 /usr/bin/python3.12
 <li>Verify the installation:</li>
 </ol>
 <pre><code class="language-sh">ansible --version
-</code></pre>
-<ol>
-<li>Verify the installation:</li>
-</ol>
-<pre><code class="language-sh">helm --version
 </code></pre>
 <ol>
 <li>Verify the installation:</li>
