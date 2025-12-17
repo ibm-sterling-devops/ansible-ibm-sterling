@@ -25,7 +25,7 @@ ssp_cfg:
   sftp:
     enabled: true
     policy: true
-    netmap: true
+    netmap: false
     adapter: false
   http:
     enabled: true
