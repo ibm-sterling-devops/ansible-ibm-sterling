@@ -64,5 +64,5 @@
 - name: Adding all namespace users to SCC...
   kubernetes.core.k8s:
     state: present
-    template: 'namespaceAdministration/ibm-ssp-engine-rb-scc.yaml.j2'
+    definition: "{{ lookup('template', 'namespaceAdministration/ibm-ssp-engine-rb-scc.yaml.j2') | from_yaml }}"
   when: scc_resource and scc_apiversion

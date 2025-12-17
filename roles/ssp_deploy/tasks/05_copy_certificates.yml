@@ -9,6 +9,7 @@
   kubernetes.core.k8s_cp:
     namespace: "{{ ssp_cm_namespace }}"
     pod: "s0-ibm-ssp-cm-0"
+    container: "s0-ibm-ssp-cm"
     remote_path: /spinstall/IBM/SPcm/defkeyCert.txt
     local_path: "{{ my_certfile }}"
     state: from_pod
