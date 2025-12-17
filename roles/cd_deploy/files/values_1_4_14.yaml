@@ -13,10 +13,12 @@ licenseType: "prod"
 # Specify respective timezone 
 env:
   timezone: "UTC"
-  # array for extra environment variable if needed. Eg envs for AWS S3 credentials
+  # array for extra environment variable if needed. Eg envs for AWS S3 credentials and DEBUG mode
   extraEnvs: []
-  #-name: AWS_ACCESS_ID
-  # value: AWS_ACCESS_KEY
+  # - name: AWS_ACCESS_ID
+  #   value: AWS_ACCESS_KEY
+  # - name: DEBUG
+  #   value: "true"
   
 # Add extra labels in addition to default labels to all resources
 extraLabels: {}
@@ -29,14 +31,14 @@ image:
   # Specify the repository name alongwith image name
   repository: "cp.icr.io/cp/ibm-connectdirect/cdu"
   # Specify the tag name for the image in double quotes 
-  tag: "6.4.0.2-iFix008-2025-08-21"
+  tag: "6.4.0.4-iFix003-2025-12-11"
   # Specify the image pull secret for the service, if the image is in private registry 
   # protected with password
   imageSecrets: ""
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
-    value: "sha256:893e5ead20adfa5ffeb577710842d2855b2945d3c81dd27b05fa06419daf879e"
+    value: "sha256:9176d61de318b76311edc81ed8967e56b1d60c6df032de66c2e272748882366e"
   # Specify respective pull policy to used to override default `IfNotPresent` policy 
   pullPolicy: Always
 
@@ -107,11 +109,20 @@ cdArgs:
       #
       *           MRLN      SIMP   Cd4Unix/Cd4Unix
 
+# Standard Privilege Mode Configuration
+spm:
+  # Set its value to "n" to disable standard privilege mode in container
+  enabled: "n"
+
 # Standard User Mode Configuration
 sum:
   # Set its value to "n" to disable standard user mode in container
   # The CDExec ID for SUM will be the appuser username in container. Refer - https://www.ibm.com/docs/en/connect-direct/6.4.0?topic=planning-ordinary-user-mode-in-connectdirect-unix-containers 
   enabled: "y"
+
+# To enable/disbale logging of statistics to stdout in container configure 'y' or 'n' as required.
+statLog:
+  stdout: "n"
 
 storageSecurity:
   fsGroup: 45678
@@ -210,10 +221,14 @@ networkPolicyEgress:
   #    cidr: <IP Address>/<block size>
   #    except:
   #    - <IP Address>/<block size>
-  #ports:
+  # Provide your custom ports to be allowed in egress policy
+  ports: []
   #- protocol: TCP
   #  port: 1364
   #  endPort: 11364
+  #  To allow Object Store connections over 443 port.
+  #- protocol: TCP
+  #  port: 443
 
 # Specify the Secret configuration for C:D
 secret:
@@ -336,6 +351,8 @@ ldap:
   clientCert: ""
   # Specify client key file name
   clientKey: ""
+  # Specify true or false to enable or disable overriding the shell to Bash
+  override_shell_enabled: false
 
 # Integrated File Agent Configuration
 cdfa:
@@ -356,3 +373,6 @@ hpa:
 pdb:
   enabled: true
   minAvailable: 1
+
+# This flag is used for time allowed for the pod to shut down gracefully before forced termination
+terminationGracePeriodSeconds: 30

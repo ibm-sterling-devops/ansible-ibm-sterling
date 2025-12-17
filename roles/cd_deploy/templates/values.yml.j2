@@ -1,59 +1,128 @@
+# Default values for IBM® Connect:Direct® for UNIX Helm Chart a.k.a IBM CDU Container Software.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates. To override the default values either change in this file or use
+# --set option provided by helm cli.
+
+# Change license to true to indicate that you have read and agree to license agreements
+# Refer: https://www.ibm.com/support/customer/csol/terms/licenses#license-search (L/N: L-ZWKV-MQ9Z94)
 license: true
+# Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
+# Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
 licenseType: "{{ cd_license_type }}"
+
+# Specify respective timezone 
 env:
   timezone: "{{ cd_env_timezone }}"
+  # array for extra environment variable if needed. Eg envs for AWS S3 credentials and DEBUG mode
   extraEnvs: []
-
+  # - name: AWS_ACCESS_ID
+  #   value: AWS_ACCESS_KEY
+  # - name: DEBUG
+  #   value: "true"
+  
+# Add extra labels in addition to default labels to all resources
 extraLabels: {}
 
+# Replic number for pod
 replicaCount: 1
 
+# Specify the respective Docker Image details
 image:
+  # Specify the repository name alongwith image name
   repository: "{{ compatibility_matrix[cd_version].image_repository }}"
+  # Specify the tag name for the image in double quotes 
   tag: "{{ compatibility_matrix[cd_version].image_tag }}"
+  # Specify the image pull secret for the service, if the image is in private registry 
+  # protected with password
   imageSecrets: "{{ cd_deploy_registry_secret }}"
+  # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
     value: ""
-  pullPolicy: IfNotPresent
+  # Specify respective pull policy to used to override default `IfNotPresent` policy 
+  pullPolicy: Always
 
 nameOverride: ""
 
+# This parameter will check if upgrade is from container with cduser
+# to release having cdamdin user. If yes, then user has to refer this
+# link to understand the change and set this value to true. Setting to
+# true signifies that you have gone through the change and understand
+# its impact. Thus you have taken the desired action to update the user
+# from cduser to cdadmin if used outside the container in some kind of 
+# script.  
 upgradeCompCheck: {{ cd_upgradecompcheck }}
 
+# Specify this fields to mount extra volume as volumeMounts in container spec
 extraVolumeMounts: []
 
+#- name:
+#  mountPath: /svshare
+# Specify this field to mount extra volume as volumes in the pod spec
 extraVolume: []
+#- name: pvc-name
+#  hostPath:
+#    path: /svshare
+#    type: Directory
 
+# Currently, the only supported architecture is `amd64`
 arch: "amd64"
 
+# Specify these fields to provide config values for C:D application  
 cdArgs:
+  # Specify the node of C:D application
   nodeName: "{{ cd_nodename }}"
+  # Specify the certificate name to be used for Secure+ configuration
   crtName: "cdcert.pem"
+  # Specify the certificate label to be used in keystore DB
   localCertLabel: "Client-API"
+  # Specify the client port to be used by C:D application 
   cport: 1363
+  # Specify the server port to be used by C:D application
   sport: 1364
+  # Specify the name of directory created on persistent volume path having certificate 
+  #files need for Secure+ plus configuration
   configDir: "CDFILES"
+  # Specify the configuration for SACL options. Refer - https://www.ibm.com/support/knowledgecenter/SS4PJT_6.4.0/cd_unix/cdunix_admin/CDU_Strong_Access_Ctrl_File.html
   saclConfig: "n"
+  # Set this field to `true` to create a ConfigMap containing userfile and netmap entries.  
+  # The entries will be appended to the corresponding configuration files (`userfile.cfg` and `netmap.cfg`).  
   # You can create the ConfigMap using the following command:  
   # kubectl create configmap cd-userfiles --from-file=userfile.cfg --from-file=netmap.cfg -n <your-namespace>
   userNetmapConfigmap: ""
+  # Specify the trusted IP list in array as given in example below for Port Check configuration
+  #trustedAddr:
+  #- 1.2.3.4
+  #- 5.6.7.8
+  #- ::1
   trustedAddr: []
   #Security keys configuration
   keys:
-    server: | 
+    server: |
       #
       # Host      Algorithm Method Key
       #
       *           MRLN      SIMP   Cd4Unix/Cd4Unix
-    client: | 
+    client: |
       #
       # Host      Algorithm Method Key
       #
       *           MRLN      SIMP   Cd4Unix/Cd4Unix
 
+# Standard Privilege Mode Configuration
+spm:
+  # Set its value to "n" to disable standard privilege mode in container
+  enabled: "n"
+
+# Standard User Mode Configuration
 sum:
+  # Set its value to "n" to disable standard user mode in container
+  # The CDExec ID for SUM will be the appuser username in container. Refer - https://www.ibm.com/docs/en/connect-direct/6.4.0?topic=planning-ordinary-user-mode-in-connectdirect-unix-containers 
   enabled: "y"
+
+# To enable/disbale logging of statistics to stdout in container configure 'y' or 'n' as required.
+statLog:
+  stdout: "n"
 
 storageSecurity:
   fsGroup: 45678
@@ -61,20 +130,30 @@ storageSecurity:
   runAsUser: 45678
   runAsGroup: 45678
 
+# persistence section specifies persistence settings which apply to the whole chart
 persistence:
+  # enabled is whether to use Persistent Volumes or not
   enabled: true
+  # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes 
   useDynamicProvisioning: {{ cd_use_dynamic_provisioning }}
 
+# Specify these fields for Persistence Volume Claim details
 pvClaim:
+  # Specify the existing PV claim name to be used for deployment
   existingClaimName: "{{ cd_existing_claimname }}"
+  # Specify this to use any Storage Class for PVC
   storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwo }}"  
   accessMode: "ReadWriteOnce"
   selector:
+    # Specify this to use selector label name for PV-PVC bind
     label: ""
+    # Specify this to use selector label value for PV-PVC bind
     value: ""
   size: {{ cd_storage_capacity }}
 
+# Specify these fields for Services
 service:
+  # ClusterPort to be exposed
   type: "LoadBalancer"
   apiport:
     name: "api"
@@ -84,23 +163,53 @@ service:
     name: "ft"
     port:
     protocol: "TCP"
+  # List of IP addresses at which the service is available
+  # Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+  # E.g -
+  # externalIP:
+  # - 1.2.3.4
+  # - 5.6.7.8
   externalIP: []
+  # Specify Load Balancer IP, if available
   loadBalancerIP: ""
+  # Load Balancer sources
+  # https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  # E.g -
+  # loadBalancerSourceRanges:
+  # - 10.10.10.0/24
   loadBalancerSourceRanges: []
+  # Specify Service Annotations, if required
   annotations: {}
+  # Specify external traffic policy, if required
   externalTrafficPolicy: ""
+  # Specify this to set session Affinity
   sessionAffinity: "ClientIP"
 
+# Specify the Ingress Network Policy from field
+# to restrict the traffic from source
+# Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
 networkPolicyIngress:
   enabled: false
+  # write you custom ingress policy for from spec
   from: 
     - podSelector:
         matchLabels:
           app.kubernetes.io/name: "connectdirect"
+  #- ipBlock:
+  #    cidr: <IP Address>/<block size>
+  #    except:
+  #    - <IP Address>/<block size>
+  #- podSelector:
+  #    matchLabels:
+  #      app.kubernetes.io/name: "connectdirect"
 
+# Specify the Egress Network Policy to field
+# to restrict the traffic to destination
+# Ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
 networkPolicyEgress:
   enabled: true
   acceptNetPolChange: true
+  # write your custom egress policy here for to spec
   to: 
     - ipBlock:
         cidr: 0.0.0.0/0
@@ -111,11 +220,36 @@ networkPolicyEgress:
     #     port: 636
     #   - protocol: TCP
     #     port: 1364
+  #- namespaceSelector:
+  #    matchLabels:
+  #      name: my-label-to-match
+  #  podSelector:
+  #    matchLabels:
+  #       app.kubernetes.io/name: "connectdirect"
+  #- podSelector:
+  #    matchLabels:
+  #      role: server
+  #- ipBlock:
+  #    cidr: <IP Address>/<block size>
+  #    except:
+  #    - <IP Address>/<block size>
+  # Provide your custom ports to be allowed in egress policy
+  #ports: []
+  #- protocol: TCP
+  #  port: 1364
+  #  endPort: 11364
+  #  To allow Object Store connections over 443 port.
+  #- protocol: TCP
+  #  port: 443
 
+# Specify the Secret configuration for C:D
 secret:
+  # Secret name for configuring passwords for C:D
   secretName: "{{ cd_deploy_secret }}"
+  # Secret name of secure plus certificates and LDAP certificates, only needed if Dyanamic Provisioining is Enabled
   certSecretName: "{{ cd_deploy_cert_secret }}"
 
+# Specify the service account details
 serviceAccount:
 {% if cd_other_values.serviceAccount.name is defined and cd_other_values.serviceAccount.name != "" %}
   create: false
@@ -124,6 +258,9 @@ serviceAccount:
   create: true
 {% endif %}
 
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
 resources:
   limits:
     cpu: {{ cd_cpu_limits }}
@@ -134,12 +271,25 @@ resources:
     memory: {{ cd_mem_requests }}
     ephemeral-storage: "{{ cd_ephemeral_storage_requests }}"
 
+# Set this to true to create Monitoring Dashboard
 dashboard:
   enabled: {{ cd_other_values.dashboard.enabled | default('false') }}
 
 affinity:
+  # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
+  # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+  # architecture preference specified in 'arch'
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution: {}
+    #   nodeSelectorTerms:
+    #   - matchExpressions:
+    #     - key: kubernetes.io/e2e-az-name
+    #       operator: In
+    #       values:
+    #       - e2e-az1
+    #       - e2e-az2
+    # The matchExpression for key 'kubernetes.io/arch' is automatically added based on
+    # architecture preference specified in 'arch'
     preferredDuringSchedulingIgnoredDuringExecution: []
   podAffinity:
     requiredDuringSchedulingIgnoredDuringExecution: []
@@ -169,12 +319,10 @@ startupProbe:
   initialDelaySeconds: 30
   timeoutSeconds: 5
   periodSeconds: 10
-
 livenessProbe:
   initialDelaySeconds: 10
   timeoutSeconds: 5
   periodSeconds: 10
-
 readinessProbe:
   initialDelaySeconds: 5
   timeoutSeconds: 5
@@ -184,32 +332,47 @@ readinessProbe:
 route:
   enabled: false
 
+# Sepcify these fields to configure ldap support
 ldap:
-  enabled: {{ cd_other_values.ldap.enabled | default('false') }}
-{% if cd_other_values.ldap.enabled is defined and cd_other_values.ldap.enabled == "true" %}
-  host: "{{ cd_other_values.ldap.host }}"
-  port: {{ cd_other_values.ldap.port }}
-  domain: "{{ cd_other_values.ldap.domain  }}"
-  tls: {{ cd_other_values.ldap.tls }}
-  startTls: {{ cd_other_values.ldap.startTls }}
-  caCert: "{{ cd_other_values.ldap.caCert }}"
-  tlsReqcert: "{{ cd_other_values.ldap.tlsReqcert | default('never') }}"
-  defaultBindDn: "{{ cd_other_values.ldap.defaultBindDn }}"
-  defaultAuthtokType: "{{ cd_other_values.ldap.defaultAuthtokType }}"
-  defaultAuthtok: "{{ cd_other_values.ldap.defaultAuthtok }}"
-  clientValidation: {{ cd_other_values.ldap.clientValidation }}
-  clientCert: "{{ cd_other_values.ldap.clientCert | default('false') }}"
-  clientKey: "{{ cd_other_values.ldap.clientKey | default('false') }}"
+  # Specify true or false to Enable or Disable LDAP
+  enabled: false
+  # Specify LDAP server
+  host: ""
+  # Specify LDAP server port 
+  port:
+  # Specify the Domain for the LDAP server 
+  domain: ""
+  # Specify true or false to Enable or Disable TLS authentication
+  # true = ldaps
+  # false = ldap
+  tls: false
+  # Specify true or false to Enable or Disable ldap_id_use_start_tls 
+  startTls: false
+  # Specify CA certificate file name to be used for TLS authentication
+  caCert: ""
+  # Specify the supported value for ldap_tls_reqcert as per ldap config
+  # Possible values - never, allow, try, demand, hard
+  tlsReqcert: "never"
+  # ldap_default_bind_dn 
+  defaultBindDn: ""
+  #ldap_default_authtok_type 
+  defaultAuthtokType: ""
+  #ldap_default_authtok
+  defaultAuthtok: ""
+  # Specify true or false to Enable or Disable TLS authentication on client side
+  clientValidation: false
+  # Specify client certificate file name to be used for TLS client side authentication
+  clientCert: ""
+  # Specify client key file name
+  clientKey: ""
   # Specify true or false to enable or disable overriding the shell to Bash
   override_shell_enabled: false
-{% endif %}
 
 # Integrated File Agent Configuration
 cdfa:
   # Set its value to "y" to enable file agent service in container
   fileAgentEnable: "n"
 
-{% if cd_6400_or_higher %}
 # Horizontal pod autoscaling configuration
 hpa:
   enabled: true
@@ -224,4 +387,6 @@ hpa:
 pdb:
   enabled: true
   minAvailable: 1
-{% endif %}
+
+# This flag is used for time allowed for the pod to shut down gracefully before forced termination
+terminationGracePeriodSeconds: 30
