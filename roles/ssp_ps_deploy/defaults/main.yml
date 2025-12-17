@@ -38,9 +38,3 @@ compatibility_matrix:
   6.2.0.1.02:
     helm_version: "1.5.4"
     image_tag: "6.2.0.1.02"
-  6.2.0.0.01:
-    helm_version: "1.5.1"
-    image_tag: "6.2.0.0.01"
-  6.2.0.0:
-    helm_version: "1.4.0"
-    image_tag: "6.2.0.0"

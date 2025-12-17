@@ -20,31 +20,26 @@ chmod +x kubectl
 sudo mv oc kubectl /usr/local/bin/
 ```
 
-### Install helm
-
-1. Download the latest release:
-
-```sh
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-$ chmod 700 get_helm.sh
-$ ./get_helm.sh
-```
-
 ### Install git, ansible, , python3-pip, java (keytool)
 1. Install the dependencies:
 ```sh
-sudo dnf install -y ansible-core python3.12 python3.12-pip java-1.8.0-openjdk.x86_64
+sudo dnf install -y python3.13 python3.13-pip helm java-21-openjdk git
 ```
 
 2. Change default python in 
 ```sh
-sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
-sudo alternatives --set python3 /usr/bin/python3.12
+sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1
+sudo alternatives --set python3 /usr/bin/python3.13
+```
+
+3. Install the ansible:
+```sh
+sudo dnf install -y ansible-core
 ```
 
 3. Install Python Libraries
 ```sh
-pip3 install kubernetes requests
+pip3.13 install kubernetes requests ansible-core
 ```
 
 4. Install kubernetes.core module
@@ -73,11 +68,6 @@ kubectl version
 4. Verify the installation:
 ```sh
 ansible --version
-```
-
-5. Verify the installation:
-```sh
-helm --version
 ```
 
 6. Verify the installation:

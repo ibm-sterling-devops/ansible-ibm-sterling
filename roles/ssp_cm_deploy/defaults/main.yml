@@ -53,15 +53,9 @@ compatibility_matrix:
   6.2.1.1-iFix00-2025-10-15:
     helm_version: "1.6.1"
     image_tag: "6.2.1.1-iFix00-2025-10-15"
-    affinity_default: "{}"
   6.2.0.1.02:
     helm_version: "1.5.4"
     image_tag: "6.2.0.1.02"
-    affinity_default: "{}"
-  6.2.0.0.01:
-    helm_version: "1.5.1"
-    image_tag: "6.2.0.0.01"
-    affinity_default: "{}"
 
 # Storage Class Matrix
 # -----------------------------------------------------------------------------
