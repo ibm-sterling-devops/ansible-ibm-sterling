@@ -98,10 +98,10 @@ si_helm:
 # -----------------------------------------------------------------------------
 compatibility_matrix:
   6.2.2.0:
-    helm_version: "3.2.0"
+    helm_version: "3.19.0"
     ocp_min_version: "4.16"
-    k8s_min_version: "1.30"
-    k8s_max_version: "1.33"
+    k8s_min_version: "1.31"
+    k8s_max_version: "1.34"
     global:
       image:
         tag: "6.2.2.0"
