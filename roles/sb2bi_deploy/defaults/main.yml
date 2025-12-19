@@ -98,7 +98,7 @@ si_helm:
 # -----------------------------------------------------------------------------
 compatibility_matrix:
   6.2.2.0:
-    helm_version: "3.1.1"
+    helm_version: "3.2.0"
     ocp_min_version: "4.16"
     k8s_min_version: "1.30"
     k8s_max_version: "1.33"
