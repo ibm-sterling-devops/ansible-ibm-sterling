@@ -110,8 +110,8 @@
                 volumeMounts:
                   - mountPath: /database
                     name: db2vol
-                imagePullSecret:
-                  - name: "{{ db2_registry_secret }}"
+            imagePullSecrets:
+              - name: "{{ db2_registry_secret }}"
         volumeClaimTemplates:
           - metadata:
               name: db2vol
