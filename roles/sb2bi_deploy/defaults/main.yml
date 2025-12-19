@@ -97,6 +97,47 @@ si_helm:
 # Sterling B2Bi Compatibility Matrix
 # -----------------------------------------------------------------------------
 compatibility_matrix:
+  6.2.2.0:
+    helm_version: "3.1.1"
+    ocp_min_version: "4.16"
+    k8s_min_version: "1.30"
+    k8s_max_version: "1.33"
+    global:
+      image:
+        tag: "6.2.2.0"
+    resourcesInit:
+      image:
+        tag: "6.2.2.0"
+    customizationInit:
+      image:
+        tag: "6.2.2.0"
+    dataSetup:
+      image:
+        tag: "6.2.2.0"
+    integrations:
+      seasIntegration:
+        seasVersion: "1.0"
+      itxIntegration:       # Integration with ITX is not supported in SI 6210 release
+        image:
+          tag: "11.0.2.0.20250829"
+      itxaIntegration:      # Integration with ITXA Certified Container edition is supported only for release version 10.0.1.9 onwards
+        image:              # Integration with ITXA Certified Container edition is not supported in SI 6210 release
+          tag: "10.0.2.0-x86_64-20250516"
+        resourcesInit:
+          image:
+            tag: "10.0.2.0-x86_64-20250516"
+    test:
+      image:
+        tag: '1.1.69'
+    purge:
+      image:
+        tag: "6.2.2.0"
+    documentService:
+      image:
+        tag: "6.2.2.0"
+    as4Service:
+      image:
+        tag: "6.2.2.0"
   6.2.1.1:
     helm_version: "3.1.1"
     ocp_min_version: "4.16"
