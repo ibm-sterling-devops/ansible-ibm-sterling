@@ -1,21 +1,79 @@
+# (C) Copyright 2019-2025 Syncsort Incorporated. All rights reserved.
+
+# Default values for b2bi.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 global:
+  ## Set the value to True in order to accept the application license 
+  ## B2BI with Red Hat OpenShift @ https://ibm.biz/B2Bi_622_withRHO
+  ## B2BI for Red Hat OpenShift  @ https://ibm.biz/B2Bi_622_forRHO
+  ## SFG with Red Hat OpenShift  @ https://ibm.biz/SFG_622_withRHO
+  ## SFG for Red Hat OpenShift   @ https://ibm.biz/SFG_622_forRHO
   license: true
+  # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
+  # Non-production respectively. Remember that this parameter is crucial for IBM Licensing and Metering Service
   licenseType: "{{ si_licensetype }}"
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi"
+  # Provide the tag value in double quotes
     tag: "{{ compatibility_matrix[ si_version ].global.image.tag | default('') }}"
+  # If digest is specified, it takes precedence over tag
     digest:
     pullPolicy: IfNotPresent
     pullSecret: "{{ si_registry_secret }}"
   networkPolicies:
     ingress:
       enabled: true
-      customPolicies:     
- 
+      customPolicies:
+      #- name:
+      #  fromSelectors:
+      #  - namespaceSelector:
+      #      matchLabels:
+      #        name: my-source-namespace
+      #    podSelector:
+      #      matchLabels:
+      #        app.kubernetes.io/name: my-consumer-pod
+      #  - podSelector:
+      #      matchLabels:
+      #        role: frontend
+      #  - ipBlock:
+      #      cidr: <IP Address>/<block size>
+      #      except:
+      #      - <IP Address>/<block size>
+      #  ports:
+      #   - protocol: TCP
+      #     port: 8443
+      #     endPort: 8450  
+      
     egress:
       enabled: true
       customPolicies:
+      #- name:
+      #  toSelectors:
+      #  - namespaceSelector:
+      #      matchLabels:
+      #        name: my-source-namespace
+      #    podSelector:
+      #      matchLabels:
+      #        app.kubernetes.io/name: my-consumer-pod
+      #  - podSelector:
+      #      matchLabels:
+      #        role: frontend
+      #  - ipBlock:
+      #      cidr: <IP Address>/<block size>
+      #      except:
+      #      - <IP Address>/<block size>
+      #  ports:
+      #   - protocol: TCP
+      #     port: 8443
+      #     endPort: 8450
 
+# Specify architecture (amd64, ppc64le, s390x) and weight to be  used for scheduling as follows : 
+# #   0 - Do not use
+# #   1 - Least preferred
+# #   2 - No Preference
+# #   3 - Most preferred
 arch:
   amd64: "2 - No Preference"
   ppc64le: "2 - No Preference"
@@ -40,12 +98,10 @@ customizationInit:
     # mention custom service package names to be included for DB setup. It could be set to all (default), none or comma separated list of packages
     includeServicePackages: "all"
   image:
-    #repository: "cp.icr.io/cp/ibm-b2bi/b2bi-customization"
-    #tag: "6.2.1.0"
     repository: "{{ si_custom_init_repo }}"
     tag: "{{ si_custom_init_tag }}"
     digest:
-    pullPolicy: "Always"
+    pullPolicy: "IfNotPresent"
   command:
 
 persistence:
@@ -85,6 +141,17 @@ appDocumentsPVC:
   preDefinedDocumentPVCName: 
 
 extraPVCs: []
+  #- name:
+  #  storageClassName:
+  #  selector:
+  #    label:
+  #    value:
+  #  accessMode:
+  #  size:
+  #  mountPath:
+  #  subPath:
+  #  enableVolumeClaimPerPod: false
+  #  predefinedPVCName:
 
 security:
   supplementalGroups: [65534]
@@ -104,6 +171,7 @@ dataSetup:
   upgrade: {{ si_datasetup_upgrade }}
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-dbsetup"
+    # Provide the tag value in double quotes
     tag: "{{ compatibility_matrix[ si_version ].dataSetup.image.tag | default('') }}"
     digest:
     pullPolicy: IfNotPresent
@@ -677,8 +745,8 @@ ac:
 
   extraInitContainers: []
     #- name: wait-for-postgresql
-    #  image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
-    #  imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+    #  image: ""
+    #  imagePullPolicy:
     #  command:
     #  shareVolume: false
     #  localMountPath: 
@@ -1062,7 +1130,7 @@ documentService:
   license: false
   replicaCount: 1
   image:
-    repository: cp.icr.io/cp/ibm-b2bi/b2bi-documentservice
+    repository: "cp.icr.io/cp/ibm-b2bi/b2bi-documentservice"
     pullPolicy: IfNotPresent
     tag: "{{ compatibility_matrix[ si_version ].documentService.image.tag | default('') }}"
     digest:
