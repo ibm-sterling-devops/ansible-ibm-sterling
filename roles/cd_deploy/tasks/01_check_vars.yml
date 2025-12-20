@@ -23,11 +23,6 @@
     that: cd_nodename | length <= 15
     fail_msg: "Ensure cd_nodename is not more than 15 chars."
 
-# - name: "Fail if cd_nodename has invalid chars"
-#   ansible.builtin.assert:
-#     that: cd_nodename | regex_search('^[a-zA-Z0-9\._\-]*$')
-#     fail_msg: "cd_nodename property has invalid chars"
-
 - name: "Fail if cd_nodename has invalid chars"
   ansible.builtin.assert:
     that: cd_nodename is match('^[a-zA-Z0-9._-]*$')
