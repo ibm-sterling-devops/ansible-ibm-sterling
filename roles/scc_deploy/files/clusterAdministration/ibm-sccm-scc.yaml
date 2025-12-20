@@ -1,21 +1,4 @@
-allowHostDirVolumePlugin: false
-allowHostIPC: false
-allowHostNetwork: false
-allowHostPID: false
-allowHostPorts: false
-allowPrivilegeEscalation: false
-allowPrivilegedContainer: false
-allowedCapabilities: null
 apiVersion: security.openshift.io/v1
-defaultAddCapabilities: null
-fsGroup:
-  type: MustRunAs
-  ranges:
-    - min: 1
-      max: 4294967294
-# groups:
-# - system:cluster-admins
-# - system:nodes
 kind: SecurityContextConstraints
 metadata:
   name: ibm-sccm-scc
@@ -24,28 +7,37 @@ metadata:
     app.kubernetes.io/instance: "ibm-sccm"
     app.kubernetes.io/managed-by: "ibm-sccm"
     app.kubernetes.io/name: "ibm-sccm"
-priority: null
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities:
+defaultAddCapabilities: null
+fsGroup:
+  type: MustRunAs
+  ranges:
+    - min: 1
+      max: 4294967294
+priority: 0
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
-  - KILL
-  - MKNOD
-  - SETUID
-  - SETGID
+  - ALL
 runAsUser:
   type: MustRunAsRange
-  uidRangeMin: 1000
-  uidRangeMax: 65535
-seccompProfiles:
-  - runtime/default
+  uidRangeMin: 1
+  uidRangeMax: 4294967294
 seLinuxContext:
   type: MustRunAs
-  # seLinuxOptions:
-  #   level:
-  #   user:
-  #   role:
-  #   type:
+seccompProfiles:
+  - runtime/default
 supplementalGroups:
-  type: RunAsAny
+  type: MustRunAs
+  ranges:
+    - min: 1
+      max: 4294967294
 users: []
 volumes:
   - configMap
@@ -54,3 +46,4 @@ volumes:
   - persistentVolumeClaim
   - projected
   - secret
+  - nfs

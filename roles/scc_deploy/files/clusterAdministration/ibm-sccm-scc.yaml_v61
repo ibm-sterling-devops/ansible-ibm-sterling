@@ -1,0 +1,56 @@
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities: null
+apiVersion: security.openshift.io/v1
+defaultAddCapabilities: null
+fsGroup:
+  type: MustRunAs
+  ranges:
+    - min: 1
+      max: 4294967294
+# groups:
+# - system:cluster-admins
+# - system:nodes
+kind: SecurityContextConstraints
+metadata:
+  name: ibm-sccm-scc
+  labels:
+    app: "ibm-sccm-scc"
+    app.kubernetes.io/instance: "ibm-sccm"
+    app.kubernetes.io/managed-by: "ibm-sccm"
+    app.kubernetes.io/name: "ibm-sccm"
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+  - KILL
+  - MKNOD
+  - SETUID
+  - SETGID
+runAsUser:
+  type: MustRunAsRange
+  uidRangeMin: 1000
+  uidRangeMax: 65535
+seccompProfiles:
+  - runtime/default
+seLinuxContext:
+  type: MustRunAs
+  # seLinuxOptions:
+  #   level:
+  #   user:
+  #   role:
+  #   type:
+supplementalGroups:
+  type: RunAsAny
+users: []
+volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret

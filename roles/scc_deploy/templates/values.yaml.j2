@@ -203,7 +203,7 @@ extraInitContainers:
   - name: "copy-dbdriver"
     repository: "cp.icr.io/cp/ibm-scc/ibmscc_dbdrivers"
     tag: "{{ compatibility_matrix[scc_version].copy_dbdriver_tag }}"
-    imageSecrets: "{{ scc_registry_secret }}"
+    #imageSecrets: "{{ scc_registry_secret }}". # I comment this to fix an issue.
     pullPolicy: IfNotPresent
     command: "cp /ibm/scc/resoures/dbdrivers/db2/luw/v11.5/v4.32.28/* /app/conf/"
     digest:

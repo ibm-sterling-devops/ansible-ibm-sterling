@@ -64,6 +64,6 @@
 - name: Adding all namespace users to SCC...
   kubernetes.core.k8s:
     state: present
-    template: 'namespaceAdministration/ibm-cdws-rb-scc.yaml.j2'
+    definition: "{{ lookup('template', 'namespaceAdministration/ibm-cdws-rb-scc.yaml.j2') | from_yaml }}"
     namespace: "{{ cdws_namespace }}"
   when: scc_resource and scc_apiversion
