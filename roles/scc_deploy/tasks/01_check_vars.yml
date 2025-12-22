@@ -91,7 +91,7 @@
 - name: Fail if neither CCM nor CCD found
   ansible.builtin.fail:
     msg: "Neither CCM nor CCD found in scc_products variable"
-  when: 
+  when:
     - not scc_install_ccm
     - not scc_install_ccd
 

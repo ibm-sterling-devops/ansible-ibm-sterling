@@ -1,0 +1,16 @@
+<httpPolicyDef>
+    <authenticationType>basic</authenticationType>
+    <blockCommonExploits>true</blockCommonExploits>
+    <commonExploitStrings>"--", "'", "%00"</commonExploitStrings>
+    <description>HTTP Policy</description>
+    <eaAuthProfile></eaAuthProfile>
+    <eaCertProfile></eaCertProfile>
+    <eaCertValidation>false</eaCertValidation>
+    <forceToUnlock>false</forceToUnlock>
+    <name>{{ policy_name }}</name>
+    <protocol>http</protocol>
+    <protocolValidationOn>true</protocolValidationOn>
+    <status>locked</status>
+    <userAuthentication>none</userAuthentication>
+    <userMapping>passthru</userMapping>
+</httpPolicyDef>

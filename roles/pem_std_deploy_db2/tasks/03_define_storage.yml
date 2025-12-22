@@ -113,7 +113,7 @@
   when:
     - my_storage_class == ''
     - "'scale-cnsa' in my_storage_list"
-    
+
 - name: Check for IBM Fyre StorageClass
   ansible.builtin.set_fact:
     my_storage_class: "ibm-fyre1"

@@ -1,0 +1,31 @@
+<netmapDef>
+    <description>Connect:Direct Netmap</description>
+    <inboundNodes>
+        <inboundNodeDef>
+            <addresses>
+                <address>
+                    <nodeName>CDNODE01</nodeName>
+                    <host>s0-ibm-cd.sterling-cdnode01.svc.cluster.local</host>
+                    <port>4163</port>
+                </address>
+            </addresses>
+            <description>CDNODE01 - internal</description>
+            <logLevel>NONE</logLevel>
+            <name>CDNODE01</name>
+            <outboundACLNodes>
+                <outboundACLNode>CDNODE01</outboundACLNode>
+            </outboundACLNodes>
+            <peerAddressPattern>s0-ibm-cd.sterling-cdnode01.svc.cluster.local</peerAddressPattern>
+            <policyId>{{policy_name}}</policyId>
+            <port>4163</port>
+            <routingName>CDNODE01</routingName>
+            <secureConnection>false</secureConnection>
+            <serverAddress>s0-ibm-cd.sterling-cdnode01.svc.cluster.local</serverAddress>
+            <tcpTimeout>90</tcpTimeout>
+        </inboundNodeDef>
+    </inboundNodes>
+    <name>{{ netmap_name }}</name>
+    <outboundACLRequired>false</outboundACLRequired>
+    <protocol>cd</protocol>
+    <status></status>
+</netmapDef>

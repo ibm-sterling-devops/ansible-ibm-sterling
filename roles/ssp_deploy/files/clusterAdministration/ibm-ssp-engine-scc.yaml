@@ -1,7 +1,7 @@
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
 metadata:
-  name: ibm-ssp-engine-scc 
+  name: ibm-ssp-engine-scc
   labels:
     app: "ibm-ssp-engine-scc"
     app.kubernetes.io/instance: "ibm-ssp-engine-scc"
@@ -19,12 +19,12 @@ defaultAddCapabilities: null
 fsGroup:
   type: MustRunAs
   ranges:
-  - min: 1
-    max: 4294967294
+    - min: 1
+      max: 4294967294
 priority: 0
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
-- ALL
+  - ALL
 runAsUser:
   type: MustRunAsRange
   uidRangeMin: 1
@@ -32,18 +32,18 @@ runAsUser:
 seLinuxContext:
   type: MustRunAs
 seccompProfiles:
-- runtime/default
+  - runtime/default
 supplementalGroups:
   type: MustRunAs
   ranges:
-  - min: 1
-    max: 4294967294
+    - min: 1
+      max: 4294967294
 users: []
 volumes:
-- configMap
-- downwardAPI
-- emptyDir
-- persistentVolumeClaim
-- projected
-- secret
-- nfs
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+  - nfs

@@ -1,0 +1,27 @@
+<cdAdapterDef>
+    <encryptionLevel>false</encryptionLevel>
+    <engines>
+        <engine>
+            <engineName>ssp-engine-01</engineName>
+            <psInName>local</psInName>
+            <psOutName>local</psOutName>
+            <eaPSName>local</eaPSName>
+            <eaServerName>local</eaServerName>
+            <startupMode>auto</startupMode>
+        </engine>
+    </engines>
+    <faspPortrange>1000-2000</faspPortrange>
+    <listenPort>{{ adapter_listen_port }}</listenPort>
+    <logLevel>DEBUG</logLevel>
+    <maxSessions>20</maxSessions>
+    <name>{{ adapter_name }}</name>
+    <netmap>{{ netmap_name }}</netmap>
+    <netmapKey>CDNODE01</netmapKey>
+    <properties>
+    </properties>
+    <protocol>cd</protocol>
+    <sessionTimeout>90</sessionTimeout>
+    <standardRoute>CDNODE01</standardRoute>
+    <status></status>
+    <urlRoutingType>standardRouting</urlRoutingType>
+</cdAdapterDef>
