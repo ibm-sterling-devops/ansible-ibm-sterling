@@ -102,16 +102,8 @@ compatibility_matrix:
     ocp_min_version: "4.16"
     k8s_min_version: "1.31"
     k8s_max_version: "1.34"
-    global:
-      image:
-        tag: "6.2.2.0"
-    resourcesInit:
-      image:
-        tag: "6.2.2.0"
+    image_tag: "6.2.2.0"
     customizationInit:
-      image:
-        tag: "6.2.2.0"
-    dataSetup:
       image:
         tag: "6.2.2.0"
     integrations:
@@ -129,30 +121,13 @@ compatibility_matrix:
     test:
       image:
         tag: '1.1.69'
-    purge:
-      image:
-        tag: "6.2.2.0"
-    documentService:
-      image:
-        tag: "6.2.2.0"
-    as4Service:
-      image:
-        tag: "6.2.2.0"
   6.2.1.1:
     helm_version: "3.1.1"
     ocp_min_version: "4.16"
     k8s_min_version: "1.30"
     k8s_max_version: "1.33"
-    global:
-      image:
-        tag: "6.2.1.1"
-    resourcesInit:
-      image:
-        tag: "6.2.1.1"
+    image_tag: "6.2.1.1"
     customizationInit:
-      image:
-        tag: "6.2.1.1"
-    dataSetup:
       image:
         tag: "6.2.1.1"
     integrations:
@@ -170,30 +145,13 @@ compatibility_matrix:
     test:
       image:
         tag: '1.1.68'
-    purge:
-      image:
-        tag: "6.2.1.1"
-    documentService:
-      image:
-        tag: "6.2.1.1"
-    as4Service:
-      image:
-        tag: "6.2.1.1"
   6.2.1.0:
     helm_version: "3.1.0"
     ocp_min_version: "4.14"
     k8s_min_version: "1.27"
     k8s_max_version: "1.30"
-    global:
-      image:
-        tag: "6.2.1.0"
-    resourcesInit:
-      image:
-        tag: "6.2.1.0"
+    image_tag: "6.2.1.0"
     customizationInit:
-      image:
-        tag: "6.2.1.0"
-    dataSetup:
       image:
         tag: "6.2.1.0"
     integrations:
@@ -211,29 +169,12 @@ compatibility_matrix:
     test:
       image:
         tag: '1.1.68'
-    purge:
-      image:
-        tag: "6.2.1.0"
-    documentService:
-      image:
-        tag: "6.2.1.0"
-    as4Service:
-      image:
-        tag: "6.2.1.0"
   6.2.0.4:
     helm_version: "3.0.6"
     ocp_min_version: "4.14"
     k8s_min_version: "1.27"
     k8s_max_version: "1.30"
-    global:
-      image:
-        tag: "6.2.0.4"
-    resourcesInit:
-      image:
-        tag: "6.2.0.4"
-    dataSetup:
-      image:
-        tag: "6.2.0.4"
+    image_tag: "6.2.0.4"
     integrations:
       seasIntegration:
         seasVersion: "1.0"
@@ -249,9 +190,6 @@ compatibility_matrix:
     test:
       image:
         tag: '1.1.67'
-    purge:
-      image:
-        tag: "6.2.0.4"
     documentService:
       image:
         tag: 1.0.0.4
@@ -260,6 +198,7 @@ compatibility_matrix:
     ocp_min_version: "4.14"
     k8s_min_version: "1.27"
     k8s_max_version: "1.30"
+    image_tag: "6.2.0.3"
     global:
       image:
         tag: "6.2.0.3"
@@ -295,6 +234,7 @@ compatibility_matrix:
     ocp_min_version: "4.14"
     k8s_min_version: "1.27"
     k8s_max_version: "1.29"
+    image_tag: "6.2.0.2"
     global:
       image:
         tag: "6.2.0.2"
@@ -330,6 +270,7 @@ compatibility_matrix:
     ocp_min_version: "4.13"
     k8s_min_version: "1.26"
     k8s_max_version: "1.28"
+    image_tag: "6.2.0.1"
     global:
       image:
         tag: "6.2.0.1"
