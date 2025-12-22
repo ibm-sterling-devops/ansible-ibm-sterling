@@ -12,7 +12,7 @@
   ansible.builtin.include_tasks: 04_define_storage.yml
 
 # - name: Check for IBM Cloud StorageClass
-#   set_fact:
+#   ansible.builtin.set_fact:
 #     si_use_dynamic_provisioning: true
 #     si_storage_class: "ibmcloud"
 

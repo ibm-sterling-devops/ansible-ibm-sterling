@@ -32,18 +32,18 @@
     fail_msg: "Failed! {{ kafka_operator_name }} operator/subscription not found in {{ kafka_namespace }} namespace."
 
 - name: "Set installed kafka operator csv"
-  set_fact:
+  ansible.builtin.set_fact:
     kafka_csv_version: "{{ kafka_subscription_lookup.resources[0].status.installedCSV | regex_search(regex) }}"
   vars:
     regex: "(?<=strimzi-cluster-operator.v)(.*)"
 
 - name: "Debug existing installed csv for {{ kafka_operator_name }} subscription"
-  debug:
+  ansible.builtin.debug:
     var: kafka_csv_version
 
 - name: Get html page content
   ignore_errors: yes
-  shell: wget https://strimzi.io/downloads -q -O -
+  ansible.builtin.shell: wget https://strimzi.io/downloads -q -O -
   register: strimzi_page_content
 
 # When website is available and content is found, try to retrieve the supported kafka versions
@@ -53,14 +53,14 @@
     - strimzi_page_content.stdout | length > 0
   block:
     - name: Read html page content
-      set_fact:
+      ansible.builtin.set_fact:
         file_lines: "{{ strimzi_page_content.stdout.split('\n') }}"
 
     - name: "Creating dictionary while looping over page content"
       ignore_errors: true
       vars:
         key: "{{file_lines[my_idx+3] | replace('<td class=\"version\">','') | replace('</td>','') | regex_replace('<td class.*','') | regex_replace('^\\s*','') | regex_replace(' ', '') | split(',') }}"
-      set_fact:
+      ansible.builtin.set_fact:
         kafka_supported_versions: "{{ result | default([]) + key }}"
       when: '''td class="description"><a href="https://github.com/strimzi/strimzi-kafka-operator/releases/tag/{{ kafka_csv_version }}'' in line_item'
       loop: "{{ file_lines }}"
@@ -70,7 +70,7 @@
 
 # Check if kafka_version run against any of the supported versions
 - name: "Debug Kafka supported versions"
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Supported kafka versions ................... {{ kafka_supported_versions | default('Not available') }}"
       - "Current kafka version defined .............. {{ kafka_version }}"
@@ -80,9 +80,9 @@
     - kafka_supported_versions is defined
     - kafka_supported_versions | length > 0
     - kafka_version is not in kafka_supported_versions
-  set_fact:
+  ansible.builtin.set_fact:
     kafka_version: "{{ kafka_supported_versions | last }}" # use latest version supported if current defined version is not supported
 
 - name: "Kafka version defined"
-  debug:
+  ansible.builtin.debug:
     msg: "{{ kafka_version }}"

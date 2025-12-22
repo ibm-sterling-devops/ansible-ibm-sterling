@@ -24,7 +24,7 @@
   register: kafka_opcondition_output
 
 - name: "Debug {{ lookup_kafka_provider_name }} OperatorCondition"
-  debug:
+  ansible.builtin.debug:
     msg:
       - "{{ lookup_kafka_provider_name }} operator condition ................ {{ kafka_opcondition_output.resources }}"
 

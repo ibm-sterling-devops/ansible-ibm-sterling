@@ -161,24 +161,15 @@
 #   delay: 30 # seconds
 #   when: not ssp_cm_generate_certificates
 
-
 # createKeystore () {
-
 #         if [ -d /opt/IBM/PCM/security/${SERVICE_NAME} ]; then
 #       echo "Found certificate"
-          
 #       openssl pkcs12 -export -out /opt/IBM/config/security/pcm-keystore.pfx -inkey /opt/IBM/PCM/security/${SERVICE_NAME}/tls.key -in /opt/IBM/PCM/security/${SERVICE_NAME}/tls.crt -password pass:${SERVER_KEYSTORE_PASSWORD}
-   
 #       openssl pkcs12 -in /opt/IBM/config/security/pcm-keystore.pfx -out /opt/IBM/config/security/pcm-keystore.pem -nodes -password pass:${SERVER_KEYSTORE_PASSWORD}
-
 #       openssl pkcs12 -export -in /opt/IBM/config/security/pcm-keystore.pem -out /opt/IBM/config/security/pcm-keystore.p12 -noiter -nomaciter -password pass:${SERVER_KEYSTORE_PASSWORD} -keypbe aes-256-cbc -certpbe aes-256-cbc
-
-#         else 
+#         else
 #           echo "creating a internal self signed certificate"
-          
 #           keytool -genkeypair -alias local -keyalg RSA -keysize 2048 -dname "CN=${SERVICE_NAME}" -keystore /opt/IBM/config/security/pcm-keystore.jks -deststorepass ${SERVER_KEYSTORE_PASSWORD} -keypass ${SERVER_KEYSTORE_PASSWORD} -validity 1500
 #         fi
-
 #         chmod 444 /opt/IBM/config/security/pcm-keystore.p12
-
 # }

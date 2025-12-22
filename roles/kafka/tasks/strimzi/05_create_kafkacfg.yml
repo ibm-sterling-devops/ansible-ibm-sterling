@@ -7,7 +7,7 @@
     - si_instance_id != ""
     - si_config_dir is defined
     - si_config_dir != ""
-  debug:
+  ansible.builtin.debug:
     msg:
       - "SB2BI Instance ID .............. {{ si_instance_id }}"
       - "SB2BI Config directory ......... {{ si_config_dir }}"

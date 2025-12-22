@@ -1,6 +1,6 @@
 ---
 - name: Restart DB2
-  shell: "{{ item }}"
+  ansible.builtin.shell: "{{ item }}"
   become_user: "{{ __db2_instance_name }}"
   environment:
     DB2INSTANCE: "{{ __db2_instance_name }}"

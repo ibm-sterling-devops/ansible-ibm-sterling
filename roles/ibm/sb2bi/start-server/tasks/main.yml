@@ -1,6 +1,6 @@
 ---
 # - name:          Check if IBM Sterling B2B is already up and running
-#  shell:         "ps -ef | grep cdpmgr | grep -v grep"
+#  ansible.builtin.shell:         "ps -ef | grep cdpmgr | grep -v grep"
 #  changed_when:  true
 #  register:      __cd_running
 #  ignore_errors: true

@@ -18,7 +18,7 @@
     fail_msg: "PackageManifest not found: {{ kafka_operator_name }}"
 
 - name: Set the subscription information
-  set_fact:
+  ansible.builtin.set_fact:
     kafka_source: "{{ kafka_manifest.resources[0].status.catalogSource }}"
     kafka_source_namespace: "{{ kafka_manifest.resources[0].status.catalogSourceNamespace }}"
     kafka_default_channel: "{{ kafka_manifest.resources[0].status.defaultChannel }}"
@@ -31,7 +31,7 @@
   no_log: true
 
 - name: Determine cluster grafana capabilities
-  set_fact:
+  ansible.builtin.set_fact:
     supports_grafanav4: "{{
       api_status is defined and
       api_status.apis is defined and
@@ -52,7 +52,7 @@
   register: kafka_user_secret_lookup
 
 - name: "Set kafka user password fact based on any existing secret"
-  set_fact:
+  ansible.builtin.set_fact:
     kafka_user_password: "{{ kafka_user_secret_lookup.resources[0].data.password | b64decode }}"
   when:
     - kafka_user_secret_lookup is defined
@@ -61,7 +61,7 @@
 # 5. Provide debug
 # -----------------------------------------------------------------------------
 - name: "Debug information"
-  debug:
+  ansible.builtin.debug:
     msg:
       - "Catalog source  ....................... {{ kafka_source }}"
       - "Catalog source namespace .............. {{ kafka_source_namespace }}"
@@ -109,7 +109,7 @@
 # 8. Lookup Kafka supported versions based upon the Kafka provider operator version
 # -----------------------------------------------------------------------------
 - name: "Lookup Kafka supported versions based upon the Kafka provider operator version"
-  include_tasks: "tasks/{{ kafka_provider }}/lookup-supported-kafka-versions.yml"
+  ansible.builtin.include_tasks: "tasks/{{ kafka_provider }}/lookup-supported-kafka-versions.yml"
   when: kafka_provider == 'strimzi'
 
 # 9. Create logging/monitoring configmaps and PodMonitor custom resources
@@ -213,7 +213,7 @@
   register: kafka_user_secret_lookup
 
 - name: "Set new facts based on resource lookups"
-  set_fact:
+  ansible.builtin.set_fact:
     kafka_bootstrap_host: "{{ kafka_cluster_lookup.resources[0].status.listeners[1].addresses[0].host }}"
     kafka_bootstrap_cert: "{{ kafka_cluster_lookup.resources[0].status.listeners[1].certificates[0] }}"
     kafka_int_bootstrap_host: "{{ kafka_cluster_lookup.resources[0].status.listeners[0].addresses[0].host }}"
@@ -221,7 +221,7 @@
     kafka_user_password: "{{ kafka_user_secret_lookup.resources[0].data.password | b64decode }}"
 
 - name: "Debug new facts"
-  debug:
+  ansible.builtin.debug:
     msg:
       - "External listener:"
       - "  Bootstrap host ............... {{ kafka_bootstrap_host }}"

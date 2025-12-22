@@ -6,7 +6,7 @@
     fail_msg: "db2_namespace property is required"
 
 # CCM and CCD share the same DB
-- name: "Install CCM,CCD ?"    
+- name: "Install CCM,CCD ?"
   ansible.builtin.set_fact:
     scc_install_monitor: true
     scc_install_director: false
