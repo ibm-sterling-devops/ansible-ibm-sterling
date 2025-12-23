@@ -8,23 +8,7 @@
 
 - name: Define Facts HTTP (XML)
   ansible.builtin.set_fact:
-    policy_xml: |
-      <httpPolicyDef>
-        <authenticationType>basic</authenticationType>
-        <blockCommonExploits>true</blockCommonExploits>
-        <commonExploitStrings>"--", "'", "%00"</commonExploitStrings>
-        <description>HTTP Policy</description>
-        <eaAuthProfile></eaAuthProfile>
-        <eaCertProfile></eaCertProfile>
-        <eaCertValidation>false</eaCertValidation>
-        <forceToUnlock>false</forceToUnlock>
-        <name>{{ policy_name }}</name>
-        <protocol>http</protocol>
-        <protocolValidationOn>true</protocolValidationOn>
-        <status>locked</status>
-        <userAuthentication>none</userAuthentication>
-        <userMapping>passthru</userMapping>
-      </httpPolicyDef>
+    policy_xml: "{{ lookup('template', 'http-policy.xml.j2') }}"
     netmap_xml: |
       {
         "name": "http-passthru-nm",

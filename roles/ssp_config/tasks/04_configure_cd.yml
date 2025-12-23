@@ -6,85 +6,11 @@
     adapter_name: "cd-adapter-01"
     adapter_listen_port: "25000"
 
-
 - name: Define Facts C:D (XML)
   ansible.builtin.set_fact:
-    policy_xml: |
-      <cdPolicyDef>
-        <copyStepAllowed>true</copyStepAllowed>
-        <eaCertValidation>false</eaCertValidation>
-        <ipAddressCheck>false</ipAddressCheck>
-        <name>{{ policy_name }}</name>
-        <protocol>cd</protocol>
-        <protocolErrorAction>NONE</protocolErrorAction>
-        <protocolValidationOn>true</protocolValidationOn>
-        <runJobStepAllowed>true</runJobStepAllowed>
-        <runTaskStepAllowed>true</runTaskStepAllowed>
-        <status></status>
-        <submitStepAllowed>true</submitStepAllowed>
-        <userAuthentication>none</userAuthentication>
-        <userMapping>noUserID</userMapping>
-      </cdPolicyDef>
-    netmap_xml: |
-      <netmapDef>
-        <description>Connect:Direct Netmap</description>
-        <inboundNodes>
-          <inboundNodeDef>
-            <addresses>
-              <address>
-                <nodeName>CDNODE01</nodeName>
-                <host>s0-ibm-cd.sterling-cdnode01.svc.cluster.local</host>
-                <port>4163</port>
-              </address>
-            </addresses>
-            <description>CDNODE01 - internal</description>
-            <logLevel>NONE</logLevel>
-            <name>CDNODE01</name>
-            <outboundACLNodes>
-              <outboundACLNode>CDNODE01</outboundACLNode>
-            </outboundACLNodes>
-            <peerAddressPattern>s0-ibm-cd.sterling-cdnode01.svc.cluster.local</peerAddressPattern>
-            <policyId>{{policy_name}}</policyId>
-            <port>4163</port>
-            <routingName>CDNODE01</routingName>
-            <secureConnection>false</secureConnection>
-            <serverAddress>s0-ibm-cd.sterling-cdnode01.svc.cluster.local</serverAddress>
-            <tcpTimeout>90</tcpTimeout>
-          </inboundNodeDef>
-        </inboundNodes>
-        <name>{{ netmap_name }}</name>
-        <outboundACLRequired>false</outboundACLRequired>
-        <protocol>cd</protocol>
-        <status></status>
-      </netmapDef>
-    adapter_xml: |
-      <cdAdapterDef>
-        <encryptionLevel>false</encryptionLevel>
-        <engines>
-          <engine>
-          <engineName>ssp-engine-01</engineName>
-          <psInName>local</psInName>
-          <psOutName>local</psOutName>
-          <eaPSName>local</eaPSName>
-          <eaServerName>local</eaServerName>
-          <startupMode>auto</startupMode>
-          </engine>
-        </engines>
-        <faspPortrange>1000-2000</faspPortrange>
-        <listenPort>{{ adapter_listen_port }}</listenPort>
-        <logLevel>DEBUG</logLevel>
-        <maxSessions>20</maxSessions>
-        <name>{{ adapter_name }}</name>
-        <netmap>{{ netmap_name }}</netmap>
-        <netmapKey>CDNODE01</netmapKey>
-        <properties>
-        </properties>
-        <protocol>cd</protocol>
-        <sessionTimeout>90</sessionTimeout>
-        <standardRoute>CDNODE01</standardRoute>
-        <status></status>
-        <urlRoutingType>standardRouting</urlRoutingType>
-      </cdAdapterDef>
+    policy_xml: "{{ lookup('template', 'cd-policy.xml.j2') }}"
+    netmap_xml: "{{ lookup('template', 'cd-netmap.xml.j2') }}"
+    adapter_xml: "{{ lookup('template', 'cd-adapter.xml.j2') }}"
 
 - name: Create Policy C:D
   ansible.builtin.uri:

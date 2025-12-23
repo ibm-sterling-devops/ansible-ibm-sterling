@@ -9,50 +9,8 @@
 
 - name: Define Facts SFTP  (XML)
   ansible.builtin.set_fact:
-    policy_xml: |
-      <ftpPolicyDef>
-        <description>SFTP Policy</description>
-        <eaAuthProfile></eaAuthProfile>
-        <eaKeyAuthProfile></eaKeyAuthProfile>
-        <keyauthReqdBeforePwdauth>false</keyauthReqdBeforePwdauth>
-        <name>{{ policy_name }}</name>
-        <preferredAuthentication>password</preferredAuthentication>
-        <protocol>sftp</protocol>
-        <protocolValidationOn>true</protocolValidationOn>
-        <status>locked</status>
-        <userAuthentication>none</userAuthentication>
-        <userMapping>passthru</userMapping>
-      </ftpPolicyDef>
-    netmap_xml: |
-      <netmapDef>
-      <description>FTP_Netmap</description>
-      <inboundNodes><inboundNodeDef>
-      <description>Inbound</description>
-      <logLevel>DEBUG</logLevel>
-      <name>Inbound</name>
-      <peerAddressPattern>*</peerAddressPattern>
-      <policyId>{{ policy_name }}</policyId>
-      <secureConnection>false</secureConnection>
-      </inboundNodeDef>
-      </inboundNodes>
-      <name>{{ netmap_name }}</name>
-      <outboundNodes><outboundNodeDef>
-      <addresses><address>
-      <nodeName>Outbound_Node_Name</nodeName>
-      <host>10.20.30.40</host>
-      <port>1663</port>
-      </address>
-      </addresses>
-      <logLevel>DEBUG</logLevel>
-      <name>Outbound_Node_Name</name>
-      <secureConnection>false</secureConnection>
-      <validDestination>10.20.30.40</validDestination>
-      <validDestinationPort>1663</validDestinationPort>
-      </outboundNodeDef>
-      </outboundNodes>
-      <protocol>sftp</protocol>
-      <status></status>
-      </netmapDef>
+    policy_xml: "{{ lookup('template', 'sftp-policy.xml.j2') }}"
+    netmap_xml: "{{ lookup('template', 'sftp-netmap.xml.j2') }}"
     adapter_xml: |
       {
         "name": "sftp-adapter-01",
