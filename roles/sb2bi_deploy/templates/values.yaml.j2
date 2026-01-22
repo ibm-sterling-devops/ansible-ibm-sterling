@@ -1396,7 +1396,7 @@ documentService:
 
 as4Service:
   enabled: false
-  license: false
+  license: true
   licenseType: "{{ si_licensetype }}"
   image:
     repository: "cp.icr.io/cp/ibm-b2bi/b2bi-as4service"
@@ -1409,11 +1409,11 @@ as4Service:
   dataSetup:
     enabled: true
   dbSetup:
-    dbVendor:
-    dbHost:
-    dbPort:
-    dbDrivers:
-    dbSecret:
+    dbVendor: {{ si_dbvendor }}
+    dbHost: {{ si_dbhost }}
+    dbPort: {{ si_dbport }}
+    dbDrivers: {{ si_dbdrivers }}
+    dbSecret: {{ si_db_secret }}
   mqSetup:
     mqHost:
     mqPort:
@@ -1423,44 +1423,44 @@ as4Service:
   as4operational:
     ingress:
       internal:
-        host:
+        host: "{{ si_helm_values.as4Service.as4operational.ingress.internal.host }}"
   as4informational:
     ingress:
       internal:
-        host:
+        host: "{{ si_helm_values.as4Service.as4informational.ingress.internal.host }}"
 
 identityService:
-  enabled: false
-  # license: false
-  # replicaCount: 1
-  # image:
-  #   repository: "cp.icr.io/cp/ibm-b2bi/b2bi-identityservice"
-  #   # Provide the tag value in double quotes
-  #   tag: "1.0.0.0"
-  #   # If digest is specified, it takes precedence over tag
-  #   digest: "sha256:6acc7ccb88a854e5cf0299a3499564a32d6a57494ad305261d4da8913ee3d5e6"
-  #   pullPolicy: IfNotPresent
-  #   pullSecret: ""
-  # serviceAccount:
-  #   name: default
-  # service:
-  #   type: ClusterIP
-  #   externalPort: 443
-  #   externalIP:
-  # ingress:
-  #   enabled: true
-  #   host: ""
-  # application:
-  #   server:
-  #     ssl:
-  #       enabled: true
-  #       tlsSecretName:
-  #   # Name of Client secret which contains client id and client secret.
-  #   clientSecret: "identity-client-secret"
-  #   # Database configuration
-  #   #dbVendor:
-  #   dbHost:
-  #   dbPort:
-  #   dbData:
-  #   dbDrivers:
-  #   dbSecret:
+  enabled: true
+  license: true
+  replicaCount: 1
+  image:
+    repository: "cp.icr.io/cp/ibm-b2bi/b2bi-identityservice"
+    # Provide the tag value in double quotes
+    tag: "1.0.0.0"
+    # If digest is specified, it takes precedence over tag
+    digest: ""
+    pullPolicy: IfNotPresent
+    pullSecret: "{{ si_registry_secret }}"
+  serviceAccount:
+    name: default
+  service:
+    type: ClusterIP
+    externalPort: 443
+    externalIP:
+  ingress:
+    enabled: true
+    host: "{{ si_helm_values.identityService.ingress.internal.host }}"
+  application:
+    server:
+      ssl:
+        enabled: true
+        tlsSecretName:
+    # Name of Client secret which contains client id and client secret.
+    clientSecret: "identity-client-secret"
+    # Database configuration
+    dbVendor: {{ si_dbvendor }}
+    dbHost: {{ si_dbhost }}
+    dbPort: {{ si_dbport }}
+    dbData: {{ si_dbname }}
+    dbDrivers: {{ si_dbdrivers }}
+    dbSecret: {{ si_db_secret }}

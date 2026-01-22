@@ -1,5 +1,8 @@
 # Ansible DevOps collection for IBM Sterling B2Bi, IBM Connect:Direct, Seas, ...
 
+
+This Code is inspired by on [IBM MAS Ansible Devops collection](https://github.com/ibm-mas/ansible-devops)
+
 # Documentation
 
 [https://ibm-sterling-devops.github.io/ansible-ibm-sterling/](https://ibm-sterling-devops.github.io/ansible-ibm-sterling/)

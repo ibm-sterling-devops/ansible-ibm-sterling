@@ -37,6 +37,19 @@
             host: "api.{{ si_instanceid }}.{{ route_domain }}"
       purge:
         schedule: "0 0 * * *"
+      as4Service:
+        as4operational:
+          ingress:
+            internal:
+              host: "as4o.{{ si_instanceid }}.{{ route_domain }}"
+        as4informational:
+          ingress:
+            internal:
+              host: "as4i.{{ si_instanceid }}.{{ route_domain }}"
+      identityService:
+        ingress:
+          internal:
+            host: "ids.{{ si_instanceid }}.{{ route_domain }}"
 
 - name: "Set fact helm file"
   ansible.builtin.set_fact:
