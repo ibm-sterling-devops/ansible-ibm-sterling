@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: ansible-deploy
+  name: sterling-deploy-task
   labels:
     app.kubernetes.io/version: "0.2"
   annotations:
@@ -72,7 +72,7 @@ spec:
         set -e
 
         echo "=========================================="
-        echo "Sterling Ansible Deployment Task v2"
+        echo "Sterling Ansible Deployment Task"
         echo "=========================================="
         echo "Git Revision: ${GIT_REVISION}"
         echo "Playbook: ${PLAYBOOK_PATH}"

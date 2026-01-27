@@ -2,16 +2,16 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: deploy-sterling-scc-only
+  name: sterling-deploy-scc-only
   labels:
     app.kubernetes.io/name: sterling-scc
     app.kubernetes.io/component: deployment
-    tekton.dev/pipeline: sterling-complete-pipeline
+    tekton.dev/pipeline: sterling-deploy-pipeline
   annotations:
     description: "Deploy SCC with prerequisites: DB2 > Setup > SCC"
 spec:
   pipelineRef:
-    name: sterling-complete-pipeline
+    name: sterling-deploy-pipeline
   params:
     - name: deploy-scc
       value: "true"

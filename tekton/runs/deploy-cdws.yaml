@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: deploy-cdws-run
+  name: sterling-deploy-cdws
   labels:
     app.kubernetes.io/name: sterling-cdws
     app.kubernetes.io/component: deployment

@@ -88,4 +88,3 @@ echo "Or for B2Bi deployment:"
 echo "  kubectl create -f tekton/runs/deploy-b2bi.yaml"
 echo ""
 
-# Made with Bob

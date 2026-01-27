@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: deploy-seas-run
+  name: sterling-deploy-seas
   labels:
     app.kubernetes.io/name: sterling-seas
     app.kubernetes.io/component: deployment

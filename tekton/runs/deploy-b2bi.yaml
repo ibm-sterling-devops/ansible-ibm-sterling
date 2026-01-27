@@ -2,16 +2,16 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: deploy-sterling-b2bi-only
+  name: deploy-sterling-b2bi
   labels:
     app.kubernetes.io/name: sterling-b2bi
     app.kubernetes.io/component: deployment
-    tekton.dev/pipeline: sterling-complete-pipeline
+    tekton.dev/pipeline: sterling-deploy-pipeline
   annotations:
     description: "Deploy B2Bi with prerequisites: DB2 > Setup > MQ > B2Bi"
 spec:
   pipelineRef:
-    name: sterling-complete-pipeline
+    name: sterling-deploy-pipeline
   params:
     - name: deploy-b2bi
       value: "true"

@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: deploy-cd-run
+  name: sterling-deploy-cd
   labels:
     app.kubernetes.io/name: sterling-cd
     app.kubernetes.io/component: deployment

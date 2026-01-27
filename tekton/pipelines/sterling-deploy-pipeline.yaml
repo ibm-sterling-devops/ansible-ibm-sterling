@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: sterling-complete-pipeline
+  name: sterling-deploy-pipeline
   labels:
     app.kubernetes.io/version: "3.0"
   annotations:
@@ -55,7 +55,7 @@ spec:
           operator: in
           values: ["true"]
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -71,7 +71,7 @@ spec:
           operator: in
           values: ["true"]
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -88,7 +88,7 @@ spec:
           operator: in
           values: ["true"]
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -104,7 +104,7 @@ spec:
           operator: in
           values: ["true"]
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -121,7 +121,7 @@ spec:
           operator: in
           values: ["true"]
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -141,7 +141,7 @@ spec:
       runAfter:
         - deploy-b2bi-db2
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -161,7 +161,7 @@ spec:
       runAfter:
         - setup-b2bi-db2
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -181,7 +181,7 @@ spec:
       runAfter:
         - deploy-b2bi-mq
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -200,7 +200,7 @@ spec:
           operator: in
           values: ["true"]
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -220,7 +220,7 @@ spec:
       runAfter:
         - deploy-scc-db2
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -240,7 +240,7 @@ spec:
       runAfter:
         - setup-scc-db2
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -260,7 +260,7 @@ spec:
           operator: in
           values: ["true"]
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -280,7 +280,7 @@ spec:
       runAfter:
         - deploy-ssp-cm
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -300,7 +300,7 @@ spec:
       runAfter:
         - deploy-ssp-engine
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
@@ -321,7 +321,7 @@ spec:
       runAfter:
         - deploy-ssp-ps
       taskRef:
-        name: ansible-deploy
+        name: sterling-deploy-task
       workspaces:
         - name: shared-data
           workspace: shared-data
