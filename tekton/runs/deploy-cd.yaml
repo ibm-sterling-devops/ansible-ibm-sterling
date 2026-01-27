@@ -1,0 +1,24 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: deploy-cd-run
+  labels:
+    app.kubernetes.io/name: sterling-cd
+    app.kubernetes.io/component: deployment
+    tekton.dev/pipeline: sterling-deploy-pipeline
+spec:
+  pipelineRef:
+    name: sterling-deploy-pipeline
+  params:
+    - name: playbook-path
+      value: "playbooks/deploy_cd.yml"
+    - name: ansible-verbose
+      value: "-v"
+    - name: ansible-extra-args
+      value: ""
+  
+  # Timeout for the entire pipeline run (default: 1 hour)
+  timeout: 0h20m0s
+  serviceAccountName: tekton-deployer-sa
+  # No workspace needed with the simplified single-task approach

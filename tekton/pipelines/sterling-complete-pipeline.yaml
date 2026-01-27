@@ -1,0 +1,366 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: sterling-complete-pipeline
+  labels:
+    app.kubernetes.io/version: "3.0"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/categories: Deployment
+    tekton.dev/tags: ansible, sterling, ibm, parallel, sequential
+    tekton.dev/displayName: "IBM Sterling Complete Deployment Pipeline"
+    tekton.dev/platforms: "linux/amd64"
+spec:
+  description: >-
+    Complete pipeline for deploying IBM Sterling products with parallel and sequential execution.
+    Supports: CD, CDWS, SEAS, B2Bi, SCC, SSP, MinIO with their prerequisites.
+  params:
+    - name: deploy-minio
+      type: string
+      description: Deploy MinIO
+      default: "false"
+    - name: deploy-cd
+      type: string
+      description: Deploy Connect:Direct
+      default: "false"
+    - name: deploy-cdws
+      type: string
+      description: Deploy Connect:Direct WebService
+      default: "false"
+    - name: deploy-seas
+      type: string
+      description: Deploy SEAS
+      default: "false"
+    - name: deploy-b2bi
+      type: string
+      description: Deploy B2Bi with prerequisites
+      default: "false"
+    - name: deploy-scc
+      type: string
+      description: Deploy SCC with prerequisites
+      default: "false"
+    - name: deploy-ssp
+      type: string
+      description: Deploy SSP
+      default: "false"
+  workspaces:
+    - name: shared-data
+      description: Shared workspace for git repo and credentials
+  
+  tasks:
+    - name: deploy-cd
+      when:
+        - input: "$(params.deploy-cd)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_cd.yml"
+        - name: verbose
+          value: ""
+
+    - name: deploy-cdws
+      when:
+        - input: "$(params.deploy-cdws)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_cdws.yml"
+        - name: verbose
+          value: ""
+
+    # Deploy MinIO
+    - name: deploy-minio
+      when:
+        - input: "$(params.deploy-minio)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/tools/minio.yml"
+        - name: verbose
+          value: ""
+
+    - name: deploy-seas
+      when:
+        - input: "$(params.deploy-seas)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_seas.yml"
+        - name: verbose
+          value: ""
+
+    # B2Bi Sequential Deployment
+    - name: deploy-b2bi-db2
+      when:
+        - input: "$(params.deploy-b2bi)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_sb2b.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--tags sb2bi_deploy_db2"
+
+    - name: setup-b2bi-db2
+      when:
+        - input: "$(params.deploy-b2bi)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - deploy-b2bi-db2
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_sb2b.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--tags sb2bi_setup_db2"
+
+    - name: deploy-b2bi-mq
+      when:
+        - input: "$(params.deploy-b2bi)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - setup-b2bi-db2
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_sb2b.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--tags sb2bi_deploy_mq"
+
+    - name: deploy-b2bi
+      when:
+        - input: "$(params.deploy-b2bi)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - deploy-b2bi-mq
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_sb2b.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--tags sb2bi_deploy"
+
+    # SCC Sequential Deployment
+    - name: deploy-scc-db2
+      when:
+        - input: "$(params.deploy-scc)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_scc.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--tags scc_deploy_db2"
+
+    - name: setup-scc-db2
+      when:
+        - input: "$(params.deploy-scc)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - deploy-scc-db2
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_scc.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--tags scc_setup_db2"
+
+    - name: deploy-scc
+      when:
+        - input: "$(params.deploy-scc)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - setup-scc-db2
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_scc.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--tags scc_deploy"
+
+
+    # SSP Sequential Deployment (CM -> Engine -> PS -> PConfig)
+    - name: deploy-ssp-cm
+      when:
+        - input: "$(params.deploy-ssp)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_ssp.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--e 'ssp_cm_deploy_enabled=true' --e 'ssp_engine_deploy_enabled=false' --e 'ssp_ps_enabled=false' --e 'ssp_config_deploy_enabled=false'"
+
+    - name: deploy-ssp-engine
+      when:
+        - input: "$(params.deploy-ssp)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - deploy-ssp-cm
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_ssp.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--e 'ssp_cm_deploy_enabled=false' --e 'ssp_engine_deploy_enabled=true' --e 'ssp_ps_deploy_enabled=false' --e 'ssp_config_deploy_enabled=false'"
+
+    - name: deploy-ssp-ps
+      when:
+        - input: "$(params.deploy-ssp)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - deploy-ssp-engine
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_ssp.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--e 'ssp_cm_deploy_enabled=false' --e 'ssp_engine_deploy_enabled=false' --e 'ssp_ps_deploy_enabled=true' --e 'ssp_config_deploy_enabled=false'"
+
+    # SSP Sequential Deployment (CM → Engine → Config)
+    - name: deploy-ssp
+      when:
+        - input: "$(params.deploy-ssp)"
+          operator: in
+          values: ["true"]
+      runAfter:
+        - deploy-ssp-ps
+      taskRef:
+        name: ansible-deploy
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_ssp.yml"
+        - name: verbose
+          value: ""
+        - name: extra-args
+          value: "--e 'ssp_cm_deploy_enabled=false' --e 'ssp_engine_deploy_enabled=false' --e 'ssp_ps_deploy_enabled=false' --e 'ssp_config_deploy_enabled=true'"
+
+
+  finally:
+    - name: deployment-summary
+      taskSpec:
+        steps:
+          - name: summary
+            image: registry.access.redhat.com/ubi8/ubi-minimal:latest
+            script: |
+              #!/bin/bash
+              echo "=========================================="
+              echo "Pipeline Execution Summary"
+              echo "=========================================="
+              echo ""
+              echo "Task Status:"
+              echo "- MinIO:        $(tasks.deploy-minio.status)"
+              echo "- CD:           $(tasks.deploy-cd.status)"
+              echo "- CDWS:         $(tasks.deploy-cdws.status)"
+              echo "- SEAS:         $(tasks.deploy-seas.status)"
+              echo "- B2Bi DB2:     $(tasks.deploy-b2bi-db2.status)"
+              echo "- B2Bi Setup:   $(tasks.setup-b2bi-db2.status)"
+              echo "- B2Bi MQ:      $(tasks.deploy-b2bi-mq.status)"
+              echo "- B2Bi:         $(tasks.deploy-b2bi.status)"
+              echo "- SCC DB2:      $(tasks.deploy-scc-db2.status)"
+              echo "- SCC Setup:    $(tasks.setup-scc-db2.status)"
+              echo "- SCC:          $(tasks.deploy-scc.status)"
+              echo "- SSP:          $(tasks.deploy-ssp.status)"
+              echo "=========================================="
+              echo "✓ Pipeline execution completed"
+              echo "=========================================="
+
+# Made with Bob

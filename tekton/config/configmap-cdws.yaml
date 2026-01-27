@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sterling-deploy-config
+  labels:
+    app.kubernetes.io/name: sterling-cdws
+    app.kubernetes.io/component: configuration
+data:
+  # Connect:Direct WebService Configuration
+  # -----------------------------------------------------------------------------
+  
+  # CDWS Action (install or upgrade)
+  CDWS_ACTION: "install"
+  
+  # CDWS Instance Configuration
+  CDWS_NAMESPACE: "sterling-cdws01"
+  CDWS_VERSION: "6.4.0.4_ifix001"
+  CDWS_LICENSE_TYPE: "non-prod"
+  
+  # Storage Configuration
+  CDWS_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
+  CDWS_STORAGE_CAPACITY: "500Mi"
+  
+  # Resource Limits and Requests
+  CDWS_CPU_LIMITS: "3000m"
+  CDWS_MEM_LIMITS: "2Gi"
+  CDWS_CPU_REQUESTS: "1500m"
+  CDWS_MEM_REQUESTS: "1Gi"
+  
+  # Helm Configuration
+  CDWS_SKIP_HELM: "false"
+  
+  # Additional Configuration
+  # Note: Sensitive values like passwords and keystores should be stored in Secrets
+  # See secret-template.yaml for sensitive configuration
+
+# Made with Bob

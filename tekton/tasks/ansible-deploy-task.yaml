@@ -1,0 +1,167 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: ansible-deploy
+  labels:
+    app.kubernetes.io/version: "0.2"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/categories: Deployment
+    tekton.dev/tags: ansible, git, sterling, ibm
+    tekton.dev/displayName: "ansible deployment with persistent credentials"
+    tekton.dev/platforms: "linux/amd64"
+spec:
+  description: >-
+    This Task performs git pull and runs Ansible playbook using a custom
+    Docker image. Credentials and git repo are persisted in workspace.
+  params:
+    - name: git-revision
+      description: Git revision to checkout (branch, tag, sha, ref)
+      type: string
+      default: "main"
+    - name: playbook-path
+      description: Path to the Ansible playbook relative to the repository root
+      type: string
+    - name: custom-image
+      description: Custom Docker image with oc, kubectl, helm, git, ansible
+      type: string
+      default: "quay.io/ibm-sterling-devops/sterling-cli:1.0.0"
+    - name: verbose
+      description: Ansible verbosity level (-v, -vv, -vvv, -vvvv)
+      type: string
+      default: ""
+    - name: extra-args
+      description: Extra arguments to pass to ansible-playbook
+      type: string
+      default: ""
+  workspaces:
+    - name: shared-data
+      description: Shared workspace to persist git repo and credentials
+  steps:
+    - name: git-pull-and-deploy
+      image: $(params.custom-image)
+      env:
+        - name: ANSIBLE_HOST_KEY_CHECKING
+          value: "False"
+        - name: ANSIBLE_FORCE_COLOR
+          value: "True"
+        - name: ANSIBLE_STDOUT_CALLBACK
+          value: "yaml"
+        - name: GIT_URL
+          value: "https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git"
+        - name: GIT_REVISION
+          value: $(params.git-revision)
+        - name: PLAYBOOK_PATH
+          value: $(params.playbook-path)
+        - name: WORK_DIR
+          value: $(workspaces.shared-data.path)/source
+        - name: KUBECONFIG
+          value: $(workspaces.shared-data.path)/.kube/config
+        - name: HOME
+          value: $(workspaces.shared-data.path)
+      envFrom:
+        - configMapRef:
+            name: sterling-deploy-config
+            optional: true
+        - secretRef:
+            name: sterling-deploy-secrets
+            optional: false
+      script: |
+        #!/bin/bash
+        set -e
+
+        echo "=========================================="
+        echo "Sterling Ansible Deployment Task v2"
+        echo "=========================================="
+        echo "Git Revision: ${GIT_REVISION}"
+        echo "Playbook: ${PLAYBOOK_PATH}"
+        echo "Working Directory: ${WORK_DIR}"
+        echo "=========================================="
+
+        # Create necessary directories
+        mkdir -p "${WORK_DIR}"
+        mkdir -p "$(workspaces.shared-data.path)/.kube"
+        
+        # Preserve ENTITLED_REGISTRY_KEY
+        if [ -n "${ENTITLED_REGISTRY_KEY}" ]; then
+          echo "✓ ENTITLED_REGISTRY_KEY is set"
+          export ENTITLED_REGISTRY_KEY="${ENTITLED_REGISTRY_KEY}"
+        fi
+
+        # Check if already logged in to OpenShift
+        if [ -f "${KUBECONFIG}" ]; then
+          echo "✓ Using existing OpenShift session"
+          export KUBECONFIG="${KUBECONFIG}"
+        else
+          echo "⚠ No existing OpenShift session found"
+          echo "  Run 'oc login' before starting the pipeline"
+        fi
+
+        cd "${WORK_DIR}"
+
+        # Git operations
+        if [ -d ".git" ]; then
+          echo "Repository exists, performing git pull..."
+          git fetch origin
+          git checkout "${GIT_REVISION}"
+          git pull origin "${GIT_REVISION}"
+          echo "✓ Git pull completed"
+        else
+          echo "Repository not found, performing initial clone..."
+          git clone "${GIT_URL}" .
+          git checkout "${GIT_REVISION}"
+          echo "✓ Git clone completed"
+        fi
+
+        echo "=========================================="
+        echo "Current commit:"
+        git log -1 --oneline
+        echo "=========================================="
+
+        # Verify playbook exists
+        if [ ! -f "${PLAYBOOK_PATH}" ]; then
+          echo "ERROR: Playbook not found: ${PLAYBOOK_PATH}"
+          exit 1
+        fi
+
+        # Display tool versions
+        echo "Tool Versions:"
+        echo "- Git: $(git --version)"
+        echo "- Ansible: $(ansible --version | head -n 1)"
+        echo "- oc: $(oc version --client 2>/dev/null || echo 'not available')"
+        echo "- kubectl: $(kubectl version --client --short 2>/dev/null || echo 'not available')"
+        echo "- helm: $(helm version --short 2>/dev/null || echo 'not available')"
+        echo "=========================================="
+
+        # Build ansible-playbook command
+        ANSIBLE_CMD="ansible-playbook -i localhost,"
+        
+        if [ -n "$(params.verbose)" ]; then
+          ANSIBLE_CMD="${ANSIBLE_CMD} $(params.verbose)"
+        fi
+        
+        if [ -n "$(params.extra-args)" ]; then
+          ANSIBLE_CMD="${ANSIBLE_CMD} $(params.extra-args)"
+        fi
+        
+        ANSIBLE_CMD="${ANSIBLE_CMD} ${PLAYBOOK_PATH}"
+
+        echo "Executing: ${ANSIBLE_CMD}"
+        echo "=========================================="
+        
+        # Execute playbook
+        ${ANSIBLE_CMD}
+        
+        EXIT_CODE=$?
+        echo "=========================================="
+        if [ ${EXIT_CODE} -eq 0 ]; then
+          echo "✓ Deployment completed successfully"
+        else
+          echo "✗ Deployment failed with exit code: ${EXIT_CODE}"
+        fi
+        echo "=========================================="
+        
+        exit ${EXIT_CODE}
+
+# Made with Bob

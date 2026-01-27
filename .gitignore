@@ -19,7 +19,6 @@ docs/playbooks/dev*
 temporary
 temporary/*
 resultado.txt
-tekton
 
 roles/db2
 roles/common_tasks

@@ -1,0 +1,30 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: deploy-sterling-ssp-only
+  labels:
+    app.kubernetes.io/name: sterling-ssp
+    app.kubernetes.io/component: deployment
+    tekton.dev/pipeline: sterling-complete-pipeline
+  annotations:
+    description: "Deploy SSP: (Configuration Manager > Engine > Perimeter Server > Default Config)"
+spec:
+  pipelineRef:
+    name: sterling-complete-pipeline
+  params:
+    - name: deploy-ssp
+      value: "true"
+  workspaces:
+    - name: shared-data
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 2Gi
+  timeout: 1h0m0s
+  serviceAccountName: tekton-deployer-sa
+
+# Made with Bob

@@ -1,0 +1,38 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: deploy-sterling-all
+  labels:
+    app.kubernetes.io/name: sterling-all
+    app.kubernetes.io/component: deployment
+    tekton.dev/pipeline: sterling-complete-pipeline
+spec:
+  pipelineRef:
+    name: sterling-complete-pipeline
+  params:
+    - name: deploy-cd
+      value: "true"
+    - name: deploy-cdws
+      value: "true"
+    - name: deploy-seas
+      value: "true"
+    - name: deploy-b2bi
+      value: "true"
+    - name: deploy-scc
+      value: "true"
+    - name: deploy-ssp
+      value: "true"
+    - name: deploy-minio
+      value: "true"
+  workspaces:
+    - name: shared-data
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 2Gi
+  timeout: 6h0m0s
+  serviceAccountName: tekton-deployer-sa
