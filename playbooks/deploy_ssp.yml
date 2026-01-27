@@ -1,9 +1,18 @@
+# ansible-playbook playbook.yml -e "ssp_cm_deploy_enabled=false" -e "ssp_deploy_enabled=false" -e "ssp_config_enabled=false"
 - name: Deploy IBM Sterling Secure Proxy
   hosts: localhost
   connection: local
   gather_facts: false
   any_errors_fatal: true
   roles:
-    - ssp_cm_deploy  # don't change this order, waiting for a fix
-    - ssp_deploy
-    - ssp_config
+    - role: ssp_cm_deploy  # don't change this order
+      when: ssp_cm_deploy_enabled | default(true) | bool
+    
+    - role: ssp_deploy
+      when: ssp_deploy_enabled | default(true) | bool
+    
+    - role: ssp_ps_deploy
+      when: ssp_ps_deploy_enabled | default(true) | bool
+
+    - role: ssp_config
+      when: ssp_config_enabled | default(true) | bool
