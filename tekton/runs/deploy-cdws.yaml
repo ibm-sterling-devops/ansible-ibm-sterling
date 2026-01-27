@@ -11,10 +11,8 @@ spec:
   pipelineRef:
     name: sterling-deploy-pipeline
   params:
-    - name: playbook-path
-      value: "playbooks/deploy_cdws.yml"
-    - name: ansible-extra-args
-      value: ""
+    - name: cdws-deploy
+      value: "true"
   
   # Timeout for the entire pipeline run (default: 1 hour)
   timeout: 0h20m0s

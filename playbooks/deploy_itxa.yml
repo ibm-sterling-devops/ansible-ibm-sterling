@@ -4,6 +4,11 @@
   gather_facts: false
   any_errors_fatal: true
   roles:
-    - itxa_deploy_db2
-    - itxa_setup_db2
-    - itxa_deploy
+    - role: itxa_deploy_db2
+      when: itxa_deploy_db2_enabled | default(true) | bool
+
+    - role: itxa_setup_db2
+      when: itxa_setup_db2_enabled | default(true) | bool
+
+    - role: itxa_deploy
+      when: itxa_deploy_enabled | default(true) | bool

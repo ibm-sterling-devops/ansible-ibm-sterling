@@ -4,7 +4,16 @@
   gather_facts: false
   any_errors_fatal: true
   roles:
-    - pem_std_deploy_db2
-    - pem_std_setup_db2
-    - pem_std_deploy_mq
-    - pem_std_deploy
+    - role: pem_std_deploy_db2
+      when: pem_std_deploy_db2_enabled | default(true) | bool
+
+    - role: pem_std_setup_db2
+      when: pem_std_setup_db2_enabled | default(true) | bool
+
+    - role: pem_std_deploy_mq
+      when: pem_std_deploy_mq_enabled | default(true) | bool
+
+    - role: pem_std_deploy
+      when: pem_std_deploy_enabled | default(true) | bool
+
+

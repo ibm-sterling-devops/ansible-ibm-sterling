@@ -20,15 +20,15 @@ spec:
       type: string
       description: Deploy MinIO
       default: "false"
-    - name: deploy-cd
+    - name: cd-deploy
       type: string
       description: Deploy Connect:Direct
       default: "false"
-    - name: deploy-cdws
+    - name: cdws-deploy
       type: string
       description: Deploy Connect:Direct WebService
       default: "false"
-    - name: deploy-seas
+    - name: seas-deploy
       type: string
       description: Deploy SEAS
       default: "false"
@@ -49,9 +49,9 @@ spec:
       description: Shared workspace for git repo and credentials
   
   tasks:
-    - name: deploy-cd
+    - name: cd-deploy
       when:
-        - input: "$(params.deploy-cd)"
+        - input: "$(params.cd-deploy)"
           operator: in
           values: ["true"]
       taskRef:
@@ -65,9 +65,9 @@ spec:
         - name: verbose
           value: ""
 
-    - name: deploy-cdws
+    - name: cdws-deploy
       when:
-        - input: "$(params.deploy-cdws)"
+        - input: "$(params.cdws-deploy)"
           operator: in
           values: ["true"]
       taskRef:
@@ -78,6 +78,22 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_cdws.yml"
+        - name: verbose
+          value: ""
+
+    - name: seas-deploy
+      when:
+        - input: "$(params.seas-deploy)"
+          operator: in
+          values: ["true"]
+      taskRef:
+        name: sterling-deploy-task
+      workspaces:
+        - name: shared-data
+          workspace: shared-data
+      params:
+        - name: playbook-path
+          value: "playbooks/deploy_seas.yml"
         - name: verbose
           value: ""
 
@@ -95,22 +111,6 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/tools/minio.yml"
-        - name: verbose
-          value: ""
-
-    - name: deploy-seas
-      when:
-        - input: "$(params.deploy-seas)"
-          operator: in
-          values: ["true"]
-      taskRef:
-        name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
-      params:
-        - name: playbook-path
-          value: "playbooks/deploy_seas.yml"
         - name: verbose
           value: ""
 
@@ -254,7 +254,7 @@ spec:
 
 
     # SSP Sequential Deployment (CM -> Engine -> PS -> PConfig)
-    - name: deploy-ssp-cm
+    - name: ssp-config-manager
       when:
         - input: "$(params.deploy-ssp)"
           operator: in
@@ -272,13 +272,13 @@ spec:
         - name: extra-args
           value: "--e 'ssp_cm_deploy_enabled=true' --e 'ssp_engine_deploy_enabled=false' --e 'ssp_ps_enabled=false' --e 'ssp_config_deploy_enabled=false'"
 
-    - name: deploy-ssp-engine
+    - name: ssp-engine
       when:
         - input: "$(params.deploy-ssp)"
           operator: in
           values: ["true"]
       runAfter:
-        - deploy-ssp-cm
+        - ssp-config-manager
       taskRef:
         name: sterling-deploy-task
       workspaces:
@@ -292,13 +292,13 @@ spec:
         - name: extra-args
           value: "--e 'ssp_cm_deploy_enabled=false' --e 'ssp_engine_deploy_enabled=true' --e 'ssp_ps_deploy_enabled=false' --e 'ssp_config_deploy_enabled=false'"
 
-    - name: deploy-ssp-ps
+    - name: ssp-perimeter-server
       when:
         - input: "$(params.deploy-ssp)"
           operator: in
           values: ["true"]
       runAfter:
-        - deploy-ssp-engine
+        - ssp-engine
       taskRef:
         name: sterling-deploy-task
       workspaces:
@@ -319,7 +319,7 @@ spec:
           operator: in
           values: ["true"]
       runAfter:
-        - deploy-ssp-ps
+        - ssp-perimeter-server
       taskRef:
         name: sterling-deploy-task
       workspaces:
@@ -348,10 +348,11 @@ spec:
               echo ""
               echo "Task Status:"
               echo "- MinIO:        $(tasks.deploy-minio.status)"
-              echo "- CD:           $(tasks.deploy-cd.status)"
-              echo "- CDWS:         $(tasks.deploy-cdws.status)"
-              echo "- SEAS:         $(tasks.deploy-seas.status)"
-              echo "- B2Bi DB2:     $(tasks.deploy-b2bi-db2.status)"
+              echo "- CD:           $(tasks.cd-deploy.status)"
+              echo "- CDWS:         $(tasks.cdws-deploy.status)"
+              echo "- SEAS:         $(tasks.seas-deploy.status)"
+              echo "- B2Bi"
+              echo "-- DB2 Setup:   $(tasks.deploy-b2bi-db2.status)"
               echo "- B2Bi Setup:   $(tasks.setup-b2bi-db2.status)"
               echo "- B2Bi MQ:      $(tasks.deploy-b2bi-mq.status)"
               echo "- B2Bi:         $(tasks.deploy-b2bi.status)"
@@ -362,5 +363,3 @@ spec:
               echo "=========================================="
               echo "✓ Pipeline execution completed"
               echo "=========================================="
-
-# Made with Bob

@@ -11,12 +11,8 @@ spec:
   pipelineRef:
     name: sterling-deploy-pipeline
   params:
-    - name: playbook-path
-      value: "playbooks/deploy_cd.yml"
-    - name: ansible-verbose
-      value: "-v"
-    - name: ansible-extra-args
-      value: ""
+    - name: cd-deploy
+      value: "true"
   
   # Timeout for the entire pipeline run (default: 1 hour)
   timeout: 0h20m0s

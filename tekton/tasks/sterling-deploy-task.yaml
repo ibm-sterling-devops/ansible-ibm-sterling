@@ -74,7 +74,6 @@ spec:
         echo "=========================================="
         echo "Sterling Ansible Deployment Task"
         echo "=========================================="
-        echo "Git Revision: ${GIT_REVISION}"
         echo "Playbook: ${PLAYBOOK_PATH}"
         echo "Working Directory: ${WORK_DIR}"
         echo "=========================================="
@@ -85,16 +84,16 @@ spec:
         
         # Preserve ENTITLED_REGISTRY_KEY
         if [ -n "${ENTITLED_REGISTRY_KEY}" ]; then
-          echo "✓ ENTITLED_REGISTRY_KEY is set"
+          echo "ENTITLED_REGISTRY_KEY is set"
           export ENTITLED_REGISTRY_KEY="${ENTITLED_REGISTRY_KEY}"
         fi
 
         # Check if already logged in to OpenShift
         if [ -f "${KUBECONFIG}" ]; then
-          echo "✓ Using existing OpenShift session"
+          echo "Using existing OpenShift session"
           export KUBECONFIG="${KUBECONFIG}"
         else
-          echo "⚠ No existing OpenShift session found"
+          echo "No existing OpenShift session found"
           echo "  Run 'oc login' before starting the pipeline"
         fi
 
@@ -106,12 +105,12 @@ spec:
           git fetch origin
           git checkout "${GIT_REVISION}"
           git pull origin "${GIT_REVISION}"
-          echo "✓ Git pull completed"
+          echo "Git pull completed"
         else
           echo "Repository not found, performing initial clone..."
           git clone "${GIT_URL}" .
           git checkout "${GIT_REVISION}"
-          echo "✓ Git clone completed"
+          echo "Git clone completed"
         fi
 
         echo "=========================================="
@@ -125,17 +124,8 @@ spec:
           exit 1
         fi
 
-        # Display tool versions
-        echo "Tool Versions:"
-        echo "- Git: $(git --version)"
-        echo "- Ansible: $(ansible --version | head -n 1)"
-        echo "- oc: $(oc version --client 2>/dev/null || echo 'not available')"
-        echo "- kubectl: $(kubectl version --client --short 2>/dev/null || echo 'not available')"
-        echo "- helm: $(helm version --short 2>/dev/null || echo 'not available')"
-        echo "=========================================="
-
         # Build ansible-playbook command
-        ANSIBLE_CMD="ansible-playbook -i localhost,"
+        ANSIBLE_CMD="ansible-playbook"
         
         if [ -n "$(params.verbose)" ]; then
           ANSIBLE_CMD="${ANSIBLE_CMD} $(params.verbose)"
@@ -156,12 +146,10 @@ spec:
         EXIT_CODE=$?
         echo "=========================================="
         if [ ${EXIT_CODE} -eq 0 ]; then
-          echo "✓ Deployment completed successfully"
+          echo "Deployment completed SUCCESSFULLY"
         else
-          echo "✗ Deployment failed with exit code: ${EXIT_CODE}"
+          echo "Deployment FAILED with exit code: ${EXIT_CODE}"
         fi
         echo "=========================================="
         
         exit ${EXIT_CODE}
-
-# Made with Bob

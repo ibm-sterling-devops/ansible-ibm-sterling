@@ -34,5 +34,3 @@ data:
   # Additional Configuration
   # Note: Sensitive values like passwords and keystores should be stored in Secrets
   # See secret-template.yaml for sensitive configuration
-
-# Made with Bob

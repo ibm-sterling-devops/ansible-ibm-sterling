@@ -1,3 +1,4 @@
+# ansible-playbook playbook.yml -e "scc_deploy_db2_enabled=false" -e "scc_setup_db2_enabled=false" -e "scc_deploy_enabled=false"
 - name: Deploy IBM Sterling Control Center Monitor and Director on RedHat OpenShift
   hosts: localhost
   connection: local
@@ -11,7 +12,12 @@
     # db_port: '50000'
     # db_database: B2BI
   roles:
-    - scc_deploy_db2
-    - scc_setup_db2
-    # MQ not used by default - scc_deploy_mq
-    - scc_deploy
+    - role: scc_deploy_db2  # don't change this order
+      when: scc_deploy_db2_enabled | default(true) | bool
+    
+    - role: scc_setup_db2
+      when: scc_setup_db2_enabled | default(true) | bool
+
+    - role: scc_deploy
+      when: scc_deploy_enabled | default(true) | bool
+

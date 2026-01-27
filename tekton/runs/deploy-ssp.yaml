@@ -26,5 +26,3 @@ spec:
               storage: 2Gi
   timeout: 1h0m0s
   serviceAccountName: tekton-deployer-sa
-
-# Made with Bob

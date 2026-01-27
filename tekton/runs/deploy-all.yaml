@@ -11,11 +11,11 @@ spec:
   pipelineRef:
     name: sterling-deploy-pipeline
   params:
-    - name: deploy-cd
+    - name: cd-deploy
       value: "true"
-    - name: deploy-cdws
+    - name: cdws-deploy
       value: "true"
-    - name: deploy-seas
+    - name: seas-deploy
       value: "true"
     - name: deploy-b2bi
       value: "true"
