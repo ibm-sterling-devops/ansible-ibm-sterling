@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sterling-scc-config
+  labels:
+    app.kubernetes.io/name: sterling-scc
+    app.kubernetes.io/component: configuration
+data:
+  # Sterling Control Center Configuration
+  # -----------------------------------------------------------------------------
+  
+  # SCC Action (install or upgrade)
+  SCC_ACTION: "install"
+  
+  # SCC Instance Configuration
+  SCC_INSTANCEID: "scc01"
+  SCC_VERSION: "6.4.2.0_2025-11-18"
+  SCC_LICENSETYPE: "non-prod"
+  SCC_PRODUCTS: "CCM"
+  
+  # Storage Configuration
+  SCC_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
+  SCC_STORAGE_CAPACITY: "5Gi"
+  
+  # Resource Limits and Requests
+  SCC_CPU_LIMITS: "4000m"
+  SCC_MEM_LIMITS: "8Gi"
+  SCC_CPU_REQUESTS: "2000m"
+  SCC_MEM_REQUESTS: "4Gi"
+  
+  # Database Configuration
+  SCC_DBVENDOR: "db2"
+  SCC_DBHOST: ""
+  SCC_DBPORT: "50000"
+  SCC_DBNAME: "SCCDB"
+  SCC_DBUSER: "db2inst1"
+  
+  # Email Configuration
+  SCC_SMTPHOST: "smtp.company.com"
+  SCC_SMTPPORT: "25"
+  SCC_EMAIL_RESPOND: "noreply@company.com"
+  SCC_ADMIN_MAILADDR: "admin@company.com"
+  SCC_SMTP_TLSENABLED: "false"
+  
+  # JMS Configuration
+  SCC_JMS_USERNAME: "admin"
+  
+  # Additional Settings
+  SCC_SYSTEM_PASSPHRASE: "passw0rd"
+  SCC_ADMIN: "admin"
+  SCC_TIMEZONE: "America/New_York"
+  
+  # Helm Configuration
+  SCC_SKIP_HELM: "false"
+  
+  # Additional Configuration
+  # Note: Sensitive values like passwords should be stored in Secrets
+  # See secret-template.yaml for sensitive configuration
+
+# Made with Bob

@@ -62,6 +62,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_cd.yml"
+        - name: configmap-name
+          value: "sterling-cd-config"
         - name: verbose
           value: ""
 
@@ -78,6 +80,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_cdws.yml"
+        - name: configmap-name
+          value: "sterling-cdws-config"
         - name: verbose
           value: ""
 
@@ -94,6 +98,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_seas.yml"
+        - name: configmap-name
+          value: "sterling-seas-config"
         - name: verbose
           value: ""
 
@@ -111,6 +117,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/tools/minio.yml"
+        - name: configmap-name
+          value: "sterling-minio-config"
         - name: verbose
           value: ""
 
@@ -128,6 +136,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
+        - name: configmap-name
+          value: "sterling-b2bi-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -148,6 +158,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
+        - name: configmap-name
+          value: "sterling-b2bi-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -168,6 +180,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
+        - name: configmap-name
+          value: "sterling-b2bi-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -188,6 +202,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
+        - name: configmap-name
+          value: "sterling-b2bi-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -207,6 +223,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_scc.yml"
+        - name: configmap-name
+          value: "sterling-scc-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -227,6 +245,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_scc.yml"
+        - name: configmap-name
+          value: "sterling-scc-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -247,6 +267,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_scc.yml"
+        - name: configmap-name
+          value: "sterling-scc-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -267,6 +289,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"
+        - name: configmap-name
+          value: "sterling-ssp-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -287,6 +311,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"
+        - name: configmap-name
+          value: "sterling-ssp-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -307,6 +333,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"
+        - name: configmap-name
+          value: "sterling-ssp-config"
         - name: verbose
           value: ""
         - name: extra-args
@@ -328,6 +356,8 @@ spec:
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"
+        - name: configmap-name
+          value: "sterling-ssp-config"
         - name: verbose
           value: ""
         - name: extra-args

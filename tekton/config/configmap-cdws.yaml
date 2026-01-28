@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sterling-deploy-config
+  name: sterling-cdws-config
   labels:
     app.kubernetes.io/name: sterling-cdws
     app.kubernetes.io/component: configuration

@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sterling-minio-config
+  labels:
+    app.kubernetes.io/name: sterling-minio
+    app.kubernetes.io/component: configuration
+data:
+  # MinIO Configuration
+  # -----------------------------------------------------------------------------
+  
+  # MinIO Instance Configuration
+  MINIO_NAMESPACE: "sterling-minio"
+  MINIO_VERSION: "latest"
+  
+  # Storage Configuration
+  MINIO_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
+  MINIO_STORAGE_CAPACITY: "10Gi"
+  
+  # Resource Limits and Requests
+  MINIO_CPU_LIMITS: "1000m"
+  MINIO_MEM_LIMITS: "2Gi"
+  MINIO_CPU_REQUESTS: "500m"
+  MINIO_MEM_REQUESTS: "1Gi"
+  
+  # MinIO Configuration
+  MINIO_REPLICAS: "1"
+  MINIO_MODE: "standalone"
+  
+  # Additional Configuration
+  # Note: Sensitive values like access keys should be stored in Secrets
+  # See secret-template.yaml for sensitive configuration
+
+# Made with Bob

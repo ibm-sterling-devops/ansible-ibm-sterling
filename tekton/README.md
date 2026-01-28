@@ -34,9 +34,14 @@ tekton/
 │   ├── deploy-seas.yaml      # SEAS only
 │   └── deploy-ssp.yaml       # SSP only
 └── config/
-    ├── configmap-cd.yaml
-    ├── configmap-cdws.yaml
-    └── secret-template.yaml
+    ├── configmap-cd.yaml          # Connect:Direct configuration
+    ├── configmap-cdws.yaml        # Connect:Direct WebService configuration
+    ├── configmap-seas.yaml        # SEAS configuration
+    ├── configmap-scc.yaml         # SCC configuration
+    ├── configmap-ssp.yaml         # SSP configuration
+    ├── configmap-b2bi.yaml        # B2Bi configuration
+    ├── configmap-minio.yaml       # MinIO configuration
+    └── secret-template.yaml       # Sensitive data template
 ```
 
 ## Execution Times (Approximate)
@@ -74,7 +79,48 @@ export ENTITLED_REGISTRY_KEY="your-entitlement-key"
 ./tekton/scripts/setup-credentials.sh
 ```
 
-### 4. Install Tekton Resources
+### 4. Configure Products
+
+Edit the ConfigMaps for the products you want to deploy:
+
+```bash
+# Edit Connect:Direct configuration
+vi tekton/config/configmap-cd.yaml
+
+# Edit B2Bi configuration
+vi tekton/config/configmap-b2bi.yaml
+
+# Edit SCC configuration
+vi tekton/config/configmap-scc.yaml
+
+# Edit SSP configuration
+vi tekton/config/configmap-ssp.yaml
+```
+
+**Important:** Each product has its own ConfigMap with specific variables:
+- `sterling-cd-config` - Variables prefixed with `CD_*`
+- `sterling-cdws-config` - Variables prefixed with `CDWS_*`
+- `sterling-seas-config` - Variables prefixed with `SEAS_*`
+- `sterling-scc-config` - Variables prefixed with `SCC_*`
+- `sterling-ssp-config` - Variables prefixed with `SSP_*`
+- `sterling-b2bi-config` - Variables prefixed with `SI_*`
+- `sterling-minio-config` - Variables prefixed with `MINIO_*`
+
+### 5. Apply ConfigMaps
+
+Apply the ConfigMaps for the products you want to deploy:
+
+```bash
+# Apply all ConfigMaps
+kubectl apply -f tekton/config/
+
+# Or apply specific ConfigMaps
+kubectl apply -f tekton/config/configmap-cd.yaml
+kubectl apply -f tekton/config/configmap-b2bi.yaml
+kubectl apply -f tekton/config/configmap-scc.yaml
+```
+
+### 6. Install Tekton Resources
 
 ```bash
 # Install Tekton Task
@@ -84,7 +130,7 @@ kubectl apply -f tekton/tasks/sterling-deploy-task.yaml -n sterling-deployer
 kubectl apply -f tekton/pipelines/sterling-deploy-pipeline.yaml -n sterling-deployer
 ```
 
-### 5. Deploy Products
+### 7. Deploy Products
 
 Choose your deployment scenario:
 
@@ -108,7 +154,7 @@ kubectl create -f tekton/runs/deploy-scc.yaml -n sterling-deployer
 kubectl create -f tekton/runs/deploy-ssp.yaml -n sterling-deployer
 ```
 
-### 6. Monitor Execution
+### 8. Monitor Execution
 
 ```bash
 # List pipeline runs

@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sterling-seas-config
+  labels:
+    app.kubernetes.io/name: sterling-seas
+    app.kubernetes.io/component: configuration
+data:
+  # Sterling External Authentication Server Configuration
+  # -----------------------------------------------------------------------------
+  
+  # SEAS Action (install or upgrade)
+  SEAS_ACTION: "install"
+  
+  # SEAS Instance Configuration
+  SEAS_NAMESPACE: "sterling-seas01"
+  SEAS_VERSION: "1.6.1.0"
+  SEAS_LICENSE_TYPE: "non-prod"
+  
+  # Storage Configuration
+  SEAS_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
+  SEAS_STORAGE_CAPACITY: "1Gi"
+  
+  # Resource Limits and Requests
+  SEAS_CPU_LIMITS: "2000m"
+  SEAS_MEM_LIMITS: "4Gi"
+  SEAS_CPU_REQUESTS: "1000m"
+  SEAS_MEM_REQUESTS: "2Gi"
+  
+  # Helm Configuration
+  SEAS_SKIP_HELM: "false"
+  
+  # Additional Configuration
+  # Note: Sensitive values like passwords should be stored in Secrets
+  # See secret-template.yaml for sensitive configuration
+
+# Made with Bob
