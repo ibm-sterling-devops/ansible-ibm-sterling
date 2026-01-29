@@ -1,35 +1,33 @@
 ---
 # Create Certificate for Connect:Direct on Kubernetes
 # -----------------------------------------------------------------------------
-- name: Running OpenSSL command
+- name: Check if certificate files already exist
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  register: cert_files_stat
+  loop:
+    - "{{ cdws_cert_key }}"
+    - "{{ cdws_cert_crt }}"
+    - "{{ cdws_cert_pem }}"
+
+- name: Generate self-signed certificate with OpenSSL
   ansible.builtin.command:
     cmd: "openssl req -x509 -sha512 -days 3650 -newkey rsa:2048 -new -nodes -keyout {{ cdws_cert_key }} -out {{ cdws_cert_crt }} -subj '/CN={{ cdws_nodename }}'"
-  register: cout
-  changed_when: false
+    creates: "{{ cdws_cert_crt }}"
+  register: openssl_result
+  changed_when: openssl_result.rc == 0
 
-- name: Concat C:D certificates
+- name: Concatenate certificate and key into PEM file
   ansible.builtin.shell:
     cmd: "cat {{ cdws_cert_key }} {{ cdws_cert_crt }} > {{ cdws_cert_pem }}"
+    creates: "{{ cdws_cert_pem }}"
   changed_when: false
-  when: cout.rc == 0
-
-# - name: Generate OpenSSL certificate
-#  ansible.builtin.openssl_certificate:
-#    path: "{{ my_cert_certificatecrt }}"
-#    privatekey_path: "{{ my_cert_privatekey }}"
-#    privatekey_passphrase: "{{ cdws_localCertPassphrase }}"
-#    #subject: "/CN={{ cdws_nodename }}""
-#    #  commonName: "/{{ cdws_nodename }}"
-#    provider: selfsigned
-#    #    signature_algorithms:
-#    #      - sha512WithRSAEncryption
-#    #   days:  3650
-#    force: yes
+  when: openssl_result.rc == 0
 
 # Create Certificate for Connect:Direct on Kubernetes
 # CD install script only support extensions .crt, .pem and .cer
 # -----------------------------------------------------------------------------
-- name: Create or update Kubernetes secret with certificates files
+- name: Create or update Kubernetes secret with certificate files
   kubernetes.core.k8s:
     state: present
     definition:
@@ -40,3 +38,14 @@
         namespace: "{{ cdws_namespace }}"
       data:
         cdcert.pem: "{{ lookup('file', cdws_cert_pem) | b64encode }}"
+
+- name: Certificate creation summary
+  ansible.builtin.debug:
+    msg:
+      - "Certificate files created:"
+      - "  Private key ........... {{ cdws_cert_key }}"
+      - "  Certificate ........... {{ cdws_cert_crt }}"
+      - "  Combined PEM .......... {{ cdws_cert_pem }}"
+      - "  Kubernetes secret ..... {{ cdws_deploy_cert_secret }}"
+
+# Made with Bob

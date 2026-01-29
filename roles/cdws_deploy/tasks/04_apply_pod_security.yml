@@ -1,0 +1,55 @@
+---
+# Check for Kubernetes Resources and APIs
+# -----------------------------------------------------------------------------
+- name: Get Cluster information
+  kubernetes.core.k8s_cluster_info:
+  register: k8s_cl_info
+
+- name: Check for SCC Resource
+  ansible.builtin.set_fact:
+    scc_resource: false
+    scc_apiversion: false
+
+- name: Check for SCC Resource
+  ansible.builtin.set_fact:
+    scc_resource: true
+  when: "'security.openshift.io/v1' in k8s_cl_info.apis"
+
+- name: Check if SCC API version
+  ansible.builtin.set_fact:
+    scc_apiversion: true
+  when:
+    - scc_resource
+    - "'SecurityContextConstraints' in k8s_cl_info.apis['security.openshift.io/v1']"
+
+# Debug
+# -----------------------------------------------------------------------------
+- name: Debug Apply Pod Security
+  ansible.builtin.debug:
+    msg:
+      - "SCC resource available ........ {{ scc_resource }}"
+      - "SCC API version available ..... {{ scc_apiversion }}"
+
+# Creating Pod Security Policy for Kubernetes Cluster
+# -----------------------------------------------------------------------------
+- name: Creating Security Context Constraints
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-cdws-scc.yaml') | from_yaml }}"
+  when: scc_resource and scc_apiversion
+
+- name: Creating Cluster Role
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'files/clusterAdministration/ibm-cdws-cr-scc.yaml') | from_yaml }}"
+    namespace: "{{ cdws_namespace }}"
+  when: scc_resource and scc_apiversion
+
+- name: Adding all namespace users to SCC...
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'namespaceAdministration/ibm-cdws-rb-scc.yaml.j2') | from_yaml }}"
+    namespace: "{{ cdws_namespace }}"
+  when: scc_resource and scc_apiversion
+
+# Made with Bob

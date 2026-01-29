@@ -23,7 +23,7 @@ playbooks/deploy_db2_operator.yml
 roles/ibm_catalog
 roles/db2_operator_deploy
 roles/db2_setup_blu
-roles/cdws_deploy_new
+roles/cdws_deploy_old
 roles/cd_deploy/templates/dev*
 
 roles/db2

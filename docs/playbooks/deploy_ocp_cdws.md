@@ -96,7 +96,20 @@ To change namespace/project and C:D node name
 ```bash 
 cd ansible-ibm-sterling
 
-export CDWS_NAMESPACE=sterling-cdws02
+export CDWS_NAMESPACE=sterling-cdw-dev02
+
+ansible-playbook playbooks/deploy_cdws.yml
+```
+
+### Example 2: Provide a custom storage
+
+To provide a system storage, you must provided variables STORAGE_CLASS_RWO and STORAGE_CLASS_RWX
+
+```bash 
+cd ansible-ibm-sterling
+
+export STORAGE_CLASS_RWO=nfs-csi
+export STORAGE_CLASS_RWX=nfs-csi
 
 ansible-playbook playbooks/deploy_cdws.yml
 ```
@@ -121,3 +134,5 @@ Environment variables for this role:
 | CDWS_MEM_LIMITS             | 2Gi             | No       | Memory limit for the container                   |
 | CDWS_CPU_REQUESTS           | 1500m           | No       | CPU request for the container                    |
 | CDWS_MEM_REQUESTS           | 1Gi             | No       | Memory request for the container                 |
+| STORAGE_CLASS_RWO           |                 | No       | Custom Storage Class fo ReadWriteOnce            |
+| STORAGE_CLASS_RWX           |                 | No       | Custom Storage Class fo ReadWriteMany            |

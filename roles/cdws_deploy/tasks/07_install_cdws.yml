@@ -1,0 +1,87 @@
+---
+- name: "Set fact helm file"
+  ansible.builtin.set_fact:
+    my_helmfile: "{{ my_workdir }}/ibm-cdws-{{ compatibility_matrix[cdws_version].helm_version }}.tgz"
+    my_valuesfile: "{{ my_workdir }}/mycdws_values-{{ my_serial }}.yml"
+
+- name: Generate my_values.yml
+  ansible.builtin.template:
+    src: "values.yml.j2"
+    dest:  "{{ my_valuesfile }}"
+    mode: "0640"
+
+- name: Debug Helm installation parameters
+  ansible.builtin.debug:
+    msg:
+      - "Image Repository ................. {{ compatibility_matrix[cdws_version].image_repository }}"
+      - "Image Tag        ................. {{ compatibility_matrix[cdws_version].image_tag }}"
+      - "Helm chart file .................. {{ cdws_helm_chart_file }}"
+      - "Values file ...................... {{ my_valuesfile }}"
+      - "Release name ..................... {{ cdws_helm_release }}"
+      - "Namespace ........................ {{ cdws_namespace }}"
+
+- name: Check if Helm release already exists
+  ansible.builtin.command:
+    cmd: "helm list -n {{ cdws_namespace }} -o json"
+  register: helm_list_result
+  changed_when: false
+  failed_when: false
+
+- name: Parse Helm releases
+  ansible.builtin.set_fact:
+    existing_releases: "{{ helm_list_result.stdout | from_json | map(attribute='name') | list }}"
+  when: helm_list_result.rc == 0
+
+- name: Determine Helm action (install or upgrade)
+  ansible.builtin.set_fact:
+    helm_action: "{{ 'upgrade' if (cdws_helm_release in existing_releases | default([])) else 'install' }}"
+
+- name: Helm Install command
+  ansible.builtin.debug:
+    msg:
+      - "helm {{ helm_action }} --timeout {{ cdws_helm_timeout }} -f {{ my_valuesfile }} -n {{ cdws_namespace }} {{ cdws_helm_release }} {{ cdws_helm_chart_file }}"
+
+- name: Run Helm command
+  ansible.builtin.command:
+    cmd: "helm {{ helm_action }} --timeout {{ cdws_helm_timeout }} -f {{ my_valuesfile }} -n {{ cdws_namespace }} {{ cdws_helm_release }} {{ cdws_helm_chart_file }}"
+  register: helm_result
+  changed_when: helm_result.rc == 0
+  when: not cdws_skip_helm
+
+- name: "Lookup Connect:Direct Pod"
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ cdws_namespace }}"
+    label_selectors:
+      - release={{ cdws_helm_release }}
+    wait: true
+    wait_sleep: 30
+    wait_timeout: 300 # 5 mins until we give up waiting for the pod to get into the expected state
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: cdws_pod
+  when: not cdws_skip_helm
+
+- name: Configure facts
+  ansible.builtin.set_fact:
+    cdws_pod_name: "{{ cdws_pod.resources[0].metadata.name }}"
+  when:
+    - not cdws_skip_helm
+    - cdws_pod.resources is defined
+    - cdws_pod.resources | length > 0
+
+- name: "IBM Sterling Connect:Direct Web Services Summary"
+  ansible.builtin.debug:
+    msg:
+      - "=============================================="
+      - "IBM Sterling Connect:Direct Web Services"
+      - "=============================================="
+      - "Status ........................... Ready!"
+      - "Namespace ........................ {{ cdws_namespace }}"
+      - "Release name ..................... {{ cdws_helm_release }}"
+      - "Pod name ......................... {{ cdws_pod_name | default('N/A') }}"
+      - "Secret (credentials) ............. {{ cdws_secret }}"
+      - "=============================================="
+  when: not cdws_skip_helm
+

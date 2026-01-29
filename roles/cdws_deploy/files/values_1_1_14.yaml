@@ -8,7 +8,7 @@ replicaCount: 1
 # Specify the respective Docker Image details for CDWS
 image:
   # Specify the repository name alongwith image name
-  repository: cp.icr.io/cp/ibm-cdws/cdws6.3_certified_container_6.3.0.11
+  repository: cp.icr.io/cp/ibm-cdws/cdws
   # Specify respective pull policy to be used to override default `IfNotPresent` policy
   pullPolicy: Always
   # Specify the image pull secret for the service, if the image is in private registry 
@@ -17,9 +17,9 @@ image:
   # Enable true/false to pull image from Entitled Registry using below digest
   digest:
     enabled: false
-    value: "sha256:8a9aae94b2c6b995d86cc295558d173dc2ebf6a2d8aa7579d92a67208a7c1532"
+    value: "sha256:928a37937edd74c1ae9f6846fa05d30cdb217247a1f5d5da8bb9ef84a2659ed4"
   # Specify the tag name for the image in double quotes
-  tag: "6.3.0.11_ifix000"
+  tag: "6.4.0.5_iFix00-2025-11-27"
 
 # If you want to override the default full name( <release name>-ibm-cdws )
 nameOverride: ""
@@ -255,7 +255,7 @@ route:
 arch: "amd64"
 
 # Change license to true to indicate that you have read and agree to license agreements
-# Refer: https://www-40.ibm.com/software/sla/sladb.nsf (L/N: L-FYHF-K7J2TN)
+# Refer: https://www-40.ibm.com/software/sla/sladb.nsf (L/N: L-ZWKV-MQ9Z94)
 license: false
 
 # Specify the license edition as per license agreement. Valid value is prod or non-prod for Production and 
