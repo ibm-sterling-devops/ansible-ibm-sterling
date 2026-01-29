@@ -70,46 +70,7 @@ compatibility_matrix:
     helm_min_version: "3.2"
     image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.4_certified_container_6.4.0.3"
     image_tag: "6.4.0.3_ifix000"
-  6.4.0.2_ifix001:
-    helm_version: "1.1.6"
-    ocp_min_version: "4.14"
-    k8s_min_version: "1.27"
-    k8s_max_version: "1.32"
-    helm_min_version: "3.2"
-    image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.4_certified_container_6.4.0.2"
-    image_tag: "6.4.0.2_ifix001"
-  6.4.0.2_ifix000:
-    helm_version: "1.1.5"
-    ocp_min_version: "4.14"
-    k8s_min_version: "1.27"
-    k8s_max_version: "1.32"
-    helm_min_version: "3.2"
-    image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.4_certified_container_6.4.0.2"
-    image_tag: "6.4.0.2_ifix000"
-  6.4.0.0_ifix001:
-    helm_version: "1.1.1"
-    ocp_min_version: "4.14"
-    k8s_min_version: "1.27"
-    k8s_max_version: "1.30"
-    helm_min_version: "3.2"
-    image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.4_certified_container_6.4.0.0"
-    image_tag: "6.4.0.0_ifix001"
-  6.4.0.0_ifix000:
-    helm_version: "1.1.0"
-    ocp_min_version: "4.14"
-    k8s_min_version: "1.27"
-    k8s_max_version: "1.30"
-    helm_min_version: "3.2"
-    image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.4_certified_container_6.4.0.0"
-    image_tag: "6.4.0.0_ifix000"
-  6.3.0.11_ifix000:
-    helm_version: "1.0.4"
-    ocp_min_version: "4.14"
-    k8s_min_version: "1.27"
-    k8s_max_version: "1.30"
-    helm_min_version: "3.2"
-    image_repository: "cp.icr.io/cp/ibm-cdws/cdws6.3_certified_container_6.3.0.11"
-    image_tag: "6.3.0.11_ifix000"
+
 
 # Storage Class Matrix
 # in ibmcloud.rwo: In IBM Cloud, the ReadWriteOnce storage class is 'ibmc-block-gold' but Connect:Direct not worked with it.

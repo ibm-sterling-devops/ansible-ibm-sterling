@@ -4,6 +4,7 @@ Playbook will run the last version of Connect:Direct, but take care of Kubernete
 
 | Connect:Direct            | OpenShift           | Kubernetes          | helm-chart | 
 |---------------------------|---------------------|---------------------|------------|
+| 6.4.0.4-iFix011-2026-01-13| >= 4.15 and <= 4.20 | >=1.28.0 <1.34.0    | 1.4.15     |
 | 6.4.0.4-iFix003-2025-12-11| >= 4.15 and <= 4.20 | >=1.28.0 <1.34.0    | 1.4.14     
 | 6.4.0.3-iFix011-2025-11-03| >= 4.15 and <= 4.20 | >=1.28.0 <1.34.0    | 1.4.12     |
 | 6.4.0.2-iFix008-2025-08-21| >= 4.15 and <= 4.20 | >=1.28.0 <1.34.0    | 1.4.9      |
@@ -97,7 +98,7 @@ Environment variables for this role:
 | ENTITLED_REGISTRY_KEY         | -                     | Yes      | Entitlement registry key                         |
 | CD_NAMESPACE                  | sterling-cdnode01-dev | No       | Namespace for C:D application                    |
 | CD_NODENAME                   | CDNODE01              | No       | Specify the nodename of C:D                      |
-| CD_VERSION                    | 6.4.0.2-iFix008-2025-08-21| No       | Version of C:D container to deploy               |
+| CD_VERSION                    | 6.4.0.4-iFix011-2026-01-13| No       | Version of C:D container to deploy               |
 | CD_ADMINPASSWORD              | passw0rd              | No       | Password for C:D Admin                           |
 | CD_APPUSER_PWD                | passw0rd              | No       | Password for C:D User                            |
 | CD_LOCALCERTPASSPHRASE        | changeit              | No       | Passphrase for local certificate                 |

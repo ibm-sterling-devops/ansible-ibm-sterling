@@ -117,8 +117,8 @@ persistence:
 
 pvClaim:
   existingClaimName: "{{ cdws_other_values.pvClaim.existingClaimName | default('') }}"
-  storageClassName: "{{ storage_class_matrix[ cdws_storage_class ].rwo }}" 
-  accessMode: "ReadWriteOnce"
+  storageClassName: "{{ storage_class_matrix[ cdws_storage_class ].rwx }}" 
+  accessMode: "ReadWriteMany"
   selector:
     label: "intent"
     value: "cdws-vol"

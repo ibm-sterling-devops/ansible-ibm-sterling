@@ -1,0 +1,30 @@
+---
+# Create ConfigMap for Connect:Direct userfile and netmap configuration files
+# This task generates the configuration files from templates and creates a ConfigMap
+- name: Generate userfile.cfg from template
+  ansible.builtin.template:
+    src: userfile.cfg.j2
+    dest: "{{ my_workdir }}/userfile.cfg"
+    mode: '0644'
+
+- name: Generate netmap.cfg from template
+  ansible.builtin.template:
+    src: netmap.cfg.j2
+    dest: "{{ my_workdir }}/netmap.cfg"
+    mode: '0644'
+
+- name: Create ConfigMap cd-userfiles from generated files
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: cd-userfiles
+        namespace: "{{ cd_namespace }}"
+        labels:
+          app.kubernetes.io/name: connect-direct
+          app.kubernetes.io/component: configuration
+      data:
+        userfile.cfg: "{{ lookup('file', my_workdir + '/userfile.cfg') }}"
+        netmap.cfg: "{{ lookup('file', my_workdir + '/netmap.cfg') }}"

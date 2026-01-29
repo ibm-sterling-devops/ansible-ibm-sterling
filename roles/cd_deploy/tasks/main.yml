@@ -14,5 +14,8 @@
 - name: "Create Certificate for Secure+"
   ansible.builtin.include_tasks: 05_create_certificates.yml
 
+- name: Create ConfigMap for userfile and netmap
+  ansible.builtin.include_tasks: 06_create_usernetmap.yml
+
 - name: Install Connect:Direct using Helm Chart
-  ansible.builtin.include_tasks: 06_install_cd.yml
+  ansible.builtin.include_tasks: 07_install_cd.yml

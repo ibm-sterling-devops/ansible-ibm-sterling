@@ -14,9 +14,9 @@ data:
   SI_ACTION: "install"
   
   # B2Bi Instance Configuration
-  SI_INSTANCEID: "b2bi01"
-  SI_VERSION: "6.2.1.1"
-  SI_LICENSETYPE: "non-prod"
+  SI_INSTANCEID: "dev01"
+  SI_VERSION: "6.2.2.0"
+  #SI_LICENSETYPE: "prod"
   
   # Storage Configuration
   B2BI_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
