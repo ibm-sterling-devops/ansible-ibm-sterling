@@ -1686,6 +1686,12 @@
 </thead>
 <tbody>
 <tr>
+<td>6.1.1.2-iFix00-2025-12-18</td>
+<td>&gt;= 4.13 and &lt;= 4.16</td>
+<td>&gt;=1.26.0 &lt;=1.30.0</td>
+<td>1.6.2</td>
+</tr>
+<tr>
 <td>6.1.1.1-iFix00-2025-10-15</td>
 <td>&gt;= 4.13 and &lt;= 4.16</td>
 <td>&gt;=1.26.0 &lt;=1.30.0</td>
@@ -1696,18 +1702,6 @@
 <td>&gt;= 4.13 and &lt;= 4.16</td>
 <td>&gt;=1.26.0 &lt;=1.30.0</td>
 <td>1.5.1</td>
-</tr>
-<tr>
-<td>6.1.0.1.01.1</td>
-<td>&gt;= 4.13 and &lt;= 4.16</td>
-<td>&gt;=1.26.0 &lt;=1.30.0</td>
-<td>1.4.3</td>
-</tr>
-<tr>
-<td>6.1.0.1.01</td>
-<td>&gt;= 4.13 and &lt;= 4.16</td>
-<td>&gt;=1.26.0 &lt;=1.30.0</td>
-<td>1.4.2</td>
 </tr>
 </tbody>
 </table>
@@ -1739,6 +1733,8 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <h2 id="change-the-default-namespace">Change the default namespace<a class="headerlink" href="#change-the-default-namespace" title="Permanent link"></a></h2>
 <p>1) Change namespace and run the playbook</p>
 <pre><code class="language-bash">export SEAS_NAMESPACE=sterling-seas-dev01
+export STORAGE_CLASS_RWO=nfs-csi
+export STORAGE_CLASS_RWX=nfs-csi
 
 ansible-playbook playbooks/deploy_seas.yml
 </code></pre>
@@ -1768,7 +1764,7 @@ ansible-playbook playbooks/deploy_seas.yml
 </tr>
 <tr>
 <td>SEAS_VERSION</td>
-<td>6.1.0.0.06</td>
+<td>6.1.1.2-iFix00-2025-12-18</td>
 <td>No</td>
 <td>Version of SEAS application</td>
 </tr>
@@ -1801,6 +1797,18 @@ ansible-playbook playbooks/deploy_seas.yml
 <td>non-prod</td>
 <td>No</td>
 <td>License type for SEAS application (prod or non-prod)</td>
+</tr>
+<tr>
+<td>STORAGE_CLASS_RWO</td>
+<td></td>
+<td>No</td>
+<td>Custom Storage Class fo ReadWriteOnce</td>
+</tr>
+<tr>
+<td>STORAGE_CLASS_RWX</td>
+<td></td>
+<td>No</td>
+<td>Custom Storage Class fo ReadWriteMany</td>
 </tr>
 </tbody>
 </table>
