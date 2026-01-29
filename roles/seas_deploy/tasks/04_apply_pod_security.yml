@@ -1,21 +1,4 @@
 ---
-- name: "Cleanup directories and files"
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-    - "{{ my_workdir }}/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
-    - "{{ my_workdir }}/myseas_values.yml"
-
-- name: "Download Helm chart"
-  ansible.builtin.get_url:
-    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
-    dest: "{{ my_workdir }}/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
-    mode: "0640"
-  register: download_cout
-  until: download_cout is succeeded
-  retries: 3
-
 # Check for Kubernetes Resources and APIs
 # -----------------------------------------------------------------------------
 - name: Get Cluster information
@@ -44,8 +27,8 @@
 - name: Debug Apply Pod Security
   ansible.builtin.debug:
     msg:
-      - "scc_resource ................. {{ scc_resource }}"
-      - "scc_apiversion ............... {{ scc_apiversion }}"
+      - "SCC resource available ........ {{ scc_resource }}"
+      - "SCC API version available ..... {{ scc_apiversion }}"
 
 # Creating Pod Security Policy for Kubernetes Cluster
 # -----------------------------------------------------------------------------
@@ -66,3 +49,5 @@
     state: present
     template: 'namespaceAdministration/ibm-seas-rb-scc.yaml.j2'
   when: scc_resource and scc_apiversion
+
+# Made with Bob

@@ -1,0 +1,28 @@
+---
+# Download Helm Chart
+# -----------------------------------------------------------------------------
+- name: "Cleanup old Helm chart file"
+  ansible.builtin.file:
+    path: "{{ my_workdir }}/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
+    state: absent
+
+- name: "Download Helm chart for SEAS"
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
+    dest: "{{ my_workdir }}/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
+    mode: "0640"
+  register: download_result
+  until: download_result is succeeded
+  retries: 3
+  delay: 5
+
+- name: "Set fact for Helm chart file path"
+  ansible.builtin.set_fact:
+    seas_helm_chart_file: "{{ my_workdir }}/ibm-seas-{{ compatibility_matrix[seas_version].helm_version }}.tgz"
+
+- name: Debug Helm chart download
+  ansible.builtin.debug:
+    msg:
+      - "Helm chart version ............ {{ compatibility_matrix[seas_version].helm_version }}"
+      - "Helm chart file ............... {{ seas_helm_chart_file }}"
+      - "Download status ............... {{ 'Success' if download_result is succeeded else 'Failed' }}"

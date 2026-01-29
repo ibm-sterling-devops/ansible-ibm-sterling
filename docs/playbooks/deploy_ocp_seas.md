@@ -4,10 +4,9 @@ Playbook will run the last version of SEAS, but take care of Kubernetes/Openshif
 
 | SEAS                      | OpenShift           | Kubernetes          | helm-chart |
 |---------------------------|---------------------|---------------------|------------|
+| 6.1.1.2-iFix00-2025-12-18 | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.6.2      |
 | 6.1.1.1-iFix00-2025-10-15 | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.6.1      |
 | 6.1.0.2.01                | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.5.1      |
-| 6.1.0.1.01.1              | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.4.3      |
-| 6.1.0.1.01                | >= 4.13 and <= 4.16 | >=1.26.0 <=1.30.0   | 1.4.2      |
 
 
 ## Preparation
@@ -64,6 +63,8 @@ ansible-playbook playbooks/deploy_seas.yml
 
 ```bash 
 export SEAS_NAMESPACE=sterling-seas-dev01
+export STORAGE_CLASS_RWO=nfs-csi
+export STORAGE_CLASS_RWX=nfs-csi
 
 ansible-playbook playbooks/deploy_seas.yml
 ```
@@ -76,9 +77,11 @@ Environment variables for this role:
 |-------------------------------|----------------------|----------|--------------------------------------------------|
 | ENTITLED_REGISTRY_KEY         | N/A                  | Yes      | Entitlement registry key                         |
 | SEAS_NAMESPACE                | N/A                  | No       | Namespace for SEAS application                   |
-| SEAS_VERSION                  | 6.1.0.0.06           | No       | Version of SEAS application                      |
+| SEAS_VERSION                  | 6.1.1.2-iFix00-2025-12-18 | No  | Version of SEAS application                      |
 | SEAS_SYS_PASSPHRASE           | Password123!         | No       | System passphrase for SEAS application           |
 | SEAS_ADMIN_PASSWORD           | Password123!         | No       | Admin password for SEAS application              |
 | SEAS_KEYSTORE_PASSPHRASE      | Change1t@            | No       | Keystore passphrase for SEAS application         |
 | SEAS_TRUSTSTOREPASSWORD       | Change1t@            | No       | Truststore passphrase for SEAS application       |
 | SEAS_LICENSETYPE              | non-prod             | No       | License type for SEAS application (prod or non-prod) |
+| STORAGE_CLASS_RWO             |                      | No       | Custom Storage Class fo ReadWriteOnce            |
+| STORAGE_CLASS_RWX             |                      | No       | Custom Storage Class fo ReadWriteMany            |

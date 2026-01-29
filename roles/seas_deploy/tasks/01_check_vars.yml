@@ -1,22 +1,12 @@
 ---
-- name: Check for required environment variables
-  ansible.builtin.assert:
-    that:
-      # IBM
-      - lookup('env', 'ENTITLED_REGISTRY_KEY') != ""
-    fail_msg: "One or more required environment variables are not defined"
-
 # Check for undefined properties that do not have a default
 # -----------------------------------------------------------------------------
-- name: "Fail if seas_namespace is not provided"
+- name: "Validate required variables"
   ansible.builtin.assert:
-    that: seas_namespace is defined and seas_namespace != ""
-    fail_msg: "seas_namespace property is required"
-
-- name: "Fail if entitled_registry_key is not provided"
-  ansible.builtin.assert:
-    that: entitled_registry_key is defined and entitled_registry_key != ""
-    fail_msg: "entitled_registry_key property is required"
+    that:
+      - seas_namespace is defined and seas_namespace != ""
+      - entitled_registry_key is defined and entitled_registry_key != ""
+    fail_msg: "Required variables are missing: seas_namespace and entitled_registry_key must be defined"
 
 # 5. Serial ID
 # -----------------------------------------------------------------------------

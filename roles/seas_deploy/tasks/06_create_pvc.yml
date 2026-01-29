@@ -7,24 +7,24 @@
       apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
-        name: "s0-ibm-seas-pvc-{{ my_serial }}"
+        name: "{{ seas_helm_release }}-ibm-seas-pvc-{{ my_serial }}"
         namespace: "{{ seas_namespace }}"
         labels:
-          app.kubernetes.io/app-instance: "s0-ibm-seas-pvc-{{ my_serial }}"
+          app.kubernetes.io/app-instance: "{{ seas_helm_release }}-ibm-seas-pvc-{{ my_serial }}"
           app.kubernetes.io/name: ibm-seas
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: "{{ storage_class_matrix[seas_storage_class].rwo }}"
+        storageClassName: "{{ storage_class_matrix[storage_class_provider].rwo }}"
         volumeMode: Filesystem
         resources:
           requests:
-            storage: 1Gi
+            storage: "{{ seas_pvc_storage_size }}"
 
 - name: Wait for PVC to be Bound
   kubernetes.core.k8s_info:
     kind: PersistentVolumeClaim
-    name: "s0-ibm-seas-pvc-{{ my_serial }}"
+    name: "{{ seas_helm_release }}-ibm-seas-pvc-{{ my_serial }}"
     namespace: "{{ seas_namespace }}"
   register: pvc_info
   until: pvc_info.resources[0].status.phase == 'Bound'

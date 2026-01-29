@@ -1,0 +1,104 @@
+---
+# Provide intelligent storage class selection to minimize required user knowledge
+# 1. Lookup storage classes for validation (always needed)
+# -----------------------------------------------------------------------------
+- name: Lookup Storage classes for validation
+  kubernetes.core.k8s_info:
+    kind: StorageClass
+  register: lookup_storageclasses
+
+- name: Create list of available storage classes
+  ansible.builtin.set_fact:
+    available_storage_classes: "{{ lookup_storageclasses.resources | map(attribute='metadata.name') | list }}"
+
+
+# 2. Check if storage classes are manually specified via environment variables
+# and validate and create storage_class_matrix with custom values
+# -----------------------------------------------------------------------------
+- name: Check if storage classes are manually specified
+  ansible.builtin.set_fact:
+    custom_sc_rwo: "{{ storage_class_rwo }}"
+    custom_sc_rwx: "{{ storage_class_rwx }}"
+  when: 
+    - storage_class_rwo != ""
+    - storage_class_rwx != ""
+
+- name: Validate manually specified storage classes exist in cluster
+  ansible.builtin.assert:
+    that:
+      - custom_sc_rwo in available_storage_classes
+      - custom_sc_rwx in available_storage_classes
+    fail_msg: |
+      One or more manually specified storage classes do not exist in the cluster.
+      Specified RWO: {{ custom_sc_rwo }}
+      Specified RWX: {{ custom_sc_rwx }}
+      Available storage classes: {{ available_storage_classes | join(', ') }}
+  when:
+    - custom_sc_rwo is defined and custom_sc_rwo != ""
+    - custom_sc_rwx is defined and custom_sc_rwx != ""
+
+- name: Create storage_class_matrix with manual specification
+  ansible.builtin.set_fact:
+    storage_class_matrix:
+      custom:
+        rwo: "{{ custom_sc_rwo }}"
+        rwx: "{{ custom_sc_rwx }}"
+        rwx_nogid: "{{ custom_sc_rwx }}"
+        rom: ""
+        rwop: ""
+    storage_class_provider: "custom"
+  when:
+    - custom_sc_rwo is defined and custom_sc_rwo != ""
+    - custom_sc_rwx is defined and custom_sc_rwx != ""
+
+- name: Debug manually specified storage classes
+  ansible.builtin.debug:
+    msg:
+      - "Storage classes manually specified:"
+      - "  RWO .......................... {{ custom_sc_rwo }}"
+      - "  RWX .......................... {{ custom_sc_rwx }}"
+      - "Skipping auto-detection"
+  when: 
+    - custom_sc_rwo is defined and custom_sc_rwo != ""
+    - custom_sc_rwx is defined and custom_sc_rwx != ""
+
+# 3. Auto-detect storage class if not manually specified
+# -----------------------------------------------------------------------------
+- name: Detect storage provider based on available storage classes
+  ansible.builtin.set_fact:
+    storage_class_provider: "{{ item.key }}"
+  when:
+    - custom_sc_rwo is not defined or custom_sc_rwo == "" or custom_sc_rwx is not defined or custom_sc_rwx == ""
+    - storage_class_provider is not defined
+    - item.value in available_storage_classes
+  loop:
+    - { key: 'ibmcloud', value: 'ibmc-file-gold' }
+    - { key: 'redhat', value: 'ocs-storagecluster-cephfs' }
+    - { key: 'aws', value: 'gp2' }
+    - { key: 'azure', value: 'azurefile-premium' }
+    - { key: 'techzone', value: 'managed-nfs-storage' }
+    - { key: 'ibm-spectrum', value: 'scale-cnsa' }
+    - { key: 'ibm-fyre1', value: 'rook-cephfs' }
+    - { key: 'ibm-fyre2', value: 'ocs-external-storagecluster-cephfs' }
+    - { key: 'hpe-storage', value: 'hpe-nfs' }
+  loop_control:
+    label: "{{ item.key }}"
+
+# 5. Validate storage class was detected or specified
+# -----------------------------------------------------------------------------
+- name: Assert that storage class provider has been detected or specified
+  ansible.builtin.assert:
+    that: storage_class_provider is defined and storage_class_provider != ""
+    fail_msg: "Could not auto-detect storage class. Please set STORAGE_CLASS_RWO and STORAGE_CLASS_RWX environment variables."
+
+# 6. Set final storage class variable for use in templates
+# -----------------------------------------------------------------------------
+- name: Debug storage configuration
+  ansible.builtin.debug:
+    msg:
+      - "Storage configuration:"
+      - "  Provider key ................. {{ storage_class_provider }}"
+      - "  Storage class (RWO) .......... {{ storage_class_matrix[storage_class_provider].rwo }}"
+      - "  Storage class (RWX) .......... {{ storage_class_matrix[storage_class_provider].rwx }}"
+      - "  Source ....................... {{ 'Manual (STORAGE_CLASS_RWO/RWX env vars)' if (custom_sc_rwo is defined and custom_sc_rwo != '' and custom_sc_rwx is defined and custom_sc_rwx != '') else 'Auto-detected from cluster' }}"
+

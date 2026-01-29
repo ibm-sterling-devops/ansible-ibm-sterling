@@ -72,7 +72,7 @@ persistentVolume:
   # useDynamicProvisioning is whether or not to use Storage Classes to dynamically create Persistent Volumes 
   useDynamicProvisioning: false
   # Specify the existing PV claim name to be used for deployment
-  existingClaimName: "s0-ibm-seas-pvc-{{ my_serial }}"
+  existingClaimName: "{{ seas_helm_release }}-ibm-seas-pvc-{{ my_serial }}"
   # Specify this to use selector label name for PV-PVC bind
   #labelName: "app.kubernetes.io/name"
   # Specify this to use selector label value for PV-PVC bind

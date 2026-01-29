@@ -9,8 +9,8 @@ seas_action: "{{ lookup('env', 'SEAS_ACTION') | default('install', true) }}"
 
 # Configure SEAS instance
 # -----------------------------------------------------------------------------------------------------------------
-seas_namespace: "{{ lookup('env', 'SEAS_NAMESPACE') | default('sterling-seas01', true) }}"
-seas_version: "{{ lookup('env', 'SEAS_VERSION') | default('6.1.1.1-iFix00-2025-10-15', true) }}"
+seas_namespace: "{{ lookup('env', 'SEAS_NAMESPACE') | default('sterling-seas-dev01', true) }}"
+seas_version: "{{ lookup('env', 'SEAS_VERSION') | default('6.1.1.2-iFix00-2025-12-18', true) }}"
 
 seas_license_type: "{{ lookup('env', 'SEAS_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 seas_sys_passphrase: "{{ lookup('env', 'SEAS_SYS_PASSPHRASE') | default('Password123!', true) }}"
@@ -19,14 +19,17 @@ seas_admin_password: "{{ lookup('env', 'SEAS_ADMIN_PASSWORD') | default('Passwor
 seas_keystore_passphrase: "{{ lookup('env', 'SEAS_KEYSTORE_PASSPHRASE') | default('Change1t@', true) }}"
 seas_truststore_passphrase: "{{ lookup('env', 'SEAS_TRUSTSTOREPASSWORD') | default('Change1t@', true) }}"
 
-# Configure instance
+# Storage
 # -----------------------------------------------------------------------------
-entitled_registry: "cp.icr.io"
-entitled_registry_user: cp
+storage_class_rwo: "{{ lookup('env', 'STORAGE_CLASS_RWO') | default('', true) }}"
+storage_class_rwx: "{{ lookup('env', 'STORAGE_CLASS_RWX') | default('', true) }}"
+seas_pvc_storage_size: "{{ lookup('env', 'SEAS_PVC_STORAGE_SIZE') | default('1Gi', true) }}"
 
 # Others
 # -----------------------------------------------------------------------------
 my_workdir: /tmp
+seas_helm_timeout: "{{ lookup('env', 'SEAS_HELM_TIMEOUT') | default('10m0s', true) }}"
+seas_helm_release: "{{ lookup('env', 'SEAS_HELM_RELEASE') | default('s0', true) }}"
 
 seas_registry_secret: ibm-registry-secret
 seas_secret: ibm-seas-secret
@@ -34,18 +37,15 @@ seas_use_dynamic_provisioning: false
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.1.1.2-iFix00-2025-12-18:
+    helm_version: "1.6.2"
+    image_tag: "6.1.1.2-iFix00-2025-12-18"
   6.1.1.1-iFix00-2025-10-15:
     helm_version: "1.6.1"
     image_tag: "6.1.1.1-iFix00-2025-10-15"
   6.1.0.2.01:
     helm_version: "1.5.1"
     image_tag: "6.1.0.2.01"
-  6.1.0.1.01.1:
-    helm_version: "1.4.3"
-    image_tag: "6.1.0.1.01.1"
-  6.1.0.1.01:
-    helm_version: "1.4.2"
-    image_tag: "6.1.0.1.01"
 
 
 # Storage Class Matrix
@@ -92,4 +92,16 @@ storage_class_matrix:
     rwx_nogid: "rook-cephfs"
     rwo: "rook-cephfs" # rook-ceph-block
     rom: ""
+    rwop: ""
+  ibm-fyre2:
+    rwx: "ocs-external-storagecluster-cephfs"
+    rwx_nogid: "ocs-external-storagecluster-cephfs"
+    rwo: "ocs-external-storagecluster-ceph-rbd"
+    rom: "ocs-external-storagecluster-cephfs"
+    rwop: ""
+  hpe-storage:
+    rwx: "hpe-nfs"
+    rwx_nogid: "hpe-nfs"
+    rwo: "hpe-standard"
+    rom: "hpe-nfs"
     rwop: ""

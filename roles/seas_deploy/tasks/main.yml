@@ -5,14 +5,19 @@
 - name: Create namespace and secrets for SEAS
   ansible.builtin.include_tasks: 02_create_namespace_secrets.yml
 
+- name: Download Helm Chart
+  ansible.builtin.include_tasks: 03_download_helm_chart.yml
+
 - name: Applying Pod Security
-  ansible.builtin.include_tasks: 03_apply_pod_security.yml
+  ansible.builtin.include_tasks: 04_apply_pod_security.yml
 
 - name: Define Storage for Data Persistence
-  ansible.builtin.include_tasks: 04_define_storage.yml
+  ansible.builtin.include_tasks: 05_define_storage.yml
 
 - name: Create PVC for SEAS
-  ansible.builtin.include_tasks: 05_create_pvc.yml
+  ansible.builtin.include_tasks: 06_create_pvc.yml
 
 - name: Install SEAS using Helm Chart
-  ansible.builtin.include_tasks: 06_install_seas.yml
+  ansible.builtin.include_tasks: 07_install_seas.yml
+
+# Made with Bob
