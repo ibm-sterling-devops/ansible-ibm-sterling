@@ -871,6 +871,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-2-provide-a-custom-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Provide a custom storage
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1687,6 +1698,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-2-provide-a-custom-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Provide a custom storage
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1802,7 +1824,16 @@ export ANSIBLE_CONFIG=./ansible.cfg
 <p>To change namespace/project and C:D node name</p>
 <pre><code class="language-bash">cd ansible-ibm-sterling
 
-export CDWS_NAMESPACE=sterling-cdws02
+export CDWS_NAMESPACE=sterling-cdw-dev02
+
+ansible-playbook playbooks/deploy_cdws.yml
+</code></pre>
+<h3 id="example-2-provide-a-custom-storage">Example 2: Provide a custom storage<a class="headerlink" href="#example-2-provide-a-custom-storage" title="Permanent link"></a></h3>
+<p>To provide a system storage, you must provided variables STORAGE_CLASS_RWO and STORAGE_CLASS_RWX</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+
+export STORAGE_CLASS_RWO=nfs-csi
+export STORAGE_CLASS_RWX=nfs-csi
 
 ansible-playbook playbooks/deploy_cdws.yml
 </code></pre>
@@ -1895,6 +1926,18 @@ ansible-playbook playbooks/deploy_cdws.yml
 <td>1Gi</td>
 <td>No</td>
 <td>Memory request for the container</td>
+</tr>
+<tr>
+<td>STORAGE_CLASS_RWO</td>
+<td></td>
+<td>No</td>
+<td>Custom Storage Class fo ReadWriteOnce</td>
+</tr>
+<tr>
+<td>STORAGE_CLASS_RWX</td>
+<td></td>
+<td>No</td>
+<td>Custom Storage Class fo ReadWriteMany</td>
 </tr>
 </tbody>
 </table>

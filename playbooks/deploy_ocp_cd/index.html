@@ -832,6 +832,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-2-using-custom-storage-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Using Custom Storage Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1654,6 +1665,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#example-2-using-custom-storage-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Using Custom Storage Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1762,6 +1784,18 @@ export CD_NODENAME=COMPANY01
 
 ansible-playbook playbooks/deploy_cd.yml
 </code></pre>
+<h3 id="example-2-using-custom-storage-classes">Example 2: Using Custom Storage Classes<a class="headerlink" href="#example-2-using-custom-storage-classes" title="Permanent link"></a></h3>
+<p>To use custom storage, you must provide two variables:
+- <code>STORAGE_CLASS_RWO</code> - Storage class with ReadWriteOnce access mode
+- <code>STORAGE_CLASS_RWX</code> - Storage class with ReadWriteMany access mode</p>
+<p><strong>Note:</strong> For IBM Cloud multi-zone clusters, ensure your storage class supports ReadWriteMany (RWX) access mode to enable pod scheduling across different zones.</p>
+<pre><code class="language-bash">cd ansible-ibm-sterling
+
+export STORAGE_CLASS_RWO=ibmc-file-gold
+export STORAGE_CLASS_RWX=ibmc-file-gold
+
+ansible-playbook playbooks/deploy_cdws.yml
+</code></pre>
 <h1 id="environment-variable">Environment Variable<a class="headerlink" href="#environment-variable" title="Permanent link"></a></h1>
 <p>For all environment variables</p>
 <h2 id="role-variables">Role Variables<a class="headerlink" href="#role-variables" title="Permanent link"></a></h2>
@@ -1831,10 +1865,34 @@ ansible-playbook playbooks/deploy_cd.yml
 <td>License type for C:D (prod or non-prod)</td>
 </tr>
 <tr>
-<td>CD_STORAGE_CLASS</td>
-<td>-</td>
+<td>CD_SERVICE_TYPE</td>
+<td>NodePort</td>
 <td>No</td>
-<td>Storage class to be used for the container</td>
+<td>Service type for C:D (NodePort or Load Balancer)</td>
+</tr>
+<tr>
+<td>CD_HPA_MIN_REPLICAS</td>
+<td>1</td>
+<td>No</td>
+<td>Minimum number of replicas for HPA</td>
+</tr>
+<tr>
+<td>CD_EXISTING_CLAIMNAME</td>
+<td></td>
+<td>No</td>
+<td>Previous Existing Persistent Volume Claim</td>
+</tr>
+<tr>
+<td>STORAGE_CLASS_RWO</td>
+<td></td>
+<td>No</td>
+<td>Custom Storage Class fo ReadWriteOnce</td>
+</tr>
+<tr>
+<td>STORAGE_CLASS_RWX</td>
+<td></td>
+<td>No</td>
+<td>Custom Storage Class fo ReadWriteMany</td>
 </tr>
 <tr>
 <td>CD_STORAGE_CAPACITY</td>
@@ -1880,6 +1938,7 @@ ansible-playbook playbooks/deploy_cd.yml
 </tr>
 </tbody>
 </table>
+<p>cd_existing_claimname: "{{ lookup('env', 'CD_EXISTING_CLAIMNAME') | default('', true) }}"</p>
 
 
 
