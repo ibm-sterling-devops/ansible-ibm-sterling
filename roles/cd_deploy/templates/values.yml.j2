@@ -142,7 +142,7 @@ pvClaim:
   # Specify the existing PV claim name to be used for deployment
   existingClaimName: "{{ cd_existing_claimname }}"
   # Specify this to use any Storage Class for PVC
-  storageClassName: "{{ storage_class_matrix[ cd_storage_class ].rwx }}"  
+  storageClassName: "{{ storage_class_matrix[ storage_class_provider ].rwx }}"
   accessMode: "ReadWriteMany"
   selector:
     # Specify this to use selector label name for PV-PVC bind
@@ -154,7 +154,7 @@ pvClaim:
 # Specify these fields for Services
 service:
   # ClusterPort to be exposed
-  type: "LoadBalancer"
+  type: "{{ cd_service_type }}"
   apiport:
     name: "api"
     port:
@@ -273,7 +273,7 @@ resources:
 
 # Set this to true to create Monitoring Dashboard
 dashboard:
-  enabled: {{ cd_other_values.dashboard.enabled | default('false') }}
+  enabled: {{ cd_dashboard_enabled }}
 
 affinity:
   # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature
@@ -376,7 +376,7 @@ cdfa:
 # Horizontal pod autoscaling configuration
 hpa:
   enabled: true
-  minReplicas: 1
+  minReplicas: {{ cd_hpa_min_replicas }}
   maxReplicas: 5
   averageCpuUtilization: 60
   averageMemoryUtilization: 60

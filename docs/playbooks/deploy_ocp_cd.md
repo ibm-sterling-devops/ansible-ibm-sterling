@@ -84,6 +84,23 @@ export CD_NODENAME=COMPANY01
 ansible-playbook playbooks/deploy_cd.yml
 ```
 
+### Example 2: Using Custom Storage Classes
+
+To use custom storage, you must provide two variables:
+- `STORAGE_CLASS_RWO` - Storage class with ReadWriteOnce access mode
+- `STORAGE_CLASS_RWX` - Storage class with ReadWriteMany access mode
+
+**Note:** For IBM Cloud multi-zone clusters, ensure your storage class supports ReadWriteMany (RWX) access mode to enable pod scheduling across different zones.
+
+```bash 
+cd ansible-ibm-sterling
+
+export STORAGE_CLASS_RWO=ibmc-file-gold
+export STORAGE_CLASS_RWX=ibmc-file-gold
+
+ansible-playbook playbooks/deploy_cdws.yml
+```
+
 # Environment Variable
 
 For all environment variables
@@ -104,7 +121,11 @@ Environment variables for this role:
 | CD_LOCALCERTPASSPHRASE        | changeit              | No       | Passphrase for local certificate                 |
 | CD_KEYSTOREPASSWORD           | changeit              | No       | Password for keystore                            |
 | CD_LICENSE_TYPE               | non-prod              | No       | License type for C:D (prod or non-prod)          |
-| CD_STORAGE_CLASS              | -                     | No       | Storage class to be used for the container       |
+| CD_SERVICE_TYPE               | NodePort              | No       | Service type for C:D (NodePort or Load Balancer) |
+| CD_HPA_MIN_REPLICAS           | 1                     | No       | Minimum number of replicas for HPA               |
+| CD_EXISTING_CLAIMNAME         |                       | No       | Previous Existing Persistent Volume Claim        |
+| STORAGE_CLASS_RWO             |                       | No       | Custom Storage Class fo ReadWriteOnce            |
+| STORAGE_CLASS_RWX             |                       | No       | Custom Storage Class fo ReadWriteMany            |
 | CD_STORAGE_CAPACITY           | 1Gi                   | No       | Storage capacity to be allocated to the container|
 | CD_CPU_LIMITS                 | 500m                  | No       | CPU limit for the container                      |
 | CD_MEM_LIMITS                 | 2000Mi                | No       | Memory limit for the container                   |
@@ -112,3 +133,5 @@ Environment variables for this role:
 | CD_CPU_REQUESTS               | 500m                  | No       | CPU request for the container                    |
 | CD_MEM_REQUESTS               | 2000Mi                | No       | Memory request for the container                 |
 | CD_EPHEMERAL_STORAGE_REQUESTS | 3Gi                   | No       | Ephemeral storage request for the container      |
+
+cd_existing_claimname: "{{ lookup('env', 'CD_EXISTING_CLAIMNAME') | default('', true) }}"

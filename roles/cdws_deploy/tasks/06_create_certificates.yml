@@ -48,4 +48,4 @@
       - "  Combined PEM .......... {{ cdws_cert_pem }}"
       - "  Kubernetes secret ..... {{ cdws_deploy_cert_secret }}"
 
-# Made with Bob
+

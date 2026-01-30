@@ -19,5 +19,3 @@
 
 - name: Install SEAS using Helm Chart
   ansible.builtin.include_tasks: 07_install_seas.yml
-
-# Made with Bob

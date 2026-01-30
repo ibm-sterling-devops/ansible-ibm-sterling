@@ -1,13 +1,13 @@
 ---
 # Create ConfigMap for Connect:Direct userfile and netmap configuration files
 # This task generates the configuration files from templates and creates a ConfigMap
-- name: Generate userfile.cfg from template
+- name: Generate sample userfile.cfg from template
   ansible.builtin.template:
     src: userfile.cfg.j2
     dest: "{{ my_workdir }}/userfile.cfg"
     mode: '0644'
 
-- name: Generate netmap.cfg from template
+- name: Generate sample netmap.cfg from template
   ansible.builtin.template:
     src: netmap.cfg.j2
     dest: "{{ my_workdir }}/netmap.cfg"

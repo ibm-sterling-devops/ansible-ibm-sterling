@@ -19,19 +19,6 @@
   changed_when: false
   when: cout.rc == 0
 
-# - name: Generate OpenSSL certificate
-#  ansible.builtin.openssl_certificate:
-#    path: "{{ my_cert_certificatecrt }}"
-#    privatekey_path: "{{ my_cert_privatekey }}"
-#    privatekey_passphrase: "{{ cd_localCertPassphrase }}"
-#    #subject: "/CN={{ cd_nodename }}""
-#    #  commonName: "/{{ cd_nodename }}"
-#    provider: selfsigned
-#    #    signature_algorithms:
-#    #      - sha512WithRSAEncryption
-#    #   days:  3650
-#    force: yes
-
 # Create Certificate for Connect:Direct on Kubernetes
 # CD install script only support extensions .crt, .pem and .cer
 # -----------------------------------------------------------------------------

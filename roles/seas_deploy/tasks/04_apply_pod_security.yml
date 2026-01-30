@@ -49,5 +49,3 @@
     state: present
     template: 'namespaceAdministration/ibm-seas-rb-scc.yaml.j2'
   when: scc_resource and scc_apiversion
-
-# Made with Bob

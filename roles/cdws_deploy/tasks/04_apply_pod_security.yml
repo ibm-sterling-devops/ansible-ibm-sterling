@@ -52,4 +52,4 @@
     namespace: "{{ cdws_namespace }}"
   when: scc_resource and scc_apiversion
 
-# Made with Bob
+

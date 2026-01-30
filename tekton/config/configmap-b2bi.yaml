@@ -52,4 +52,4 @@ data:
   # Note: Sensitive values like passwords should be stored in Secrets
   # See secret-template.yaml for sensitive configuration
 
-# Made with Bob
+

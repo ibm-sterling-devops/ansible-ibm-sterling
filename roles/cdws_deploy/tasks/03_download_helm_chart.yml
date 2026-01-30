@@ -27,4 +27,4 @@
       - "Helm chart file ............... {{ cdws_helm_chart_file }}"
       - "Download status ............... {{ 'Success' if download_result is succeeded else 'Failed' }}"
 
-# Made with Bob
+
