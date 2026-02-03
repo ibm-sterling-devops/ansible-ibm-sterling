@@ -17,6 +17,8 @@ cdws_truststore_password: "{{ lookup('env', 'CDWS_TRUSTSTOREPASSWORD') | default
 cdws_keystore_password: "{{ lookup('env', 'CDWS_KEYSTOREPASSWORD') | default('Change1t@', true) }}"
 cdws_cacert_password: "{{ lookup('env', 'CDWS_CACERT_PASSWORD') | default('Password123!', true) }}"
 
+cdws_replica_count: "{{ lookup('env', 'CDWS_REPLICA_COUNT') | default(1, true) }}"
+
 cdws_skip_helm: "{{ lookup('env', 'CDWS_SKIP_HELM') | default(false, true) }}"
 
 # Storage

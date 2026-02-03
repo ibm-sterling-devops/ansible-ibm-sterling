@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 # Replic number for CDWS pod
-replicaCount: 1
+replicaCount: {{ cdws_replica_count }}
 
 # Specify the respective Docker Image details for CDWS
 image:
@@ -174,9 +174,9 @@ autoscaling:
   # Specify to enable autoscaling.
   enabled: true
   # Specfiy to define number of minumum replicas of pods when autoscaling is enabled
-  minReplicas: 1
+  minReplicas: {{ cdws_replica_count }}
   # Specfiy to define number of maximum replicas of pods when autoscaling is enabled
-  maxReplicas: 2
+  maxReplicas: 3
   # Specify target CPU utilization in percentage to autoscale
   targetCPUUtilizationPercentage: 70
   # Specify target memory utilization in percentage to autoscale
