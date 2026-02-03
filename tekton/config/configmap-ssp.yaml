@@ -7,56 +7,59 @@ metadata:
     app.kubernetes.io/name: sterling-ssp
     app.kubernetes.io/component: configuration
 data:
-  # Sterling Secure Proxy Configuration
-  # -----------------------------------------------------------------------------
-  
-  # SSP Action (install or upgrade)
-  SSP_ACTION: "install"
-  
-  # SSP Instance Configuration
-  SSP_INSTANCEID: "ssp01"
-  SSP_VERSION: "6.2.1.1-iFix00-2025-10-15"
-  SSP_LICENSETYPE: "non-prod"
-  
-  # Storage Configuration
-  SSP_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
-  SSP_STORAGE_CAPACITY: "2Gi"
-  
-  # Resource Limits and Requests
-  SSP_CPU_LIMITS: "2000m"
-  SSP_MEM_LIMITS: "4Gi"
-  SSP_CPU_REQUESTS: "1000m"
-  SSP_MEM_REQUESTS: "2Gi"
-  
-  # Storage Configuration
-  SSP_CM_STORAGE_CLASS: ""
-  
-  # Component Deployment Flags
-  SSP_CM_DEPLOY_ENABLED: "true"
-  SSP_ENGINE_DEPLOY_ENABLED: "true"
-  SSP_PS_DEPLOY_ENABLED: "true"
-  SSP_CONFIG_DEPLOY_ENABLED: "true"
-  
-  # Security Settings
-  SSP_SYS_PASSPHRASE: "Password123!"
-  SSP_ADMIN_PASSWORD: "Password123!"
-  SSP_KEYCERT_STORE_PASSPHRASE: "changeit"
-  SSP_KEYCERT_ENCRYPT_PASSPHRASE: "Change1t@"
-  SSP_CUSTOM_KEYCERT_PASSPHRASE: "Change1t@"
-  SSP_COMMONCERT_PASSWORD: "Password123!"
-  SSP_ENGCERT_PASSWORD: "Password123!"
-  SSP_CMCLIENTCERT_PASSWORD: "Password123!"
-  SSP_CMCERT_PASSWORD: "Password123!"
-  SSP_CMSERVERCERT_PASSWORD: "Password123!"
-  SSP_WEBCERT_PASSWORD: "Password123!"
-  SSP_EXPORTEDCERT_PASSWORD: "Password123!"
-  
-  # Helm Configuration
-  SSP_SKIP_HELM: "false"
-  SSP_CM_SKIP_IMAGE_SECRET: "false"
-  
-  # Additional Configuration
-  # Note: Sensitive values like passwords and certificates should be stored in Secrets
-  # See secret-template.yaml for sensitive configuration
+  SSP_INSTANCEID: "dev01"
+  #
+  # # Sterling Secure Proxy Configuration
+  # # -----------------------------------------------------------------------------
+  # 
+  # # SSP Action (install or upgrade)
+  # SSP_ACTION: "install"
+  # 
+  # # SSP Instance Configuration
+  # SSP_INSTANCEID: "ssp01"
+  # SSP_VERSION: "6.2.1.1-iFix00-2025-10-15"
+  # SSP_LICENSETYPE: "non-prod"
+  # 
+  # # Storage Configuration
+  # STORAGE_CLASS_RWX: ""
+  # STORAGE_CLASS_RWO: ""
+  # SSP_STORAGE_CAPACITY: "2Gi"
+  # 
+  # # Resource Limits and Requests
+  # SSP_CPU_LIMITS: "2000m"
+  # SSP_MEM_LIMITS: "4Gi"
+  # SSP_CPU_REQUESTS: "1000m"
+  # SSP_MEM_REQUESTS: "2Gi"
+  # 
+  # # Storage Configuration
+  # SSP_CM_STORAGE_CLASS: ""
+  # 
+  # # Component Deployment Flags
+  # SSP_CM_DEPLOY_ENABLED: "true"
+  # SSP_ENGINE_DEPLOY_ENABLED: "true"
+  # SSP_PS_DEPLOY_ENABLED: "true"
+  # SSP_CONFIG_DEPLOY_ENABLED: "true"
+  # 
+  # # Security Settings
+  # SSP_SYS_PASSPHRASE: "Password123!"
+  # SSP_ADMIN_PASSWORD: "Password123!"
+  # SSP_KEYCERT_STORE_PASSPHRASE: "changeit"
+  # SSP_KEYCERT_ENCRYPT_PASSPHRASE: "Change1t@"
+  # SSP_CUSTOM_KEYCERT_PASSPHRASE: "Change1t@"
+  # SSP_COMMONCERT_PASSWORD: "Password123!"
+  # SSP_ENGCERT_PASSWORD: "Password123!"
+  # SSP_CMCLIENTCERT_PASSWORD: "Password123!"
+  # SSP_CMCERT_PASSWORD: "Password123!"
+  # SSP_CMSERVERCERT_PASSWORD: "Password123!"
+  # SSP_WEBCERT_PASSWORD: "Password123!"
+  # SSP_EXPORTEDCERT_PASSWORD: "Password123!"
+  # 
+  # # Helm Configuration
+  # SSP_SKIP_HELM: "false"
+  # SSP_CM_SKIP_IMAGE_SECRET: "false"
+  # 
+  # # Additional Configuration
+  # # Note: Sensitive values like passwords and certificates should be stored in Secrets
+  # # See secret-template.yaml for sensitive configuration
 
 

@@ -1,0 +1,52 @@
+---
+- name: Display IBM Operator Catalog configuration
+  ansible.builtin.debug:
+    msg:
+      - "IBM Operator Catalog Configuration"
+      - "Catalog Name ................. {{ ibm_catalog_name }}"
+      - "Namespace .................... {{ ibm_catalog_namespace }}"
+      - "Image ........................ {{ ibm_catalog_image }}"
+      - "State ........................ {{ ibm_catalog_state }}"
+
+- name: Create IBM Operator Catalog
+  kubernetes.core.k8s:
+    state: "{{ ibm_catalog_state }}"
+    definition:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: CatalogSource
+      metadata:
+        name: "{{ ibm_catalog_name }}"
+        namespace: "{{ ibm_catalog_namespace }}"
+        labels:
+          app.kubernetes.io/name: ibm-operator-catalog
+      spec:
+        displayName: "{{ ibm_catalog_display_name }}"
+        publisher: "{{ ibm_catalog_publisher }}"
+        sourceType: grpc
+        image: "{{ ibm_catalog_image }}"
+        updateStrategy:
+          registryPoll:
+            interval: "{{ ibm_catalog_update_interval }}"
+
+- name: Wait for IBM Operator Catalog to be ready
+  when: ibm_catalog_state == "present"
+  kubernetes.core.k8s_info:
+    api_version: operators.coreos.com/v1alpha1
+    kind: CatalogSource
+    name: "{{ ibm_catalog_name }}"
+    namespace: "{{ ibm_catalog_namespace }}"
+  register: catalog_status
+  until:
+    - catalog_status.resources is defined
+    - catalog_status.resources | length > 0
+    - catalog_status.resources[0].status is defined
+    - catalog_status.resources[0].status.connectionState is defined
+    - catalog_status.resources[0].status.connectionState.lastObservedState == "READY"
+  retries: 30
+  delay: 10
+
+- name: Display IBM Operator Catalog status
+  ansible.builtin.debug:
+    msg: "IBM Operator Catalog '{{ ibm_catalog_name }}' is {{ 'ready' if ibm_catalog_state == 'present' else 'removed' }}"
+
+# Made with Bob

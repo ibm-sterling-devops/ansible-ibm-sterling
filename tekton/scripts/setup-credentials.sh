@@ -24,7 +24,22 @@ if ! oc whoami &> /dev/null; then
     exit 1
 fi
 
-echo "Logged in to OpenShift as: $(oc whoami)"
+echo "✓ Logged in to OpenShift as: $(oc whoami)"
+echo ""
+
+# Extract OpenShift server and token from current context
+echo "Extracting OpenShift credentials..."
+OCP_SERVER=$(oc whoami --show-server)
+OCP_TOKEN=$(oc whoami --show-token)
+
+if [ -z "${OCP_SERVER}" ] || [ -z "${OCP_TOKEN}" ]; then
+    echo "Failed to extract OpenShift credentials"
+    echo "Please ensure you are logged in with a valid token"
+    exit 1
+fi
+
+echo "✓ OpenShift Server: ${OCP_SERVER}"
+echo "✓ Token extracted successfully"
 echo ""
 
 # Create namespace if it doesn't exist
@@ -40,10 +55,14 @@ echo ""
 # Check for ENTITLED_REGISTRY_KEY
 if [ -z "${ENTITLED_REGISTRY_KEY}" ]; then
     echo "ENTITLED_REGISTRY_KEY not set in environment"
+    echo ""
+    echo "Please set ENTITLED_REGISTRY_KEY:"
+    echo "  export ENTITLED_REGISTRY_KEY='your-entitlement-key'"
+    echo ""
     exit 2
 fi
 
-echo "ENTITLED_REGISTRY_KEY is set"
+echo "✓ ENTITLED_REGISTRY_KEY is set"
 echo ""
 
 # Create or update the secret
@@ -51,16 +70,21 @@ echo "Creating/updating sterling-deploy-secrets..."
 
 # Check if secret exists
 if kubectl get secret sterling-deploy-secrets -n ${NAMESPACE} &> /dev/null; then
-    echo "  Secret exists, updating..."
+    echo "  Secret exists, deleting old version..."
     kubectl delete secret sterling-deploy-secrets -n ${NAMESPACE}
 fi
 
-# Create secret with ENTITLED_REGISTRY_KEY
+# Create secret with all credentials
 kubectl create secret generic sterling-deploy-secrets \
     --from-literal=ENTITLED_REGISTRY_KEY="${ENTITLED_REGISTRY_KEY}" \
+    --from-literal=OCP_SERVER="${OCP_SERVER}" \
+    --from-literal=OCP_TOKEN="${OCP_TOKEN}" \
     -n ${NAMESPACE}
 
-echo "Secret created/updated"
+echo "✓ Secret created/updated with:"
+echo "  - ENTITLED_REGISTRY_KEY"
+echo "  - OCP_SERVER"
+echo "  - OCP_TOKEN"
 echo ""
 
 # Create service account if it doesn't exist
@@ -69,22 +93,27 @@ if ! kubectl get serviceaccount tekton-deployer-sa -n ${NAMESPACE} &> /dev/null;
     kubectl create serviceaccount tekton-deployer-sa -n ${NAMESPACE}
     
     # Add cluster-admin role (adjust as needed for your security requirements)
+    echo "Adding cluster-admin role to service account..."
     oc adm policy add-cluster-role-to-user cluster-admin -z tekton-deployer-sa -n ${NAMESPACE}
     
-    echo "Service account created"
+    echo "✓ Service account created with cluster-admin role"
 else
-    echo "Service account tekton-deployer-sa already exists"
+    echo "✓ Service account tekton-deployer-sa already exists"
 fi
 
 echo ""
 echo "=========================================="
-echo "Credentials setup completed!"
+echo "✓ Credentials setup completed!"
 echo "=========================================="
 echo ""
-echo "You can now run the pipeline:"
-echo "  kubectl create -f tekton/runs/deploy-all.yaml"
+echo "Credentials stored in secret 'sterling-deploy-secrets':"
+echo "  - ENTITLED_REGISTRY_KEY: IBM Entitlement Key"
+echo "  - OCP_SERVER: ${OCP_SERVER}"
+echo "  - OCP_TOKEN: [hidden]"
 echo ""
-echo "Or for B2Bi deployment:"
+echo "You can now run the pipeline:"
+echo "  kubectl create -f tekton/runs/deploy-cd.yaml"
 echo "  kubectl create -f tekton/runs/deploy-b2bi.yaml"
+echo "  kubectl create -f tekton/runs/deploy-all.yaml"
 echo ""
 

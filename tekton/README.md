@@ -56,7 +56,7 @@ tekton/
 | SCC     | 45-60 min |  |
 | SSP     | 20-30 min |  |
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Prerequisites
 
@@ -98,13 +98,13 @@ vi tekton/config/configmap-ssp.yaml
 ```
 
 **Important:** Each product has its own ConfigMap with specific variables:
-- `sterling-cd-config` - Variables prefixed with `CD_*`
-- `sterling-cdws-config` - Variables prefixed with `CDWS_*`
-- `sterling-seas-config` - Variables prefixed with `SEAS_*`
-- `sterling-scc-config` - Variables prefixed with `SCC_*`
-- `sterling-ssp-config` - Variables prefixed with `SSP_*`
-- `sterling-b2bi-config` - Variables prefixed with `SI_*`
-- `sterling-minio-config` - Variables prefixed with `MINIO_*`
+- `configmap-b2bi.yaml` - Variables prefixed with `SI_*`
+- `configmap-cd.yaml` - Variables prefixed with `CD_*`
+- `configmap-cdws.yaml` - Variables prefixed with `CDWS_*`
+- `configmap-scc.yaml` - Variables prefixed with `SCC_*`
+- `configmap-seas.yaml` - Variables prefixed with `SEAS_*`
+- `configmap-ssp.yaml` - Variables prefixed with `SSP_*`
+- `configmap-minio.yaml` - Variables prefixed with `MINIO_*`
 
 ### 5. Apply ConfigMaps
 

@@ -1,0 +1,18 @@
+---
+# IBM Operator Catalog Configuration
+# -----------------------------------------------------------------------------
+
+# Catalog Configuration
+# -----------------------------------------------------------------------------
+ibm_catalog_name: "{{ lookup('env', 'IBM_CATALOG_NAME') | default('ibm-operator-catalog', true) }}"
+ibm_catalog_namespace: "{{ lookup('env', 'IBM_CATALOG_NAMESPACE') | default('openshift-marketplace', true) }}"
+ibm_catalog_display_name: "{{ lookup('env', 'IBM_CATALOG_DISPLAY_NAME') | default('IBM Operator Catalog', true) }}"
+ibm_catalog_publisher: "{{ lookup('env', 'IBM_CATALOG_PUBLISHER') | default('IBM', true) }}"
+ibm_catalog_image: "{{ lookup('env', 'IBM_CATALOG_IMAGE') | default('icr.io/cpopen/ibm-operator-catalog:latest', true) }}"
+ibm_catalog_update_interval: "{{ lookup('env', 'IBM_CATALOG_UPDATE_INTERVAL') | default('45m', true) }}"
+
+# Catalog State
+# -----------------------------------------------------------------------------
+ibm_catalog_state: "{{ lookup('env', 'IBM_CATALOG_STATE') | default('present', true) }}"  # present or absent
+
+# Made with Bob

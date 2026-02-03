@@ -1,0 +1,6 @@
+- name: Install IBM Operator Catalog
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - ibm_catalog

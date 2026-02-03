@@ -1,0 +1,160 @@
+---
+- name: Cleanup IBM Db2 Operator and Catalog
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  any_errors_fatal: false
+  vars:
+    db2_operator_namespace: "{{ lookup('env', 'DB2_OPERATOR_NAMESPACE') | default('ibm-common-services', true) }}"
+    db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') | default('db2', true) }}"
+    db2_instance_name: "{{ lookup('env', 'DB2_INSTANCE_NAME') | default('db2inst1', true) }}"
+
+  tasks:
+    - name: Display cleanup configuration
+      ansible.builtin.debug:
+        msg:
+          - "=========================================="
+          - "IBM Db2 Operator Cleanup"
+          - "=========================================="
+          - "Operator Namespace: {{ db2_operator_namespace }}"
+          - "Db2 Namespace: {{ db2_namespace }}"
+          - "Instance Name: {{ db2_instance_name }}"
+          - "=========================================="
+
+    # Cleanup Db2 Instance
+    - name: Delete Db2uCluster instance
+      kubernetes.core.k8s:
+        state: absent
+        api_version: db2u.databases.ibm.com/v1
+        kind: Db2uCluster
+        name: "{{ db2_instance_name }}"
+        namespace: "{{ db2_namespace }}"
+      ignore_errors: true
+
+    - name: Wait for Db2 instance to be deleted
+      kubernetes.core.k8s_info:
+        api_version: db2u.databases.ibm.com/v1
+        kind: Db2uCluster
+        name: "{{ db2_instance_name }}"
+        namespace: "{{ db2_namespace }}"
+      register: db2_instance
+      until: db2_instance.resources | length == 0
+      retries: 30
+      delay: 10
+      ignore_errors: true
+
+    # Cleanup Db2 Namespace
+    - name: Delete Db2 namespace
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Namespace
+        name: "{{ db2_namespace }}"
+      ignore_errors: true
+
+    - name: Wait for Db2 namespace to be deleted
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Namespace
+        name: "{{ db2_namespace }}"
+      register: db2_ns
+      until: db2_ns.resources | length == 0
+      retries: 30
+      delay: 10
+      ignore_errors: true
+
+    # Cleanup Db2 Operator
+    - name: Delete Db2 Operator Subscription
+      kubernetes.core.k8s:
+        state: absent
+        api_version: operators.coreos.com/v1alpha1
+        kind: Subscription
+        name: ibm-db2uoperator
+        namespace: "{{ db2_operator_namespace }}"
+      ignore_errors: true
+
+    - name: Get Db2 Operator CSV name
+      kubernetes.core.k8s_info:
+        api_version: operators.coreos.com/v1alpha1
+        kind: ClusterServiceVersion
+        namespace: "{{ db2_operator_namespace }}"
+      register: csv_list
+      ignore_errors: true
+
+    - name: Delete Db2 Operator CSV
+      kubernetes.core.k8s:
+        state: absent
+        api_version: operators.coreos.com/v1alpha1
+        kind: ClusterServiceVersion
+        name: "{{ item.metadata.name }}"
+        namespace: "{{ db2_operator_namespace }}"
+      loop: "{{ csv_list.resources | selectattr('metadata.name', 'search', 'db2u-operator') | list }}"
+      when:
+        - csv_list.resources is defined
+        - csv_list.resources | length > 0
+      ignore_errors: true
+
+    - name: Delete Db2 OperatorGroup
+      kubernetes.core.k8s:
+        state: absent
+        api_version: operators.coreos.com/v1
+        kind: OperatorGroup
+        name: db2-operator-group
+        namespace: "{{ db2_operator_namespace }}"
+      ignore_errors: true
+
+    # Cleanup IBM Catalog (optional - only if no other operators are using it)
+    - name: Check for other subscriptions in ibm-common-services
+      kubernetes.core.k8s_info:
+        api_version: operators.coreos.com/v1alpha1
+        kind: Subscription
+        namespace: "{{ db2_operator_namespace }}"
+      register: other_subscriptions
+      ignore_errors: true
+
+    - name: Display warning about IBM Catalog
+      ansible.builtin.debug:
+        msg:
+          - "WARNING: IBM Operator Catalog Cleanup"
+          - "Other subscriptions found: {{ other_subscriptions.resources | length }}"
+          - "IBM Catalog will NOT be removed if other operators are using it"
+          - "To manually remove IBM Catalog, run:"
+          - "  kubectl delete catalogsource ibm-operator-catalog -n openshift-marketplace"
+      when:
+        - other_subscriptions.resources is defined
+        - other_subscriptions.resources | length > 0
+
+    - name: Delete IBM Operator Catalog (if no other subscriptions)
+      kubernetes.core.k8s:
+        state: absent
+        api_version: operators.coreos.com/v1alpha1
+        kind: CatalogSource
+        name: ibm-operator-catalog
+        namespace: openshift-marketplace
+      when:
+        - other_subscriptions.resources is defined
+        - other_subscriptions.resources | length == 0
+      ignore_errors: true
+
+    - name: Delete ibm-common-services namespace (if empty)
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Namespace
+        name: "{{ db2_operator_namespace }}"
+      when:
+        - other_subscriptions.resources is defined
+        - other_subscriptions.resources | length == 0
+      ignore_errors: true
+
+    - name: Display cleanup completion
+      ansible.builtin.debug:
+        msg:
+          - "IBM Db2 Operator Cleanup Complete"
+          - "Removed:"
+          - "  - Db2 instance: {{ db2_instance_name }}"
+          - "  - Db2 namespace: {{ db2_namespace }}"
+          - "  - Db2 Operator from: {{ db2_operator_namespace }}"
+          - ""
+          - "Note: IBM Catalog and ibm-common-services namespace"
+          - "are only removed if no other operators are using them"

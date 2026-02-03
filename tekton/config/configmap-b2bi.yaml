@@ -7,49 +7,39 @@ metadata:
     app.kubernetes.io/name: sterling-b2bi
     app.kubernetes.io/component: configuration
 data:
-  # Sterling B2B Integrator Configuration
-  # -----------------------------------------------------------------------------
-  
-  # B2Bi Action (install or upgrade)
-  SI_ACTION: "install"
-  
-  # B2Bi Instance Configuration
   SI_INSTANCEID: "dev01"
   SI_VERSION: "6.2.2.0"
-  #SI_LICENSETYPE: "prod"
+  #
+  # # Sterling B2B Integrator Configuration
+  # # -----------------------------------------------------------------------------
+  # # B2Bi Action (install or upgrade)
+  # SI_ACTION: "install" 
+  # 
+  # # B2Bi Instance Configuration
+  # SI_INSTANCEID: "dev01"
+  # SI_VERSION: "6.2.2.0"
+  # #SI_LICENSETYPE: "prod"
+  # 
+  # # Storage Configuration
+  # STORAGE_CLASS_RWX: ""
+  # STORAGE_CLASS_RWO: ""
+  # B2BI_STORAGE_CAPACITY: "10Gi"
+  # 
+  # # Database Configuration
+  # SI_DBVENDOR: "db2"
+  # SI_DBHOST: ""
+  # SI_DBPORT: "50000"
+  # SI_DBNAME: "B2BIDB"
+  # SI_DBUSER: "db2inst1"
+  # SI_ORACLESERVICENAME: false
+  # 
+  # # Additional Settings
+  # SI_SYSTEM_PASSPHRASE: "passw0rd"
+  # SI_ENV_TIMEZONE: "UTC"
+  # SI_ROUTEDOMAIN: "company.com"
+  # SI_ADMIN_MAILADDR: "admin@company.com"
+  # SI_ADMIN_SMTPHOST: "smtp.company.com"
+  # 
+  # # Helm Configuration
+  # SI_SKIP_HELM: "false"
   
-  # Storage Configuration
-  B2BI_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
-  B2BI_STORAGE_CAPACITY: "10Gi"
-  
-  # Resource Limits and Requests
-  B2BI_CPU_LIMITS: "4000m"
-  B2BI_MEM_LIMITS: "8Gi"
-  B2BI_CPU_REQUESTS: "2000m"
-  B2BI_MEM_REQUESTS: "4Gi"
-  
-  # Database Configuration
-  SI_DBVENDOR: "db2"
-  SI_DBHOST: ""
-  SI_DBPORT: "50000"
-  SI_DBNAME: "B2BIDB"
-  SI_DBUSER: "db2inst1"
-  
-  # MQ Configuration (JMS)
-  SI_JMS_USERNAME: "admin"
-  
-  # Additional Settings
-  SI_SYSTEM_PASSPHRASE: "passw0rd"
-  SI_ENV_TIMEZONE: "UTC"
-  SI_ROUTEDOMAIN: "company.com"
-  SI_ADMIN_MAILADDR: "admin@company.com"
-  SI_ADMIN_SMTPHOST: "smtp.company.com"
-  
-  # Helm Configuration
-  SI_SKIP_HELM: "false"
-  
-  # Additional Configuration
-  # Note: Sensitive values like passwords should be stored in Secrets
-  # See secret-template.yaml for sensitive configuration
-
-

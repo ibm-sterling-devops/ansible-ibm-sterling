@@ -7,32 +7,35 @@ metadata:
     app.kubernetes.io/name: sterling-seas
     app.kubernetes.io/component: configuration
 data:
-  # Sterling External Authentication Server Configuration
-  # -----------------------------------------------------------------------------
-  
-  # SEAS Action (install or upgrade)
-  SEAS_ACTION: "install"
-  
-  # SEAS Instance Configuration
-  SEAS_NAMESPACE: "sterling-seas01"
-  SEAS_VERSION: "1.6.1.0"
-  SEAS_LICENSE_TYPE: "non-prod"
-  
-  # Storage Configuration
-  SEAS_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
-  SEAS_STORAGE_CAPACITY: "1Gi"
-  
-  # Resource Limits and Requests
-  SEAS_CPU_LIMITS: "2000m"
-  SEAS_MEM_LIMITS: "4Gi"
-  SEAS_CPU_REQUESTS: "1000m"
-  SEAS_MEM_REQUESTS: "2Gi"
-  
-  # Helm Configuration
-  SEAS_SKIP_HELM: "false"
-  
-  # Additional Configuration
-  # Note: Sensitive values like passwords should be stored in Secrets
-  # See secret-template.yaml for sensitive configuration
+  SEAS_NAMESPACE: "sterling-seas-dev01"
+  #
+  # # Sterling External Authentication Server Configuration
+  # # -----------------------------------------------------------------------------
+  # 
+  # # SEAS Action (install or upgrade)
+  # SEAS_ACTION: "install"
+  # 
+  # # SEAS Instance Configuration
+  # SEAS_NAMESPACE: "sterling-seas01"
+  # SEAS_VERSION: "1.6.1.0"
+  # SEAS_LICENSE_TYPE: "non-prod"
+  # 
+  # # Storage Configuration
+  # STORAGE_CLASS_RWX: ""
+  # STORAGE_CLASS_RWO: ""
+  # SEAS_PVC_STORAGE_SIZE: "1Gi"
+  # 
+  # # Additional Settings
+  # SEAS_SYS_PASSPHRASE: "Password123!"
+  # SEAS_ADMIN_PASSWORD: "Password123!"
+  # SEAS_KEYSTORE_PASSPHRASE: "Change1t@"
+  # SEAS_TRUSTSTOREPASSWORD: "Change1t@"
+  # 
+  # # Helm Configuration
+  # SEAS_SKIP_HELM: "false"
+  # 
+  # # Additional Configuration
+  # # Note: Sensitive values like passwords should be stored in Secrets
+  # # See secret-template.yaml for sensitive configuration
 
 

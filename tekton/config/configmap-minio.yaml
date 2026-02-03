@@ -15,7 +15,8 @@ data:
   MINIO_VERSION: "latest"
   
   # Storage Configuration
-  MINIO_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
+  # STORAGE_CLASS_RWX: ""
+  # STORAGE_CLASS_RWO: ""
   MINIO_STORAGE_CAPACITY: "10Gi"
   
   # Resource Limits and Requests

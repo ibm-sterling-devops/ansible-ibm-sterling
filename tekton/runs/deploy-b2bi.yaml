@@ -15,14 +15,5 @@ spec:
   params:
     - name: deploy-b2bi
       value: "true"
-  workspaces:
-    - name: shared-data
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 2Gi
   timeout: 3h0m0s
   serviceAccountName: tekton-deployer-sa

@@ -44,9 +44,6 @@ spec:
       type: string
       description: Deploy SSP
       default: "false"
-  workspaces:
-    - name: shared-data
-      description: Shared workspace for git repo and credentials
   
   tasks:
     - name: cd-deploy
@@ -56,9 +53,6 @@ spec:
           values: ["true"]
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_cd.yml"
@@ -74,9 +68,6 @@ spec:
           values: ["true"]
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_cdws.yml"
@@ -92,9 +83,6 @@ spec:
           values: ["true"]
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_seas.yml"
@@ -111,9 +99,6 @@ spec:
           values: ["true"]
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/tools/minio.yml"
@@ -130,9 +115,6 @@ spec:
           values: ["true"]
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
@@ -152,9 +134,6 @@ spec:
         - deploy-b2bi-db2
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
@@ -174,9 +153,6 @@ spec:
         - setup-b2bi-db2
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
@@ -196,9 +172,6 @@ spec:
         - deploy-b2bi-mq
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_sb2b.yml"
@@ -217,9 +190,6 @@ spec:
           values: ["true"]
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_scc.yml"
@@ -239,9 +209,6 @@ spec:
         - deploy-scc-db2
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_scc.yml"
@@ -261,9 +228,6 @@ spec:
         - setup-scc-db2
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_scc.yml"
@@ -283,9 +247,6 @@ spec:
           values: ["true"]
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"
@@ -305,9 +266,6 @@ spec:
         - ssp-config-manager
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"
@@ -327,9 +285,6 @@ spec:
         - ssp-engine
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"
@@ -350,9 +305,6 @@ spec:
         - ssp-perimeter-server
       taskRef:
         name: sterling-deploy-task
-      workspaces:
-        - name: shared-data
-          workspace: shared-data
       params:
         - name: playbook-path
           value: "playbooks/deploy_ssp.yml"

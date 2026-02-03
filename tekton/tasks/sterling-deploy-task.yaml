@@ -13,13 +13,9 @@ metadata:
     tekton.dev/platforms: "linux/amd64"
 spec:
   description: >-
-    This Task performs git pull and runs Ansible playbook using a custom
-    Docker image. Credentials and git repo are persisted in workspace.
+    This Task performs git clone and runs Ansible playbook using a custom
+    Docker image. Each run starts fresh with a new clone.
   params:
-    - name: git-revision
-      description: Git revision to checkout (branch, tag, sha, ref)
-      type: string
-      default: "main"
     - name: playbook-path
       description: Path to the Ansible playbook relative to the repository root
       type: string
@@ -39,31 +35,17 @@ spec:
       description: Extra arguments to pass to ansible-playbook
       type: string
       default: ""
-  workspaces:
-    - name: shared-data
-      description: Shared workspace to persist git repo and credentials
   steps:
     - name: git-pull-and-deploy
       image: $(params.custom-image)
+      imagePullPolicy: Always
       env:
-        - name: ANSIBLE_HOST_KEY_CHECKING
-          value: "False"
-        - name: ANSIBLE_FORCE_COLOR
-          value: "True"
-        - name: ANSIBLE_STDOUT_CALLBACK
-          value: "yaml"
         - name: GIT_URL
           value: "https://github.com/ibm-sterling-devops/ansible-ibm-sterling.git"
-        - name: GIT_REVISION
-          value: $(params.git-revision)
         - name: PLAYBOOK_PATH
           value: $(params.playbook-path)
         - name: WORK_DIR
-          value: $(workspaces.shared-data.path)/source
-        - name: KUBECONFIG
-          value: $(workspaces.shared-data.path)/.kube/config
-        - name: HOME
-          value: $(workspaces.shared-data.path)
+          value: /opt/app-root/src
       envFrom:
         - configMapRef:
             name: $(params.configmap-name)
@@ -81,10 +63,27 @@ spec:
         echo "Playbook: ${PLAYBOOK_PATH}"
         echo "Working Directory: ${WORK_DIR}"
         echo "=========================================="
-
-        # Create necessary directories
-        mkdir -p "${WORK_DIR}"
-        mkdir -p "$(workspaces.shared-data.path)/.kube"
+        
+        # Configure OpenShift/Kubernetes authentication
+        echo "Configuring OpenShift authentication..."
+        
+        if [ -z "${OCP_SERVER}" ] || [ -z "${OCP_TOKEN}" ]; then
+          echo "ERROR: OCP_SERVER or OCP_TOKEN not set"
+          echo "Please run setup-credentials.sh script first"
+          exit 1
+        fi
+        
+        # Login to OpenShift using credentials from secret
+        echo "Logging in to OpenShift..."
+        oc login --server="${OCP_SERVER}" --token="${OCP_TOKEN}"
+        
+        # Verify login
+        echo "Logged in as: $(oc whoami)"
+        echo "Current project: $(oc project -q)"
+        
+        # Export KUBECONFIG for Ansible kubernetes.core modules
+        export KUBECONFIG="${HOME}/.kube/config"
+        export K8S_AUTH_KUBECONFIG="${KUBECONFIG}"
         
         # Preserve ENTITLED_REGISTRY_KEY
         if [ -n "${ENTITLED_REGISTRY_KEY}" ]; then
@@ -92,30 +91,15 @@ spec:
           export ENTITLED_REGISTRY_KEY="${ENTITLED_REGISTRY_KEY}"
         fi
 
-        # Check if already logged in to OpenShift
-        if [ -f "${KUBECONFIG}" ]; then
-          echo "Using existing OpenShift session"
-          export KUBECONFIG="${KUBECONFIG}"
-        else
-          echo "No existing OpenShift session found"
-          echo "  Run 'oc login' before starting the pipeline"
-        fi
+        echo "=========================================="
+        
+        # Change to working directory
+        cd "ansible-ibm-sterling"
 
-        cd "${WORK_DIR}"
-
-        # Git operations
-        if [ -d ".git" ]; then
-          echo "Repository exists, performing git pull..."
-          git fetch origin
-          git checkout "${GIT_REVISION}"
-          git pull origin "${GIT_REVISION}"
-          echo "Git pull completed"
-        else
-          echo "Repository not found, performing initial clone..."
-          git clone "${GIT_URL}" .
-          git checkout "${GIT_REVISION}"
-          echo "Git clone completed"
-        fi
+        # Clone repository (fresh clone every time)
+        echo "Update repository..."
+        git pull 
+        echo "Git pull completed"
 
         echo "=========================================="
         echo "Current commit:"
@@ -150,9 +134,9 @@ spec:
         EXIT_CODE=$?
         echo "=========================================="
         if [ ${EXIT_CODE} -eq 0 ]; then
-          echo "Deployment completed SUCCESSFULLY"
+          echo "✓ Deployment completed SUCCESSFULLY"
         else
-          echo "Deployment FAILED with exit code: ${EXIT_CODE}"
+          echo "❌ Deployment FAILED with exit code: ${EXIT_CODE}"
         fi
         echo "=========================================="
         

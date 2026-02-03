@@ -7,36 +7,39 @@ metadata:
     app.kubernetes.io/name: sterling-cd
     app.kubernetes.io/component: configuration
 data:
-  # Connect:Direct Configuration
-  # -----------------------------------------------------------------------------
-  
-  # CD Action (install or upgrade)
-  CD_ACTION: "install"
-  
-  # CD Instance Configuration
-  CD_NAMESPACE: "sterling-cdnode01-dev"
+  CD_NAMESPACE: "sterling-cdnode01-dev01"
   CD_NODENAME: "CDNODE01"
-  CD_VERSION: "6.4.0.3-iFix011-2025-11-03"
-  CD_LICENSE_TYPE: "non-prod"
-  CD_ENV_TIMEZONE: "UTC"
-  
-  # Storage Configuration
-  CD_STORAGE_CLASS: ""  # Leave empty to auto-detect or specify storage class
-  CD_STORAGE_CAPACITY: "1Gi"
-  CD_EXISTING_CLAIMNAME: ""  # Optional: Use existing PVC
-  
-  # Resource Limits and Requests
-  CD_CPU_LIMITS: "1500m"
-  CD_MEM_LIMITS: "3000Mi"
-  CD_EPHEMERAL_STORAGE_LIMITS: "5Gi"
-  CD_CPU_REQUESTS: "500m"
-  CD_MEM_REQUESTS: "2000Mi"
-  CD_EPHEMERAL_STORAGE_REQUESTS: "3Gi"
-  
-  # Helm Configuration
-  CD_SKIP_HELM: "false"
-  
-  # Additional Configuration
-  # Note: Sensitive values like passwords should be stored in Secrets
-  # See secret-template.yaml for sensitive configuration
-
+  # 
+  # # Connect:Direct Configuration
+  # # -----------------------------------------------------------------------------
+  # # CD Action (install or upgrade)
+  # CD_ACTION: "install"
+  # 
+  # # CD Instance Configuration
+  # CD_NAMESPACE: "sterling-cdnode01-dev"
+  # CD_NODENAME: "CDNODE01"
+  # CD_VERSION: "6.4.0.3-iFix011-2025-11-03"
+  # CD_LICENSE_TYPE: "non-prod"
+  # CD_ENV_TIMEZONE: "UTC"
+  # 
+  # # Storage Configuration
+  # STORAGE_CLASS_RWX: ""
+  # STORAGE_CLASS_RWO: ""
+  # CD_STORAGE_CAPACITY: "1Gi"
+  # CD_EXISTING_CLAIMNAME: ""  # Optional: Use existing PVC
+  # 
+  # # Resource Limits and Requests
+  # CD_CPU_LIMITS: "1500m"
+  # CD_MEM_LIMITS: "3000Mi"
+  # CD_EPHEMERAL_STORAGE_LIMITS: "5Gi"
+  # CD_CPU_REQUESTS: "500m"
+  # CD_MEM_REQUESTS: "2000Mi"
+  # CD_EPHEMERAL_STORAGE_REQUESTS: "3Gi"
+  # 
+  # # Helm Configuration
+  # CD_SKIP_HELM: "false"
+  # 
+  # # Additional Configuration
+  # # Note: Sensitive values like passwords should be stored in Secrets
+  # # See secret-template.yaml for sensitive configuration
+# 

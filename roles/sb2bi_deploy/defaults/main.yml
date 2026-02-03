@@ -14,7 +14,7 @@ si_instanceid: "{{ lookup('env', 'SI_INSTANCEID') }}"
 env_db2_namespace: "{{ lookup('env', 'DB2_NAMESPACE') }}"
 env_mq_namespace: "{{ lookup('env', 'MQ_NAMESPACE') | trim }}"
 
-si_version: "{{ lookup('env', 'SI_VERSION') | default('6.2.1.1', true) }}"
+si_version: "{{ lookup('env', 'SI_VERSION') | default('6.2.2.0', true) }}"
 
 si_licensetype: "{{ lookup('env', 'SI_LICENSETYPE') | default('non-prod', true) }}" # prod or no-prod
 si_system_passphrase: "{{ lookup('env', 'SI_SYSTEM_PASSPHRASE') | default('passw0rd', true) }}"

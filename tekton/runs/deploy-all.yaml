@@ -25,14 +25,5 @@ spec:
       value: "true"
     - name: deploy-minio
       value: "true"
-  workspaces:
-    - name: shared-data
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 2Gi
   timeout: 6h0m0s
   serviceAccountName: tekton-deployer-sa
