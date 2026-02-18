@@ -4,6 +4,7 @@ Playbook will run the last version of IBM Sterling Partner Engagement Manager, b
 
 | Sterling PEM              | OpenShift           | Kubernetes          | helm-chart |
 |---------------------------|---------------------|---------------------|------------|
+| 6.2.4.3                   | >= 4.14             | >= 1.27             | 1.4.7      |
 | 6.2.4.0.1_standard        | >= 4.14             | >= 1.27             | 1.4.2      |
 | 6.2.4_standard            | >= 4.14             | >= 1.27             | 1.4.0      |
 | 6.2.3.2                   | >= 4.14             | >= 1.27             | 1.3.2      |
