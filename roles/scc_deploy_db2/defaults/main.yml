@@ -50,7 +50,7 @@ storage_class_matrix:
   aws:
     rwx: "efs"
     rwx_nogid: "efs"
-    rwo: "gp2"
+    rwo: "gp3"
     rom: ""
     rwop: ""
   azure:
