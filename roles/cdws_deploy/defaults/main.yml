@@ -10,7 +10,7 @@ cdws_action: "{{ lookup('env', 'CDWS_ACTION') | default('install', true) }}"
 # Configure C:D WebService instance
 # -----------------------------------------------------------------------------------------------------------------
 cdws_namespace: "{{ lookup('env', 'CDWS_NAMESPACE') | default('sterling-cdws-dev01', true) }}"
-cdws_version: "{{ lookup('env', 'CDWS_VERSION') | default('6.4.0.5_iFix00-2025-11-27', true) }}"
+cdws_version: "{{ lookup('env', 'CDWS_VERSION') | default('6.4.0.7_iFix00-2026-04-10', true) }}"
 
 cdws_license_type: "{{ lookup('env', 'CDWS_LICENSE_TYPE') | default('non-prod', true) }}" # prod or no-prod
 cdws_truststore_password: "{{ lookup('env', 'CDWS_TRUSTSTOREPASSWORD') | default('Change1t@', true) }}"
@@ -56,6 +56,10 @@ cdws_helm_chart: "{{ my_workdir }}/ibm-cdws/"
 
 # https://github.com/IBM/charts/tree/master/repo/ibm-helm
 compatibility_matrix:
+  6.4.0.7_iFix00-2026-04-10:
+    helm_version: "1.1.16"
+    image_repository: "cp.icr.io/cp/ibm-cdws/cdws"
+    image_tag: "6.4.0.7_iFix00-2026-04-10"
   6.4.0.5_iFix00-2025-11-27:
     helm_version: "1.1.14"
     image_repository: "cp.icr.io/cp/ibm-cdws/cdws"
